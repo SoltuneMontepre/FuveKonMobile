@@ -1,0 +1,68 @@
+import 'package:fuvekonmobile/core/api/auth_api.dart';
+import 'package:fuvekonmobile/features/auth/data/models/auth_tokens_model.dart';
+import 'package:fuvekonmobile/features/auth/data/models/user_model.dart';
+import 'package:fuvekonmobile/shared/services/token_storage.dart';
+
+abstract interface class AuthRemoteDataSource {
+  Future<({AuthTokensModel tokens, UserModel user})> login({
+    required String email,
+    required String password,
+  });
+
+  Future<void> logout();
+}
+
+class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+  AuthRemoteDataSourceImpl({
+    required AuthApi authApi,
+    required AccountApi accountApi,
+    required TokenStorage tokenStorage,
+  })  : _authApi = authApi,
+        _accountApi = accountApi,
+        _tokenStorage = tokenStorage;
+
+  final AuthApi _authApi;
+  final AccountApi _accountApi;
+  final TokenStorage _tokenStorage;
+
+  @override
+  Future<({AuthTokensModel tokens, UserModel user})> login({
+    required String email,
+    required String password,
+  }) async {
+    final accessToken = await _authApi.loginAndExtractToken(
+      email: email,
+      password: password,
+    );
+
+    final tokens = AuthTokensModel(accessToken: accessToken);
+
+    await _tokenStorage.saveTokens(
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+    );
+
+    final meResponse = await _accountApi.getMe();
+    final account = meResponse.data;
+    if (account == null) {
+      throw const FormatException('Failed to load user profile after login');
+    }
+
+    final user = UserModel(
+      id: account.id,
+      email: account.email,
+      name: account.displayName,
+    );
+
+    return (tokens: tokens, user: user);
+  }
+
+  @override
+  Future<void> logout() async {
+    try {
+      await _authApi.logout();
+    } catch (_) {
+      // Web clears local session even if logout API fails.
+    }
+  }
+}
