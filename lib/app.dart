@@ -21,6 +21,8 @@ class FuvekonApp extends StatelessWidget {
         child: MaterialApp.router(
           title: AppConfig.appName,
           theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          themeMode: ThemeMode.system,
           routerConfig: sl<AppRouter>().router,
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/utils/ticket_price.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 
@@ -22,15 +23,15 @@ class TierCardColors {
 
 const _tierPalettes = [
   TierCardColors(
-    banner: Color(0xFF2D3C3F),
+    banner: FuvekonColors.tier1,
     title: Colors.white,
     price: Colors.white,
     check: Color(0xFF8B6E3A),
-    button: Color(0xFF2D3C3F),
+    button: FuvekonColors.tier1,
     buttonText: Color(0xFFC8E0E4),
   ),
   TierCardColors(
-    banner: Color(0xFF979591),
+    banner: FuvekonColors.tier2,
     title: Colors.white,
     price: Colors.white,
     check: Color(0xFF2C7A60),
@@ -38,7 +39,7 @@ const _tierPalettes = [
     buttonText: Colors.white,
   ),
   TierCardColors(
-    banner: Color(0xFFB99B59),
+    banner: FuvekonColors.tier3,
     title: Colors.white,
     price: Colors.white,
     check: Color(0xFFC9A030),
@@ -46,7 +47,7 @@ const _tierPalettes = [
     buttonText: Colors.white,
   ),
   TierCardColors(
-    banner: Color(0xFF673095),
+    banner: FuvekonColors.tier4,
     title: Color(0xFFF5D060),
     price: Color(0xFFF5D060),
     check: Color(0xFFC9A030),

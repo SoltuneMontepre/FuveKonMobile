@@ -10,5 +10,7 @@ sealed class AuthState with _$AuthState {
   const factory AuthState.authenticated(User user) = AuthAuthenticated;
   const factory AuthState.sessionRestored() = AuthSessionRestored;
   const factory AuthState.unauthenticated() = AuthUnauthenticated;
+  const factory AuthState.googleRegistrationRequired(String credential) =
+      AuthGoogleRegistrationRequired;
   const factory AuthState.failure(String message) = AuthFailure;
 }

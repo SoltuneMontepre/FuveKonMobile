@@ -55,7 +55,7 @@ extension AuthStatePatterns on AuthState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthInitial value)?  initial,TResult Function( AuthLoading value)?  loading,TResult Function( AuthAuthenticated value)?  authenticated,TResult Function( AuthSessionRestored value)?  sessionRestored,TResult Function( AuthUnauthenticated value)?  unauthenticated,TResult Function( AuthFailure value)?  failure,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthInitial value)?  initial,TResult Function( AuthLoading value)?  loading,TResult Function( AuthAuthenticated value)?  authenticated,TResult Function( AuthSessionRestored value)?  sessionRestored,TResult Function( AuthUnauthenticated value)?  unauthenticated,TResult Function( AuthGoogleRegistrationRequired value)?  googleRegistrationRequired,TResult Function( AuthFailure value)?  failure,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
@@ -63,7 +63,8 @@ return initial(_that);case AuthLoading() when loading != null:
 return loading(_that);case AuthAuthenticated() when authenticated != null:
 return authenticated(_that);case AuthSessionRestored() when sessionRestored != null:
 return sessionRestored(_that);case AuthUnauthenticated() when unauthenticated != null:
-return unauthenticated(_that);case AuthFailure() when failure != null:
+return unauthenticated(_that);case AuthGoogleRegistrationRequired() when googleRegistrationRequired != null:
+return googleRegistrationRequired(_that);case AuthFailure() when failure != null:
 return failure(_that);case _:
   return orElse();
 
@@ -82,7 +83,7 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthInitial value)  initial,required TResult Function( AuthLoading value)  loading,required TResult Function( AuthAuthenticated value)  authenticated,required TResult Function( AuthSessionRestored value)  sessionRestored,required TResult Function( AuthUnauthenticated value)  unauthenticated,required TResult Function( AuthFailure value)  failure,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthInitial value)  initial,required TResult Function( AuthLoading value)  loading,required TResult Function( AuthAuthenticated value)  authenticated,required TResult Function( AuthSessionRestored value)  sessionRestored,required TResult Function( AuthUnauthenticated value)  unauthenticated,required TResult Function( AuthGoogleRegistrationRequired value)  googleRegistrationRequired,required TResult Function( AuthFailure value)  failure,}){
 final _that = this;
 switch (_that) {
 case AuthInitial():
@@ -90,7 +91,8 @@ return initial(_that);case AuthLoading():
 return loading(_that);case AuthAuthenticated():
 return authenticated(_that);case AuthSessionRestored():
 return sessionRestored(_that);case AuthUnauthenticated():
-return unauthenticated(_that);case AuthFailure():
+return unauthenticated(_that);case AuthGoogleRegistrationRequired():
+return googleRegistrationRequired(_that);case AuthFailure():
 return failure(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -105,7 +107,7 @@ return failure(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthInitial value)?  initial,TResult? Function( AuthLoading value)?  loading,TResult? Function( AuthAuthenticated value)?  authenticated,TResult? Function( AuthSessionRestored value)?  sessionRestored,TResult? Function( AuthUnauthenticated value)?  unauthenticated,TResult? Function( AuthFailure value)?  failure,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthInitial value)?  initial,TResult? Function( AuthLoading value)?  loading,TResult? Function( AuthAuthenticated value)?  authenticated,TResult? Function( AuthSessionRestored value)?  sessionRestored,TResult? Function( AuthUnauthenticated value)?  unauthenticated,TResult? Function( AuthGoogleRegistrationRequired value)?  googleRegistrationRequired,TResult? Function( AuthFailure value)?  failure,}){
 final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
@@ -113,7 +115,8 @@ return initial(_that);case AuthLoading() when loading != null:
 return loading(_that);case AuthAuthenticated() when authenticated != null:
 return authenticated(_that);case AuthSessionRestored() when sessionRestored != null:
 return sessionRestored(_that);case AuthUnauthenticated() when unauthenticated != null:
-return unauthenticated(_that);case AuthFailure() when failure != null:
+return unauthenticated(_that);case AuthGoogleRegistrationRequired() when googleRegistrationRequired != null:
+return googleRegistrationRequired(_that);case AuthFailure() when failure != null:
 return failure(_that);case _:
   return null;
 
@@ -131,14 +134,15 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( User user)?  authenticated,TResult Function()?  sessionRestored,TResult Function()?  unauthenticated,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( User user)?  authenticated,TResult Function()?  sessionRestored,TResult Function()?  unauthenticated,TResult Function( String credential)?  googleRegistrationRequired,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial();case AuthLoading() when loading != null:
 return loading();case AuthAuthenticated() when authenticated != null:
 return authenticated(_that.user);case AuthSessionRestored() when sessionRestored != null:
 return sessionRestored();case AuthUnauthenticated() when unauthenticated != null:
-return unauthenticated();case AuthFailure() when failure != null:
+return unauthenticated();case AuthGoogleRegistrationRequired() when googleRegistrationRequired != null:
+return googleRegistrationRequired(_that.credential);case AuthFailure() when failure != null:
 return failure(_that.message);case _:
   return orElse();
 
@@ -157,14 +161,15 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( User user)  authenticated,required TResult Function()  sessionRestored,required TResult Function()  unauthenticated,required TResult Function( String message)  failure,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( User user)  authenticated,required TResult Function()  sessionRestored,required TResult Function()  unauthenticated,required TResult Function( String credential)  googleRegistrationRequired,required TResult Function( String message)  failure,}) {final _that = this;
 switch (_that) {
 case AuthInitial():
 return initial();case AuthLoading():
 return loading();case AuthAuthenticated():
 return authenticated(_that.user);case AuthSessionRestored():
 return sessionRestored();case AuthUnauthenticated():
-return unauthenticated();case AuthFailure():
+return unauthenticated();case AuthGoogleRegistrationRequired():
+return googleRegistrationRequired(_that.credential);case AuthFailure():
 return failure(_that.message);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -179,14 +184,15 @@ return failure(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( User user)?  authenticated,TResult? Function()?  sessionRestored,TResult? Function()?  unauthenticated,TResult? Function( String message)?  failure,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( User user)?  authenticated,TResult? Function()?  sessionRestored,TResult? Function()?  unauthenticated,TResult? Function( String credential)?  googleRegistrationRequired,TResult? Function( String message)?  failure,}) {final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial();case AuthLoading() when loading != null:
 return loading();case AuthAuthenticated() when authenticated != null:
 return authenticated(_that.user);case AuthSessionRestored() when sessionRestored != null:
 return sessionRestored();case AuthUnauthenticated() when unauthenticated != null:
-return unauthenticated();case AuthFailure() when failure != null:
+return unauthenticated();case AuthGoogleRegistrationRequired() when googleRegistrationRequired != null:
+return googleRegistrationRequired(_that.credential);case AuthFailure() when failure != null:
 return failure(_that.message);case _:
   return null;
 
@@ -388,6 +394,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class AuthGoogleRegistrationRequired implements AuthState {
+  const AuthGoogleRegistrationRequired(this.credential);
+  
+
+ final  String credential;
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AuthGoogleRegistrationRequiredCopyWith<AuthGoogleRegistrationRequired> get copyWith => _$AuthGoogleRegistrationRequiredCopyWithImpl<AuthGoogleRegistrationRequired>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthGoogleRegistrationRequired&&(identical(other.credential, credential) || other.credential == credential));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,credential);
+
+@override
+String toString() {
+  return 'AuthState.googleRegistrationRequired(credential: $credential)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AuthGoogleRegistrationRequiredCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
+  factory $AuthGoogleRegistrationRequiredCopyWith(AuthGoogleRegistrationRequired value, $Res Function(AuthGoogleRegistrationRequired) _then) = _$AuthGoogleRegistrationRequiredCopyWithImpl;
+@useResult
+$Res call({
+ String credential
+});
+
+
+
+
+}
+/// @nodoc
+class _$AuthGoogleRegistrationRequiredCopyWithImpl<$Res>
+    implements $AuthGoogleRegistrationRequiredCopyWith<$Res> {
+  _$AuthGoogleRegistrationRequiredCopyWithImpl(this._self, this._then);
+
+  final AuthGoogleRegistrationRequired _self;
+  final $Res Function(AuthGoogleRegistrationRequired) _then;
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? credential = null,}) {
+  return _then(AuthGoogleRegistrationRequired(
+null == credential ? _self.credential : credential // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

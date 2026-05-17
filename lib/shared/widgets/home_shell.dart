@@ -8,12 +8,21 @@ class HomeShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: navigationShell.goBranch,
-        destinations: const [
+      bottomNavigationBar: DecoratedBox(
+        decoration: BoxDecoration(
+          color: theme.navigationBarTheme.backgroundColor,
+          border: Border(
+            top: BorderSide(color: theme.dividerColor),
+          ),
+        ),
+        child: NavigationBar(
+          selectedIndex: navigationShell.currentIndex,
+          onDestinationSelected: navigationShell.goBranch,
+          destinations: const [
           NavigationDestination(
             icon: Icon(Icons.event_outlined),
             selectedIcon: Icon(Icons.event),
@@ -39,7 +48,8 @@ class HomeShell extends StatelessWidget {
             selectedIcon: Icon(Icons.person),
             label: 'Profile',
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

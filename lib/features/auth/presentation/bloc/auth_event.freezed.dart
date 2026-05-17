@@ -55,12 +55,15 @@ extension AuthEventPatterns on AuthEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthStarted value)?  started,TResult Function( AuthLoginSubmitted value)?  loginSubmitted,TResult Function( AuthLogoutRequested value)?  logoutRequested,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthStarted value)?  started,TResult Function( AuthLoginSubmitted value)?  loginSubmitted,TResult Function( AuthGoogleSignInRequested value)?  googleSignInRequested,TResult Function( AuthGoogleRegisterSubmitted value)?  googleRegisterSubmitted,TResult Function( AuthGoogleRegistrationNavigated value)?  googleRegistrationNavigated,TResult Function( AuthLogoutRequested value)?  logoutRequested,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AuthStarted() when started != null:
 return started(_that);case AuthLoginSubmitted() when loginSubmitted != null:
-return loginSubmitted(_that);case AuthLogoutRequested() when logoutRequested != null:
+return loginSubmitted(_that);case AuthGoogleSignInRequested() when googleSignInRequested != null:
+return googleSignInRequested(_that);case AuthGoogleRegisterSubmitted() when googleRegisterSubmitted != null:
+return googleRegisterSubmitted(_that);case AuthGoogleRegistrationNavigated() when googleRegistrationNavigated != null:
+return googleRegistrationNavigated(_that);case AuthLogoutRequested() when logoutRequested != null:
 return logoutRequested(_that);case _:
   return orElse();
 
@@ -79,12 +82,15 @@ return logoutRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthStarted value)  started,required TResult Function( AuthLoginSubmitted value)  loginSubmitted,required TResult Function( AuthLogoutRequested value)  logoutRequested,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthStarted value)  started,required TResult Function( AuthLoginSubmitted value)  loginSubmitted,required TResult Function( AuthGoogleSignInRequested value)  googleSignInRequested,required TResult Function( AuthGoogleRegisterSubmitted value)  googleRegisterSubmitted,required TResult Function( AuthGoogleRegistrationNavigated value)  googleRegistrationNavigated,required TResult Function( AuthLogoutRequested value)  logoutRequested,}){
 final _that = this;
 switch (_that) {
 case AuthStarted():
 return started(_that);case AuthLoginSubmitted():
-return loginSubmitted(_that);case AuthLogoutRequested():
+return loginSubmitted(_that);case AuthGoogleSignInRequested():
+return googleSignInRequested(_that);case AuthGoogleRegisterSubmitted():
+return googleRegisterSubmitted(_that);case AuthGoogleRegistrationNavigated():
+return googleRegistrationNavigated(_that);case AuthLogoutRequested():
 return logoutRequested(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -99,12 +105,15 @@ return logoutRequested(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthStarted value)?  started,TResult? Function( AuthLoginSubmitted value)?  loginSubmitted,TResult? Function( AuthLogoutRequested value)?  logoutRequested,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthStarted value)?  started,TResult? Function( AuthLoginSubmitted value)?  loginSubmitted,TResult? Function( AuthGoogleSignInRequested value)?  googleSignInRequested,TResult? Function( AuthGoogleRegisterSubmitted value)?  googleRegisterSubmitted,TResult? Function( AuthGoogleRegistrationNavigated value)?  googleRegistrationNavigated,TResult? Function( AuthLogoutRequested value)?  logoutRequested,}){
 final _that = this;
 switch (_that) {
 case AuthStarted() when started != null:
 return started(_that);case AuthLoginSubmitted() when loginSubmitted != null:
-return loginSubmitted(_that);case AuthLogoutRequested() when logoutRequested != null:
+return loginSubmitted(_that);case AuthGoogleSignInRequested() when googleSignInRequested != null:
+return googleSignInRequested(_that);case AuthGoogleRegisterSubmitted() when googleRegisterSubmitted != null:
+return googleRegisterSubmitted(_that);case AuthGoogleRegistrationNavigated() when googleRegistrationNavigated != null:
+return googleRegistrationNavigated(_that);case AuthLogoutRequested() when logoutRequested != null:
 return logoutRequested(_that);case _:
   return null;
 
@@ -122,11 +131,14 @@ return logoutRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( String email,  String password)?  loginSubmitted,TResult Function()?  logoutRequested,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( String email,  String password)?  loginSubmitted,TResult Function()?  googleSignInRequested,TResult Function( String credential,  String fullName,  String nickname,  String dateOfBirth,  String country)?  googleRegisterSubmitted,TResult Function()?  googleRegistrationNavigated,TResult Function()?  logoutRequested,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthStarted() when started != null:
 return started();case AuthLoginSubmitted() when loginSubmitted != null:
-return loginSubmitted(_that.email,_that.password);case AuthLogoutRequested() when logoutRequested != null:
+return loginSubmitted(_that.email,_that.password);case AuthGoogleSignInRequested() when googleSignInRequested != null:
+return googleSignInRequested();case AuthGoogleRegisterSubmitted() when googleRegisterSubmitted != null:
+return googleRegisterSubmitted(_that.credential,_that.fullName,_that.nickname,_that.dateOfBirth,_that.country);case AuthGoogleRegistrationNavigated() when googleRegistrationNavigated != null:
+return googleRegistrationNavigated();case AuthLogoutRequested() when logoutRequested != null:
 return logoutRequested();case _:
   return orElse();
 
@@ -145,11 +157,14 @@ return logoutRequested();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( String email,  String password)  loginSubmitted,required TResult Function()  logoutRequested,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( String email,  String password)  loginSubmitted,required TResult Function()  googleSignInRequested,required TResult Function( String credential,  String fullName,  String nickname,  String dateOfBirth,  String country)  googleRegisterSubmitted,required TResult Function()  googleRegistrationNavigated,required TResult Function()  logoutRequested,}) {final _that = this;
 switch (_that) {
 case AuthStarted():
 return started();case AuthLoginSubmitted():
-return loginSubmitted(_that.email,_that.password);case AuthLogoutRequested():
+return loginSubmitted(_that.email,_that.password);case AuthGoogleSignInRequested():
+return googleSignInRequested();case AuthGoogleRegisterSubmitted():
+return googleRegisterSubmitted(_that.credential,_that.fullName,_that.nickname,_that.dateOfBirth,_that.country);case AuthGoogleRegistrationNavigated():
+return googleRegistrationNavigated();case AuthLogoutRequested():
 return logoutRequested();}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -164,11 +179,14 @@ return logoutRequested();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( String email,  String password)?  loginSubmitted,TResult? Function()?  logoutRequested,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( String email,  String password)?  loginSubmitted,TResult? Function()?  googleSignInRequested,TResult? Function( String credential,  String fullName,  String nickname,  String dateOfBirth,  String country)?  googleRegisterSubmitted,TResult? Function()?  googleRegistrationNavigated,TResult? Function()?  logoutRequested,}) {final _that = this;
 switch (_that) {
 case AuthStarted() when started != null:
 return started();case AuthLoginSubmitted() when loginSubmitted != null:
-return loginSubmitted(_that.email,_that.password);case AuthLogoutRequested() when logoutRequested != null:
+return loginSubmitted(_that.email,_that.password);case AuthGoogleSignInRequested() when googleSignInRequested != null:
+return googleSignInRequested();case AuthGoogleRegisterSubmitted() when googleRegisterSubmitted != null:
+return googleRegisterSubmitted(_that.credential,_that.fullName,_that.nickname,_that.dateOfBirth,_that.country);case AuthGoogleRegistrationNavigated() when googleRegistrationNavigated != null:
+return googleRegistrationNavigated();case AuthLogoutRequested() when logoutRequested != null:
 return logoutRequested();case _:
   return null;
 
@@ -276,6 +294,144 @@ as String,
 
 
 }
+
+/// @nodoc
+
+
+class AuthGoogleSignInRequested implements AuthEvent {
+  const AuthGoogleSignInRequested();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthGoogleSignInRequested);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthEvent.googleSignInRequested()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class AuthGoogleRegisterSubmitted implements AuthEvent {
+  const AuthGoogleRegisterSubmitted({required this.credential, required this.fullName, required this.nickname, required this.dateOfBirth, required this.country});
+  
+
+ final  String credential;
+ final  String fullName;
+ final  String nickname;
+ final  String dateOfBirth;
+ final  String country;
+
+/// Create a copy of AuthEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AuthGoogleRegisterSubmittedCopyWith<AuthGoogleRegisterSubmitted> get copyWith => _$AuthGoogleRegisterSubmittedCopyWithImpl<AuthGoogleRegisterSubmitted>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthGoogleRegisterSubmitted&&(identical(other.credential, credential) || other.credential == credential)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.country, country) || other.country == country));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,credential,fullName,nickname,dateOfBirth,country);
+
+@override
+String toString() {
+  return 'AuthEvent.googleRegisterSubmitted(credential: $credential, fullName: $fullName, nickname: $nickname, dateOfBirth: $dateOfBirth, country: $country)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AuthGoogleRegisterSubmittedCopyWith<$Res> implements $AuthEventCopyWith<$Res> {
+  factory $AuthGoogleRegisterSubmittedCopyWith(AuthGoogleRegisterSubmitted value, $Res Function(AuthGoogleRegisterSubmitted) _then) = _$AuthGoogleRegisterSubmittedCopyWithImpl;
+@useResult
+$Res call({
+ String credential, String fullName, String nickname, String dateOfBirth, String country
+});
+
+
+
+
+}
+/// @nodoc
+class _$AuthGoogleRegisterSubmittedCopyWithImpl<$Res>
+    implements $AuthGoogleRegisterSubmittedCopyWith<$Res> {
+  _$AuthGoogleRegisterSubmittedCopyWithImpl(this._self, this._then);
+
+  final AuthGoogleRegisterSubmitted _self;
+  final $Res Function(AuthGoogleRegisterSubmitted) _then;
+
+/// Create a copy of AuthEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? credential = null,Object? fullName = null,Object? nickname = null,Object? dateOfBirth = null,Object? country = null,}) {
+  return _then(AuthGoogleRegisterSubmitted(
+credential: null == credential ? _self.credential : credential // ignore: cast_nullable_to_non_nullable
+as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
+as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
+as String,dateOfBirth: null == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
+as String,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class AuthGoogleRegistrationNavigated implements AuthEvent {
+  const AuthGoogleRegistrationNavigated();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthGoogleRegistrationNavigated);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthEvent.googleRegistrationNavigated()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 

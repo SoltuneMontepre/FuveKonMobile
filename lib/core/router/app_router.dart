@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/features/auth/presentation/pages/forgot_password_page.dart';
+import 'package:fuvekonmobile/features/auth/presentation/pages/google_register_page.dart';
 import 'package:fuvekonmobile/features/auth/presentation/pages/login_page.dart';
+import 'package:fuvekonmobile/features/auth/presentation/pages/register_page.dart';
+import 'package:fuvekonmobile/features/auth/presentation/pages/verify_otp_page.dart';
 import 'package:fuvekonmobile/features/event/presentation/pages/events_page.dart';
 import 'package:fuvekonmobile/features/notification/presentation/pages/notifications_page.dart';
 import 'package:fuvekonmobile/features/profile/domain/entities/account.dart';
@@ -27,12 +31,17 @@ class AppRouter {
     refreshListenable: _authSessionNotifier,
     redirect: (context, state) {
       final isAuthenticated = _authSessionNotifier.isAuthenticated;
-      final isLoggingIn = state.matchedLocation == Routes.login;
+      final location = state.matchedLocation;
+      final isAuthRoute = location == Routes.login ||
+          location == Routes.register ||
+          location == Routes.googleRegister ||
+          location == Routes.verifyOtp ||
+          location == Routes.forgotPassword;
 
-      if (!isAuthenticated && !isLoggingIn) {
+      if (!isAuthenticated && !isAuthRoute) {
         return Routes.login;
       }
-      if (isAuthenticated && isLoggingIn) {
+      if (isAuthenticated && isAuthRoute) {
         return Routes.home;
       }
       return null;
@@ -41,6 +50,36 @@ class AppRouter {
       GoRoute(
         path: Routes.login,
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: Routes.register,
+        builder: (context, state) => const RegisterPage(),
+        routes: [
+          GoRoute(
+            path: 'google',
+            builder: (context, state) {
+              final credential = state.extra as String? ?? '';
+              if (credential.isEmpty) {
+                return const RegisterPage();
+              }
+              return GoogleRegisterPage(credential: credential);
+            },
+          ),
+          GoRoute(
+            path: 'verify-otp',
+            builder: (context, state) {
+              final email = state.extra as String? ?? '';
+              if (email.isEmpty) {
+                return const RegisterPage();
+              }
+              return VerifyOtpPage(email: email);
+            },
+          ),
+        ],
+      ),
+      GoRoute(
+        path: Routes.forgotPassword,
+        builder: (context, state) => const ForgotPasswordPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

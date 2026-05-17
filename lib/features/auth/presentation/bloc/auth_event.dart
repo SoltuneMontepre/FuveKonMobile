@@ -9,5 +9,15 @@ sealed class AuthEvent with _$AuthEvent {
     required String email,
     required String password,
   }) = AuthLoginSubmitted;
+  const factory AuthEvent.googleSignInRequested() = AuthGoogleSignInRequested;
+  const factory AuthEvent.googleRegisterSubmitted({
+    required String credential,
+    required String fullName,
+    required String nickname,
+    required String dateOfBirth,
+    required String country,
+  }) = AuthGoogleRegisterSubmitted;
+  const factory AuthEvent.googleRegistrationNavigated() =
+      AuthGoogleRegistrationNavigated;
   const factory AuthEvent.logoutRequested() = AuthLogoutRequested;
 }

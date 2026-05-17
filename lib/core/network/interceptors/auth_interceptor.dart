@@ -14,7 +14,6 @@ class AuthInterceptor extends Interceptor {
     ApiConstants.resendOtp,
     ApiConstants.forgotPassword,
     ApiConstants.resetPasswordConfirm,
-    ApiConstants.googleAuth,
   ];
 
   @override

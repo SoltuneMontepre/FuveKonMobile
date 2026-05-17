@@ -1,17 +1,31 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+/// Runtime config loaded from `.env` (see `.env.example`).
 abstract final class AppConfig {
   static const String appName = 'Fuvekon';
 
-  /// Fuvekon web prod base: `https://api.fuve.vn/api/general/v1`
-  static const String baseUrl = String.fromEnvironment(
-    'BASE_URL',
-    defaultValue: 'https://api.fuve.vn/api/general/v1',
-  );
+  static Future<void> load() async {
+    await dotenv.load(fileName: '.env');
+  }
+
+  static String _read(String key, {String defaultValue = ''}) {
+    final value = dotenv.env[key]?.trim();
+    if (value != null && value.isNotEmpty) return value;
+    return defaultValue;
+  }
+
+  /// Fuvekon general API: `https://api.fuve.vn/api/general/v1`
+  static String get baseUrl =>
+      _read('BASE_URL', defaultValue: 'https://api.fuve.vn/api/general/v1');
 
   /// Fuvekon Next.js site (S3 image proxy at `/api/s3/image`).
-  static const String webBaseUrl = String.fromEnvironment(
-    'WEB_BASE_URL',
-    defaultValue: 'https://fuve.vn',
-  );
+  static String get webBaseUrl =>
+      _read('WEB_BASE_URL', defaultValue: 'https://fuve.vn');
+
+  /// Google OAuth web client ID (`NEXT_PUBLIC_GOOGLE_CLIENT_ID` on Fuvekon web).
+  static String get googleClientId => _read('GOOGLE_CLIENT_ID');
+
+  static bool get hasGoogleSignIn => googleClientId.isNotEmpty;
 
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 15);

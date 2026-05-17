@@ -38,6 +38,30 @@ class AuthApi extends BaseApi {
     return token;
   }
 
+  /// Google Sign-In: verify ID token (`credential`) and return JWT.
+  Future<String> googleLoginAndExtractToken(Map<String, dynamic> body) async {
+    final response = await apiClient.postWithResponse(
+      ApiConstants.googleAuth,
+      data: body,
+    );
+
+    final responseBody = response.data;
+    if (responseBody != null) {
+      final envelope = ApiResponse<dynamic>.fromJson(responseBody);
+      if (!envelope.isSuccess) {
+        throw ServerException(
+          envelope.errorMessage ?? envelope.message,
+        );
+      }
+    }
+
+    final token = AuthTokenExtractor.fromResponse(response);
+    if (token == null || token.isEmpty) {
+      throw const ServerException('Google sign-in did not return an access token.');
+    }
+    return token;
+  }
+
   Future<ApiResponse<void>> logout() {
     return post<void>(ApiConstants.logout, throwOnFailure: false);
   }
@@ -66,26 +90,6 @@ class AuthApi extends BaseApi {
     return post<void>(
       ApiConstants.resendOtp,
       data: {'email': email},
-    );
-  }
-
-  Future<ApiResponse<Map<String, dynamic>>> googleLogin({
-    required String credential,
-  }) {
-    return post(
-      ApiConstants.googleAuth,
-      data: {'credential': credential},
-      mapData: mapJsonObject,
-    );
-  }
-
-  Future<ApiResponse<Map<String, dynamic>>> googleRegister(
-    Map<String, dynamic> payload,
-  ) {
-    return post(
-      ApiConstants.googleAuth,
-      data: payload,
-      mapData: mapJsonObject,
     );
   }
 
