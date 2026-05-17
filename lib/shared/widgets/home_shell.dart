@@ -22,7 +22,12 @@ class HomeShell extends StatelessWidget {
           NavigationDestination(
             icon: Icon(Icons.confirmation_number_outlined),
             selectedIcon: Icon(Icons.confirmation_number),
-            label: 'Tickets',
+            label: 'Buy',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.card_membership_outlined),
+            selectedIcon: Icon(Icons.card_membership),
+            label: 'My ticket',
           ),
           NavigationDestination(
             icon: Icon(Icons.notifications_outlined),

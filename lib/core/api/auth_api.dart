@@ -155,6 +155,7 @@ class AccountJson {
     this.firstName,
     this.lastName,
     this.country,
+    this.idCard,
     this.dateOfBirth,
     this.avatar,
     this.role,
@@ -170,6 +171,7 @@ class AccountJson {
   final String? firstName;
   final String? lastName;
   final String? country;
+  final String? idCard;
   final String? dateOfBirth;
   final String? avatar;
   final String? role;
@@ -186,6 +188,7 @@ class AccountJson {
       firstName: json['first_name'] as String?,
       lastName: json['last_name'] as String?,
       country: json['country'] as String?,
+      idCard: json['id_card'] as String?,
       dateOfBirth: json['date_of_birth'] as String?,
       avatar: json['avatar'] as String?,
       role: json['role'] as String?,
