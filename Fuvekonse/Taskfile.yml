@@ -74,3 +74,66 @@ tasks:
     desc: Run sqs-worker with Air.
     cmds:
       - go run ./tools/devctl/main.go run-air ./services/sqs-worker
+
+  build:docker:
+    internal: true
+    cmds:
+      - docker run --rm -v "{{.TASKFILE_DIR}}/services/{{.SERVICE}}:/build" -w /build golang:1.25-alpine sh -c "apk add --no-cache zip && go install github.com/swaggo/swag/cmd/swag@latest && {{.SWAG_CMD}} && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags='-s -w' -o bootstrap {{.BUILD_PATH}} && zip bootstrap.zip bootstrap && rm bootstrap"
+
+  build:general:
+    desc: Build general-service using Docker.
+    cmds:
+      - task: build:docker
+        vars:
+          SERVICE: general-service
+          SWAG_CMD: swag init -g cmd/main.go -o docs --parseDependency --parseInternal
+          BUILD_PATH: ./cmd
+
+  build:rbac:
+    desc: Build rbac-service using Docker.
+    cmds:
+      - task: build:docker
+        vars:
+          SERVICE: rbac-service
+          SWAG_CMD: swag init -g cmd/main.go -o docs --parseDependency --parseInternal
+          BUILD_PATH: ./cmd
+
+  build:worker:
+    desc: Build sqs-worker using Docker.
+    cmds:
+      - task: build:docker
+        vars:
+          SERVICE: sqs-worker
+          SWAG_CMD: swag init -g main.go -o docs --parseDependency --parseInternal || true
+          BUILD_PATH: .
+
+  build:lambda:
+    desc: Build all services for AWS Lambda using Docker.
+    cmds:
+      - task: build:general
+      - task: build:rbac
+      - task: build:worker
+
+  build:local:service:
+    internal: true
+    dir: services/{{.SERVICE}}
+    env:
+      GOOS: linux
+      GOARCH: amd64
+      CGO_ENABLED: 0
+    cmds:
+      - go build -ldflags="-s -w" -o build/bootstrap {{.BUILD_PATH}}
+      - cmd: powershell -Command "Compress-Archive -Path build/bootstrap -DestinationPath bootstrap.zip -Force"
+        platforms: [windows]
+      - cmd: cd build && zip -j ../bootstrap.zip bootstrap
+        platforms: [linux, darwin]
+
+  build:local:
+    desc: Build all services locally (requires Go and zip/powershell).
+    cmds:
+      - task: build:local:service
+        vars: { SERVICE: general-service, BUILD_PATH: ./cmd }
+      - task: build:local:service
+        vars: { SERVICE: rbac-service, BUILD_PATH: ./cmd }
+      - task: build:local:service
+        vars: { SERVICE: sqs-worker, BUILD_PATH: . }

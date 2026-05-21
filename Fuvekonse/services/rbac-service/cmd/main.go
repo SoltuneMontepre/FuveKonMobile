@@ -12,7 +12,7 @@
 // @license.url https://opensource.org/licenses/MIT
 
 // @host localhost:8081
-// @BasePath /api/v1
+// @BasePath /v1
 
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header

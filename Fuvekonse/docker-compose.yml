@@ -38,6 +38,7 @@ services:
       - "./.aws/volume:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./.aws/init:/etc/localstack/init/ready.d"
+      - "./services:/tmp/lambda-services"
 volumes:
   fuvekon-db-data:
   fuvekon-redis-data:

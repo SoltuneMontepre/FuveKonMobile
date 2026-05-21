@@ -276,11 +276,14 @@ Implemented workflows:
 - `ci-sqs-worker.yaml`: builds `services/sqs-worker` on pull requests when that service changes.
 - `cd-general.yaml`, `cd-rbac.yaml`, `cd-sqs-worker.yaml`: update the matching AWS Lambda function from `main` when the service or workflow changes.
 
-PowerShell build helpers:
+Build helpers using `task`:
 
-```powershell
-.\build-all.ps1
-.\build-lambda.ps1
+```bash
+# Build all services locally using your host Go toolchain (cross-compiles for Linux AWS Lambda)
+task build:local
+
+# Build all services using Docker (no local Go toolchain required)
+task build:lambda
 ```
 
 ## LocalStack Guide
