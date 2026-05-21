@@ -15,3 +15,16 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Backend Integration (Git Subtree)
+
+The backend project `Fuvekonse` has been integrated into this repository under the `Fuvekonse/` folder using Git Subtree. 
+
+### How to pull updates from the original repository:
+Run the following command from the root of `FuveKonMobile`:
+```bash
+git subtree pull --prefix Fuvekonse https://github.com/SoltuneMontepre/Fuvekonse.git main --squash
+```
+
+### Safety
+Since this is integrated as a subtree, your local commits and normal push commands (`git push origin main`) will only affect your own mobile repository. There is no risk of pushing to the production/original backend repository.
