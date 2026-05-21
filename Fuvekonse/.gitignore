@@ -1,0 +1,134 @@
+# Local .terraform directories
+**/.terraform/*
+/.terraform/
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which are likely to contain sensitive data
+*.tfvars.json
+
+# Ignore override files as they are usually used to override resources locally
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Go (web API service)
+# Binaries and build outputs
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+/bin/
+/build/
+/out/
+
+# Test & coverage
+coverage.out
+*.cover
+
+# Dependency vendoring (optional — remove if you commit vendor/)
+vendor/
+
+# Environment / secrets
+.env
+.env.*.local
+
+# Logs & misc
+*.log
+
+# Air live reload
+node_modules/
+tmp/
+build-errors.log
+
+# Swagger documentation (generated files)
+services/*/docs/
+services/*/docs.go
+services/*/swagger.json
+services/*/swagger.yaml
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Go application .gitignore
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Build output
+/bin/
+/build/
+/dist/
+*.out
+
+# Go modules and package cache
+Godeps/
+vendor/
+pkg/mod/
+
+# Debug / profiling / coverage
+coverage.out
+*.prof
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# IDEs and editors
+.idea/
+.vscode/
+*.iml
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+*.env
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.cursor/
+
+# LocalStack
+.aws/volume
+.aws/lambda
+*.zip
+build
+instructions/
+.cursor
+.cursorrules
+
+bootstrap
+

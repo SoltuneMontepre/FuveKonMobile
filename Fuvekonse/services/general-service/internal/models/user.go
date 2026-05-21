@@ -1,0 +1,33 @@
+package models
+
+import (
+	"time"
+
+	role "general-service/internal/common/constants"
+
+	"github.com/google/uuid"
+)
+
+type User struct {
+	Id              uuid.UUID     `gorm:"type:uuid;primaryKey" json:"id"`
+	FursonaName     string        `gorm:"type:text" json:"fursona_name"`
+	LastName        string        `gorm:"type:text" json:"last_name"`
+	FirstName       string        `gorm:"type:text" json:"first_name"`
+	Password        string        `gorm:"type:varchar(255)" json:"-"`
+	Country         string        `gorm:"type:text" json:"country"`
+	Email           string        `gorm:"type:varchar(255);uniqueIndex" json:"email"`
+	Avatar          string        `gorm:"type:varchar(500)" json:"avatar"` // image url
+	Role            role.UserRole `gorm:"type:integer;default:0" json:"role"`
+	IdCard          string        `gorm:"type:text" json:"id_card"`
+	DateOfBirth     *time.Time    `gorm:"type:date" json:"date_of_birth,omitempty"`
+	GoogleId        *string       `gorm:"type:varchar(255);uniqueIndex" json:"-"` // Google OAuth subject ID; unique when set
+	IsVerified      bool          `gorm:"default:false" json:"is_verified"`
+	DenialCount     int           `gorm:"type:int;default:0" json:"denial_count"`    // Ticket denial count (0-3)
+	IsBlacklisted   bool          `gorm:"default:false;index" json:"is_blacklisted"` // User cannot purchase tickets
+	BlacklistedAt   *time.Time    `gorm:"index" json:"blacklisted_at,omitempty"`
+	BlacklistReason string        `gorm:"type:varchar(500)" json:"blacklist_reason,omitempty"` // Reason for blacklist
+	CreatedAt       time.Time     `gorm:"autoCreateTime" json:"created_at"`
+	ModifiedAt      time.Time     `gorm:"autoUpdateTime" json:"modified_at"`
+	DeletedAt       *time.Time    `gorm:"index" json:"deleted_at,omitempty"`
+	IsDeleted       bool          `gorm:"default:false" json:"is_deleted"`
+}
