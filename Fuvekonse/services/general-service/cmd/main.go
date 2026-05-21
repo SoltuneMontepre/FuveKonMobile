@@ -291,7 +291,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to setup router: %v", err)
 	}
-	port := config.GetEnvOr("PORT", "8080")
+	port := config.GetEnvOr("PORT", "8085")
 
 	// Start server
 	log.Printf("Server starting on port %s", port)

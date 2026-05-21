@@ -1,0 +1,76 @@
+version: "3"
+
+tasks:
+  default:
+    desc: Run the backend dev environment.
+    cmds:
+      - task: dev
+
+  dev:
+    desc: Start Docker infra, prepare env, migrate DB, and launch Go services with Air.
+    cmds:
+      - task: check
+      - task: tools
+      - task: env
+      - task: infra
+      - task: wait
+      - task: migrate
+      - task: services
+
+  check:
+    desc: Check local prerequisites and port availability.
+    cmds:
+      - go run ./tools/devctl/main.go check
+
+  tools:
+    desc: Ensure required Go dev tools are installed.
+    cmds:
+      - go run ./tools/devctl/main.go ensure-tools
+
+  env:
+    desc: Create or patch local service .env files with safe dev defaults.
+    cmds:
+      - go run ./tools/devctl/main.go ensure-env
+
+  infra:
+    desc: Start local Docker infrastructure.
+    cmds:
+      - docker compose up -d
+
+  wait:
+    desc: Wait for Postgres, Redis, and LocalStack to accept connections.
+    cmds:
+      - go run ./tools/devctl/main.go wait
+
+  migrate:
+    desc: Run general-service database migration.
+    dir: services/general-service
+    cmds:
+      - go run ./cmd/migrate
+
+  services:
+    desc: Run all services with Air in this terminal.
+    deps:
+      - run:general
+      - run:rbac
+      - run:worker
+
+  stop:
+    desc: Stop local Docker infrastructure.
+    cmds:
+      - docker compose down
+
+  run:general:
+    desc: Run general-service with Air.
+    cmds:
+      - go run ./tools/devctl/main.go run-air ./services/general-service
+
+  run:rbac:
+    desc: Run rbac-service with Air.
+    cmds:
+      - go run ./tools/devctl/main.go run-air ./services/rbac-service
+
+  run:worker:
+    desc: Run sqs-worker with Air.
+    cmds:
+      - go run ./tools/devctl/main.go run-air ./services/sqs-worker

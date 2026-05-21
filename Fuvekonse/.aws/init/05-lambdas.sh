@@ -1,6 +1,12 @@
 #!/bin/bash
 set -x
 
+if [ "${ENABLE_LOCALSTACK_LAMBDA:-0}" != "1" ]; then
+  echo "Skipping Lambda deployment. Set ENABLE_LOCALSTACK_LAMBDA=1 to enable LocalStack Lambda dev setup."
+  set +x
+  exit 0
+fi
+
 sleep 2
 
 ROLE_ARN="arn:aws:iam::000000000000:role/lambda-execution-role"
