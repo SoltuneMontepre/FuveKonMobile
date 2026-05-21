@@ -6,9 +6,9 @@
 		{
 			"path": "../Fuvekon"
 		},
-		{
-			"path": "../Fuvekonse"
-		}
+		// {
+		// 	"path": "../Fuvekonse"
+		// }
 	],
 	"settings": {}
 }
