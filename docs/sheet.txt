@@ -4,12 +4,12 @@ Buy ticket, upgrade ticket, manage ticket
 dealer, talent, panel registration,
 dealer, talent, panel management.
 profile management
-event notification,
+event notification, not implemented yet
 ticket scanning.
-event scheduling,
+event scheduling, not implemented yet
 dashboard,
-lost, found management
-personalize event intinery
+lost, found management not implemented yet
+personalize event intinery not implemented yet
 infrastructure
 FE: Nextjs, 
 Mobile: flutter
