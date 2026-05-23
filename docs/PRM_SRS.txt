@@ -43,10 +43,18 @@ SRS - FUVEKON (Unified Target State)
 3.4. Tickets and Tier Upgrades
 * Ticket Tiers: Displays available tickets, pricing, and purchase limits.
 * Purchases: Single ticket purchase limit per account. Restricts blacklisted users. Redirects guests to login.
-* Ticket Upgrade: Logged-in ticket holders can upgrade to a higher-tier ticket by paying the price difference. Upon successful transaction:
-  * The old ticket is marked as invalidated/superseded.
-  * The user's tier is updated, and a new unique QR code and digital badge are generated.
-  * Preserves the "one active ticket per user" constraint.
+* Manual Purchase Approval Flow:
+  * When a user purchases a ticket, it is created in `pending` status.
+  * The user is shown the general bank transfer QR code and PayPal transfer link.
+  * After completing the transfer, the user clicks "I Have Paid" to transition the ticket to `self_confirmed` status.
+  * Admin manually verifies the transfer from bank statements and approves (`approved`) or denies (`denied`) the ticket.
+  * The unique check-in QR code and digital badge are generated and sent via email ONLY after successful Admin approval.
+* Ticket Upgrade Flow (Manual Approval):
+  * Logged-in ticket holders can upgrade to a higher-tier ticket by paying the price difference.
+  * Upon initiating the upgrade, the upgraded ticket status changes to `pending` (and later `self_confirmed` after "I Have Paid"), reserving the new tier's slot.
+  * Admin manually approves the upgrade (ticket becomes `approved` on the new tier, old tier's stock is released) or denies the upgrade (ticket rolls back to the old tier with `approved` status, new tier's stock is released).
+  * If the upgrade is denied, the user keeps their original ticket active, and receives an email explaining the denial reason.
+  * Preserves the "one active ticket per user" constraint throughout the pending and approved states.
 
 3.5. Participation and Contributor Registrations
 * Panel (Public/Account): Rules, guides, and submission form. Requires a verified profile and an active ticket.
@@ -83,9 +91,10 @@ SRS - FUVEKON (Unified Target State)
 * Dashboard: Provides analytics, ticket sale graphs, check-in percentages, and booth statistics.
 * User Management: Search, pagination, role editing, profile modifications, and user ban/unban capabilities.
 * Ticket Management:
-  * View and filter purchase transactions by tier and payment status.
-  * Manually create, edit, approve, or deny tickets.
-  * Resend ticket emails containing check-in QR codes.
+  * View and filter purchase transactions by tier, status (pending, self_confirmed, approved, denied), and payment reference.
+  * Manually approve or deny ticket purchases and upgrades (after checking bank account transfers).
+  * Manually create, edit, or delete tickets (admin back-door).
+  * Resend ticket emails containing check-in QR codes (only for approved tickets).
   * Manage global ticket tier definitions (active/inactive, pricing, hidden/visible).
 * Check-In Console: Scan ticket QR codes using native device cameras (mobile) or WebRTC camera feeds (web), or enter ticket codes manually to process check-ins.
 * Dealer Booth Management: Review and approve/deny booth setups and staff lists.
