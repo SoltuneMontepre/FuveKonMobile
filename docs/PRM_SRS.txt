@@ -1,0 +1,178 @@
+SRS - FUVEKON (Unified Target State)
+=====================================
+
+1. Goals and Scope
+------------------
+* FUVEKON is a unified, multi-platform client-server system for FUVE (Furry Vietnam Eternity).
+* It provides a single user-facing client for both Web and Mobile platforms (iOS & Android) powered by a single Flutter codebase.
+* The system manages event information, multilingual static pages, ticket sales and tier upgrades, participation registrations (panel, talent, dealer booth, conbook/artbook, volunteers), personalized schedules, and event notifications.
+* It includes a comprehensive Admin and Staff portal for on-site ticket scanning, registration approvals, and user/event management.
+* The frontend interfaces directly with a robust Go microservices backend deployed on serverless infrastructure.
+
+2. User Types and Roles
+-----------------------
+* Visitors (not logged in): Can view public marketing pages (Landing, About, FAQ, TOS, Schedule, Recap) and the public Lost & Found board. Prompted to log in when attempting purchases or registration.
+* Logged-in Users: Can manage their profile, purchase tickets, perform ticket tier upgrades, bookmark schedule items to build a personalized itinerary, view account notifications, submit lost item reports, and register as dealers, talents, panels, or conbook contributors if eligible.
+* Dealer (role dealer / is_dealer): Authorized to manage their own booth details, price sheets, and booth staff.
+* Staff: Authorized to access on-site tools: ticket check-in (QR scanning) and Lost & Found inventory management.
+* Admin: Possesses full management capabilities across users, ticket transactions, dealer booths, schedule slots (panels/talents), conbook submissions, Lost & Found items, broadcasting notifications, and global analytics.
+
+3. Core Functions (Functional Requirements)
+-------------------------------------------
+3.1. Event Information
+* Landing Page: Showcases event themes, ticket sales status, and announcements.
+* About: Overview of the event, recap video, galleries, and credits list.
+* FAQ: Interactive, categorized questions and answers with rich text formatting.
+* TOS: Attendee code of conduct and rules, rendered bilingual (VI/EN) with direct section navigation.
+* Schedule: Visual timetable showing dates, time slots, stages, and approved panels/activities.
+* Recap: Relives past con moments (images, videos, and conbook archives).
+
+3.2. Authentication and Accounts
+* Sign In: Supports email/password login and Google OAuth2 login flow.
+* Sign Up: Account creation form + verification OTP sent via email.
+* Forgot & Reset Password: Verification flow via email to securely reset passwords.
+
+3.3. Profile and Account Management
+* Profile Data: Full name, nickname, email, country, ID card/Passport, and date of birth.
+* Edit Profile: Restricted until email is fully verified via OTP.
+* Verification: Email verification via OTP with resend logic.
+* Avatar Management: Upload and remove profile avatars (handled via secure cloud storage).
+* ID Visibility: Users can show/hide their sensitive ID details in their profile view.
+* Password Changes: In-app secure password updates with strength indicators.
+
+3.4. Tickets and Tier Upgrades
+* Ticket Tiers: Displays available tickets, pricing, and purchase limits.
+* Purchases: Single ticket purchase limit per account. Restricts blacklisted users. Redirects guests to login.
+* Ticket Upgrade: Logged-in ticket holders can upgrade to a higher-tier ticket by paying the price difference. Upon successful transaction:
+  * The old ticket is marked as invalidated/superseded.
+  * The user's tier is updated, and a new unique QR code and digital badge are generated.
+  * Preserves the "one active ticket per user" constraint.
+
+3.5. Participation and Contributor Registrations
+* Panel (Public/Account): Rules, guides, and submission form. Requires a verified profile and an active ticket.
+* Talent (Public/Account): Guidelines and submission form for performers. Requires an active ticket.
+* Conbook / Artbook: Users can submit up to 5 artwork or text files for the convention book. Supports uploads, previews, deletions, and edits. Editing is locked once a submission is approved or denied by an admin.
+* Dealer Booth (Public/Account): Booth guidelines and registration form. Supports:
+  * Creating a booth and uploading up to 5 price sheets.
+  * Adding booth staff using a unique invitation booth code.
+  * Kicking booth staff or leaving a booth.
+* Volunteer: Public registration for helpers and volunteers (Coming Soon).
+
+3.6. Lost & Found Management
+* Public Found Board: Guests and logged-in users can browse a public list of found items (displaying images and generic descriptions while withholding sensitive matching identifiers to prevent fraud).
+* Lost Report Submission: Logged-in users can submit a report for their lost item, including an item description, image upload, estimated time, and last known location.
+* Staff Inventory Dashboard: On-site staff can:
+  * Log newly found items with claim instructions.
+  * Review user-submitted lost reports.
+  * Update item statuses (Lost, Found, Claimed/Returned, Discarded).
+
+3.7. Personalize Event Itinerary
+* My Itinerary: Logged-in users can bookmark or favorite specific panels, talent shows, or workshops from the master Schedule.
+* Custom Timeline: Bookmarked items are rendered into a personalized chronological timeline ("My Schedule").
+* Reminders: Generates automatic in-app and push notification reminders 10 to 15 minutes before bookmarked activities start.
+
+3.8. Event Notifications
+* Broadcast Notifications: Administrative announcements sent to all users or targeted roles (e.g., all dealers, all staff).
+* Automated System Alerts: Transactional notifications triggered by actions (e.g., ticket purchase success, ticket upgrade, registration approvals, lost & found claims).
+* Multi-Channel Delivery: Notifications are dispatched via:
+  * Push Notifications (for mobile device users via FCM).
+  * Web Notifications (in-app Notification Center with a bell icon badge).
+  * Email (transactional emails).
+
+3.9. Admin and Staff Portals
+* Dashboard: Provides analytics, ticket sale graphs, check-in percentages, and booth statistics.
+* User Management: Search, pagination, role editing, profile modifications, and user ban/unban capabilities.
+* Ticket Management:
+  * View and filter purchase transactions by tier and payment status.
+  * Manually create, edit, approve, or deny tickets.
+  * Resend ticket emails containing check-in QR codes.
+  * Manage global ticket tier definitions (active/inactive, pricing, hidden/visible).
+* Check-In Console: Scan ticket QR codes using native device cameras (mobile) or WebRTC camera feeds (web), or enter ticket codes manually to process check-ins.
+* Dealer Booth Management: Review and approve/deny booth setups and staff lists.
+* Schedule & Activity Management: Allocate time slots, room locations, and schedule labels to approved panels and talent shows.
+* Conbook Admin: Review submissions, zoom/preview uploaded images, and filter by approval status.
+* Lost & Found Admin: Database control over all reported lost and found items.
+* Broadcast Center: Interface to compose and send global or role-targeted push, web, and email announcements.
+
+4. Technical Stack and Infrastructure
+-------------------------------------
+4.1. Client Application (Web & Mobile)
+* Unified Codebase: Built entirely using Flutter (Dart) compiling to Web, iOS, and Android.
+* Navigation & Routing: `go_router` manages consistent URL routing on Web (enabling shareable deep links) and native screen navigation on Mobile.
+* State Management: `flutter_bloc` implements the BLoC pattern for predictable UI state cycles.
+* Networking: `dio` handles asynchronous API client requests with interceptors for JWT auth headers.
+* Service Injection: `get_it` facilitates dependency injection.
+* Localization: `intl` provides full multilingual UI translations (Vietnamese and English).
+* Push Notifications: Firebase Cloud Messaging (FCM) handles mobile background alerts.
+* Camera Integration: Integrated QR scanners utilize camera streams on both Web (WebRTC) and native mobile frameworks.
+
+4.2. Backend Services
+* Architecture: Go (Golang) microservices utilizing the Gin HTTP web framework:
+  * `general-service`: Handles auth, profiles, ticket purchases/upgrades, S3 asset managers, emails, dealer booths, conbooks, panels, talents, lost/found database, and itinerary tracking.
+  * `rbac-service`: Orchestrates role-based access control policies, permissions, and security bans.
+  * `sqs-worker`: Consumes ticket transaction messages asynchronously from Amazon SQS to execute high-volume writes securely to the database.
+
+4.3. Data & Storage
+* Database: PostgreSQL (NeonDB serverless cloud schema in production, local container in development).
+* Cache & Session: Redis cache clusters managing fast session storage and general application caching.
+* Asset Storage: Amazon S3 buckets (or LocalStack S3 locally) hosting secure profile avatars, booth price sheets, lost & found photos, and conbook submissions.
+
+4.4. Infrastructure & Cloud
+* Hosting: AWS Lambda hosts serverless backend handlers with AWS API Gateway managing routing prefixes (`/api/general` and `/api/ticket`).
+* Message Queueing: AWS SQS manages transactional ticket pipelines with a Dead Letter Queue (DLQ) for recovery.
+* Email Delivery: AWS SES (Simple Email Service) dispatches OTP, registration notices, and QR ticket emails.
+* CDN & Security: Cloudflare manages global DNS, SSL termination, static asset caching, and WAF protections.
+
+5. Current Behavior and Limitations
+-----------------------------------
+* Ticket Tiers control: Ticket purchases can be globally activated or deactivated via backend config toggles.
+* Flutter Web Rendering: Leverages HTML renderer on mobile browsers for faster initial load, and CanvasKit on desktop browsers for heavy graphic and animation rendering.
+* Offline Capabilities: On-site check-in scanning tools cache temporary credentials to support manual entries in low-connectivity areas, syncing to the server when online.
+
+6. Exceptions and Constraints
+-----------------------------
+* Unverified accounts cannot upload avatars, register dealer booths, panels, talents, or purchase tickets.
+* Blacklisted accounts are barred from executing ticket purchases or upgrades.
+* Each user profile is strictly restricted to owning exactly one active ticket across all tiers at any given time.
+* Staff accounts are heavily sandboxed, restricted exclusively to the QR check-in scanner page and the Lost & Found management console.
+
+7. Unified Routes & Paths (Go Router)
+--------------------------------------
+* `/` - Landing Page
+* `/about` - About/Credits
+* `/faq` - FAQ
+* `/tos` - Terms of Service
+* `/schedule` - Master Event Schedule
+* `/recap` - Event Recap and Archives
+* `/lost-found` - Public Lost & Found Board
+* `/login` - Login
+* `/register` - Account Registration
+* `/register/verify-otp` - OTP Account Activation
+* `/forgot-password` - Password Recovery Initiation
+* `/reset-password` - Password Reset Execution
+* `/tickets` - Ticket Tiers Listing
+* `/tickets/purchase/:id` - Ticket Checkout Form
+* `/account` - Profile Settings Dashboard
+* `/account/change-password` - Password Settings
+* `/account/itinerary` - Personalized Timeline ("My Itinerary")
+* `/account/notifications` - Web Notification Center
+* `/account/panel` - Panel Submissions
+* `/account/talent` - Talent Applications
+* `/account/dealer` - Dealer Booth Management (Booth Register / Staff Code invitation)
+* `/account/conbook` - Convention Book Art Submissions
+* `/admin` - Administrator Dashboard & Metrics
+* `/admin/users` - User Search & Ban Controller
+* `/admin/tickets` - Ticket Sales & Custom Creation
+* `/admin/dealers` - Booth Approval Center
+* `/admin/panels` - Panel Schedulers
+* `/admin/talents` - Talent Evaluators
+* `/admin/art-submit` - Conbook Art Approval Center
+* `/admin/lost-found` - Lost & Found Database Controller
+* `/admin/scan-ticket` - On-site Staff QR Ticket Scanner
+* `/admin/broadcast` - Global Push & Email Broadcasting Panel
+
+8. External Integrations
+------------------------
+* Google OAuth2: Federated single sign-on flows integrated within the Flutter frontend and verified by backend handlers.
+* AWS S3 SDK: Facilitates direct secure file uploads for images, zip files, and documents.
+* AWS SES: Automated transaction email pipelines for OTP verification, QR codes, and booth status updates.
