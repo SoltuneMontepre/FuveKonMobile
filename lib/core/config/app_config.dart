@@ -18,7 +18,7 @@ abstract final class AppConfig {
   static String get baseUrl =>
       _read('BASE_URL', defaultValue: 'https://api.fuve.vn/api/general/v1');
 
-  /// Fuvekon Next.js site (S3 image proxy at `/api/s3/image`).
+  /// Fuvekon Next.js site (used for non-API web assets if needed).
   static String get webBaseUrl =>
       _read('WEB_BASE_URL', defaultValue: 'https://fuve.vn');
 

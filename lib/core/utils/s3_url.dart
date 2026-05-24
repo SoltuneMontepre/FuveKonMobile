@@ -22,14 +22,14 @@ abstract final class S3Url {
   }
 
   /// Resolves an image URL for display. Private S3 objects are loaded via the
-  /// web app's `/api/s3/image` proxy, which redirects to a presigned GET URL.
+  /// general-service `/s3/image` proxy, which streams the object through the API.
   static String resolveImageUrl(String url) {
     if (!isS3Url(url)) return url;
 
     final key = objectKeyFromUrl(url);
     if (key == null) return url;
 
-    final base = AppConfig.webBaseUrl.replaceAll(RegExp(r'/$'), '');
-    return '$base/api/s3/image?key=${Uri.encodeComponent(key)}';
+    final base = AppConfig.baseUrl.replaceAll(RegExp(r'/$'), '');
+    return '$base/s3/image?key=${Uri.encodeComponent(key)}';
   }
 }

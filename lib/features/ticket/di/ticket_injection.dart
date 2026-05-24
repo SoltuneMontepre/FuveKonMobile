@@ -15,7 +15,7 @@ import 'package:get_it/get_it.dart';
 
 void registerTicketModule(GetIt sl) {
   sl
-    ..registerLazySingleton(S3UploadService.new)
+    ..registerLazySingleton(() => S3UploadService(apiClient: sl()))
     ..registerLazySingleton(NamecardRenderer.new)
     ..registerLazySingleton<TicketRemoteDataSource>(
       () => TicketRemoteDataSourceImpl(ticketApi: sl()),

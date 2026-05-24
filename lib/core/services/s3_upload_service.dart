@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/errors/exceptions.dart';
+import 'package:fuvekonmobile/core/network/api_client.dart';
 import 'package:fuvekonmobile/core/network/api_response.dart';
 
 class S3UploadResult {
@@ -10,19 +11,22 @@ class S3UploadResult {
   final String fileKey;
 }
 
-/// Uploads files via Fuvekon web `/api/s3/presign` (same flow as `useUploadToS3.ts`).
+/// Uploads files via Fuvekon general-service `/s3/presign` (same flow as web `useUploadToS3.ts`).
 class S3UploadService {
-  S3UploadService({Dio? dio})
-      : _dio = dio ??
+  S3UploadService({
+    required ApiClient apiClient,
+    Dio? uploadDio,
+  })  : _apiClient = apiClient,
+        _uploadDio = uploadDio ??
             Dio(
               BaseOptions(
-                baseUrl: AppConfig.webBaseUrl,
                 connectTimeout: AppConfig.connectTimeout,
                 receiveTimeout: AppConfig.receiveTimeout,
               ),
             );
 
-  final Dio _dio;
+  final ApiClient _apiClient;
+  final Dio _uploadDio;
 
   Future<S3UploadResult> uploadBytes({
     required List<int> bytes,
@@ -31,13 +35,13 @@ class S3UploadService {
     String? folder,
     void Function(int sent, int total)? onProgress,
   }) async {
-    final presignResponse = await _dio.post<Map<String, dynamic>>(
-      '/api/s3/presign',
+    final presignResponse = await _apiClient.post<Map<String, dynamic>>(
+      '/s3/presign',
       data: {
         'fileName': fileName,
         'fileType': contentType,
         'contentLength': bytes.length,
-        'folder': folder,
+        if (folder != null) 'folder': folder,
         'expiresIn': 3600,
       },
     );
@@ -68,7 +72,7 @@ class S3UploadService {
       throw const ServerException('Invalid presign response data');
     }
 
-    await _dio.put<void>(
+    await _uploadDio.put<void>(
       presignedUrl,
       data: bytes,
       options: Options(
