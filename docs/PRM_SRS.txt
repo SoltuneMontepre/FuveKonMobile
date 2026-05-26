@@ -3,7 +3,7 @@ SRS - FUVEKON (Unified Target State)
 
 1. Goals and Scope
 ------------------
-* FUVEKON is a unified, multi-platform client-server system for FUVE (Furry Vietnam Eternity).
+* FUVEKON is a unified, multi-platform client-server system for FUVE 
 * It provides a single user-facing client for both Web and Mobile platforms (iOS & Android) powered by a single Flutter codebase.
 * The system manages event information, multilingual static pages, ticket sales and tier upgrades, participation registrations (panel, talent, dealer booth, conbook/artbook, volunteers), personalized schedules, and event notifications.
 * It includes a comprehensive Admin and Staff portal for on-site ticket scanning, registration approvals, and user/event management.
