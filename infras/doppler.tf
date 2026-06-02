@@ -1,0 +1,37 @@
+data "doppler_secrets" "this" {
+  project = var.doppler_project
+  config  = var.doppler_config
+}
+
+locals {
+  secrets = data.doppler_secrets.this.map
+
+  db_host     = local.secrets.DB_HOST
+  db_port     = local.secrets.DB_PORT
+  db_user     = local.secrets.DB_USER
+  db_password = local.secrets.DB_PASSWORD
+  db_name     = local.secrets.DB_NAME
+  db_sslmode  = local.secrets.DB_SSLMODE
+
+  redis_url = local.secrets.REDIS_URL
+
+  jwt_secret                      = local.secrets.JWT_SECRET
+  user_pii_aes_key                = local.secrets.USER_PII_AES_KEY
+  jwt_access_token_expiry_minutes = local.secrets.JWT_ACCESS_TOKEN_EXPIRY_MINUTES
+  jwt_refresh_token_expiry_days   = local.secrets.JWT_REFRESH_TOKEN_EXPIRY_DAYS
+  login_max_fail                  = local.secrets.LOGIN_MAX_FAIL
+  login_fail_block_minutes        = local.secrets.LOGIN_FAIL_BLOCK_MINUTES
+  frontend_url                    = local.secrets.FRONTEND_URL
+
+  ses_sender_email = local.secrets.SES_SENDER_EMAIL
+
+  # Mail: SES (default) or SendGrid
+  mail_provider    = lookup(local.secrets, "MAIL_PROVIDER", "ses")
+  sendgrid_api_key = lookup(local.secrets, "SENDGRID_API_KEY", "")
+  mail_from_name   = lookup(local.secrets, "MAIL_FROM_NAME", "Fuvekon")
+
+  # Google OAuth2
+  google_client_id     = local.secrets.GOOGLE_CLIENT_ID
+  google_client_secret = local.secrets.GOOGLE_CLIENT_SECRET
+  internal_api_key     = local.secrets.INTERNAL_API_KEY
+}
