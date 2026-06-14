@@ -1,0 +1,19 @@
+FUVEKON là một hệ thống quản lý vé và người dùng cho sự kiện gồm những thành phần chính:
+Đăng nhập, đăng ký, Oauth2
+Buy ticket, upgrade ticket, manage ticket
+dealer, talent, panel registration,
+dealer, talent, panel management.
+profile management
+event notification, not implemented yet
+ticket scanning.
+event scheduling, not implemented yet
+dashboard,
+lost, found management not implemented yet
+personalize event intinery not implemented yet
+infrastructure
+FE: Nextjs, 
+Mobile: flutter
+BE: GIN (GO)
+DB: posgres
+cache: Redis
+Cloud: lambda, s3, cloudflare, neondb

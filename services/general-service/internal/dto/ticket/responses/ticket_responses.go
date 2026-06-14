@@ -1,0 +1,144 @@
+package responses
+
+import (
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
+)
+
+// TicketTierResponse represents a ticket tier for display
+type TicketTierResponse struct {
+	ID          uuid.UUID       `json:"id"`
+	TierCode    string          `json:"tier_code"`
+	TicketName  string          `json:"ticket_name"`
+	Description string          `json:"description"`
+	Benefits    []string        `json:"benefits"` // Parsed from JSON
+	Price       decimal.Decimal `json:"price"`
+	PriceUsd    decimal.Decimal `json:"price_usd"`
+	// Stock is only returned for admin endpoints.
+	Stock     *int `json:"stock,omitempty"`
+	IsSoldOut bool `json:"is_sold_out"`
+	IsActive    bool            `json:"is_active"`
+	IsVisible   bool            `json:"is_visible"`
+}
+
+// UserTicketResponse represents a user's ticket
+type UserTicketResponse struct {
+	ID                    uuid.UUID  `json:"id"`
+	ReferenceCode         string     `json:"reference_code"`
+	Status                string     `json:"status"`
+	TicketNumber          int        `json:"ticket_number"`
+	ConBadgeName          string     `json:"con_badge_name,omitempty"`
+	BadgeImage            string     `json:"badge_image,omitempty"`
+	NamecardUrl           string     `json:"namecard_url,omitempty"`
+	IsFursuiter           bool       `json:"is_fursuiter"`
+	IsFursuitStaff        bool       `json:"is_fursuit_staff"`
+	IsCheckedIn           bool       `json:"is_checked_in"`
+	TshirtSize            string     `json:"tshirt_size,omitempty"`
+	DenialReason          string     `json:"denial_reason,omitempty"`
+	CreatedAt             time.Time  `json:"created_at"`
+	ApprovedAt            *time.Time `json:"approved_at,omitempty"`
+	DeniedAt              *time.Time `json:"denied_at,omitempty"`
+	UpgradedFromTierID    *uuid.UUID `json:"upgraded_from_tier_id,omitempty"`
+	PreviousReferenceCode string     `json:"previous_reference_code,omitempty"`
+	UpgradeDenialReason   string     `json:"upgrade_denial_reason,omitempty"`
+
+	// Tier info
+	Tier *TicketTierResponse `json:"tier,omitempty"`
+
+	// User info (for admin view)
+	User *TicketUserResponse `json:"user,omitempty"`
+}
+
+// UpgradeTicketResponse contains the upgraded ticket plus pricing info for the frontend.
+type UpgradeTicketResponse struct {
+	Ticket             *UserTicketResponse `json:"ticket"`
+	OldTierPrice       decimal.Decimal     `json:"old_tier_price"`
+	NewTierPrice       decimal.Decimal     `json:"new_tier_price"`
+	PriceDifference    decimal.Decimal     `json:"price_difference"`
+	OldTierPriceUsd    decimal.Decimal     `json:"old_tier_price_usd"`
+	NewTierPriceUsd    decimal.Decimal     `json:"new_tier_price_usd"`
+	PriceDifferenceUsd decimal.Decimal     `json:"price_difference_usd"`
+}
+
+// TicketUserResponse represents user info in ticket context (minimal PII for admin)
+type TicketUserResponse struct {
+	ID          uuid.UUID  `json:"id"`
+	Email       string     `json:"email"`
+	FirstName   string     `json:"first_name"`
+	LastName    string     `json:"last_name"`
+	FursonaName string     `json:"fursona_name"`
+	Country     string     `json:"country"`
+	Avatar      string     `json:"avatar"`
+	IDCard      string     `json:"id_card"`
+	DateOfBirth *time.Time `json:"date_of_birth,omitempty"`
+	IsVerified  bool       `json:"is_verified"`
+
+	DenialCount     int        `json:"denial_count"`
+	IsBlacklisted   bool       `json:"is_blacklisted"`
+	BlacklistedAt   *time.Time `json:"blacklisted_at,omitempty"`
+	BlacklistReason string     `json:"blacklist_reason,omitempty"`
+
+	CreatedAt  time.Time `json:"created_at"`
+	ModifiedAt time.Time `json:"modified_at"`
+}
+
+// TicketStatisticsResponse represents ticket statistics for admin dashboard
+type TicketStatisticsResponse struct {
+	TotalTickets       int64                    `json:"total_tickets"`
+	PendingCount       int64                    `json:"pending_count"`
+	SelfConfirmedCount int64                    `json:"self_confirmed_count"`
+	ApprovedCount      int64                    `json:"approved_count"`
+	DeniedCount        int64                    `json:"denied_count"`
+	PendingOver24Hours int64                    `json:"pending_over_24_hours"`
+	TierStats          []TierStatisticsResponse `json:"tier_stats"`
+}
+
+// TierStatisticsResponse represents per-tier statistics
+type TierStatisticsResponse struct {
+	TierID     uuid.UUID `json:"tier_id"`
+	TierCode   string    `json:"tier_code"`
+	TierName   string    `json:"tier_name"`
+	TotalStock int       `json:"total_stock"`
+	Sold       int64     `json:"sold"`
+	Available  int       `json:"available"`
+}
+
+// SalesTimelineResponse is one data point in the ticket sales timeline.
+type SalesTimelineResponse struct {
+	Date  string `json:"date"`
+	Count int64  `json:"count"`
+}
+
+// DownloadAllNamecardsResponse is returned after building a ZIP of stored name cards.
+type DownloadAllNamecardsResponse struct {
+	DownloadURL string `json:"download_url"`
+	FileName    string `json:"file_name"`
+	Count       int    `json:"count"`
+	Failed      int    `json:"failed"`
+}
+
+// RevenueResponse is the admin revenue API response (total + optional by-day)
+type RevenueResponse struct {
+	TotalRevenue float64                `json:"total_revenue"`
+	ByDay        []RevenueByDayResponse `json:"by_day,omitempty"`
+}
+
+// RevenueByDayResponse is one day in revenue timeline
+type RevenueByDayResponse struct {
+	Date    string  `json:"date"`
+	Revenue float64 `json:"revenue"`
+}
+
+// BlacklistedUserResponse represents a blacklisted user
+type BlacklistedUserResponse struct {
+	ID              uuid.UUID  `json:"id"`
+	Email           string     `json:"email"`
+	FirstName       string     `json:"first_name"`
+	LastName        string     `json:"last_name"`
+	FursonaName     string     `json:"fursona_name"`
+	DenialCount     int        `json:"denial_count"`
+	BlacklistedAt   *time.Time `json:"blacklisted_at"`
+	BlacklistReason string     `json:"blacklist_reason"`
+}
