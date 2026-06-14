@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
-  static const _logoAsset = 'assets/images/logo/logo_2026.webp';
+  static const _logoAsset = 'assets/images/logo/image.png';
   static const _splashDuration = Duration(milliseconds: 2200);
 
   @override
