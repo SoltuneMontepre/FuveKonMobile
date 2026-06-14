@@ -9,6 +9,7 @@ import 'package:fuvekonmobile/features/profile/domain/entities/account.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_event.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_state.dart';
+import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -28,8 +29,10 @@ class _ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+    return AppPageScaffold(
+      title: 'Profile',
+      showBackButton: false,
+      padding: EdgeInsets.zero,
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           return switch (state) {
@@ -176,7 +179,7 @@ class _ProfileBody extends StatelessWidget {
                   title: const Text('Ticket'),
                   subtitle: const Text('View your ticket'),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => context.go(Routes.myTicket),
+                  onTap: () => context.go(Routes.accountTicket),
                 ),
             ],
           ),
@@ -185,7 +188,7 @@ class _ProfileBody extends StatelessWidget {
         FilledButton.icon(
           onPressed: () async {
             final updated = await context.push<bool>(
-              Routes.profileEdit,
+              Routes.accountEdit,
               extra: account,
             );
             if (updated == true && context.mounted) {
@@ -234,14 +237,11 @@ class _InfoSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-              ),
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         const SizedBox(height: 8),
-        Card(
-          elevation: 0,
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        AppContentCard(
+          padding: EdgeInsets.zero,
           child: Column(children: children),
         ),
       ],

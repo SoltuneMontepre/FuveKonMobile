@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 
 abstract final class AppTheme {
   static ThemeData get light => _buildTheme(
         brightness: Brightness.light,
+        extension: FuvekonThemeExtension.light,
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
           primary: FuvekonColors.button,
@@ -17,11 +19,11 @@ abstract final class AppTheme {
           tertiary: FuvekonColors.outline,
           onTertiary: FuvekonColors.onPrimary,
           error: Color(0xFFB3261E),
-          onError: FuvekonColors.onPrimary,
+          onError: Colors.white,
           surface: FuvekonColors.paper,
           onSurface: FuvekonColors.textSecondary,
           onSurfaceVariant: FuvekonColors.textPrimary,
-          outline: Color(0x668C8C8C),
+          outline: FuvekonColors.inputBorder,
           outlineVariant: Color(0x3348715B),
           shadow: Color(0x1A154C5B),
           scrim: Color(0x80000000),
@@ -32,24 +34,27 @@ abstract final class AppTheme {
         ),
         scaffoldBackground: FuvekonColors.main,
         cardColor: Colors.white,
-        inputFill: Colors.white,
+        inputFill: FuvekonColors.inputFill,
         dividerColor: const Color(0x3348715B),
+        appBarForeground: FuvekonColors.textPrimary,
+        bodyMuted: FuvekonColors.textSecondary,
       );
 
   static ThemeData get dark => _buildTheme(
         brightness: Brightness.dark,
+        extension: FuvekonThemeExtension.dark,
         colorScheme: const ColorScheme(
           brightness: Brightness.dark,
           primary: FuvekonColors.darkButton,
-          onPrimary: FuvekonColors.darkBg,
+          onPrimary: FuvekonColors.darkButtonText,
           primaryContainer: FuvekonColors.darkPrimary,
-          onPrimaryContainer: FuvekonColors.darkBg,
+          onPrimaryContainer: FuvekonColors.darkButtonText,
           secondary: FuvekonColors.secondary,
-          onSecondary: FuvekonColors.darkBg,
+          onSecondary: FuvekonColors.darkButtonText,
           secondaryContainer: FuvekonColors.darkSurfaceElevated,
           onSecondaryContainer: FuvekonColors.darkText,
           tertiary: FuvekonColors.outline,
-          onTertiary: FuvekonColors.darkBg,
+          onTertiary: FuvekonColors.darkButtonText,
           error: Color(0xFFF2B8B5),
           onError: Color(0xFF601410),
           surface: FuvekonColors.darkSurface,
@@ -65,24 +70,29 @@ abstract final class AppTheme {
           surfaceTint: FuvekonColors.darkPrimary,
         ),
         scaffoldBackground: FuvekonColors.darkBg,
-        cardColor: FuvekonColors.darkSurfaceElevated,
-        inputFill: FuvekonColors.darkSurface,
+        cardColor: FuvekonColors.darkCard,
+        inputFill: FuvekonColors.inputFill,
         dividerColor: FuvekonColors.darkBorder,
+        appBarForeground: FuvekonColors.darkAppBarTitle,
+        bodyMuted: FuvekonColors.darkTextSecondary,
       );
 
   static ThemeData _buildTheme({
     required Brightness brightness,
+    required FuvekonThemeExtension extension,
     required ColorScheme colorScheme,
     required Color scaffoldBackground,
     required Color cardColor,
     required Color inputFill,
     required Color dividerColor,
+    required Color appBarForeground,
+    required Color bodyMuted,
   }) {
     final isLight = brightness == Brightness.light;
     final headlineColor =
         isLight ? FuvekonColors.textPrimary : FuvekonColors.darkText;
-    final bodyColor =
-        isLight ? FuvekonColors.textSecondary : FuvekonColors.darkTextSecondary;
+    final cardHeadline = extension.contentOnCard;
+    final cardBody = extension.contentOnCardMuted;
 
     final textTheme = TextTheme(
       displaySmall: TextStyle(
@@ -98,31 +108,37 @@ abstract final class AppTheme {
       ),
       headlineSmall: TextStyle(
         fontSize: 22,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: headlineColor,
       ),
       titleLarge: TextStyle(
         fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: headlineColor,
       ),
       titleMedium: TextStyle(
         fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: headlineColor,
+        fontWeight: FontWeight.w700,
+        color: cardHeadline,
       ),
-      bodyLarge: TextStyle(fontSize: 16, color: bodyColor, height: 1.4),
-      bodyMedium: TextStyle(fontSize: 14, color: bodyColor, height: 1.4),
+      titleSmall: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: colorScheme.primary,
+      ),
+      bodyLarge: TextStyle(fontSize: 16, color: bodyMuted, height: 1.5),
+      bodyMedium: TextStyle(fontSize: 14, color: bodyMuted, height: 1.5),
+      bodySmall: TextStyle(fontSize: 12, color: bodyMuted, height: 1.4),
       labelLarge: TextStyle(
         fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: headlineColor,
+        fontWeight: FontWeight.w700,
+        color: cardHeadline,
       ),
       labelMedium: TextStyle(
         fontSize: 12,
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.4,
-        color: isLight ? FuvekonColors.button : FuvekonColors.darkPrimary,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0.2,
+        color: cardHeadline,
       ),
     );
 
@@ -133,46 +149,48 @@ abstract final class AppTheme {
       scaffoldBackgroundColor: scaffoldBackground,
       dividerColor: dividerColor,
       textTheme: textTheme,
+      extensions: [extension],
       appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: scaffoldBackground,
-        foregroundColor: headlineColor,
+        foregroundColor: appBarForeground,
+        iconTheme: IconThemeData(color: appBarForeground),
         surfaceTintColor: Colors.transparent,
-        titleTextStyle: textTheme.titleLarge,
+        titleTextStyle: textTheme.titleLarge?.copyWith(color: appBarForeground),
       ),
       cardTheme: CardThemeData(
         color: cardColor,
-        elevation: isLight ? 2 : 0,
+        elevation: 0,
         shadowColor: colorScheme.shadow,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(FuvekonRadii.card),
           side: BorderSide(
             color: isLight
-                ? const Color(0x3348715B)
-                : FuvekonColors.darkBorder,
+                ? const Color(0x22000000)
+                : Colors.transparent,
           ),
         ),
-        margin: const EdgeInsets.symmetric(vertical: 6),
+        margin: EdgeInsets.zero,
       ),
       navigationBarTheme: NavigationBarThemeData(
         elevation: 0,
         height: 72,
-        backgroundColor: cardColor,
-        indicatorColor: colorScheme.primary.withValues(alpha: 0.14),
+        backgroundColor: isLight ? Colors.white : FuvekonColors.darkSurface,
+        indicatorColor: colorScheme.primary.withValues(alpha: 0.18),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return TextStyle(
             fontSize: 12,
             fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-            color: selected ? colorScheme.primary : bodyColor,
+            color: selected ? colorScheme.primary : bodyMuted,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return IconThemeData(
-            color: selected ? colorScheme.primary : bodyColor,
+            color: selected ? colorScheme.primary : bodyMuted,
             size: 24,
           );
         }),
@@ -180,30 +198,26 @@ abstract final class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: inputFill,
-        labelStyle: TextStyle(color: bodyColor),
-        hintStyle: TextStyle(color: bodyColor.withValues(alpha: 0.7)),
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        labelStyle: textTheme.labelMedium,
+        hintStyle: TextStyle(
+          color: cardBody.withValues(alpha: 0.65),
+          fontSize: 14,
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: isLight
-                ? const Color(0x4D8C8C8C)
-                : FuvekonColors.darkBorder,
-          ),
+          borderRadius: BorderRadius.circular(FuvekonRadii.input),
+          borderSide: const BorderSide(color: FuvekonColors.inputBorder),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: isLight
-                ? const Color(0x4D8C8C8C)
-                : FuvekonColors.darkBorder,
-          ),
+          borderRadius: BorderRadius.circular(FuvekonRadii.input),
+          borderSide: const BorderSide(color: FuvekonColors.inputBorder),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: colorScheme.primary, width: 2),
+          borderRadius: BorderRadius.circular(FuvekonRadii.input),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(FuvekonRadii.input),
           borderSide: BorderSide(color: colorScheme.error),
         ),
         contentPadding: const EdgeInsets.symmetric(
@@ -216,28 +230,25 @@ abstract final class AppTheme {
           backgroundColor: colorScheme.primary,
           foregroundColor: colorScheme.onPrimary,
           disabledBackgroundColor: colorScheme.primary.withValues(alpha: 0.4),
-          minimumSize: const Size.fromHeight(48),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          disabledForegroundColor:
+              colorScheme.onPrimary.withValues(alpha: 0.5),
+          minimumSize: const Size.fromHeight(52),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          shape: const StadiumBorder(),
           textStyle: const TextStyle(
             fontSize: 15,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w700,
           ),
-          elevation: isLight ? 1 : 0,
+          elevation: 0,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: isLight ? FuvekonColors.outline : FuvekonColors.darkPrimary,
-          side: BorderSide(
-            color: isLight ? FuvekonColors.outline : FuvekonColors.darkPrimary,
-            width: 2,
-          ),
+          foregroundColor: extension.link,
+          side: BorderSide(color: extension.link, width: 1.5),
           minimumSize: const Size.fromHeight(48),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(FuvekonRadii.input),
           ),
           textStyle: const TextStyle(
             fontSize: 15,
@@ -247,8 +258,21 @@ abstract final class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: colorScheme.primary,
+          foregroundColor: extension.link,
           textStyle: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return colorScheme.primary;
+          }
+          return inputFill;
+        }),
+        checkColor: WidgetStateProperty.all(colorScheme.onPrimary),
+        side: const BorderSide(color: FuvekonColors.inputBorder, width: 1.5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
@@ -257,25 +281,37 @@ abstract final class AppTheme {
             ? FuvekonColors.textPrimary
             : FuvekonColors.darkSurfaceElevated,
         contentTextStyle: TextStyle(color: colorScheme.onInverseSurface),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(FuvekonRadii.input),
+        ),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: colorScheme.primary,
       ),
       listTileTheme: ListTileThemeData(
-        iconColor: colorScheme.primary,
-        textColor: headlineColor,
+        iconColor: extension.contentOnCard,
+        textColor: extension.contentOnCard,
+        titleTextStyle: textTheme.titleMedium,
+        subtitleTextStyle: textTheme.bodyMedium?.copyWith(color: cardBody),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(FuvekonRadii.input),
+        ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: colorScheme.primary.withValues(alpha: 0.12),
+        backgroundColor: colorScheme.primary.withValues(alpha: 0.16),
         labelStyle: TextStyle(
-          color: isLight ? FuvekonColors.button : FuvekonColors.darkPrimary,
+          color: isLight ? FuvekonColors.textPrimary : FuvekonColors.darkPrimary,
           fontWeight: FontWeight.w600,
         ),
         side: BorderSide.none,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
+      ),
+      dividerTheme: DividerThemeData(
+        color: dividerColor,
+        thickness: 1,
+        space: 1,
       ),
     );
   }

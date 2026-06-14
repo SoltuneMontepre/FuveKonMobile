@@ -5,7 +5,11 @@ abstract final class AppConfig {
   static const String appName = 'Fuvekon';
 
   static Future<void> load() async {
-    await dotenv.load(fileName: '.env');
+    try {
+      await dotenv.load(fileName: '.env');
+    } on Object {
+      // `.env` is optional for local dev; copy `.env.flutter.example` to `.env`.
+    }
   }
 
   static String _read(String key, {String defaultValue = ''}) {

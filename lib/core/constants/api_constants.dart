@@ -54,6 +54,8 @@ abstract final class ApiConstants {
   // —— Users (admin) ——
   static const String adminUsers = '/admin/users';
   static String adminUser(String userId) => '/admin/users/$userId';
+  static String adminUserVerify(String userId) =>
+      '/admin/users/$userId/verify';
   static const String adminUsersCountByCountry =
       '/admin/users/statistics/count-by-country';
   static const String adminUsersCountByAgeRange =
@@ -85,6 +87,7 @@ abstract final class ApiConstants {
 
   // —— Talents ——
   static const String talents = '/talents';
+  static String talent(String id) => '/talents/$id';
   static const String adminTalentsPending = '/admin/talents/pending';
   static const String adminTalentsApproved = '/admin/talents/approved';
   static const String adminTalentsDenied = '/admin/talents/denied';
@@ -95,6 +98,7 @@ abstract final class ApiConstants {
 
   // —— Panels ——
   static const String panels = '/panels';
+  static String panel(String id) => '/panels/$id';
   static const String adminPanelsPending = '/admin/panels/pending';
   static const String adminPanelsApproved = '/admin/panels/approved';
   static const String adminPanelsDenied = '/admin/panels/denied';

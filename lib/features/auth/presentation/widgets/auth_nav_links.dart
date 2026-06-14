@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,9 +16,10 @@ class AuthNavLinks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final ext = context.fuvekonTheme;
     final linkStyle = theme.textTheme.bodyMedium?.copyWith(
-      color: theme.colorScheme.primary,
-      fontWeight: FontWeight.w500,
+      color: ext.link,
+      fontWeight: FontWeight.w600,
     );
 
     return Row(
@@ -31,7 +33,7 @@ class AuthNavLinks extends StatelessWidget {
         if (leading != null && trailing != null)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Text('|', style: theme.textTheme.bodyMedium),
+            child: Text('|', style: theme.textTheme.bodySmall),
           ),
         if (trailing != null)
           TextButton(

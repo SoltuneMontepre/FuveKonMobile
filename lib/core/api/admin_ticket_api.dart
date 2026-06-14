@@ -172,34 +172,6 @@ class AdminTicketApi extends BaseApi {
     );
   }
 
-  Future<ApiResponse<List<dynamic>>> getBlacklistedUsers({
-    int page = 1,
-    int pageSize = 20,
-  }) {
-    return get(
-      ApiConstants.adminUsersBlacklisted,
-      queryParameters: buildQuery({
-        'page': page,
-        'page_size': pageSize,
-      }),
-      mapData: mapJsonList,
-    );
-  }
-
-  Future<ApiResponse<void>> blacklistUser(
-    String userId, {
-    required String reason,
-  }) {
-    return patch<void>(
-      ApiConstants.adminUserBlacklist(userId),
-      data: {'reason': reason},
-    );
-  }
-
-  Future<ApiResponse<void>> unblacklistUser(String userId) {
-    return patch<void>(ApiConstants.adminUserUnblacklist(userId));
-  }
-
   Future<ApiResponse<Map<String, dynamic>>> updateTicket(
     String ticketId,
     Map<String, dynamic> payload,

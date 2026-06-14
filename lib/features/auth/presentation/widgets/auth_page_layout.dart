@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/auth_hero.dart';
+import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 
 class AuthPageLayout extends StatelessWidget {
   const AuthPageLayout({
@@ -17,29 +19,14 @@ class AuthPageLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 32),
-              AuthHero(title: heroTitle, subtitle: heroSubtitle),
-              const SizedBox(height: 32),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: child,
-                ),
-              ),
-              if (footer != null) ...[
-                const SizedBox(height: 16),
-                footer!,
-              ],
-            ],
-          ),
-        ),
+    return AppScrollPage(
+      hero: AuthHero(title: heroTitle, subtitle: heroSubtitle),
+      footer: footer,
+      wrapInCard: true,
+      child: child,
+      padding: const EdgeInsets.symmetric(
+        horizontal: FuvekonSpacing.page,
+        vertical: FuvekonSpacing.section,
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/utils/validators.dart';
+import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:intl/intl.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -91,6 +93,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.fuvekonTheme;
     final dobLabel = _dateOfBirth == null
         ? 'Select date of birth'
         : DateFormat.yMMMd().format(_dateOfBirth!);
@@ -100,68 +103,103 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextFormField(
-            controller: _fullNameController,
-            textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(labelText: 'Full name'),
-            validator: Validators.fullName,
-            enabled: !widget.isLoading,
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            controller: _nicknameController,
-            decoration: const InputDecoration(labelText: 'Fursona / nickname'),
-            validator: (v) => Validators.requiredField(v, label: 'Nickname'),
-            enabled: !widget.isLoading,
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            autofillHints: const [AutofillHints.email],
-            decoration: const InputDecoration(labelText: 'Email'),
-            validator: Validators.email,
-            enabled: !widget.isLoading,
-          ),
-          const SizedBox(height: 16),
-          InkWell(
-            onTap: widget.isLoading ? null : _pickDateOfBirth,
-            borderRadius: BorderRadius.circular(12),
-            child: InputDecorator(
-              decoration: InputDecoration(
-                labelText: 'Date of birth',
-                errorText: _dateOfBirthError,
-              ),
-              child: Text(dobLabel),
+          AppLabeledField(
+            label: 'Full name',
+            required: true,
+            field: TextFormField(
+              controller: _fullNameController,
+              textCapitalization: TextCapitalization.words,
+              decoration: const InputDecoration(hintText: 'Your legal name'),
+              validator: Validators.fullName,
+              enabled: !widget.isLoading,
             ),
           ),
           const SizedBox(height: 16),
-          TextFormField(
-            controller: _countryController,
-            textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(labelText: 'Country'),
-            validator: Validators.country,
-            enabled: !widget.isLoading,
+          AppLabeledField(
+            label: 'Fursona / nickname',
+            required: true,
+            field: TextFormField(
+              controller: _nicknameController,
+              decoration: const InputDecoration(hintText: 'Display name'),
+              validator: (v) => Validators.requiredField(v, label: 'Nickname'),
+              enabled: !widget.isLoading,
+            ),
           ),
           const SizedBox(height: 16),
-          TextFormField(
-            controller: _passwordController,
-            obscureText: true,
-            autofillHints: const [AutofillHints.newPassword],
-            decoration: const InputDecoration(labelText: 'Password'),
-            validator: Validators.strongPassword,
-            enabled: !widget.isLoading,
+          AppLabeledField(
+            label: 'Email',
+            required: true,
+            field: TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              autofillHints: const [AutofillHints.email],
+              decoration: const InputDecoration(hintText: 'you@example.com'),
+              validator: Validators.email,
+              enabled: !widget.isLoading,
+            ),
           ),
           const SizedBox(height: 16),
-          TextFormField(
-            controller: _confirmPasswordController,
-            obscureText: true,
-            autofillHints: const [AutofillHints.newPassword],
-            decoration: const InputDecoration(labelText: 'Confirm password'),
-            validator: (v) =>
-                Validators.confirmPassword(v, _passwordController.text),
-            enabled: !widget.isLoading,
-            onFieldSubmitted: (_) => _submit(),
+          AppLabeledField(
+            label: 'Date of birth',
+            required: true,
+            field: InkWell(
+              onTap: widget.isLoading ? null : _pickDateOfBirth,
+              borderRadius: BorderRadius.circular(12),
+              child: InputDecorator(
+                decoration: InputDecoration(
+                  hintText: 'Select date of birth',
+                  errorText: _dateOfBirthError,
+                ),
+                child: Text(
+                  dobLabel,
+                  style: TextStyle(
+                    color: _dateOfBirth == null
+                        ? ext.contentOnCardMuted.withValues(alpha: 0.65)
+                        : ext.contentOnCard,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          AppLabeledField(
+            label: 'Country',
+            required: true,
+            field: TextFormField(
+              controller: _countryController,
+              textCapitalization: TextCapitalization.words,
+              decoration: const InputDecoration(hintText: 'Your country'),
+              validator: Validators.country,
+              enabled: !widget.isLoading,
+            ),
+          ),
+          const SizedBox(height: 16),
+          AppLabeledField(
+            label: 'Password',
+            required: true,
+            field: TextFormField(
+              controller: _passwordController,
+              obscureText: true,
+              autofillHints: const [AutofillHints.newPassword],
+              decoration: const InputDecoration(hintText: 'Create a password'),
+              validator: Validators.strongPassword,
+              enabled: !widget.isLoading,
+            ),
+          ),
+          const SizedBox(height: 16),
+          AppLabeledField(
+            label: 'Confirm password',
+            required: true,
+            field: TextFormField(
+              controller: _confirmPasswordController,
+              obscureText: true,
+              autofillHints: const [AutofillHints.newPassword],
+              decoration: const InputDecoration(hintText: 'Repeat password'),
+              validator: (v) =>
+                  Validators.confirmPassword(v, _passwordController.text),
+              enabled: !widget.isLoading,
+              onFieldSubmitted: (_) => _submit(),
+            ),
           ),
           const SizedBox(height: 12),
           CheckboxListTile(
@@ -171,18 +209,35 @@ class _RegisterFormState extends State<RegisterForm> {
                 : (value) => setState(() => _termsAccepted = value ?? false),
             contentPadding: EdgeInsets.zero,
             controlAffinity: ListTileControlAffinity.leading,
-            title: const Text('I agree to the Terms of Service'),
+            title: Text.rich(
+              TextSpan(
+                text: 'I agree to the ',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: ext.contentOnCardMuted,
+                    ),
+                children: [
+                  TextSpan(
+                    text: 'Terms of Service',
+                    style: TextStyle(
+                      color: ext.link,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           const SizedBox(height: 16),
-          FilledButton(
+          FilledButton.icon(
             onPressed: widget.isLoading || !_termsAccepted ? null : _submit,
-            child: widget.isLoading
+            icon: widget.isLoading
                 ? const SizedBox(
                     height: 20,
                     width: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Create account'),
+                : const Icon(Icons.send_rounded),
+            label: Text(widget.isLoading ? 'Creating…' : 'Create account'),
           ),
         ],
       ),

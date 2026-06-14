@@ -49,13 +49,13 @@ class _TicketsView extends StatelessWidget {
           if (tierId == null && !purchase.queued) return;
 
           final confirmed = await context.push<bool>(
-            Routes.ticketPurchase(tierId ?? ''),
+            Routes.ticketPurchaseStep(tierId ?? ''),
             extra: purchase.queued,
           );
           if (!context.mounted) return;
           context.read<TicketsBloc>().add(const TicketsEvent.refreshRequested());
           if (confirmed == true) {
-            context.go(Routes.myTicket);
+            context.go(Routes.accountTicket);
           }
         },
         builder: (context, state) {
@@ -128,7 +128,7 @@ class _TicketsLoadedBody extends StatelessWidget {
                 Card(
                   clipBehavior: Clip.antiAlias,
                   child: InkWell(
-                    onTap: () => context.go(Routes.myTicket),
+                    onTap: () => context.go(Routes.accountTicket),
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Row(

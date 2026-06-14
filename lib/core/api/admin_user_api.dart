@@ -61,4 +61,43 @@ class AdminUserApi extends BaseApi {
       mapData: mapJsonObject,
     );
   }
+
+  Future<ApiResponse<void>> deleteUser(String userId) {
+    return delete<void>(ApiConstants.adminUser(userId));
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> verifyUser(String userId) {
+    return patch(
+      ApiConstants.adminUserVerify(userId),
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<List<dynamic>>> getBlacklistedUsers({
+    int page = 1,
+    int pageSize = 20,
+  }) {
+    return get(
+      ApiConstants.adminUsersBlacklisted,
+      queryParameters: buildQuery({
+        'page': page,
+        'page_size': pageSize,
+      }),
+      mapData: mapJsonList,
+    );
+  }
+
+  Future<ApiResponse<void>> blacklistUser(
+    String userId, {
+    required String reason,
+  }) {
+    return patch<void>(
+      ApiConstants.adminUserBlacklist(userId),
+      data: {'reason': reason},
+    );
+  }
+
+  Future<ApiResponse<void>> unblacklistUser(String userId) {
+    return patch<void>(ApiConstants.adminUserUnblacklist(userId));
+  }
 }

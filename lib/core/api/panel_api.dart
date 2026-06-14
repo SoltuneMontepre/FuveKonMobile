@@ -22,6 +22,31 @@ class PanelApi extends BaseApi {
       mapData: mapJsonList,
     );
   }
+
+  Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
+    return get(
+      ApiConstants.panel(id),
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> updatePanel(
+    String id,
+    Map<String, dynamic> payload,
+  ) {
+    return put(
+      ApiConstants.panel(id),
+      data: payload,
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> deletePanel(String id) {
+    return delete(
+      ApiConstants.panel(id),
+      mapData: mapJsonObject,
+    );
+  }
 }
 
 enum AdminPanelListFilter { pending, approved, denied }

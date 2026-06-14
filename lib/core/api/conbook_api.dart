@@ -52,6 +52,13 @@ class ConbookApi extends BaseApi {
     );
   }
 
+  Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
+    return get(
+      ApiConstants.conbook(id),
+      mapData: mapJsonObject,
+    );
+  }
+
   Future<ApiResponse<List<dynamic>>> getAdminSubmissions([
     AdminConbookFilter filter = const AdminConbookFilter(),
   ]) {

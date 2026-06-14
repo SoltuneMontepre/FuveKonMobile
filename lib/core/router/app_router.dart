@@ -1,159 +1,273 @@
 import 'package:flutter/material.dart';
+
+import 'package:fuvekonmobile/core/auth/user_role.dart';
+
+import 'package:fuvekonmobile/core/di/injection.dart';
+
+import 'package:fuvekonmobile/core/errors/result.dart';
+
+import 'package:fuvekonmobile/core/router/account_routes.dart';
+
+import 'package:fuvekonmobile/core/router/admin_routes.dart';
+
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
+
+import 'package:fuvekonmobile/core/router/guest_routes.dart';
+
+import 'package:fuvekonmobile/core/router/onboarding_routes.dart';
+import 'package:fuvekonmobile/core/router/public_routes.dart';
+
 import 'package:fuvekonmobile/core/router/routes.dart';
-import 'package:fuvekonmobile/features/auth/presentation/pages/forgot_password_page.dart';
-import 'package:fuvekonmobile/features/auth/presentation/pages/google_register_page.dart';
-import 'package:fuvekonmobile/features/auth/presentation/pages/login_page.dart';
-import 'package:fuvekonmobile/features/auth/presentation/pages/register_page.dart';
-import 'package:fuvekonmobile/features/auth/presentation/pages/verify_otp_page.dart';
-import 'package:fuvekonmobile/features/event/presentation/pages/events_page.dart';
-import 'package:fuvekonmobile/features/notification/presentation/pages/notifications_page.dart';
-import 'package:fuvekonmobile/features/profile/domain/entities/account.dart';
-import 'package:fuvekonmobile/features/profile/presentation/pages/edit_profile_page.dart';
-import 'package:fuvekonmobile/features/profile/presentation/pages/profile_page.dart';
-import 'package:fuvekonmobile/features/ticket/presentation/pages/my_ticket_page.dart';
-import 'package:fuvekonmobile/features/ticket/presentation/pages/ticket_purchase_page.dart';
-import 'package:fuvekonmobile/features/ticket/presentation/pages/tickets_page.dart';
-import 'package:fuvekonmobile/shared/widgets/home_shell.dart';
+
+import 'package:fuvekonmobile/features/profile/domain/usecases/get_me_usecase.dart';
+
 import 'package:get_it/get_it.dart';
+
 import 'package:go_router/go_router.dart';
 
+
+
 class AppRouter {
+
   AppRouter({required AuthSessionNotifier authSessionNotifier})
+
       : _authSessionNotifier = authSessionNotifier;
+
+
 
   final AuthSessionNotifier _authSessionNotifier;
 
-  final rootNavigatorKey = GlobalKey<NavigatorState>();
-  late final GoRouter router = GoRouter(
-    navigatorKey: rootNavigatorKey,
-    initialLocation: Routes.login,
-    refreshListenable: _authSessionNotifier,
-    redirect: (context, state) {
-      final isAuthenticated = _authSessionNotifier.isAuthenticated;
-      final location = state.matchedLocation;
-      final isAuthRoute = location == Routes.login ||
-          location == Routes.register ||
-          location == Routes.googleRegister ||
-          location == Routes.verifyOtp ||
-          location == Routes.forgotPassword;
 
-      if (!isAuthenticated && !isAuthRoute) {
-        return Routes.login;
-      }
-      if (isAuthenticated && isAuthRoute) {
-        return Routes.home;
-      }
-      return null;
-    },
+
+  final rootNavigatorKey = GlobalKey<NavigatorState>();
+
+
+
+  late final GoRouter router = GoRouter(
+
+    navigatorKey: rootNavigatorKey,
+
+    initialLocation: Routes.splash,
+
+    refreshListenable: _authSessionNotifier,
+
+    redirect: _redirect,
+
     routes: [
-      GoRoute(
-        path: Routes.login,
-        builder: (context, state) => const LoginPage(),
-      ),
-      GoRoute(
-        path: Routes.register,
-        builder: (context, state) => const RegisterPage(),
-        routes: [
-          GoRoute(
-            path: 'google',
-            builder: (context, state) {
-              final credential = state.extra as String? ?? '';
-              if (credential.isEmpty) {
-                return const RegisterPage();
-              }
-              return GoogleRegisterPage(credential: credential);
-            },
-          ),
-          GoRoute(
-            path: 'verify-otp',
-            builder: (context, state) {
-              final email = state.extra as String? ?? '';
-              if (email.isEmpty) {
-                return const RegisterPage();
-              }
-              return VerifyOtpPage(email: email);
-            },
-          ),
-        ],
-      ),
-      GoRoute(
-        path: Routes.forgotPassword,
-        builder: (context, state) => const ForgotPasswordPage(),
-      ),
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return HomeShell(navigationShell: navigationShell);
-        },
-        branches: [
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: Routes.home,
-                builder: (context, state) => const EventsPage(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: Routes.tickets,
-                builder: (context, state) => const TicketsPage(),
-                routes: [
-                  GoRoute(
-                    path: 'purchase/:tierId',
-                    parentNavigatorKey: rootNavigatorKey,
-                    builder: (context, state) {
-                      final tierId = state.pathParameters['tierId']!;
-                      final queued = state.extra == true;
-                      return TicketPurchasePage(
-                        tierId: tierId,
-                        queued: queued,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: Routes.myTicket,
-                builder: (context, state) => const MyTicketPage(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: Routes.notifications,
-                builder: (context, state) => const NotificationsPage(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: Routes.profile,
-                builder: (context, state) => const ProfilePage(),
-                routes: [
-                  GoRoute(
-                    path: 'edit',
-                    parentNavigatorKey: rootNavigatorKey,
-                    builder: (context, state) {
-                      final account = state.extra as Account;
-                      return EditProfilePage(account: account);
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
+
+      ...OnboardingRoutes.routes(),
+
+      ...PublicRoutes.routes(rootNavigatorKey: rootNavigatorKey),
+
+      ...GuestRoutes.routes(),
+
+      AccountRoutes.shell(rootNavigatorKey: rootNavigatorKey),
+
+      AdminRoutes.shell(rootNavigatorKey: rootNavigatorKey),
+
     ],
+
   );
 
+
+
+  String? _redirect(BuildContext context, GoRouterState state) {
+
+    final isAuthenticated = _authSessionNotifier.isAuthenticated;
+
+    final location = state.matchedLocation;
+
+    final isGuestRoute = Routes.isGuestRoute(location);
+
+    final isPublicRoute = Routes.isPublicRoute(location);
+
+    final isOnboardingRoute = Routes.isOnboardingRoute(location);
+
+
+
+    if (isAuthenticated && isOnboardingRoute) {
+
+      return _authSessionNotifier.homeRoute;
+
+    }
+
+
+
+    if (!isAuthenticated) {
+
+      if (isGuestRoute || isPublicRoute || isOnboardingRoute) return null;
+
+      return Routes.login;
+
+    }
+
+
+
+    if (isGuestRoute) {
+
+      return _authSessionNotifier.homeRoute;
+
+    }
+
+
+
+    if (Routes.isAccountRoute(location) &&
+
+        _authSessionNotifier.isVerified == false &&
+
+        !Routes.isUnverifiedAccountRoute(location)) {
+
+      return Routes.account;
+
+    }
+
+
+
+    if (Routes.isAdminRoute(location)) {
+
+      if (_authSessionNotifier.isAdmin) {
+
+        return null;
+
+      }
+
+
+
+      if (_authSessionNotifier.isStaff &&
+
+          Routes.isStaffAccessibleAdminRoute(location)) {
+
+        return null;
+
+      }
+
+
+
+      return _authSessionNotifier.homeRoute;
+
+    }
+
+
+
+    final roleHome = _authSessionNotifier.homeRoute;
+
+    if (location == Routes.home && roleHome != Routes.home) {
+
+      return roleHome;
+
+    }
+
+
+
+    return null;
+
+  }
+
+
+
   static GoRouter get instance => GetIt.I<AppRouter>().router;
+
 }
+
+
+
+/// Loads the signed-in account role and keeps [AuthSessionNotifier] in sync.
+
+class RoleSessionSync extends StatefulWidget {
+
+  const RoleSessionSync({super.key, required this.child});
+
+
+
+  final Widget child;
+
+
+
+  @override
+
+  State<RoleSessionSync> createState() => _RoleSessionSyncState();
+
+}
+
+
+
+class _RoleSessionSyncState extends State<RoleSessionSync> {
+
+  final _notifier = sl<AuthSessionNotifier>();
+
+  final _getMeUseCase = sl<GetMeUseCase>();
+
+
+
+  @override
+
+  void initState() {
+
+    super.initState();
+
+    _notifier.addListener(_onSessionChanged);
+
+    _syncRole();
+
+  }
+
+
+
+  @override
+
+  void dispose() {
+
+    _notifier.removeListener(_onSessionChanged);
+
+    super.dispose();
+
+  }
+
+
+
+  void _onSessionChanged() => _syncRole();
+
+
+
+  Future<void> _syncRole() async {
+
+    if (!_notifier.isAuthenticated) {
+
+      _notifier.updateRole(null);
+
+      _notifier.updateVerified(null);
+
+      return;
+
+    }
+
+
+
+    final result = await _getMeUseCase();
+
+    switch (result) {
+
+      case Success(:final data):
+
+        _notifier.updateRole(UserRole.tryParse(data.role));
+
+        _notifier.updateVerified(data.isVerified);
+
+      case Error():
+
+        _notifier.updateRole(null);
+
+        _notifier.updateVerified(null);
+
+    }
+
+  }
+
+
+
+  @override
+
+  Widget build(BuildContext context) => widget.child;
+
+}
+

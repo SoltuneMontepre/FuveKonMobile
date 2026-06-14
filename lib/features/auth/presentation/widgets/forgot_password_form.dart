@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/utils/validators.dart';
+import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 
 class ForgotPasswordForm extends StatefulWidget {
   const ForgotPasswordForm({
@@ -32,6 +34,8 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.fuvekonTheme;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -39,28 +43,35 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
         children: [
           Text(
             'Enter your email and we will send you a link to reset your password.',
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: ext.contentOnCardMuted,
+                ),
           ),
           const SizedBox(height: 20),
-          TextFormField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            autofillHints: const [AutofillHints.email],
-            decoration: const InputDecoration(labelText: 'Email'),
-            validator: Validators.email,
-            enabled: !widget.isLoading,
-            onFieldSubmitted: (_) => _submit(),
+          AppLabeledField(
+            label: 'Email',
+            required: true,
+            field: TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              autofillHints: const [AutofillHints.email],
+              decoration: const InputDecoration(hintText: 'you@example.com'),
+              validator: Validators.email,
+              enabled: !widget.isLoading,
+              onFieldSubmitted: (_) => _submit(),
+            ),
           ),
           const SizedBox(height: 24),
-          FilledButton(
+          FilledButton.icon(
             onPressed: widget.isLoading ? null : _submit,
-            child: widget.isLoading
+            icon: widget.isLoading
                 ? const SizedBox(
                     height: 20,
                     width: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Send reset link'),
+                : const Icon(Icons.send_rounded),
+            label: Text(widget.isLoading ? 'Sending…' : 'Send reset link'),
           ),
         ],
       ),

@@ -130,5 +130,12 @@ instructions/
 .cursor
 .cursorrules
 
+# Flutter / Dart
+.dart_tool
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub/
+/build/
+
 bootstrap
 

@@ -93,7 +93,7 @@ class _MyTicketView extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
                       FilledButton(
-                        onPressed: () => context.go(Routes.tickets),
+                        onPressed: () => context.go(Routes.ticketPurchase),
                         child: const Text('Browse tickets'),
                       ),
                     ],
@@ -114,7 +114,7 @@ class _MyTicketView extends StatelessWidget {
 
   Future<void> _openPayment(BuildContext context, String? tierId) async {
     if (tierId == null) return;
-    final confirmed = await context.push<bool>(Routes.ticketPurchase(tierId));
+    final confirmed = await context.push<bool>(Routes.ticketPurchaseStep(tierId));
     if (confirmed == true && context.mounted) {
       context.read<MyTicketBloc>().add(const MyTicketEvent.refreshRequested());
     }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/utils/validators.dart';
+import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:intl/intl.dart';
 
 class GoogleRegisterForm extends StatefulWidget {
@@ -72,6 +74,7 @@ class _GoogleRegisterFormState extends State<GoogleRegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.fuvekonTheme;
     final dateLabel = _dateOfBirth == null
         ? 'Select date of birth'
         : DateFormat.yMMMd().format(_dateOfBirth!);
@@ -81,58 +84,77 @@ class _GoogleRegisterFormState extends State<GoogleRegisterForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextFormField(
-            controller: _fullNameController,
-            textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(labelText: 'Full name'),
-            validator: Validators.fullName,
-            enabled: !widget.isLoading,
+          AppLabeledField(
+            label: 'Full name',
+            required: true,
+            field: TextFormField(
+              controller: _fullNameController,
+              textCapitalization: TextCapitalization.words,
+              decoration: const InputDecoration(hintText: 'Your legal name'),
+              validator: Validators.fullName,
+              enabled: !widget.isLoading,
+            ),
           ),
           const SizedBox(height: 16),
-          TextFormField(
-            controller: _nicknameController,
-            decoration: const InputDecoration(labelText: 'Nickname / fursona'),
-            validator: (value) =>
-                Validators.requiredField(value, label: 'Nickname'),
-            enabled: !widget.isLoading,
+          AppLabeledField(
+            label: 'Nickname / fursona',
+            required: true,
+            field: TextFormField(
+              controller: _nicknameController,
+              decoration: const InputDecoration(hintText: 'Display name'),
+              validator: (value) =>
+                  Validators.requiredField(value, label: 'Nickname'),
+              enabled: !widget.isLoading,
+            ),
           ),
           const SizedBox(height: 16),
-          InkWell(
-            onTap: widget.isLoading ? null : _pickDateOfBirth,
-            borderRadius: BorderRadius.circular(4),
-            child: InputDecorator(
-              decoration: InputDecoration(
-                labelText: 'Date of birth',
-                errorText: _dateOfBirthError,
-              ),
-              child: Text(
-                dateLabel,
-                style: TextStyle(
-                  color: _dateOfBirth == null
-                      ? Theme.of(context).hintColor
-                      : null,
+          AppLabeledField(
+            label: 'Date of birth',
+            required: true,
+            field: InkWell(
+              onTap: widget.isLoading ? null : _pickDateOfBirth,
+              borderRadius: BorderRadius.circular(12),
+              child: InputDecorator(
+                decoration: InputDecoration(
+                  hintText: 'Select date of birth',
+                  errorText: _dateOfBirthError,
+                ),
+                child: Text(
+                  dateLabel,
+                  style: TextStyle(
+                    color: _dateOfBirth == null
+                        ? ext.contentOnCardMuted.withValues(alpha: 0.65)
+                        : ext.contentOnCard,
+                  ),
                 ),
               ),
             ),
           ),
           const SizedBox(height: 16),
-          TextFormField(
-            controller: _countryController,
-            textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(labelText: 'Country'),
-            validator: Validators.country,
-            enabled: !widget.isLoading,
+          AppLabeledField(
+            label: 'Country',
+            required: true,
+            field: TextFormField(
+              controller: _countryController,
+              textCapitalization: TextCapitalization.words,
+              decoration: const InputDecoration(hintText: 'Your country'),
+              validator: Validators.country,
+              enabled: !widget.isLoading,
+            ),
           ),
           const SizedBox(height: 24),
-          FilledButton(
+          FilledButton.icon(
             onPressed: widget.isLoading ? null : _submit,
-            child: widget.isLoading
+            icon: widget.isLoading
                 ? const SizedBox(
                     height: 20,
                     width: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Complete registration'),
+                : const Icon(Icons.send_rounded),
+            label: Text(
+              widget.isLoading ? 'Saving…' : 'Complete registration',
+            ),
           ),
         ],
       ),

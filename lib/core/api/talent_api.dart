@@ -22,6 +22,31 @@ class TalentApi extends BaseApi {
       mapData: mapJsonList,
     );
   }
+
+  Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
+    return get(
+      ApiConstants.talent(id),
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> updateTalent(
+    String id,
+    Map<String, dynamic> payload,
+  ) {
+    return put(
+      ApiConstants.talent(id),
+      data: payload,
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> deleteTalent(String id) {
+    return delete(
+      ApiConstants.talent(id),
+      mapData: mapJsonObject,
+    );
+  }
 }
 
 enum AdminTalentListFilter { pending, approved, denied }

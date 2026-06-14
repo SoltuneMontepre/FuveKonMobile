@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/utils/validators.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/google_sign_in_button.dart';
+import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -46,34 +47,43 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextFormField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            autofillHints: const [AutofillHints.email],
-            decoration: const InputDecoration(labelText: 'Email'),
-            validator: Validators.email,
-            enabled: !widget.isLoading,
+          AppLabeledField(
+            label: 'Email',
+            required: true,
+            field: TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              autofillHints: const [AutofillHints.email],
+              decoration: const InputDecoration(hintText: 'you@example.com'),
+              validator: Validators.email,
+              enabled: !widget.isLoading,
+            ),
           ),
           const SizedBox(height: 16),
-          TextFormField(
-            controller: _passwordController,
-            obscureText: true,
-            autofillHints: const [AutofillHints.password],
-            decoration: const InputDecoration(labelText: 'Password'),
-            validator: Validators.password,
-            enabled: !widget.isLoading,
-            onFieldSubmitted: (_) => _submit(),
+          AppLabeledField(
+            label: 'Password',
+            required: true,
+            field: TextFormField(
+              controller: _passwordController,
+              obscureText: true,
+              autofillHints: const [AutofillHints.password],
+              decoration: const InputDecoration(hintText: '••••••••'),
+              validator: Validators.password,
+              enabled: !widget.isLoading,
+              onFieldSubmitted: (_) => _submit(),
+            ),
           ),
           const SizedBox(height: 24),
-          FilledButton(
+          FilledButton.icon(
             onPressed: widget.isLoading ? null : _submit,
-            child: widget.isLoading
+            icon: widget.isLoading
                 ? const SizedBox(
                     height: 20,
                     width: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Sign in'),
+                : const Icon(Icons.login_rounded),
+            label: Text(widget.isLoading ? 'Signing in…' : 'Sign in'),
           ),
           if (AppConfig.hasGoogleSignIn && widget.onGoogleSignIn != null) ...[
             const SizedBox(height: 24),
