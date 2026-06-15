@@ -33,11 +33,6 @@ type LostFoundItem struct {
 	StaffNotes        string              `gorm:"type:text"`
 	Status            LostFoundItemStatus `gorm:"type:varchar(20);default:'open';index"`
 	SubmittedByUserId uuid.UUID           `gorm:"type:uuid;index;not null"`
-	ClaimedByUserId   *uuid.UUID          `gorm:"type:uuid;index"`
-	ClaimMessage      string              `gorm:"type:text"`
-	ClaimedAt         *time.Time
-	ConfirmedByUserId *uuid.UUID          `gorm:"type:uuid;index"`
-	ConfirmedAt       *time.Time
 	CreatedAt         time.Time           `gorm:"autoCreateTime"`
 	ModifiedAt        time.Time           `gorm:"autoUpdateTime"`
 	DeletedAt         *time.Time          `gorm:"index"`

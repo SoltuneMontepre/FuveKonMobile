@@ -18,7 +18,6 @@ func AutoMigrate(db *gorm.DB) error {
 		&models.UserDealerStaff{},
 		&models.TicketTier{},
 		&models.UserTicket{},
-		&models.EventSettings{},
 		&models.ConBookArt{},
 		&models.PerformancePanel{},
 		&models.Venue{},

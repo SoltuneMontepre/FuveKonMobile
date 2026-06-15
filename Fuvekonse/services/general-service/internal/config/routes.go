@@ -204,7 +204,6 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			protectedLostFound := protected.Group("/lost-found")
 			{
 				protectedLostFound.GET("", h.LostFound.ListLostFoundForTicketHolder)
-				protectedLostFound.POST("/:id/claim", h.LostFound.ClaimLostFound)
 				protectedLostFound.GET("/:id", h.LostFound.GetLostFoundByIDForTicketHolder)
 			}
 		}
@@ -220,6 +219,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminRBAC.PUT("/roles/:role/permissions", h.RBAC.UpdateRolePermissions)
 			}
 
+			// Admin-only user management
 			adminUsers := admin.Group("/users")
 			adminUsers.Use(middlewares.RequirePermission(repos.RBAC, role.PermManageUsers))
 			{
@@ -251,7 +251,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminEvent.POST("/dealer-registration/close", h.Event.CloseDealerRegistrationForAdmin)
 			}
 
-			// Admin ticket management (literal paths first so /statistics, /tiers etc. don’t match as :id)
+			// Admin-only ticket management (literal paths first so /statistics, /tiers etc. don’t match as :id)
 			adminTickets := admin.Group("/tickets")
 			adminTickets.Use(middlewares.RequirePermission(repos.RBAC, role.PermManageTickets))
 			{
@@ -382,7 +382,6 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminLostFound.GET("/:id", h.LostFound.GetLostFoundByID)
 				adminLostFound.PUT("/:id", h.LostFound.UpdateLostFound)
 				adminLostFound.PATCH("/:id/status", h.LostFound.UpdateLostFoundStatus)
-				adminLostFound.PATCH("/:id/confirm", h.LostFound.ConfirmLostFoundClaim)
 				adminLostFound.DELETE("/:id", h.LostFound.DeleteLostFound)
 			}
 

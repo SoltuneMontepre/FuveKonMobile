@@ -30,14 +30,6 @@ func NewPanelService(repos *repositories.Repositories) *PanelService {
 }
 
 func (s *PanelService) CreatePanel(ctx context.Context, userIDStr string, req *requests.CreatePanelRequest) (*responses.PanelResponse, error) {
-	open, err := s.repos.Event.IsPanelRegistrationOpen(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if !open {
-		return nil, repositories.ErrPanelRegistrationClosed
-	}
-
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
 		return nil, errors.New("invalid user id")

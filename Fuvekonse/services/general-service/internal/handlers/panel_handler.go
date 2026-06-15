@@ -43,10 +43,6 @@ func (h *PanelHandler) CreatePanel(c *gin.Context) {
 
 	panel, err := h.services.Panel.CreatePanel(ctx, userID.(string), &req)
 	if err != nil {
-		if errors.Is(err, repositories.ErrPanelRegistrationClosed) {
-			respondPanelRegistrationClosed(c)
-			return
-		}
 		errMsg := err.Error()
 		switch errMsg {
 		case "user must have a ticket to submit a panel application":
