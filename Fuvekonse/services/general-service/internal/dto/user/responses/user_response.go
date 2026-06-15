@@ -49,6 +49,7 @@ type UserDetailedResponse struct {
 	DeletedAt       *time.Time    `json:"deleted_at,omitempty"`
 	CreatedAt       time.Time     `json:"created_at"`
 	ModifiedAt      time.Time     `json:"modified_at"`
+	Permissions     []string      `json:"permissions,omitempty"`
 }
 
 // CountByCountryItem is one entry in the accounts-by-country stats

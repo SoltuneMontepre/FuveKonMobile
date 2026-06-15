@@ -14,4 +14,5 @@ type AdminUpdateUserRequest struct {
 	Role        *constants.UserRole `json:"role,omitempty" binding:"omitempty" example:"0"`
 	IdCard      *string             `json:"id_card,omitempty" binding:"omitempty,max=255" example:"ID123456"`
 	IsVerified  *bool               `json:"is_verified,omitempty" binding:"omitempty" example:"true"`
+	Permissions *[]string           `json:"permissions,omitempty" binding:"omitempty,dive,required"`
 }

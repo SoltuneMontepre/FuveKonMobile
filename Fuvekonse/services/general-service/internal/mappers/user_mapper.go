@@ -34,6 +34,13 @@ func MapUserToDetailedResponse(user *models.User) *responses.UserDetailedRespons
 	return MapUserToDetailedResponseWithDealer(user, false, false)
 }
 
+// MapUserToDetailedResponseWithPermissions maps a user with dealer flags and effective permissions.
+func MapUserToDetailedResponseWithPermissions(user *models.User, isDealer bool, isHasTicket bool, permissions []string) *responses.UserDetailedResponse {
+	resp := MapUserToDetailedResponseWithDealer(user, isDealer, isHasTicket)
+	resp.Permissions = permissions
+	return resp
+}
+
 // MapUserToDetailedResponseWithDealer maps a User model to a detailed UserDetailedResponse DTO with dealer and ticket status
 func MapUserToDetailedResponseWithDealer(user *models.User, isDealer bool, isHasTicket bool) *responses.UserDetailedResponse {
 	return &responses.UserDetailedResponse{

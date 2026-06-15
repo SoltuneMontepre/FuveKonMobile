@@ -22,6 +22,7 @@ type Handlers struct {
 	DevMail      *DevMailHandler
 	LostFound    *LostFoundHandler
 	S3           *S3Handler
+	RBAC         *RBACHandler
 }
 
 func NewHandlers(services *services.Services, queuePublisher queue.Publisher) *Handlers {
@@ -42,5 +43,6 @@ func NewHandlers(services *services.Services, queuePublisher queue.Publisher) *H
 		DevMail:      NewDevMailHandler(services),
 		LostFound:    NewLostFoundHandler(services),
 		S3:           NewS3Handler(services),
+		RBAC:         NewRBACHandler(services),
 	}
 }
