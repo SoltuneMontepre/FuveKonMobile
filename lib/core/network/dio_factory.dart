@@ -8,6 +8,7 @@ import 'package:fuvekonmobile/shared/services/token_storage.dart';
 Dio createDio({
   required TokenStorage tokenStorage,
   required Future<String?> Function() refreshToken,
+  required void Function() onSessionExpired,
 }) {
   final dio = Dio(
     BaseOptions(
@@ -27,6 +28,7 @@ Dio createDio({
       dio: dio,
       tokenStorage: tokenStorage,
       refreshToken: refreshToken,
+      onSessionExpired: onSessionExpired,
     ),
     LoggingInterceptor(),
   ]);

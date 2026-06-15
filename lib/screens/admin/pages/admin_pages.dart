@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/screens/admin/pages/admin_conbook_page.dart';
-import 'package:fuvekonmobile/screens/admin/widgets/staff_tab_scaffold.dart';
-import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
-import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';
-export 'admin_conbook_page.dart';
+import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';export 'admin_conbook_page.dart';
+export 'admin_lost_found_page.dart';
 export 'admin_dashboard_page.dart';
 export 'admin_dealers_page.dart';
 export 'admin_panels_page.dart';
@@ -35,21 +33,6 @@ class AdminTicketsPage extends StatelessWidget {
       title: 'Ticket Management',
       subtitle: 'Manage ticket tiers, sales, and inventory.',
       icon: Icons.confirmation_number_outlined,
-    );
-  }
-}
-
-class AdminLostFoundPage extends StatelessWidget {
-  const AdminLostFoundPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return StaffTabScaffold(
-      child: const EmptyState(
-        title: 'Thất lạc',
-        subtitle: 'Danh sách vật thất lạc sẽ hiển thị tại đây.',
-        icon: Icons.inventory_2_outlined,
-      ),
     );
   }
 }

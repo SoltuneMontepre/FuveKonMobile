@@ -32,6 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthGoogleRegisterSubmitted>(_onGoogleRegisterSubmitted);
     on<AuthGoogleRegistrationNavigated>(_onGoogleRegistrationNavigated);
     on<AuthLogoutRequested>(_onLogoutRequested);
+    on<AuthSessionExpired>(_onSessionExpired);
   }
 
   final LoginUseCase _loginUseCase;
@@ -147,6 +148,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(const AuthState.loading());
+    await _logoutUseCase();
+    emit(const AuthState.unauthenticated());
+  }
+
+  Future<void> _onSessionExpired(
+    AuthSessionExpired event,
+    Emitter<AuthState> emit,
+  ) async {
+    if (state is AuthUnauthenticated || state is AuthInitial) return;
     await _logoutUseCase();
     emit(const AuthState.unauthenticated());
   }

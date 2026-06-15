@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AdminDetailField {
   const AdminDetailField({
     required this.label,
@@ -442,6 +444,108 @@ class AdminConbookItem implements AdminListItem {
         AdminDetailField(
           label: 'Ngày gửi',
           value: formatAdminDate(createdAt),
+        ),
+      ];
+}
+
+class AdminLostFoundItem implements AdminListItem {
+  const AdminLostFoundItem({
+    required this.id,
+    required this.itemType,
+    required this.title,
+    required this.description,
+    required this.location,
+    required this.imageUrl,
+    required this.contactInfo,
+    required this.staffNotes,
+    required this.status,
+    this.createdAt,
+    this.modifiedAt,
+  });
+
+  factory AdminLostFoundItem.fromJson(Map<String, dynamic> json) {
+    return AdminLostFoundItem(
+      id: json['id']?.toString() ?? '',
+      itemType: json['item_type'] as String? ?? 'found',
+      title: json['title'] as String? ?? 'Vật thất lạc',
+      description: json['description'] as String? ?? '',
+      location: json['location'] as String? ?? '',
+      imageUrl: json['image_url'] as String? ?? '',
+      contactInfo: json['contact_info'] as String? ?? '',
+      staffNotes: json['staff_notes'] as String? ?? '',
+      status: json['status'] as String? ?? 'open',
+      createdAt: parseAdminDate(json['created_at']),
+      modifiedAt: parseAdminDate(json['modified_at']),
+    );
+  }
+
+  @override
+  final String id;
+  final String itemType;
+  @override
+  final String title;
+  final String description;
+  final String location;
+  final String imageUrl;
+  final String contactInfo;
+  final String staffNotes;
+  final String status;
+  final DateTime? createdAt;
+  final DateTime? modifiedAt;
+
+  static String itemTypeLabel(String type) => switch (type) {
+        'lost' => 'Thất lạc',
+        'found' => 'Nhặt được',
+        _ => type,
+      };
+
+  static String statusLabel(String status) => switch (status) {
+        'claimed' => 'Đã nhận',
+        'resolved' => 'Đã xử lý',
+        _ => 'Đang mở',
+      };
+
+  static Color statusColor(String status) => switch (status) {
+        'claimed' => const Color(0xFFFBBF24),
+        'resolved' => const Color(0xFF10B981),
+        _ => const Color(0xFF60A5FA),
+      };
+
+  @override
+  String? get previewImageUrl => imageUrl.isNotEmpty ? imageUrl : null;
+
+  @override
+  String? get subtitle {
+    final parts = <String>[
+      itemTypeLabel(itemType),
+      statusLabel(status),
+      if (location.isNotEmpty) location,
+    ];
+    return parts.join(' • ');
+  }
+
+  @override
+  List<AdminDetailField> get details => [
+        AdminDetailField(label: 'Tiêu đề', value: title),
+        AdminDetailField(label: 'Loại', value: itemTypeLabel(itemType)),
+        AdminDetailField(label: 'Trạng thái', value: statusLabel(status)),
+        if (description.isNotEmpty)
+          AdminDetailField(label: 'Mô tả', value: description),
+        if (location.isNotEmpty)
+          AdminDetailField(label: 'Vị trí', value: location),
+        if (contactInfo.isNotEmpty)
+          AdminDetailField(label: 'Liên hệ', value: contactInfo),
+        if (imageUrl.isNotEmpty)
+          AdminDetailField(label: 'Ảnh', imageUrl: imageUrl),
+        if (staffNotes.isNotEmpty)
+          AdminDetailField(label: 'Ghi chú nhân viên', value: staffNotes),
+        AdminDetailField(
+          label: 'Ngày tạo',
+          value: formatAdminDate(createdAt),
+        ),
+        AdminDetailField(
+          label: 'Cập nhật',
+          value: formatAdminDate(modifiedAt),
         ),
       ];
 }

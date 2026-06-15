@@ -115,4 +115,10 @@ abstract final class ApiConstants {
   static String adminConbookApprove(String id) => '/admin/conbooks/$id/approve';
   static String adminConbookDeny(String id) => '/admin/conbooks/$id/deny';
   static String adminConbookPending(String id) => '/admin/conbooks/$id/pending';
+
+  // —— Lost & Found (admin) ——
+  static const String adminLostFound = '/admin/lost-found';
+  static String adminLostFoundItem(String id) => '/admin/lost-found/$id';
+  static String adminLostFoundStatus(String id) =>
+      '/admin/lost-found/$id/status';
 }

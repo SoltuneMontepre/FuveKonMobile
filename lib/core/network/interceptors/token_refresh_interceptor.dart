@@ -9,13 +9,16 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
     required Dio dio,
     required TokenStorage tokenStorage,
     required Future<String?> Function() refreshToken,
+    required void Function() onSessionExpired,
   })  : _dio = dio,
         _tokenStorage = tokenStorage,
-        _refreshToken = refreshToken;
+        _refreshToken = refreshToken,
+        _onSessionExpired = onSessionExpired;
 
   final Dio _dio;
   final TokenStorage _tokenStorage;
   final Future<String?> Function() _refreshToken;
+  final void Function() _onSessionExpired;
 
   bool _isRefreshing = false;
   final List<Completer<void>> _refreshQueue = [];
@@ -36,6 +39,7 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
       return handler.resolve(response);
     } catch (error) {
       await _tokenStorage.clearTokens();
+      _onSessionExpired();
       return handler.next(err);
     }
   }

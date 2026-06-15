@@ -4,6 +4,7 @@ import 'package:fuvekonmobile/core/api/analytics_api.dart';
 import 'package:fuvekonmobile/core/api/auth_api.dart';
 import 'package:fuvekonmobile/core/api/conbook_api.dart';
 import 'package:fuvekonmobile/core/api/dealer_api.dart';
+import 'package:fuvekonmobile/core/api/lost_found_api.dart';
 import 'package:fuvekonmobile/core/api/panel_api.dart';
 import 'package:fuvekonmobile/core/api/talent_api.dart';
 import 'package:fuvekonmobile/core/api/ticket_api.dart';
@@ -24,6 +25,7 @@ class FuvekonApis {
         panel = PanelApi(client),
         adminPanel = AdminPanelApi(client),
         conbook = ConbookApi(client),
+        adminLostFound = AdminLostFoundApi(client),
         analytics = AnalyticsApi(client);
 
   final AuthApi auth;
@@ -38,5 +40,6 @@ class FuvekonApis {
   final PanelApi panel;
   final AdminPanelApi adminPanel;
   final ConbookApi conbook;
+  final AdminLostFoundApi adminLostFound;
   final AnalyticsApi analytics;
 }

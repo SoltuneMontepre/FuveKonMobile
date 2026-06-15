@@ -68,5 +68,7 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Ứng dụng cần quyền camera để quét mã QR vé check-in.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Ứng dụng cần quyền thư viện ảnh để tải ảnh lên.</string>
 </dict>
 </plist>

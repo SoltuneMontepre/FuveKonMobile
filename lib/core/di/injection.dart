@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fuvekonmobile/core/auth/auth_session_controller.dart';
 import 'package:fuvekonmobile/core/network/api_client.dart';
 import 'package:fuvekonmobile/core/network/dio_factory.dart';
 import 'package:fuvekonmobile/core/router/app_router.dart';
@@ -33,11 +34,13 @@ Future<void> configureDependencies() async {
       ),
     )
     ..registerLazySingleton<TokenStorage>(SecureTokenStorage.new)
+    ..registerLazySingleton(AuthSessionController.new)
     ..registerLazySingleton(() => TokenRefreshService(tokenStorage: sl()))
     ..registerLazySingleton<Dio>(
       () => createDio(
         tokenStorage: sl(),
         refreshToken: sl<TokenRefreshService>().refresh,
+        onSessionExpired: sl<AuthSessionController>().notifySessionExpired,
       ),
     )
     ..registerLazySingleton(() => ApiClient(sl()))

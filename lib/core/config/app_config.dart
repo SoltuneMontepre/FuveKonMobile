@@ -31,6 +31,11 @@ abstract final class AppConfig {
 
   static bool get hasGoogleSignIn => googleClientId.isNotEmpty;
 
+  /// Optional LocalStack/S3 origin hint for docs/tooling (presigned URLs must be
+  /// generated with a device-reachable host on the backend — see `.env.example`).
+  static String get s3UploadEndpoint => _read('S3_UPLOAD_ENDPOINT');
+
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 15);
+  static const Duration uploadSendTimeout = Duration(minutes: 2);
 }

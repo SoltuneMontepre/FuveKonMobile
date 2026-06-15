@@ -20,4 +20,5 @@ sealed class AuthEvent with _$AuthEvent {
   const factory AuthEvent.googleRegistrationNavigated() =
       AuthGoogleRegistrationNavigated;
   const factory AuthEvent.logoutRequested() = AuthLogoutRequested;
+  const factory AuthEvent.sessionExpired() = AuthSessionExpired;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fuvekonmobile/core/auth/auth_session_controller.dart';
 import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
@@ -20,33 +21,66 @@ class FuvekonApp extends StatelessWidget {
 
     return BlocProvider(
       create: (_) => sl<AuthBloc>()..add(const AuthEvent.started()),
-      child: BlocListener<AuthBloc, AuthState>(
-        listener: (_, state) => sl<AuthSessionNotifier>().update(state),
-        child: RoleSessionSync(
-          child: ListenableBuilder(
-            listenable: localeNotifier,
-            builder: (context, _) {
-              return MaterialApp.router(
-                title: AppConfig.appName,
-                theme: AppTheme.light,
-                darkTheme: AppTheme.dark,
-                themeMode: ThemeMode.dark,
-                locale: localeNotifier.locale,
-                supportedLocales: const [
-                  Locale('vi'),
-                  Locale('en'),
-                ],
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                routerConfig: sl<AppRouter>().router,
-              );
-            },
+      child: _AuthSessionWire(
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (_, state) => sl<AuthSessionNotifier>().update(state),
+          child: RoleSessionSync(
+            child: ListenableBuilder(
+              listenable: localeNotifier,
+              builder: (context, _) {
+                return MaterialApp.router(
+                  title: AppConfig.appName,
+                  theme: AppTheme.light,
+                  darkTheme: AppTheme.dark,
+                  themeMode: ThemeMode.dark,
+                  locale: localeNotifier.locale,
+                  supportedLocales: const [
+                    Locale('vi'),
+                    Locale('en'),
+                  ],
+                  localizationsDelegates: const [
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  routerConfig: sl<AppRouter>().router,
+                );
+              },
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+class _AuthSessionWire extends StatefulWidget {
+  const _AuthSessionWire({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_AuthSessionWire> createState() => _AuthSessionWireState();
+}
+
+class _AuthSessionWireState extends State<_AuthSessionWire> {
+  @override
+  void initState() {
+    super.initState();
+    sl<AuthSessionController>().onSessionExpired = _onSessionExpired;
+  }
+
+  @override
+  void dispose() {
+    sl<AuthSessionController>().onSessionExpired = null;
+    super.dispose();
+  }
+
+  void _onSessionExpired() {
+    if (!mounted) return;
+    context.read<AuthBloc>().add(const AuthEvent.sessionExpired());
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }

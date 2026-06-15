@@ -1,16 +1,19 @@
 import 'package:fuvekonmobile/core/api/analytics_api.dart';
 import 'package:fuvekonmobile/core/api/fuvekon_apis.dart';
 import 'package:fuvekonmobile/core/network/api_client.dart';
+import 'package:fuvekonmobile/core/services/s3_upload_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_conbook_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_dashboard_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_dealer_service.dart';
+import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_panel_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/scan_ticket_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
 
 void registerApiModule(GetIt sl) {
   sl
+    ..registerLazySingleton(() => S3UploadService(apiClient: sl()))
     ..registerLazySingleton(() => FuvekonApis(sl<ApiClient>()))
     ..registerLazySingleton(() => sl<FuvekonApis>().auth)
     ..registerLazySingleton(() => sl<FuvekonApis>().account)
@@ -24,6 +27,7 @@ void registerApiModule(GetIt sl) {
     ..registerLazySingleton(() => sl<FuvekonApis>().panel)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminPanel)
     ..registerLazySingleton(() => sl<FuvekonApis>().conbook)
+    ..registerLazySingleton(() => sl<FuvekonApis>().adminLostFound)
     ..registerLazySingleton(() => sl<FuvekonApis>().analytics)
     ..registerLazySingleton(
       () => ScanTicketService(
@@ -42,6 +46,9 @@ void registerApiModule(GetIt sl) {
     )
     ..registerLazySingleton(
       () => AdminUserService(adminUserApi: sl()),
+    )
+    ..registerLazySingleton(
+      () => AdminLostFoundService(api: sl()),
     )
     ..registerLazySingleton(
       () => AdminDashboardService(analyticsApi: sl<AnalyticsApi>()),

@@ -3,6 +3,7 @@ import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/core/network/api_client.dart';
 import 'package:fuvekonmobile/core/network/api_response.dart';
+import 'package:fuvekonmobile/core/network/dio_exception_mapper.dart';
 
 class S3UploadResult {
   const S3UploadResult({required this.fileUrl, required this.fileKey});
@@ -21,6 +22,7 @@ class S3UploadService {
             BaseOptions(
               connectTimeout: AppConfig.connectTimeout,
               receiveTimeout: AppConfig.receiveTimeout,
+              sendTimeout: AppConfig.uploadSendTimeout,
             ),
           );
 
@@ -69,15 +71,19 @@ class S3UploadService {
       throw const ServerException('Invalid presign response data');
     }
 
-    await _uploadDio.put<void>(
-      presignedUrl,
-      data: bytes,
-      options: Options(
-        headers: {'Content-Type': contentType},
-        contentType: contentType,
-      ),
-      onSendProgress: onProgress,
-    );
+    try {
+      await _uploadDio.put<void>(
+        presignedUrl,
+        data: bytes,
+        options: Options(
+          headers: {'Content-Type': contentType},
+          contentType: contentType,
+        ),
+        onSendProgress: onProgress,
+      );
+    } on DioException catch (error) {
+      throwMappedDioException(error);
+    }
 
     return S3UploadResult(fileUrl: fileUrl, fileKey: fileKey);
   }
