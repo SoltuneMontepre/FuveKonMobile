@@ -5,6 +5,7 @@ import "gorm.io/gorm"
 type Repositories struct {
 	User         *UserRepository
 	Ticket       *TicketRepository
+	Event        *EventSettingsRepository
 	Dealer       *DealerRepository
 	Conbook      *ConbookRepository
 	Panel        *PanelRepository
@@ -14,12 +15,14 @@ type Repositories struct {
 	Notification *NotificationRepository
 	DeviceToken  *DeviceTokenRepository
 	LostFound    *LostFoundRepository
+	RBAC         *RBACRepository
 }
 
 func NewRepositories(db *gorm.DB) *Repositories {
 	return &Repositories{
 		User:         NewUserRepository(db),
 		Ticket:       NewTicketRepository(db),
+		Event:        NewEventSettingsRepository(db),
 		Dealer:       NewDealerRepository(db),
 		Conbook:      NewConbookRepository(db),
 		Panel:        NewPanelRepository(db),
@@ -29,5 +32,6 @@ func NewRepositories(db *gorm.DB) *Repositories {
 		Notification: NewNotificationRepository(db),
 		DeviceToken:  NewDeviceTokenRepository(db),
 		LostFound:    NewLostFoundRepository(db),
+		RBAC:         NewRBACRepository(db),
 	}
 }

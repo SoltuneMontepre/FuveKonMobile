@@ -39,8 +39,6 @@ import (
 	"general-service/internal/repositories"
 	"general-service/internal/services"
 
-	_ "general-service/docs"
-
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"

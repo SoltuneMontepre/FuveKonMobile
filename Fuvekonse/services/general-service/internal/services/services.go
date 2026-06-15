@@ -15,6 +15,7 @@ type Services struct {
 	FCM          *FCMService
 	DeviceToken  *DeviceTokenService
 	Ticket       *TicketService
+	Event        *EventService
 	Dealer       *DealerService
 	Conbook      *ConbookService
 	Panel        *PanelService
@@ -25,6 +26,7 @@ type Services struct {
 	Analytics    *AnalyticsService
 	LostFound    *LostFoundService
 	S3           *S3Service
+	RBAC         *RBACService
 }
 
 func NewServices(repos *repositories.Repositories, redisClient *redis.Client, loginMaxFail int, loginFailBlockMinutes int) *Services {
@@ -46,6 +48,7 @@ func NewServices(repos *repositories.Repositories, redisClient *redis.Client, lo
 		FCM:          fcm,
 		DeviceToken:  NewDeviceTokenService(repos),
 		Ticket:       ticket,
+		Event:        NewEventService(repos),
 		Dealer:       NewDealerService(repos, mail),
 		Conbook:      NewConbookService(repos),
 		Panel:        NewPanelService(repos),
@@ -56,5 +59,6 @@ func NewServices(repos *repositories.Repositories, redisClient *redis.Client, lo
 		Analytics:    NewAnalyticsService(repos, ticket),
 		LostFound:    NewLostFoundService(repos),
 		S3:           s3Service,
+		RBAC:         NewRBACService(repos),
 	}
 }

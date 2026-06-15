@@ -96,6 +96,8 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 		v1.GET("/ping", CheckHealth)
 		SetupAuthRoutes(v1, h)
 
+		v1.GET("/event/settings", h.Event.GetEventSettings)
+
 		// Public ticket routes (optional JWT so admins can get normalized tier payloads, e.g. is_active)
 		tickets := v1.Group("/tickets")
 		tickets.Use(middlewares.OptionalJWTAuthMiddleware())
@@ -125,6 +127,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				users.GET("/me", h.User.GetMe)
 				users.PUT("/me", h.User.UpdateProfile)
 				users.PATCH("/me/avatar", h.User.UpdateAvatar)
+				users.GET("/me/permissions", h.RBAC.GetMyPermissions)
 			}
 
 			// Dealer routes
@@ -205,13 +208,20 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			}
 		}
 
-		// Admin routes - require JWT; role enforced per subgroup (admin, or admin+staff for ticket get/approve)
+		// Admin routes - require JWT; role or permission enforced per subgroup
 		admin := v1.Group("/admin")
 		admin.Use(middlewares.JWTAuthMiddleware())
 		{
+			adminRBAC := admin.Group("/rbac")
+			adminRBAC.Use(middlewares.RequireRole(role.RoleAdmin))
+			{
+				adminRBAC.GET("", h.RBAC.GetConfig)
+				adminRBAC.PUT("/roles/:role/permissions", h.RBAC.UpdateRolePermissions)
+			}
+
 			// Admin-only user management
 			adminUsers := admin.Group("/users")
-			adminUsers.Use(middlewares.RequireRole(role.RoleAdmin))
+			adminUsers.Use(middlewares.RequirePermission(repos.RBAC, role.PermManageUsers))
 			{
 				adminUsers.GET("", h.User.GetAllUsers)
 				adminUsers.GET("/statistics/count-by-country", h.User.GetUserCountByCountry)
@@ -225,9 +235,25 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminUsers.PATCH("/:id/unblacklist", h.Ticket.UnblacklistUser)
 			}
 
+			// Admin-only convention / event controls (ticket sales window, etc.)
+			adminEvent := admin.Group("/event")
+			adminEvent.Use(middlewares.RequirePermission(repos.RBAC, role.PermManageTickets))
+			{
+				adminEvent.GET("/settings", h.Event.GetEventSettingsForAdmin)
+				adminEvent.PATCH("/settings", h.Event.UpdateEventSettingsForAdmin)
+				adminEvent.POST("/ticket-sales/open", h.Event.OpenTicketSalesForAdmin)
+				adminEvent.POST("/ticket-sales/close", h.Event.CloseTicketSalesForAdmin)
+				adminEvent.POST("/panel-registration/open", h.Event.OpenPanelRegistrationForAdmin)
+				adminEvent.POST("/panel-registration/close", h.Event.ClosePanelRegistrationForAdmin)
+				adminEvent.POST("/talent-registration/open", h.Event.OpenTalentRegistrationForAdmin)
+				adminEvent.POST("/talent-registration/close", h.Event.CloseTalentRegistrationForAdmin)
+				adminEvent.POST("/dealer-registration/open", h.Event.OpenDealerRegistrationForAdmin)
+				adminEvent.POST("/dealer-registration/close", h.Event.CloseDealerRegistrationForAdmin)
+			}
+
 			// Admin-only ticket management (literal paths first so /statistics, /tiers etc. don’t match as :id)
 			adminTickets := admin.Group("/tickets")
-			adminTickets.Use(middlewares.RequireRole(role.RoleAdmin))
+			adminTickets.Use(middlewares.RequirePermission(repos.RBAC, role.PermManageTickets))
 			{
 				adminTickets.GET("", h.Ticket.GetTicketsForAdmin)
 				adminTickets.POST("", h.Ticket.CreateTicketForAdmin)
@@ -247,9 +273,9 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminTickets.DELETE("/:id", h.Ticket.DeleteTicketForAdmin)
 			}
 
-			// Get by ID, approve, confirm check-in: allowed for admin or staff (registered after so literal paths above match first)
+			// Ticket scan / check-in: requires scan_tickets permission
 			adminTicketsStaffOK := admin.Group("/tickets")
-			adminTicketsStaffOK.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+			adminTicketsStaffOK.Use(middlewares.RequirePermission(repos.RBAC, role.PermScanTickets))
 			{
 				adminTicketsStaffOK.GET("/:id", h.Ticket.GetTicketByID)
 				adminTicketsStaffOK.PATCH("/:id/approve", h.Ticket.ApproveTicket)
@@ -257,9 +283,9 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminTicketsStaffOK.PATCH("/:id/check-in", h.Ticket.ConfirmCheckIn)
 			}
 
-			// Admin-only dealer management
+			// Dealer verification workflow
 			adminDealers := admin.Group("/dealers")
-			adminDealers.Use(middlewares.RequireRole(role.RoleAdmin))
+			adminDealers.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
 			{
 				adminDealers.GET("", h.Dealer.GetDealersForAdmin)
 				adminDealers.GET("/:id", h.Dealer.GetDealerByIDForAdmin)
@@ -268,14 +294,14 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			}
 
 			adminNotifications := admin.Group("/notifications")
-			adminNotifications.Use(middlewares.RequireRole(role.RoleAdmin))
+			adminNotifications.Use(middlewares.RequirePermission(repos.RBAC, role.PermSendNotifications))
 			{
 				adminNotifications.POST("", h.Notification.AdminCreateNotification)
 			}
 
-			// Admin/Staff conbook management (status review and transitions)
+			// Conbook / panel / talent profile approval
 			adminConbooks := admin.Group("/conbooks")
-			adminConbooks.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+			adminConbooks.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
 			{
 				adminConbooks.GET("/pending", h.Conbook.GetPendingConbooks)
 				adminConbooks.GET("/approved", h.Conbook.GetApprovedConbooks)
@@ -286,7 +312,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			}
 
 			adminPanels := admin.Group("/panels")
-			adminPanels.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+			adminPanels.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
 			{
 				adminPanels.GET("/pending", h.Panel.GetPendingPanels)
 				adminPanels.GET("/approved", h.Panel.GetApprovedPanels)
@@ -298,7 +324,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			}
 
 			adminSchedules := admin.Group("/admin-schedules")
-			adminSchedules.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+			adminSchedules.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
 			{
 				adminSchedules.POST("", h.Schedule.CreateSchedule)
 				adminSchedules.PUT(":id", h.Schedule.UpdateSchedule)
@@ -306,7 +332,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 
 				// Global venue management (admin/staff)
 				adminVenues := admin.Group("/venues")
-				adminVenues.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+				adminVenues.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
 				{
 					adminVenues.POST("", h.Venue.CreateVenue)
 					adminVenues.GET("", h.Venue.ListVenues)
@@ -329,7 +355,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 
 			// Backwards-compatible alias: support /admin/schedules as well as /admin/admin-schedules
 			adminSchedulesAlias := admin.Group("/schedules")
-			adminSchedulesAlias.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+			adminSchedulesAlias.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
 			{
 				adminSchedulesAlias.POST("", h.Schedule.CreateSchedule)
 				adminSchedulesAlias.PUT(":id", h.Schedule.UpdateSchedule)
@@ -337,7 +363,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			}
 
 			adminTalents := admin.Group("/talents")
-			adminTalents.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+			adminTalents.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
 			{
 				adminTalents.GET("/pending", h.Talent.GetPendingTalents)
 				adminTalents.GET("/approved", h.Talent.GetApprovedTalents)
@@ -349,7 +375,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			}
 
 			adminLostFound := admin.Group("/lost-found")
-			adminLostFound.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+			adminLostFound.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
 			{
 				adminLostFound.POST("", h.LostFound.CreateLostFound)
 				adminLostFound.GET("", h.LostFound.ListLostFound)
@@ -361,7 +387,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 
 			// Admin-only dashboard analytics (single consolidated query)
 			adminAnalytics := admin.Group("/analytics")
-			adminAnalytics.Use(middlewares.RequireRole(role.RoleAdmin))
+			adminAnalytics.Use(middlewares.RequirePermission(repos.RBAC, role.PermViewDashboard))
 			{
 				adminAnalytics.GET("/dashboard", h.Analytics.GetDashboard)
 			}
