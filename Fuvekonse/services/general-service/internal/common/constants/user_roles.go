@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 type UserRole int
@@ -38,16 +39,31 @@ func (r UserRole) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler to parse string to UserRole from JSON
 func (r *UserRole) UnmarshalJSON(data []byte) error {
+	// Accept both string ("user", "Admin") and numeric (0,1,2...) JSON representations.
+	// Try string first.
 	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
-		return err
+	if err := json.Unmarshal(data, &s); err == nil {
+		// If numeric string like "0", parse as int.
+		if i, err2 := strconv.Atoi(s); err2 == nil {
+			*r = UserRole(i)
+			return nil
+		}
+		parsed, err := ParseUserRole(s)
+		if err != nil {
+			return err
+		}
+		*r = parsed
+		return nil
 	}
-	parsed, err := ParseUserRole(s)
-	if err != nil {
-		return err
+
+	// Try number
+	var i64 int64
+	if err := json.Unmarshal(data, &i64); err == nil {
+		*r = UserRole(i64)
+		return nil
 	}
-	*r = parsed
-	return nil
+
+	return fmt.Errorf("invalid user role: %s", string(data))
 }
 
 // ParseUserRole parses a string into a UserRole enum value

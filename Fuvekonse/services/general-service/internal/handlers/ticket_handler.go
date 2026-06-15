@@ -549,6 +549,44 @@ func (h *TicketHandler) GetTicketsForAdmin(c *gin.Context) {
 	utils.RespondSuccessWithMeta(c, &tickets, meta, "Successfully retrieved tickets")
 }
 
+// DownloadAllNamecards godoc
+// @Summary Download all stored name cards (admin)
+// @Description Builds a ZIP of stored name card PNGs for approved/admin-granted tickets and returns a presigned download URL
+// @Tags admin-tickets
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 "Successfully prepared name card archive"
+// @Failure 404 "No stored name cards found"
+// @Failure 401 "Unauthorized"
+// @Failure 403 "Forbidden - admin only"
+// @Failure 500 "Internal server error"
+// @Router /admin/tickets/namecards/download [get]
+func (h *TicketHandler) DownloadAllNamecards(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	if h.services.S3 == nil {
+		utils.RespondInternalServerError(c, "S3 is not configured")
+		return
+	}
+
+	result, err := h.services.Ticket.BuildAllNamecardsArchive(ctx, h.services.S3)
+	if err != nil {
+		switch {
+		case errors.Is(err, services.ErrNoNamecardsAvailable):
+			utils.RespondNotFound(c, "No stored name cards found for approved tickets")
+		case errors.Is(err, services.ErrS3NotConfigured):
+			utils.RespondInternalServerError(c, "S3 is not configured")
+		default:
+			log.Printf("DownloadAllNamecards failed: %v", err)
+			utils.RespondInternalServerError(c, "Failed to prepare name card download")
+		}
+		return
+	}
+
+	utils.RespondSuccess(c, result, "Name card archive ready for download")
+}
+
 // GetTicketByID godoc
 // @Summary Get ticket by ID (admin)
 // @Description Get detailed information about a specific ticket

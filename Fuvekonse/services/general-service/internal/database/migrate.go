@@ -18,8 +18,17 @@ func AutoMigrate(db *gorm.DB) error {
 		&models.UserTicket{},
 		&models.ConBookArt{},
 		&models.PerformancePanel{},
+		&models.Venue{},
+		&models.Location{},
+		&models.Schedule{},
+		&models.ScheduleVenue{},
+		&models.ScheduleLocation{},
+		&models.ScheduleEvent{},
 		&models.PerformanceTalent{},
 		&models.Payment{},
+		&models.Notification{},
+		&models.DeviceToken{},
+		&models.LostFoundItem{},
 	}
 
 	// AutoMigrate (creates tables, adds columns, indexes)
@@ -51,6 +60,11 @@ func AutoMigrate(db *gorm.DB) error {
 	// Ensure nickname exists on performance_panels (handles DBs created before Nickname was added)
 	if err := ensurePerformancePanelsNicknameColumn(db); err != nil {
 		return fmt.Errorf("failed to ensure performance_panels.nickname column: %w", err)
+	}
+
+	// Ensure schedule_venues.venue_ref_id exists (added when schedule venues may reference global venues)
+	if err := ensureScheduleVenuesVenueRefIdColumn(db); err != nil {
+		return fmt.Errorf("failed to ensure schedule_venues.venue_ref_id column: %w", err)
 	}
 
 	// Drop columns that are no longer in the model
@@ -128,6 +142,33 @@ func ensurePerformancePanelsNicknameColumn(db *gorm.DB) error {
 		}
 		log.Println("Added performance_panels.nickname column (migration)")
 	}
+	return nil
+}
+
+// ensureScheduleVenuesVenueRefIdColumn adds venue_ref_id to schedule_venues if missing and creates a
+// unique index on (schedule_id, venue_ref_id) where venue_ref_id IS NOT NULL.
+func ensureScheduleVenuesVenueRefIdColumn(db *gorm.DB) error {
+	migrator := db.Migrator()
+	if migrator.HasTable("schedule_venues") && !migrator.HasColumn("schedule_venues", "venue_ref_id") {
+		if err := migrator.AddColumn(&models.ScheduleVenue{}, "VenueRefId"); err != nil {
+			return err
+		}
+		log.Println("Added schedule_venues.venue_ref_id column (migration)")
+	}
+
+	// Create a partial unique index to avoid duplicate schedule-scoped venues referencing the same global venue
+	if migrator.HasTable("schedule_venues") {
+		idxName := "schedule_venues_schedule_venue_ref_idx"
+		// Create the index only if it doesn't already exist
+		if !migrator.HasIndex(&models.ScheduleVenue{}, idxName) {
+			sql := fmt.Sprintf("CREATE UNIQUE INDEX IF NOT EXISTS %s ON schedule_venues (schedule_id, venue_ref_id) WHERE venue_ref_id IS NOT NULL", idxName)
+			if err := db.Exec(sql).Error; err != nil {
+				return err
+			}
+			log.Println("Created schedule_venues.schedule_venue_ref_idx index (migration)")
+		}
+	}
+
 	return nil
 }
 

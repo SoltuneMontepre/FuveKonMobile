@@ -1,8 +1,12 @@
 package services
 
 import (
+	"archive/zip"
+	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"general-service/internal/common/constants"
 	"general-service/internal/dto/common"
 	"general-service/internal/dto/ticket/requests"
@@ -10,9 +14,13 @@ import (
 	"general-service/internal/mappers"
 	"general-service/internal/models"
 	"general-service/internal/repositories"
+	"io"
 	"log"
 	"math"
 	"os"
+	"path"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -26,8 +34,11 @@ var (
 	ErrInvalidUserID       = constants.ErrInvalidUserID
 	ErrNoTicketFound       = constants.ErrNoTicketFound
 	ErrInvalidTicketStatus = constants.ErrInvalidTicketStatus
-	ErrMailNotConfigured   = constants.ErrMailNotConfigured
+	ErrMailNotConfigured      = constants.ErrMailNotConfigured
+	ErrNoNamecardsAvailable   = errors.New("no namecards available for download")
 )
+
+var namecardFilenameSanitizer = regexp.MustCompile(`[^a-zA-Z0-9_-]+`)
 
 type TicketService struct {
 	repos *repositories.Repositories
@@ -773,6 +784,106 @@ func (s *TicketService) BlacklistUser(ctx context.Context, userID string, req *r
 	}
 
 	return s.repos.Ticket.BlacklistUser(ctx, id, req.Reason)
+}
+
+// BuildAllNamecardsArchive collects stored name card PNGs from S3, zips them, uploads the
+// archive to S3, and returns a short-lived presigned download URL.
+func (s *TicketService) BuildAllNamecardsArchive(
+	ctx context.Context,
+	s3svc *S3Service,
+) (*responses.DownloadAllNamecardsResponse, error) {
+	if s3svc == nil {
+		return nil, ErrS3NotConfigured
+	}
+
+	tickets, err := s.repos.Ticket.GetIssuedTicketsWithNamecards(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if len(tickets) == 0 {
+		return nil, ErrNoNamecardsAvailable
+	}
+
+	buf := new(bytes.Buffer)
+	zw := zip.NewWriter(buf)
+	success := 0
+	failed := 0
+
+	for _, ticket := range tickets {
+		key, err := ExtractObjectKeyFromURL(ticket.NamecardUrl)
+		if err != nil {
+			failed++
+			log.Printf("namecard export: skip %s: invalid namecard_url: %v", ticket.ReferenceCode, err)
+			continue
+		}
+
+		obj, err := s3svc.GetObject(ctx, key)
+		if err != nil {
+			failed++
+			log.Printf("namecard export: skip %s: s3 get failed: %v", ticket.ReferenceCode, err)
+			continue
+		}
+
+		data, readErr := io.ReadAll(obj.Body)
+		closeErr := obj.Body.Close()
+		if readErr != nil || closeErr != nil || len(data) == 0 {
+			failed++
+			continue
+		}
+
+		refPart := sanitizeNamecardFilenamePart(ticket.ReferenceCode)
+		namePart := sanitizeNamecardFilenamePart(ticket.User.FursonaName)
+		if namePart == "" {
+			namePart = "user"
+		}
+		entryName := fmt.Sprintf("namecard-%s-%s.png", refPart, namePart)
+
+		w, err := zw.Create(entryName)
+		if err != nil {
+			failed++
+			continue
+		}
+		if _, err := w.Write(data); err != nil {
+			failed++
+			continue
+		}
+		success++
+	}
+
+	if err := zw.Close(); err != nil {
+		return nil, err
+	}
+	if success == 0 {
+		return nil, ErrNoNamecardsAvailable
+	}
+
+	zipBytes := buf.Bytes()
+	fileName := fmt.Sprintf("fuvekon-namecards-%s.zip", time.Now().Format("2006-01-02"))
+	exportKey := path.Join("exports", "namecards", fmt.Sprintf("%s-%s", uuid.New().String(), fileName))
+
+	if err := s3svc.PutObject(ctx, exportKey, bytes.NewReader(zipBytes), int64(len(zipBytes)), "application/zip"); err != nil {
+		return nil, err
+	}
+
+	downloadURL, err := s3svc.PresignGetObject(ctx, exportKey, 900)
+	if err != nil {
+		return nil, err
+	}
+
+	return &responses.DownloadAllNamecardsResponse{
+		DownloadURL: downloadURL,
+		FileName:    fileName,
+		Count:       success,
+		Failed:      failed,
+	}, nil
+}
+
+func sanitizeNamecardFilenamePart(value string) string {
+	clean := strings.Trim(namecardFilenameSanitizer.ReplaceAllString(strings.TrimSpace(value), "_"), "_")
+	if len(clean) > 48 {
+		clean = clean[:48]
+	}
+	return clean
 }
 
 // UnblacklistUser removes a user from blacklist

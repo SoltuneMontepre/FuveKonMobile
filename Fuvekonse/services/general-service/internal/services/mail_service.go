@@ -481,3 +481,35 @@ func (s *MailService) SendTicketDeniedEmail(ctx context.Context, fromEmail, toEm
 	}
 	return s.SendEmail(ctx, fromEmail, toEmail, subject, body, nil, nil)
 }
+
+// SendNotificationEmail sends an admin-authored notification to the user's inbox (HTML). lang: "vi" or else English.
+func (s *MailService) SendNotificationEmail(ctx context.Context, fromEmail, toEmail, title, body, lang string) error {
+	title = strings.TrimSpace(title)
+	if title == "" {
+		title = "FUVE notification"
+	}
+	subject := truncateMailSubject(title, 200)
+
+	var tpl string
+	if lang == "vi" {
+		tpl = "notification_vi.html"
+	} else {
+		tpl = "notification_en.html"
+	}
+	htmlBody, err := renderMailTemplate(tpl, struct {
+		Title string
+		Body  string
+	}{Title: title, Body: body})
+	if err != nil {
+		return fmt.Errorf("render notification email: %w", err)
+	}
+	return s.SendEmail(ctx, fromEmail, toEmail, subject, htmlBody, nil, nil)
+}
+
+func truncateMailSubject(s string, maxRunes int) string {
+	r := []rune(strings.TrimSpace(s))
+	if len(r) <= maxRunes {
+		return string(r)
+	}
+	return string(r[:maxRunes]) + "…"
+}

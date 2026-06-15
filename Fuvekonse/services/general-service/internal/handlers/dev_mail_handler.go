@@ -21,7 +21,7 @@ func NewDevMailHandler(services *services.Services) *DevMailHandler {
 
 type devMailSendRequest struct {
 	To            string `json:"to" binding:"required,email"`
-	Kind          string `json:"kind" binding:"required"` // otp | dealer | ticket | ticket_denied
+	Kind          string `json:"kind" binding:"required"` // otp | dealer | ticket | ticket_denied | notification
 	Lang          string `json:"lang"`
 	Otp           string `json:"otp"`
 	BoothName     string `json:"boothName"`
@@ -29,6 +29,8 @@ type devMailSendRequest struct {
 	ReferenceCode string `json:"referenceCode"`
 	TierName      string `json:"tierName"`
 	Reason        string `json:"reason"`
+	Title         string `json:"title"`
+	Body          string `json:"body"`
 }
 
 // SendTestMail triggers a single mail send for local/staging verification. Only registered when ENV != production.
@@ -85,8 +87,18 @@ func (h *DevMailHandler) SendTestMail(c *gin.Context) {
 		}
 		tier := strings.TrimSpace(req.TierName)
 		err = h.services.Mail.SendTicketDeniedEmail(ctx, fromEmail, req.To, ref, tier, strings.TrimSpace(req.Reason), lang)
+	case "notification":
+		title := strings.TrimSpace(req.Title)
+		if title == "" {
+			title = "Test notification"
+		}
+		body := strings.TrimSpace(req.Body)
+		if body == "" {
+			body = "This is a dev test of the admin notification email template."
+		}
+		err = h.services.Mail.SendNotificationEmail(ctx, fromEmail, req.To, title, body, lang)
 	default:
-		utils.RespondErrorWithErrorMessage(c, http.StatusBadRequest, constants.ErrCodeBadRequest, "kind must be otp, dealer, ticket, or ticket_denied", "invalidMailKind")
+		utils.RespondErrorWithErrorMessage(c, http.StatusBadRequest, constants.ErrCodeBadRequest, "kind must be otp, dealer, ticket, ticket_denied, or notification", "invalidMailKind")
 		return
 	}
 
