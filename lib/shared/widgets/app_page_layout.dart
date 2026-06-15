@@ -113,11 +113,10 @@ class AppContentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final ext = context.fuvekonTheme;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: ext.contentCard,
-        borderRadius: BorderRadius.circular(FuvekonRadii.card),
-      ),
+    return Material(
+      color: ext.contentCard,
+      borderRadius: BorderRadius.circular(FuvekonRadii.card),
+      clipBehavior: Clip.antiAlias,
       child: Padding(
         padding: padding,
         child: child,

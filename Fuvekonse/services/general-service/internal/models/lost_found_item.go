@@ -36,11 +36,11 @@ type LostFoundItem struct {
 	ClaimedByUserId   *uuid.UUID          `gorm:"type:uuid;index"`
 	ClaimMessage      string              `gorm:"type:text"`
 	ClaimedAt         *time.Time
-	ConfirmedByUserId *uuid.UUID `gorm:"type:uuid;index"`
+	ConfirmedByUserId *uuid.UUID          `gorm:"type:uuid;index"`
 	ConfirmedAt       *time.Time
-	CreatedAt         time.Time  `gorm:"autoCreateTime"`
-	ModifiedAt        time.Time  `gorm:"autoUpdateTime"`
-	DeletedAt         *time.Time `gorm:"index"`
-	IsDeleted         bool       `gorm:"default:false"`
-	SubmittedBy       User       `gorm:"foreignKey:SubmittedByUserId"`
+	CreatedAt         time.Time           `gorm:"autoCreateTime"`
+	ModifiedAt        time.Time           `gorm:"autoUpdateTime"`
+	DeletedAt         *time.Time          `gorm:"index"`
+	IsDeleted         bool                `gorm:"default:false"`
+	SubmittedBy       User                `gorm:"foreignKey:SubmittedByUserId"`
 }

@@ -23,11 +23,11 @@ class AuthPageLayout extends StatelessWidget {
       hero: AuthHero(title: heroTitle, subtitle: heroSubtitle),
       footer: footer,
       wrapInCard: true,
-      child: child,
       padding: const EdgeInsets.symmetric(
         horizontal: FuvekonSpacing.page,
         vertical: FuvekonSpacing.section,
       ),
+      child: child,
     );
   }
 }

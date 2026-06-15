@@ -106,6 +106,16 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			tickets.GET("/tiers/:id", h.Ticket.GetTierByID)
 		}
 
+		// Public S3 image proxy (streams object bytes from S3)
+		v1.GET("/s3/image", h.S3.GetImage)
+
+		// Public schedule routes (view-only)
+		schedules := v1.Group("/schedules")
+		{
+			schedules.GET("", h.Schedule.ListSchedules)
+			schedules.GET("/:id", h.Schedule.GetScheduleByID)
+		}
+
 		// Protected routes - require JWT authentication; verified users may call all, unverified only profile/verify whitelist
 		protected := v1.Group("")
 		protected.Use(middlewares.JWTAuthMiddleware())
@@ -170,6 +180,26 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				protectedTalents.DELETE("/:id", h.Talent.DeleteTalent)
 			}
 
+			protectedNotifications := protected.Group("/notifications")
+			{
+				protectedNotifications.POST("", h.Notification.CreateNotification)
+				protectedNotifications.GET("", h.Notification.ListMyNotifications)
+				protectedNotifications.GET("/:id", h.Notification.GetNotificationByID)
+				protectedNotifications.PUT("/:id", h.Notification.UpdateNotification)
+				protectedNotifications.DELETE("/:id", h.Notification.DeleteNotification)
+			}
+
+			protectedDevices := protected.Group("/devices")
+			{
+				protectedDevices.POST("/fcm-token", h.DeviceToken.RegisterFCMToken)
+				protectedDevices.DELETE("/fcm-token", h.DeviceToken.UnregisterFCMToken)
+			}
+
+			protectedS3 := protected.Group("/s3")
+			{
+				protectedS3.POST("/presign", h.S3.PresignUpload)
+			}
+
 			protectedLostFound := protected.Group("/lost-found")
 			{
 				protectedLostFound.GET("", h.LostFound.ListLostFoundForTicketHolder)
@@ -222,6 +252,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminTickets.GET("/statistics/timeline", h.Ticket.GetTicketSalesTimeline)
 				adminTickets.GET("/statistics/revenue", h.Ticket.GetTicketRevenue)
 				adminTickets.GET("/statistics", h.Ticket.GetTicketStatistics)
+				adminTickets.GET("/namecards/download", h.Ticket.DownloadAllNamecards)
 				adminTickets.GET("/tiers", h.Ticket.GetAllTiersForAdmin)
 				adminTickets.POST("/tiers", h.Ticket.CreateTierForAdmin)
 				adminTickets.PATCH("/tiers/:id", h.Ticket.UpdateTierForAdmin)
@@ -254,6 +285,12 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminDealers.PATCH("/:id/deny", h.Dealer.DenyDealer)
 			}
 
+			adminNotifications := admin.Group("/notifications")
+			adminNotifications.Use(middlewares.RequireRole(role.RoleAdmin))
+			{
+				adminNotifications.POST("", h.Notification.AdminCreateNotification)
+			}
+
 			// Admin/Staff conbook management (status review and transitions)
 			adminConbooks := admin.Group("/conbooks")
 			adminConbooks.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
@@ -276,6 +313,45 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminPanels.PATCH("/:id/approve", h.Panel.ApprovePanel)
 				adminPanels.PATCH("/:id/deny", h.Panel.DenyPanel)
 				adminPanels.PATCH("/:id/pending", h.Panel.MarkPanelPending)
+			}
+
+			adminSchedules := admin.Group("/admin-schedules")
+			adminSchedules.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+			{
+				adminSchedules.POST("", h.Schedule.CreateSchedule)
+				adminSchedules.PUT(":id", h.Schedule.UpdateSchedule)
+				adminSchedules.DELETE(":id", h.Schedule.DeleteSchedule)
+
+				// Global venue management (admin/staff)
+				adminVenues := admin.Group("/venues")
+				adminVenues.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+				{
+					adminVenues.POST("", h.Venue.CreateVenue)
+					adminVenues.GET("", h.Venue.ListVenues)
+					adminVenues.GET(":vid", h.Venue.GetVenueByID)
+					adminVenues.GET(":vid/locations", h.Venue.ListLocationsByVenue)
+					adminVenues.POST(":vid/locations", h.Venue.CreateLocation)
+				}
+				// Venue management (admin/staff)
+				adminSchedules.PUT("/:id/venues/:vid", h.Schedule.UpdateVenue)
+				adminSchedules.DELETE("/:id/venues/:vid", h.Schedule.DeleteVenue)
+
+				// Event management under a venue (admin/staff)
+				adminSchedules.POST("/:id/venues/:vid/events", h.Schedule.CreateEvent)
+				// Locations within a venue (attach global locations to a schedule, then create events)
+				adminSchedules.POST("/:id/venues/:vid/locations/attach", h.Schedule.AttachLocation)
+				adminSchedules.POST("/:id/venues/:vid/locations/:lid/events", h.Schedule.CreateEvent)
+				adminSchedules.PUT("/:id/venues/:vid/events/:eid", h.Schedule.UpdateEvent)
+				adminSchedules.DELETE("/:id/venues/:vid/events/:eid", h.Schedule.DeleteEvent)
+			}
+
+			// Backwards-compatible alias: support /admin/schedules as well as /admin/admin-schedules
+			adminSchedulesAlias := admin.Group("/schedules")
+			adminSchedulesAlias.Use(middlewares.RequireRole(role.RoleAdmin, role.RoleStaff))
+			{
+				adminSchedulesAlias.POST("", h.Schedule.CreateSchedule)
+				adminSchedulesAlias.PUT(":id", h.Schedule.UpdateSchedule)
+				adminSchedulesAlias.DELETE(":id", h.Schedule.DeleteSchedule)
 			}
 
 			adminTalents := admin.Group("/talents")

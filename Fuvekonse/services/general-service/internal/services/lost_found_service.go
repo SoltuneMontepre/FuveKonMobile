@@ -207,6 +207,7 @@ func (s *LostFoundService) ListForTicketHolder(ctx context.Context, userIDStr st
 		return nil, err
 	}
 
+	// Ticket holders only see active (open) listings.
 	q.Status = string(models.LostFoundStatusOpen)
 
 	items, total, err := s.repos.LostFound.List(ctx, q)

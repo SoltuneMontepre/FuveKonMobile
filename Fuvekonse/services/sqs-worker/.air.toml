@@ -4,8 +4,8 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "tmp/sqs-worker"
-  cmd = "go build -o ./tmp/sqs-worker ."
+  bin = "build\\main.exe"
+  cmd = "pwsh -NoProfile -ExecutionPolicy Bypass -Command \"Set-Location -Path './scripts'; ./build.ps1\""
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []
@@ -14,8 +14,9 @@ tmp_dir = "tmp"
   follow_symlink = false
   full_bin = ""
   include_dir = []
-  include_ext = ["go", "tpl", "tmpl", "html", "env"]
-  include_file = [".env"]
+  # Include PowerShell scripts in watched extensions
+  include_ext = ["go", "ps1", "tpl", "tmpl", "html"]
+  include_file = []
   kill_delay = "0s"
   log = "build-errors.log"
   poll = false
@@ -26,10 +27,6 @@ tmp_dir = "tmp"
   rerun_delay = 500
   send_interrupt = false
   stop_on_error = false
-
-[build.windows]
-  cmd = "go build -o ./tmp/sqs-worker.exe ."
-  bin = "tmp\\sqs-worker.exe"
 
 [color]
   app = ""

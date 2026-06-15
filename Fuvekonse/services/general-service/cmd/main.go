@@ -39,6 +39,8 @@ import (
 	"general-service/internal/repositories"
 	"general-service/internal/services"
 
+	_ "general-service/docs"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
@@ -291,7 +293,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to setup router: %v", err)
 	}
-	port := config.GetEnvOr("PORT", "8085")
+	port := config.GetEnvOr("PORT", "8080")
 
 	// Start server
 	log.Printf("Server starting on port %s", port)

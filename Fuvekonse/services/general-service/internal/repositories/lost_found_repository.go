@@ -13,9 +13,9 @@ import (
 )
 
 var (
-	ErrLostFoundNotFound      = errors.New("lost and found item not found")
-	ErrLostFoundNotOpen       = errors.New("lost and found item is not open for claims")
-	ErrLostFoundNotClaimed    = errors.New("lost and found item has not been claimed")
+	ErrLostFoundNotFound       = errors.New("lost and found item not found")
+	ErrLostFoundNotOpen        = errors.New("lost and found item is not open for claims")
+	ErrLostFoundNotClaimed     = errors.New("lost and found item has not been claimed")
 	ErrLostFoundAlreadyClaimed = errors.New("lost and found item has already been claimed")
 )
 
@@ -162,10 +162,10 @@ func (r *LostFoundRepository) ConfirmClaim(ctx context.Context, id, staffUserID 
 	result := r.db.WithContext(ctx).Model(&models.LostFoundItem{}).
 		Where("id = ? AND is_deleted = ? AND status = ?", id, false, models.LostFoundStatusClaimed).
 		Updates(map[string]interface{}{
-			"status":                models.LostFoundStatusResolved,
-			"confirmed_by_user_id":  staffUserID,
-			"confirmed_at":            now,
-			"modified_at":             now,
+			"status":               models.LostFoundStatusResolved,
+			"confirmed_by_user_id": staffUserID,
+			"confirmed_at":         now,
+			"modified_at":          now,
 		})
 	if result.Error != nil {
 		return result.Error

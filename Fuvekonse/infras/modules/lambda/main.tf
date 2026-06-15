@@ -29,6 +29,7 @@ resource "aws_lambda_function" "general_service" {
       FRONTEND_URL                    = var.frontend_url
       CORS_ALLOWED_ORIGINS            = join(",", var.cors_allowed_origins)
       GIN_MODE                        = var.gin_mode
+      AWS_REGION                      = var.aws_region
       S3_BUCKET                       = var.s3_bucket_name
       SES_SENDER                      = var.ses_sender_email
       SES_EMAIL_IDENTITY              = var.ses_sender_email

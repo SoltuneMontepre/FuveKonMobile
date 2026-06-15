@@ -111,6 +111,14 @@ type SalesTimelineResponse struct {
 	Count int64  `json:"count"`
 }
 
+// DownloadAllNamecardsResponse is returned after building a ZIP of stored name cards.
+type DownloadAllNamecardsResponse struct {
+	DownloadURL string `json:"download_url"`
+	FileName    string `json:"file_name"`
+	Count       int    `json:"count"`
+	Failed      int    `json:"failed"`
+}
+
 // RevenueResponse is the admin revenue API response (total + optional by-day)
 type RevenueResponse struct {
 	TotalRevenue float64                `json:"total_revenue"`

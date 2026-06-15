@@ -944,6 +944,25 @@ func (r *TicketRepository) GetTicketsForAdmin(ctx context.Context, filter AdminT
 	return tickets, total, nil
 }
 
+// GetIssuedTicketsWithNamecards returns approved/admin-granted tickets that have a stored namecard URL.
+func (r *TicketRepository) GetIssuedTicketsWithNamecards(ctx context.Context) ([]models.UserTicket, error) {
+	var tickets []models.UserTicket
+	err := r.db.WithContext(ctx).
+		Preload("User").
+		Where("user_tickets.is_deleted = ?", false).
+		Where("status IN ?", []models.TicketStatus{
+			models.TicketStatusApproved,
+			models.TicketStatusAdminGranted,
+		}).
+		Where("namecard_url <> ''").
+		Order("reference_code ASC").
+		Find(&tickets).Error
+	if err != nil {
+		return nil, err
+	}
+	return tickets, nil
+}
+
 // GetTicketStatistics returns ticket statistics for admin dashboard
 type TicketStatistics struct {
 	TotalTickets       int64

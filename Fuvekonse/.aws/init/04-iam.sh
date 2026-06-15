@@ -1,12 +1,6 @@
 #!/bin/bash
 set -x
 
-if [ "${ENABLE_LOCALSTACK_LAMBDA:-0}" != "1" ]; then
-  echo "Skipping IAM setup. Set ENABLE_LOCALSTACK_LAMBDA=1 to enable LocalStack Lambda dev setup."
-  set +x
-  exit 0
-fi
-
 awslocal iam create-role \
   --role-name lambda-execution-role \
   --assume-role-policy-document '{
