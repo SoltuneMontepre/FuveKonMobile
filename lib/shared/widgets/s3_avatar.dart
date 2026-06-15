@@ -45,11 +45,13 @@ class _S3AvatarState extends State<S3Avatar> {
       foregroundColor: colorScheme.onPrimaryContainer,
       backgroundImage:
           resolvedUrl != null ? NetworkImage(resolvedUrl) : null,
-      onBackgroundImageError: (_, _) {
-        if (!_loadFailed) {
-          setState(() => _loadFailed = true);
-        }
-      },
+      onBackgroundImageError: resolvedUrl != null
+          ? (_, _) {
+              if (!_loadFailed) {
+                setState(() => _loadFailed = true);
+              }
+            }
+          : null,
       child: resolvedUrl == null
           ? Text(
               widget.initials,

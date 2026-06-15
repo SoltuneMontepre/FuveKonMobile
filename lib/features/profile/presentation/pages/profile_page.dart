@@ -13,24 +13,28 @@ import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, this.title = 'Profile'});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<ProfileBloc>()..add(const ProfileEvent.started()),
-      child: const _ProfileView(),
+      child: _ProfileView(title: title),
     );
   }
 }
 
 class _ProfileView extends StatelessWidget {
-  const _ProfileView();
+  const _ProfileView({required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return AppPageScaffold(
-      title: 'Profile',
+      title: title,
       showBackButton: false,
       padding: EdgeInsets.zero,
       body: BlocBuilder<ProfileBloc, ProfileState>(

@@ -34,6 +34,11 @@ class AdminBottomNavBar extends StatelessWidget {
       icon: Icons.inventory_2_outlined,
       route: Routes.adminLostFound,
     ),
+    _NavItem(
+      label: 'Tài khoản',
+      icon: Icons.person_outline,
+      route: Routes.adminAccount,
+    ),
   ];
 
   @override

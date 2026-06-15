@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/screens/admin/admin_shell.dart';
 import 'package:fuvekonmobile/screens/admin/pages/admin_pages.dart';
+import 'package:fuvekonmobile/features/profile/presentation/pages/profile_page.dart';
 import 'package:fuvekonmobile/screens/admin/pages/operations_home_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -59,12 +60,19 @@ abstract final class AdminRoutes {
                   builder: (context, state) => const AdminDealersPage(),
                 ),
                 GoRoute(
-                  path: 'users/:id',
+                  path: 'users',
                   parentNavigatorKey: rootNavigatorKey,
-                  builder: (context, state) {
-                    final userId = state.pathParameters['id']!;
-                    return AdminUserDetailPage(userId: userId);
-                  },
+                  builder: (context, state) => const AdminUsersPage(),
+                  routes: [
+                    GoRoute(
+                      path: ':id',
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) {
+                        final userId = state.pathParameters['id']!;
+                        return AdminUserDetailPage(userId: userId);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -91,6 +99,15 @@ abstract final class AdminRoutes {
             GoRoute(
               path: Routes.adminLostFound,
               builder: (context, state) => const AdminLostFoundPage(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.adminAccount,
+              builder: (context, state) =>
+                  const ProfilePage(title: 'Tài khoản'),
             ),
           ],
         ),

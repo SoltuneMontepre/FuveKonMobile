@@ -74,21 +74,19 @@ class _SplashPageState extends State<SplashPage> {
               const _BrandTitle(),
               const SizedBox(height: 12),
               Text(
-                'Nơi kết nối cộng đồng sự kiện và nghệ thuật',
+                'Nơi kết nối cộng đồng sự kiện và nghệ thuậtkjlscxdgflhjkgfdkjhiudgfjhkdfg',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: FuvekonColors.darkText.withValues(alpha: 0.85),
-                      fontWeight: FontWeight.w300,
-                    ),
+                  color: FuvekonColors.darkText.withValues(alpha: 0.85),
+                  fontWeight: FontWeight.w300,
+                ),
                 textAlign: TextAlign.center,
               ),
               const Spacer(flex: 4),
               Text(
                 'v1.0.0',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: FuvekonColors.darkTextSecondary.withValues(
-                        alpha: 0.6,
-                      ),
-                    ),
+                  color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.6),
+                ),
               ),
               const SizedBox(height: 24),
             ],
@@ -105,10 +103,10 @@ class _BrandTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseStyle = Theme.of(context).textTheme.displaySmall?.copyWith(
-          fontWeight: FontWeight.w800,
-          letterSpacing: 3,
-          fontSize: 34,
-        );
+      fontWeight: FontWeight.w800,
+      letterSpacing: 3,
+      fontSize: 34,
+    );
 
     return Text.rich(
       TextSpan(

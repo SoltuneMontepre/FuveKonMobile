@@ -26,6 +26,7 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_localizations:
     sdk: flutter
+  mobile_scanner: ^7.2.0
 
 dev_dependencies:
   flutter_test:

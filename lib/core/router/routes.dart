@@ -75,10 +75,12 @@ abstract final class Routes {
   static const adminScanTicket = '/admin/scan-ticket';
   static const adminHistory = '/admin/history';
   static const adminLostFound = '/admin/lost-found';
+  static const adminAccount = '/admin/account';
   static const adminArtSubmit = '/admin/art-submit';
   static const adminPanels = '/admin/panels';
   static const adminTalents = '/admin/talents';
   static const adminDealers = '/admin/dealers';
+  static const adminUsers = '/admin/users';
   static String adminUserDetail(String id) => '/admin/users/$id';
 
   static const publicRoutes = {
@@ -125,6 +127,7 @@ abstract final class Routes {
     adminScanTicket,
     adminHistory,
     adminLostFound,
+    adminAccount,
   };
 
   static bool isStaffAccessibleAdminRoute(String location) =>

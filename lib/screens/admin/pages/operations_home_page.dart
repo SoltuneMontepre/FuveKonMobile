@@ -47,12 +47,12 @@ class _OperationsHomeView extends StatelessWidget {
 
             return RefreshIndicator(
               onRefresh: () async {
-                context
-                    .read<ProfileBloc>()
-                    .add(const ProfileEvent.refreshRequested());
+                context.read<ProfileBloc>().add(
+                  const ProfileEvent.refreshRequested(),
+                );
                 await context.read<ProfileBloc>().stream.firstWhere(
-                      (s) => s is ProfileLoaded || s is ProfileFailure,
-                    );
+                  (s) => s is ProfileLoaded || s is ProfileFailure,
+                );
               },
               child: ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -66,8 +66,7 @@ class _OperationsHomeView extends StatelessWidget {
                   const FuvekonHomeAppBar(),
                   const SizedBox(height: 8),
                   FuvekonHomeGreeting(
-                    name: account.displayName ??
-                        account.email.split('@').first,
+                    name: account.displayName ?? account.email.split('@').first,
                     subtitle: _isAdmin(account)
                         ? 'Quản lý sự kiện và vận hành tại chỗ.'
                         : 'Sẵn sàng phục vụ khách tham dự tại sự kiện.',
@@ -85,9 +84,7 @@ class _OperationsHomeView extends StatelessWidget {
                         Expanded(
                           child: Text(
                             'Quét mã QR vé để check-in khách tham dự.',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
+                            style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(color: FuvekonColors.textSecondary),
                           ),
                         ),
@@ -112,26 +109,6 @@ class _OperationsHomeView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  FuvekonSageCard(
-                    title: 'Lịch trình hôm nay',
-                    child: _ScheduleTimeline(
-                      items: [
-                        _ScheduleItem(
-                          time: '08:00',
-                          endTime: '12:00',
-                          title: 'Check-in cổng chính',
-                          location: 'Cổng A - Sảnh chính',
-                        ),
-                        _ScheduleItem(
-                          time: '14:00',
-                          endTime: '15:30',
-                          title: 'Panel Voice Actor',
-                          location: 'Sân khấu chính',
-                        ),
-                      ],
-                    ),
-                  ),
                   const SizedBox(height: 24),
                   FuvekonUtilitySection(items: _utilityItems(context)),
                   const SizedBox(height: 24),
@@ -147,38 +124,35 @@ class _OperationsHomeView extends StatelessWidget {
     );
   }
 
-  bool _isAdmin(Account account) =>
-      account.role?.toLowerCase() == 'admin';
+  bool _isAdmin(Account account) => account.role?.toLowerCase() == 'admin';
 
   List<FuvekonUtilityItem> _utilityItems(BuildContext context) => [
-        FuvekonUtilityItem(
-          label: 'Quét mã',
-          icon: Icons.qr_code_scanner_outlined,
-          onTap: () => context.go(Routes.adminScanTicket),
-        ),
-        FuvekonUtilityItem(
-          label: 'Lịch sử',
-          icon: Icons.history_rounded,
-          onTap: () => context.go(Routes.adminHistory),
-        ),
-        FuvekonUtilityItem(
-          label: 'Thất lạc',
-          icon: Icons.inventory_2_outlined,
-          onTap: () => context.go(Routes.adminLostFound),
-          accentColor: const Color(0xFFFBBF24),
-        ),
-        FuvekonUtilityItem(
-          label: 'Thông báo',
-          icon: Icons.notifications_outlined,
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => const NotificationsPage(),
-              ),
-            );
-          },
-        ),
-      ];
+    FuvekonUtilityItem(
+      label: 'Quét mã',
+      icon: Icons.qr_code_scanner_outlined,
+      onTap: () => context.go(Routes.adminScanTicket),
+    ),
+    FuvekonUtilityItem(
+      label: 'Lịch sử',
+      icon: Icons.history_rounded,
+      onTap: () => context.go(Routes.adminHistory),
+    ),
+    FuvekonUtilityItem(
+      label: 'Thất lạc',
+      icon: Icons.inventory_2_outlined,
+      onTap: () => context.go(Routes.adminLostFound),
+      accentColor: const Color(0xFFFBBF24),
+    ),
+    FuvekonUtilityItem(
+      label: 'Thông báo',
+      icon: Icons.notifications_outlined,
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(builder: (_) => const NotificationsPage()),
+        );
+      },
+    ),
+  ];
 
   List<FuvekonQuickActionItem> _quickActions(
     BuildContext context,
@@ -205,6 +179,21 @@ class _OperationsHomeView extends StatelessWidget {
           label: 'Duyệt Conbook',
           icon: Icons.menu_book_outlined,
           onTap: () => context.push(Routes.adminArtSubmit),
+        ),
+        FuvekonQuickActionItem(
+          label: 'Quản lý Panel',
+          icon: Icons.groups_outlined,
+          onTap: () => context.push(Routes.adminPanels),
+        ),
+        FuvekonQuickActionItem(
+          label: 'Quản lý Dealer',
+          icon: Icons.storefront_outlined,
+          onTap: () => context.push(Routes.adminDealers),
+        ),
+        FuvekonQuickActionItem(
+          label: 'Người dùng',
+          icon: Icons.people_outline,
+          onTap: () => context.push(Routes.adminUsers),
         ),
       ];
     }
