@@ -1,141 +1,47 @@
-# Local .terraform directories
-**/.terraform/*
-/.terraform/
-
-# .tfstate files
-*.tfstate
-*.tfstate.*
-
-# Crash log files
-crash.log
-crash.*.log
-
-# Exclude all .tfvars files, which are likely to contain sensitive data
-*.tfvars.json
-
-# Ignore override files as they are usually used to override resources locally
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-
-# Ignore CLI configuration files
-.terraformrc
-terraform.rc
-
-# Go (web API service)
-# Binaries and build outputs
-*.exe
-*.dll
-*.so
-*.dylib
-*.test
-/bin/
-/build/
-/out/
-
-# Test & coverage
-coverage.out
-*.cover
-
-# Dependency vendoring (optional — remove if you commit vendor/)
-vendor/
-
-# Environment / secrets
 .env
-.env.*.local
 
-# Logs & misc
+# Miscellaneous
+*.class
 *.log
-
-# Air live reload
-node_modules/
-tmp/
-build-errors.log
-
-# Swagger documentation (generated files)
-services/*/docs/
-services/*/docs.go
-services/*/swagger.json
-services/*/swagger.yaml
-
-# IDE and editor files
-.vscode/
-.idea/
+*.pyc
 *.swp
-*.swo
-*~
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
 
-# Go application .gitignore
-
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-*.test
-
-# Build output
-/bin/
-/build/
-/dist/
-*.out
-
-# Go modules and package cache
-Godeps/
-vendor/
-pkg/mod/
-
-# Debug / profiling / coverage
-coverage.out
-*.prof
-
-# Logs and databases
-*.log
-*.sqlite
-*.db
-
-# IDEs and editors
-.idea/
-.vscode/
+# IntelliJ related
 *.iml
-*.swp
-*~
+*.ipr
+*.iws
+.idea/
 
-# OS files
-.DS_Store
-Thumbs.db
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
 
-# Environment files
-.env
-*.env
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-.cursor/
-
-# LocalStack
-.aws/volume
-.aws/lambda
-*.zip
-build
-instructions/
-.cursor
-.cursorrules
-
-# Flutter / Dart
-.dart_tool
-.flutter-plugins
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
 .flutter-plugins-dependencies
+.pub-cache/
 .pub/
 /build/
+/coverage/
 
-bootstrap
+# Symbolication related
+app.*.symbols
 
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
