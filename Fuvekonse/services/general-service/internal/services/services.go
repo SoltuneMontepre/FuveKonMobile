@@ -11,11 +11,13 @@ type Services struct {
 	User      *UserService
 	Mail      *MailService
 	Ticket    *TicketService
+	Event     *EventService
 	Dealer    *DealerService
 	Conbook   *ConbookService
 	Panel     *PanelService
 	Talent    *TalentService
 	Analytics *AnalyticsService
+	LostFound *LostFoundService
 }
 
 func NewServices(repos *repositories.Repositories, redisClient *redis.Client, loginMaxFail int, loginFailBlockMinutes int) *Services {
@@ -26,10 +28,12 @@ func NewServices(repos *repositories.Repositories, redisClient *redis.Client, lo
 		User:      NewUserService(repos),
 		Mail:      mail,
 		Ticket:    ticket,
+		Event:     NewEventService(repos),
 		Dealer:    NewDealerService(repos, mail),
 		Conbook:   NewConbookService(repos),
 		Panel:     NewPanelService(repos),
 		Talent:    NewTalentService(repos),
 		Analytics: NewAnalyticsService(repos, ticket),
+		LostFound: NewLostFoundService(repos),
 	}
 }

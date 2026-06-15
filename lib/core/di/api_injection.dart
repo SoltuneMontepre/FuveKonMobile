@@ -1,7 +1,9 @@
+import 'package:fuvekonmobile/core/api/analytics_api.dart';
 import 'package:fuvekonmobile/core/api/fuvekon_apis.dart';
 import 'package:fuvekonmobile/core/network/api_client.dart';
 import 'package:get_it/get_it.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_conbook_service.dart';
+import 'package:fuvekonmobile/screens/admin/services/admin_dashboard_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_dealer_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_panel_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/scan_ticket_service.dart';
@@ -40,5 +42,8 @@ void registerApiModule(GetIt sl) {
     )
     ..registerLazySingleton(
       () => AdminUserService(adminUserApi: sl()),
+    )
+    ..registerLazySingleton(
+      () => AdminDashboardService(analyticsApi: sl<AnalyticsApi>()),
     );
 }

@@ -31,6 +31,16 @@ func NewDealerService(repos *repositories.Repositories, mail *MailService) *Deal
 
 // RegisterDealer creates a new dealer booth and assigns the creator as owner
 func (s *DealerService) RegisterDealer(userID string, req *requests.DealerRegisterRequest) (*responses.DealerBoothResponse, error) {
+	ctx := context.Background()
+
+	open, err := s.repos.Event.IsDealerRegistrationOpen(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if !open {
+		return nil, repositories.ErrDealerRegistrationClosed
+	}
+
 	// Check if user exists
 	user, err := s.repos.User.FindByID(userID)
 	if err != nil {
@@ -46,7 +56,6 @@ func (s *DealerService) RegisterDealer(userID string, req *requests.DealerRegist
 		return nil, errors.New("invalid user ID")
 	}
 
-	ctx := context.Background()
 	userTicket, err := s.repos.Ticket.GetUserTicket(ctx, userUUID)
 	if err != nil {
 		return nil, errors.New("failed to check user ticket")

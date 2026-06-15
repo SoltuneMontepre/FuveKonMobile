@@ -4,25 +4,14 @@ import 'package:fuvekonmobile/screens/admin/widgets/staff_tab_scaffold.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';
 export 'admin_conbook_page.dart';
+export 'admin_dashboard_page.dart';
 export 'admin_dealers_page.dart';
 export 'admin_panels_page.dart';
 export 'admin_scan_history_page.dart';
 export 'admin_scan_ticket_page.dart';
 export 'admin_user_detail_page.dart';
+export 'admin_user_edit_page.dart';
 export 'admin_users_page.dart';
-
-class AdminDashboardPage extends StatelessWidget {
-  const AdminDashboardPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'Analytics Dashboard',
-      subtitle: 'Event metrics and overview charts.',
-      icon: Icons.analytics_outlined,
-    );
-  }
-}
 
 class AdminDashboardUsersPage extends StatelessWidget {
   const AdminDashboardUsersPage({super.key});

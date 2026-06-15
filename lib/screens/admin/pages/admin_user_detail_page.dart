@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
@@ -149,10 +150,26 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     );
   }
 
+  Future<void> _openEdit() async {
+    final updated = await context.push<bool>(Routes.adminUserEdit(widget.userId));
+    if (updated == true) await _load();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final canEdit = _user != null && !_user!.isDeleted;
     return Scaffold(
-      appBar: AppBar(title: const Text('Chi tiết người dùng')),
+      appBar: AppBar(
+        title: const Text('Chi tiết người dùng'),
+        actions: [
+          if (canEdit)
+            IconButton(
+              onPressed: _actionInProgress ? null : _openEdit,
+              icon: const Icon(Icons.edit_outlined),
+              tooltip: 'Chỉnh sửa',
+            ),
+        ],
+      ),
       body: _buildBody(),
     );
   }

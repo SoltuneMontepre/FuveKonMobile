@@ -123,6 +123,8 @@ func respondTicketJobError(c *gin.Context, err error) {
 		utils.RespondError(c, http.StatusConflict, "ALREADY_HAS_TICKET", err.Error())
 	case errors.Is(err, repositories.ErrUserBlacklisted):
 		utils.RespondForbidden(c, err.Error())
+	case errors.Is(err, repositories.ErrTicketSalesClosed):
+		respondTicketSalesClosed(c)
 	case errors.Is(err, repositories.ErrInvalidTicketStatus):
 		utils.RespondError(c, http.StatusConflict, "INVALID_STATUS", err.Error())
 	case errors.Is(err, repositories.ErrCannotDowngrade):

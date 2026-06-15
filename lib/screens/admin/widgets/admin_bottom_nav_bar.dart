@@ -6,43 +6,79 @@ import 'package:go_router/go_router.dart';
 class AdminBottomNavBar extends StatelessWidget {
   const AdminBottomNavBar({
     super.key,
-    required this.currentIndex,
+    required this.currentBranchIndex,
+    required this.isAdmin,
     required this.onTap,
   });
 
-  final int currentIndex;
+  final int currentBranchIndex;
+  final bool isAdmin;
   final ValueChanged<int> onTap;
 
-  static const _items = [
+  static const _adminBranchIndices = [0, 1, 2, 3, 4, 5];
+  static const _staffBranchIndices = [0, 2, 3, 4, 5];
+
+  static const _allItems = [
     _NavItem(
       label: 'Trang chủ',
       icon: Icons.home_outlined,
       route: Routes.admin,
+      adminOnly: false,
+    ),
+    _NavItem(
+      label: 'Thống kê',
+      icon: Icons.analytics_outlined,
+      route: Routes.adminDashboard,
+      adminOnly: true,
     ),
     _NavItem(
       label: 'Quét mã',
       icon: Icons.qr_code_scanner_outlined,
       route: Routes.adminScanTicket,
+      adminOnly: false,
     ),
     _NavItem(
       label: 'Lịch sử',
       icon: Icons.history_rounded,
       route: Routes.adminHistory,
+      adminOnly: false,
     ),
     _NavItem(
       label: 'Thất lạc',
       icon: Icons.inventory_2_outlined,
       route: Routes.adminLostFound,
+      adminOnly: false,
     ),
     _NavItem(
       label: 'Tài khoản',
       icon: Icons.person_outline,
       route: Routes.adminAccount,
+      adminOnly: false,
     ),
   ];
 
+  List<_NavItem> _itemsFor(bool isAdmin) =>
+      _allItems.where((item) => !item.adminOnly || isAdmin).toList();
+
+  List<int> _branchIndicesFor(bool isAdmin) =>
+      isAdmin ? _adminBranchIndices : _staffBranchIndices;
+
+  int _navIndexForBranch(int branchIndex, bool isAdmin) {
+    return _branchIndicesFor(isAdmin).indexOf(branchIndex);
+  }
+
+  int _branchIndexForNav(int navIndex, bool isAdmin) {
+    return _branchIndicesFor(isAdmin)[navIndex];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final items = _itemsFor(isAdmin);
+    final currentNavIndex = _navIndexForBranch(
+      currentBranchIndex,
+      isAdmin,
+    );
+
     return DecoratedBox(
       decoration: BoxDecoration(
         color: FuvekonColors.darkSurface,
@@ -57,16 +93,20 @@ class AdminBottomNavBar extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Row(
-            children: List.generate(_items.length, (index) {
-              final item = _items[index];
-              final selected = currentIndex == index;
+            children: List.generate(items.length, (index) {
+              final item = items[index];
+              final selected = currentNavIndex == index;
               return Expanded(
                 child: _NavButton(
                   item: item,
                   selected: selected,
                   onTap: () {
                     if (selected) return;
-                    onTap(index);
+                    final branchIndex = _branchIndexForNav(
+                      index,
+                      isAdmin,
+                    );
+                    onTap(branchIndex);
                     context.go(item.route);
                   },
                 ),
@@ -84,11 +124,13 @@ class _NavItem {
     required this.label,
     required this.icon,
     required this.route,
+    required this.adminOnly,
   });
 
   final String label;
   final IconData icon;
   final String route;
+  final bool adminOnly;
 }
 
 class _NavButton extends StatelessWidget {

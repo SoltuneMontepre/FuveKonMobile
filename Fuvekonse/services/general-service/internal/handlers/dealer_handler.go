@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"errors"
 	"general-service/internal/common/utils"
 	"general-service/internal/dto/dealer/requests"
+	"general-service/internal/repositories"
 	"general-service/internal/services"
 	"os"
 	"strconv"
@@ -68,6 +70,10 @@ func (h *DealerHandler) RegisterDealer(c *gin.Context) {
 	// Call service to register dealer
 	booth, err := h.services.Dealer.RegisterDealer(userID, &req)
 	if err != nil {
+		if errors.Is(err, repositories.ErrDealerRegistrationClosed) {
+			respondDealerRegistrationClosed(c)
+			return
+		}
 		errMsg := err.Error()
 		switch errMsg {
 		case "user not found":

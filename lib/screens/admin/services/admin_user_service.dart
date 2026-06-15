@@ -34,6 +34,39 @@ class AdminUserPageResult {
   final PaginationMeta meta;
 }
 
+class AdminUpdateUserInput {
+  const AdminUpdateUserInput({
+    this.fursonaName,
+    this.firstName,
+    this.lastName,
+    this.country,
+    this.avatar,
+    this.role,
+    this.idCard,
+    this.isVerified,
+  });
+
+  final String? fursonaName;
+  final String? firstName;
+  final String? lastName;
+  final String? country;
+  final String? avatar;
+  final String? role;
+  final String? idCard;
+  final bool? isVerified;
+
+  Map<String, dynamic> toJson() => {
+        if (fursonaName != null) 'fursona_name': fursonaName,
+        if (firstName != null) 'first_name': firstName,
+        if (lastName != null) 'last_name': lastName,
+        if (country != null) 'country': country,
+        if (avatar != null) 'avatar': avatar,
+        if (role != null) 'role': role,
+        if (idCard != null) 'id_card': idCard,
+        if (isVerified != null) 'is_verified': isVerified,
+      };
+}
+
 class AdminUserService {
   AdminUserService({required AdminUserApi adminUserApi}) : _api = adminUserApi;
 
@@ -111,6 +144,14 @@ class AdminUserService {
 
   Future<AdminUserItem> getUserById(String id) async {
     final response = await _api.getUserById(id);
+    if (!response.isSuccess || response.data == null) {
+      throw ServerException(response.errorMessage ?? response.message);
+    }
+    return AdminUserItem.fromJson(response.data!);
+  }
+
+  Future<AdminUserItem> updateUser(String id, AdminUpdateUserInput input) async {
+    final response = await _api.updateUser(id, input.toJson());
     if (!response.isSuccess || response.data == null) {
       throw ServerException(response.errorMessage ?? response.message);
     }

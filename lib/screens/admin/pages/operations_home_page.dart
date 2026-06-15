@@ -173,7 +173,7 @@ class _OperationsHomeView extends StatelessWidget {
         FuvekonQuickActionItem(
           label: 'Thống kê',
           icon: Icons.analytics_outlined,
-          onTap: () => context.push(Routes.adminDashboard),
+          onTap: () => context.go(Routes.adminDashboard),
         ),
         FuvekonQuickActionItem(
           label: 'Duyệt Conbook',

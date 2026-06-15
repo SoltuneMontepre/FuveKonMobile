@@ -43,6 +43,10 @@ func (h *TalentHandler) CreateTalent(c *gin.Context) {
 
 	talent, err := h.services.Talent.CreateTalent(ctx, userID.(string), &req)
 	if err != nil {
+		if errors.Is(err, repositories.ErrTalentRegistrationClosed) {
+			respondTalentRegistrationClosed(c)
+			return
+		}
 		errMsg := err.Error()
 		switch errMsg {
 		case "user must have a ticket to submit a talent application":

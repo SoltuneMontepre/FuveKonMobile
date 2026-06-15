@@ -82,6 +82,7 @@ abstract final class Routes {
   static const adminDealers = '/admin/dealers';
   static const adminUsers = '/admin/users';
   static String adminUserDetail(String id) => '/admin/users/$id';
+  static String adminUserEdit(String id) => '/admin/users/$id/edit';
 
   static const publicRoutes = {
     home,

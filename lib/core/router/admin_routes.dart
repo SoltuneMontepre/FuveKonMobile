@@ -22,19 +22,6 @@ abstract final class AdminRoutes {
               builder: (context, state) => const OperationsHomePage(),
               routes: [
                 GoRoute(
-                  path: 'dashboard',
-                  parentNavigatorKey: rootNavigatorKey,
-                  builder: (context, state) => const AdminDashboardPage(),
-                  routes: [
-                    GoRoute(
-                      path: 'users',
-                      parentNavigatorKey: rootNavigatorKey,
-                      builder: (context, state) =>
-                          const AdminDashboardUsersPage(),
-                    ),
-                  ],
-                ),
-                GoRoute(
                   path: 'tickets',
                   parentNavigatorKey: rootNavigatorKey,
                   builder: (context, state) => const AdminTicketsPage(),
@@ -71,8 +58,34 @@ abstract final class AdminRoutes {
                         final userId = state.pathParameters['id']!;
                         return AdminUserDetailPage(userId: userId);
                       },
+                      routes: [
+                        GoRoute(
+                          path: 'edit',
+                          parentNavigatorKey: rootNavigatorKey,
+                          builder: (context, state) {
+                            final userId = state.pathParameters['id']!;
+                            return AdminUserEditPage(userId: userId);
+                          },
+                        ),
+                      ],
                     ),
                   ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.adminDashboard,
+              builder: (context, state) => const AdminDashboardPage(),
+              routes: [
+                GoRoute(
+                  path: 'users',
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (context, state) =>
+                      const AdminDashboardUsersPage(),
                 ),
               ],
             ),
