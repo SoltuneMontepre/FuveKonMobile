@@ -1,0 +1,8 @@
+# Mobile-repo override for local backend dev.
+# Pins LocalStack to a community image that does not require LOCALSTACK_AUTH_TOKEN.
+services:
+  localstack:
+    image: localstack/localstack:4.14
+    environment:
+      - SERVICES=s3,sqs,ses
+      - DEBUG=0

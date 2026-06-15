@@ -2,20 +2,23 @@ version: "3"
 
 # FuveKonMobile - Root Taskfile
 #
-# Include Fuvekonse backend tasks voi namespace 'backend'.
-# Cai dat Task runner neu chua co:
-#   go install github.com/go-task/task/v3/cmd/task@latest
+# Backend tasks live here (not in Fuvekonse/ subtree) to avoid divergence from
+# https://github.com/SoltuneMontepre/Fuvekonse
 #
-# Chay 'task --list' de xem tat ca task.
+# Install Task: go install github.com/go-task/task/v3/cmd/task@latest
 
-includes:
-  backend:
-    taskfile: ./Fuvekonse/Taskfile.yml
-    dir: ./Fuvekonse
+vars:
+  BACKEND_DIR: Fuvekonse
+  COMPOSE_BASE: docker-compose.yml
+  COMPOSE_OVERRIDE: ../docker-compose.backend.yml
 
 tasks:
+  default:
+    cmds:
+      - task --list
+
   subtree-pull:
-    desc: "Pull latest Fuvekonse vao subfolder Fuvekonse/ (upstream wins on conflict)"
+    desc: Pull latest Fuvekonse into ./Fuvekonse/ (upstream wins on conflict)
     vars:
       REMOTE: "https://github.com/SoltuneMontepre/Fuvekonse.git"
       BRANCH: "main"
@@ -30,3 +33,139 @@ tasks:
       - echo ">>> Restoring local changes..."
       - git stash pop
       - echo ">>> Done! Fuvekonse/ is up to date."
+
+  backend:setup:
+    desc: One-time setup — tools, env files, Docker images, DB migration.
+    cmds:
+      - task: backend:_check
+      - task: backend:_tools
+      - task: backend:_env
+      - task: backend:_flutter-env
+      - task: backend:_deps
+      - task: backend:_pull
+      - task: backend:_infra
+      - task: backend:_wait
+      - task: backend:_migrate
+      - echo ""
+      - echo "Backend ready!"
+      - echo "  API     http://localhost:8085/swagger/index.html"
+      - echo "  Flutter flutter pub get && flutter run"
+      - echo ""
+
+  backend:dev:
+    desc: Daily dev — ensure infra is up, migrate, run all Go services.
+    cmds:
+      - task: backend:_env
+      - task: backend:_flutter-env
+      - task: backend:_infra
+      - task: backend:_wait
+      - task: backend:_migrate
+      - task: backend:_services
+
+  backend:stop:
+    desc: Stop Docker infrastructure.
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - docker compose -f {{.COMPOSE_BASE}} -f {{.COMPOSE_OVERRIDE}} down
+
+  backend:_check:
+    internal: true
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - go run ./tools/devctl/main.go check
+
+  backend:_tools:
+    internal: true
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - go run ./tools/devctl/main.go ensure-tools
+
+  backend:_env:
+    internal: true
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - go run ./tools/devctl/main.go ensure-env
+
+  backend:_flutter-env:
+    internal: true
+    cmds:
+      - cmd: powershell -Command "if (!(Test-Path .env)) { Copy-Item .env.example .env; Write-Host 'Created .env from .env.example' }"
+        platforms: [windows]
+      - cmd: test -f .env || cp .env.example .env && echo "Created .env from .env.example"
+        platforms: [linux, darwin]
+
+  backend:_deps:
+    internal: true
+    cmds:
+      - task: backend:_deps:general
+      - task: backend:_deps:rbac
+      - task: backend:_deps:worker
+
+  backend:_deps:general:
+    internal: true
+    dir: Fuvekonse/services/general-service
+    cmds:
+      - go mod tidy
+
+  backend:_deps:rbac:
+    internal: true
+    dir: Fuvekonse/services/rbac-service
+    cmds:
+      - go mod tidy
+
+  backend:_deps:worker:
+    internal: true
+    dir: Fuvekonse/services/sqs-worker
+    cmds:
+      - go mod tidy
+
+  backend:_pull:
+    internal: true
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - docker compose -f {{.COMPOSE_BASE}} -f {{.COMPOSE_OVERRIDE}} pull
+
+  backend:_infra:
+    internal: true
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - docker compose -f {{.COMPOSE_BASE}} -f {{.COMPOSE_OVERRIDE}} up -d
+
+  backend:_wait:
+    internal: true
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - go run ./tools/devctl/main.go wait
+
+  backend:_migrate:
+    internal: true
+    dir: "{{.BACKEND_DIR}}/services/general-service"
+    cmds:
+      - go run ./cmd/migrate
+
+  backend:_services:
+    internal: true
+    deps:
+      - backend:_run:general
+      - backend:_run:rbac
+      - backend:_run:worker
+
+  backend:_run:general:
+    internal: true
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - go run ./tools/devctl/main.go run-air ./services/general-service
+
+  backend:_run:rbac:
+    internal: true
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - go run ./tools/devctl/main.go run-air ./services/rbac-service
+
+  backend:_run:worker:
+    internal: true
+    # sqs-worker .air.toml builds a Linux Lambda binary (build.ps1), not main.exe on Windows.
+    # Use go run for local polling mode instead.
+    dir: Fuvekonse/services/sqs-worker
+    cmds:
+      - go run .

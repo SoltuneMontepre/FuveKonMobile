@@ -22,47 +22,45 @@
 
 ---
 
+## Quick Start (Mobile Dev)
+
+Yêu cầu: [Go](https://go.dev/doc/install) >= 1.25, [Docker](https://www.docker.com/get-started/), [Flutter](https://docs.flutter.dev/get-started/install), [Task](https://taskfile.dev/installation/).
+
+```powershell
+# Cài Task runner (một lần)
+go install github.com/go-task/task/v3/cmd/task@latest
+
+# Setup backend một lần (tools, .env, Docker, migrate)
+task backend:setup
+
+# Terminal 1 — chạy backend local mỗi ngày
+task backend:dev
+
+# Terminal 2 — chạy mobile app
+flutter pub get
+flutter run
+```
+
+API local: http://localhost:8085/swagger/index.html
+
+> Task backend được định nghĩa tại [`Taskfile.yml`](Taskfile.yml) (root repo), **không** nằm trong subtree `Fuvekonse/` — tránh lệch so với [repo backend gốc](https://github.com/SoltuneMontepre/Fuvekonse).
+
+---
+
 ## Task Runner (Quản lý Backend)
 
-Repository này sử dụng [**Task**](https://taskfile.dev) để quản lý các tác vụ backend.
+Repository này sử dụng [**Task**](https://taskfile.dev) tại root để quản lý backend local cho mobile dev.
 
-### Cài đặt Task runner
-
-```bash
-go install github.com/go-task/task/v3/cmd/task@latest
-```
-
-Hoặc xem các phương thức cài đặt khác tại [taskfile.dev/installation](https://taskfile.dev/installation/).
-
-### Xem tất cả task
-
-```bash
-task --list
-```
-
-### Các task phổ biến
+### Các task
 
 | Command | Mô tả |
 |---|---|
-| `subtree-pull` | Pull latest Fuvekonse từ GitHub vào git subtree |
-| `backend` | Chạy toàn bộ dev environment (alias của `backend:default`) |
-| `backend:dev` | Start Docker infra + migrate + chạy tất cả services với Air |
-| `backend:infra` | Khởi động Docker infrastructure (PostgreSQL, Redis, LocalStack) |
-| `backend:stop` | Dừng Docker infrastructure |
-| `backend:migrate` | Chạy database migration cho general-service |
-| `backend:run:general` | Chạy general-service với Air |
-| `backend:run:rbac` | Chạy rbac-service với Air |
-| `backend:run:worker` | Chạy sqs-worker với Air |
-| `backend:services` | Chạy tất cả services với Air (song song) |
-| `backend:check` | Kiểm tra prerequisites và port availability |
-| `backend:tools` | Cài đặt Go dev tools cần thiết |
-| `backend:env` | Tạo/cập nhật file `.env` cho các service |
-| `backend:wait` | Chờ Postgres, Redis, LocalStack sẵn sàng |
-| `backend:build:general` | Build general-service (Docker, cho Lambda) |
-| `backend:build:rbac` | Build rbac-service (Docker, cho Lambda) |
-| `backend:build:worker` | Build sqs-worker (Docker, cho Lambda) |
-| `backend:build:lambda` | Build tất cả services cho AWS Lambda |
-| `backend:build:local` | Build tất cả services locally |
+| `task backend:setup` | Setup một lần (tools, env, Docker images, migrate) |
+| `task backend:dev` | Chạy backend local mỗi ngày (infra + migrate + services) |
+| `task backend:stop` | Dừng Docker infrastructure |
+| `task subtree-pull` | Pull latest Fuvekonse từ GitHub vào git subtree |
+
+Xem đầy đủ: `task --list`
 
 
 ---
@@ -75,7 +73,7 @@ Backend `Fuvekonse` được tích hợp vào repository này dưới thư mục
 
 ```bash
 # Dùng Task runner (khuyến nghị):
-task backend:subtree-pull
+task subtree-pull
 
 # Hoặc chạy thủ công:
 git subtree pull --prefix Fuvekonse https://github.com/SoltuneMontepre/Fuvekonse.git main --squash
@@ -142,7 +140,7 @@ Liên hệ maintainer của [`SoltuneMontepre/Fuvekonse`](https://github.com/Sol
 
 > [!CAUTION]
 > **Không merge nhánh `backend/*` vào `main` của FuveKonMobile** cho đến khi maintainer backend xác nhận đã cherry-pick thay đổi lên repo gốc.
-> Sau khi được merge vào backend gốc, chạy `task backend:subtree-pull` để đồng bộ lại.
+> Sau khi được merge vào backend gốc, chạy `task subtree-pull` để đồng bộ lại.
 
 
 ---

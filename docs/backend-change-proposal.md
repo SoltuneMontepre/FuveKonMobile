@@ -53,8 +53,7 @@ _(Điền vào đây)_
 
 ```bash
 # Môi trường test:
-# - task backend:docker-up
-# - task backend:migrate
+# - task backend:setup
 # - task backend:dev
 
 # Các bước test:
@@ -94,10 +93,10 @@ Diff   : https://github.com/<your-fork-or-local>/compare/main...backend/<ten-van
 
 - [ ] Review và xác nhận thay đổi hợp lý
 - [ ] Cherry-pick commit này lên nhánh `main` của `SoltuneMontepre/Fuvekonse`
-- [ ] Thông báo lại sau khi merge để mobile dev chạy `task backend:subtree-pull`
+- [ ] Thông báo lại sau khi merge để mobile dev chạy `task subtree-pull`
 
 ---
 
 > [!NOTE]
 > Sau khi maintainer xác nhận đã cherry-pick, **không merge nhánh `backend/*` vào `main` của FuveKonMobile**.
-> Thay vào đó, chạy `task backend:subtree-pull` để đồng bộ thay đổi từ repo gốc.
+> Thay vào đó, chạy `task subtree-pull` để đồng bộ thay đổi từ repo gốc.
