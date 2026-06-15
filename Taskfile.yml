@@ -15,9 +15,18 @@ includes:
 
 tasks:
   subtree-pull:
-    desc: "Pull latest Fuvekonse tu GitHub vao git subtree (Fuvekonse/)"
+    desc: "Pull latest Fuvekonse vao subfolder Fuvekonse/ (upstream wins on conflict)"
+    vars:
+      REMOTE: "https://github.com/SoltuneMontepre/Fuvekonse.git"
+      BRANCH: "main"
     cmds:
-      - echo ">>> Pulling latest Fuvekonse from GitHub..."
-      - git subtree pull --prefix Fuvekonse https://github.com/SoltuneMontepre/Fuvekonse.git main --squash
-      - echo ">>> Done! Fuvekonse subtree is up to date."
-
+      - echo ">>> Stashing local changes (if any)..."
+      - git stash push -m subtree-pull-stash
+      - echo ">>> Fetching Fuvekonse from GitHub..."
+      - git fetch {{.REMOTE}} {{.BRANCH}}
+      - echo ">>> Merging into ./Fuvekonse/ (upstream wins on conflict)..."
+      - git merge -X subtree=Fuvekonse -X theirs --squash --no-edit --allow-unrelated-histories FETCH_HEAD
+      - git commit --allow-empty -m "sync Fuvekonse subtree to upstream main"
+      - echo ">>> Restoring local changes..."
+      - git stash pop
+      - echo ">>> Done! Fuvekonse/ is up to date."
