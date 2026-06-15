@@ -1,9 +1,5 @@
 # Fuvekonse
 
-[![CI - General Service](https://github.com/SoltuneMontepre/Fuvekonse/actions/workflows/ci-general.yaml/badge.svg)](https://github.com/SoltuneMontepre/Fuvekonse/actions/workflows/ci-general.yaml)
-[![CI - RBAC Service](https://github.com/SoltuneMontepre/Fuvekonse/actions/workflows/ci-rbac.yaml/badge.svg)](https://github.com/SoltuneMontepre/Fuvekonse/actions/workflows/ci-rbac.yaml)
-[![sqs-worker CD](https://github.com/SoltuneMontepre/Fuvekonse/actions/workflows/cd-sqs-worker.yaml/badge.svg)](https://github.com/SoltuneMontepre/Fuvekonse/actions/workflows/cd-sqs-worker.yaml)
-
 ## Overview
 
 Fuvekonse is a microservices-based application built with Go, featuring:
