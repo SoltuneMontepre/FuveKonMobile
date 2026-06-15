@@ -24,10 +24,6 @@ type UpdateLostFoundStatusRequest struct {
 	Status string `json:"status" binding:"required,oneof=open claimed resolved"`
 }
 
-type ClaimLostFoundRequest struct {
-	ClaimMessage string `json:"claim_message" binding:"max=2000"`
-}
-
 type ListLostFoundQuery struct {
 	ItemType string
 	Status   string

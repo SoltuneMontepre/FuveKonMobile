@@ -17,11 +17,6 @@ func MapLostFoundToResponse(item *models.LostFoundItem) responses.LostFoundRespo
 		StaffNotes:        item.StaffNotes,
 		Status:            string(item.Status),
 		SubmittedByUserId: item.SubmittedByUserId,
-		ClaimedByUserId:   item.ClaimedByUserId,
-		ClaimMessage:      item.ClaimMessage,
-		ClaimedAt:         item.ClaimedAt,
-		ConfirmedByUserId: item.ConfirmedByUserId,
-		ConfirmedAt:       item.ConfirmedAt,
 		CreatedAt:         item.CreatedAt,
 		ModifiedAt:        item.ModifiedAt,
 	}

@@ -178,45 +178,6 @@ func (h *LostFoundHandler) UpdateLostFoundStatus(c *gin.Context) {
 	utils.RespondSuccess(c, item, "Lost and found status updated successfully")
 }
 
-// ConfirmLostFoundClaim godoc
-// @Summary Confirm a user's claim on a lost and found entry
-// @Tags admin-lost-found
-// @Produce json
-// @Security BearerAuth
-// @Param id path string true "Item ID" format(uuid)
-// @Success 200 {object} map[string]interface{}
-// @Router /admin/lost-found/{id}/confirm [patch]
-func (h *LostFoundHandler) ConfirmLostFoundClaim(c *gin.Context) {
-	ctx := c.Request.Context()
-	userID, ok := c.Get("user_id")
-	if !ok {
-		utils.RespondUnauthorized(c, "User ID not found in token")
-		return
-	}
-
-	id := c.Param("id")
-	if id == "" {
-		utils.RespondValidationError(c, "Item ID is required")
-		return
-	}
-
-	item, err := h.services.LostFound.ConfirmClaim(ctx, userID.(string), id)
-	if err != nil {
-		if errors.Is(err, repositories.ErrLostFoundNotFound) {
-			utils.RespondNotFound(c, "Lost and found entry not found")
-			return
-		}
-		if errors.Is(err, repositories.ErrLostFoundNotClaimed) {
-			utils.RespondError(c, 409, "NOT_CLAIMED", err.Error())
-			return
-		}
-		utils.RespondInternalServerError(c, "Failed to confirm lost and found claim")
-		return
-	}
-
-	utils.RespondSuccess(c, item, "Lost and found claim confirmed successfully")
-}
-
 // DeleteLostFound godoc
 // @Summary Delete a lost and found entry
 // @Tags admin-lost-found
@@ -349,61 +310,4 @@ func (h *LostFoundHandler) GetLostFoundByIDForTicketHolder(c *gin.Context) {
 	}
 
 	utils.RespondSuccess(c, item, "Successfully retrieved lost and found entry")
-}
-
-// ClaimLostFound godoc
-// @Summary Claim a lost and found entry (ticket holders)
-// @Tags lost-found
-// @Accept json
-// @Produce json
-// @Security BearerAuth
-// @Param id path string true "Item ID" format(uuid)
-// @Param request body requests.ClaimLostFoundRequest false "Optional claim details"
-// @Success 200 {object} map[string]interface{}
-// @Router /lost-found/{id}/claim [post]
-func (h *LostFoundHandler) ClaimLostFound(c *gin.Context) {
-	ctx := c.Request.Context()
-	userID, ok := c.Get("user_id")
-	if !ok {
-		utils.RespondUnauthorized(c, "User ID not found in token")
-		return
-	}
-
-	id := c.Param("id")
-	if id == "" {
-		utils.RespondValidationError(c, "Item ID is required")
-		return
-	}
-
-	var req requests.ClaimLostFoundRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		// Body is optional; ignore empty-body bind errors for claim_message-only requests.
-		if c.Request.ContentLength > 0 {
-			utils.RespondValidationError(c, err.Error())
-			return
-		}
-	}
-
-	item, err := h.services.LostFound.Claim(ctx, userID.(string), id, &req)
-	if err != nil {
-		if h.handleLostFoundTicketError(c, err) {
-			return
-		}
-		if errors.Is(err, repositories.ErrLostFoundNotFound) {
-			utils.RespondNotFound(c, "Lost and found entry not found")
-			return
-		}
-		if errors.Is(err, repositories.ErrLostFoundAlreadyClaimed) {
-			utils.RespondError(c, 409, "ALREADY_CLAIMED", err.Error())
-			return
-		}
-		if errors.Is(err, repositories.ErrLostFoundNotOpen) {
-			utils.RespondError(c, 409, "NOT_OPEN", err.Error())
-			return
-		}
-		utils.RespondInternalServerError(c, "Failed to claim lost and found entry")
-		return
-	}
-
-	utils.RespondSuccess(c, item, "Lost and found entry claimed successfully")
 }

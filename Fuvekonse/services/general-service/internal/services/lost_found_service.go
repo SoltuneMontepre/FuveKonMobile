@@ -18,11 +18,8 @@ import (
 var ErrLostFoundNotFound = repositories.ErrLostFoundNotFound
 
 var (
-	ErrLostFoundTicketRequired    = errors.New("user must have a ticket to access lost and found")
-	ErrLostFoundTicketNotApproved = errors.New("user ticket must be approved to access lost and found")
-	ErrLostFoundNotOpen           = repositories.ErrLostFoundNotOpen
-	ErrLostFoundNotClaimed        = repositories.ErrLostFoundNotClaimed
-	ErrLostFoundAlreadyClaimed    = repositories.ErrLostFoundAlreadyClaimed
+	ErrLostFoundTicketRequired = errors.New("user must have a ticket to view lost and found")
+	ErrLostFoundTicketNotApproved = errors.New("user ticket must be approved to view lost and found")
 )
 
 type LostFoundService struct {
@@ -83,7 +80,30 @@ func (s *LostFoundService) List(ctx context.Context, q requests.ListLostFoundQue
 		return nil, err
 	}
 
-	return buildAdminListResponse(items, total, q), nil
+	page := q.Page
+	if page < 1 {
+		page = 1
+	}
+	pageSize := q.PageSize
+	if pageSize < 1 {
+		pageSize = 20
+	}
+	if pageSize > 100 {
+		pageSize = 100
+	}
+
+	totalPages := int(math.Ceil(float64(total) / float64(pageSize)))
+	if total == 0 {
+		totalPages = 0
+	}
+
+	return &responses.LostFoundListResponse{
+		Items:      mappers.MapLostFoundListToResponse(items),
+		Total:      total,
+		Page:       page,
+		PageSize:   pageSize,
+		TotalPages: totalPages,
+	}, nil
 }
 
 func (s *LostFoundService) Update(ctx context.Context, idStr string, req *requests.UpdateLostFoundRequest) (*responses.LostFoundResponse, error) {
@@ -149,30 +169,6 @@ func (s *LostFoundService) UpdateStatus(ctx context.Context, idStr string, req *
 	return &resp, nil
 }
 
-func (s *LostFoundService) ConfirmClaim(ctx context.Context, staffUserIDStr, idStr string) (*responses.LostFoundResponse, error) {
-	staffUserID, err := uuid.Parse(staffUserIDStr)
-	if err != nil {
-		return nil, errors.New("invalid user id")
-	}
-
-	id, err := uuid.Parse(idStr)
-	if err != nil {
-		return nil, errors.New("invalid item id")
-	}
-
-	if err := s.repos.LostFound.ConfirmClaim(ctx, id, staffUserID); err != nil {
-		return nil, err
-	}
-
-	item, err := s.repos.LostFound.GetByID(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-
-	resp := mappers.MapLostFoundToResponse(item)
-	return &resp, nil
-}
-
 func (s *LostFoundService) Delete(ctx context.Context, idStr string) error {
 	id, err := uuid.Parse(idStr)
 	if err != nil {
@@ -216,7 +212,30 @@ func (s *LostFoundService) ListForTicketHolder(ctx context.Context, userIDStr st
 		return nil, err
 	}
 
-	return buildPublicListResponse(items, total, q), nil
+	page := q.Page
+	if page < 1 {
+		page = 1
+	}
+	pageSize := q.PageSize
+	if pageSize < 1 {
+		pageSize = 20
+	}
+	if pageSize > 100 {
+		pageSize = 100
+	}
+
+	totalPages := int(math.Ceil(float64(total) / float64(pageSize)))
+	if total == 0 {
+		totalPages = 0
+	}
+
+	return &responses.LostFoundPublicListResponse{
+		Items:      mappers.MapLostFoundListToPublicResponse(items),
+		Total:      total,
+		Page:       page,
+		PageSize:   pageSize,
+		TotalPages: totalPages,
+	}, nil
 }
 
 func (s *LostFoundService) GetForTicketHolder(ctx context.Context, userIDStr, idStr string) (*responses.LostFoundPublicResponse, error) {
@@ -240,83 +259,4 @@ func (s *LostFoundService) GetForTicketHolder(ctx context.Context, userIDStr, id
 
 	resp := mappers.MapLostFoundToPublicResponse(item)
 	return &resp, nil
-}
-
-func (s *LostFoundService) Claim(ctx context.Context, userIDStr, idStr string, req *requests.ClaimLostFoundRequest) (*responses.LostFoundPublicResponse, error) {
-	if err := s.ensureTicketHolder(ctx, userIDStr); err != nil {
-		return nil, err
-	}
-
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return nil, errors.New("invalid user id")
-	}
-
-	id, err := uuid.Parse(idStr)
-	if err != nil {
-		return nil, errors.New("invalid item id")
-	}
-
-	claimMessage := ""
-	if req != nil {
-		claimMessage = strings.TrimSpace(req.ClaimMessage)
-	}
-
-	if err := s.repos.LostFound.Claim(ctx, id, userID, claimMessage); err != nil {
-		return nil, err
-	}
-
-	item, err := s.repos.LostFound.GetByID(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-
-	resp := mappers.MapLostFoundToPublicResponse(item)
-	return &resp, nil
-}
-
-func buildAdminListResponse(items []models.LostFoundItem, total int64, q requests.ListLostFoundQuery) *responses.LostFoundListResponse {
-	page, pageSize := normalizePagination(q.Page, q.PageSize)
-	totalPages := calcTotalPages(total, pageSize)
-
-	return &responses.LostFoundListResponse{
-		Items:      mappers.MapLostFoundListToResponse(items),
-		Total:      total,
-		Page:       page,
-		PageSize:   pageSize,
-		TotalPages: totalPages,
-	}
-}
-
-func buildPublicListResponse(items []models.LostFoundItem, total int64, q requests.ListLostFoundQuery) *responses.LostFoundPublicListResponse {
-	page, pageSize := normalizePagination(q.Page, q.PageSize)
-	totalPages := calcTotalPages(total, pageSize)
-
-	return &responses.LostFoundPublicListResponse{
-		Items:      mappers.MapLostFoundListToPublicResponse(items),
-		Total:      total,
-		Page:       page,
-		PageSize:   pageSize,
-		TotalPages: totalPages,
-	}
-}
-
-func normalizePagination(page, pageSize int) (int, int) {
-	if page < 1 {
-		page = 1
-	}
-	if pageSize < 1 {
-		pageSize = 20
-	}
-	if pageSize > 100 {
-		pageSize = 100
-	}
-	return page, pageSize
-}
-
-func calcTotalPages(total int64, pageSize int) int {
-	if total == 0 {
-		return 0
-	}
-	return int(math.Ceil(float64(total) / float64(pageSize)))
 }

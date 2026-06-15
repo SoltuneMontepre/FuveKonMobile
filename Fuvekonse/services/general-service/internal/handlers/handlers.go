@@ -9,7 +9,6 @@ type Handlers struct {
 	Auth         *AuthHandler
 	User         *UserHandler
 	Ticket       *TicketHandler
-	Event        *EventHandler
 	Dealer       *DealerHandler
 	Conbook      *ConbookHandler
 	Panel        *PanelHandler
@@ -29,7 +28,6 @@ func NewHandlers(services *services.Services, queuePublisher queue.Publisher) *H
 		Auth:         NewAuthHandler(services),
 		User:         NewUserHandler(services),
 		Ticket:       NewTicketHandler(services, queuePublisher),
-		Event:        NewEventHandler(services),
 		Dealer:       NewDealerHandler(services),
 		Conbook:      NewConbookHandler(services),
 		Panel:        NewPanelHandler(services),

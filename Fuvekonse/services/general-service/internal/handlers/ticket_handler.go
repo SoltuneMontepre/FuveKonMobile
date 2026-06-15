@@ -181,8 +181,6 @@ func (h *TicketHandler) PurchaseTicket(c *gin.Context) {
 			utils.RespondError(c, 409, "ALREADY_HAS_TICKET", "You already have a ticket")
 		case errors.Is(err, repositories.ErrUserBlacklisted):
 			utils.RespondForbidden(c, "You are not allowed to purchase tickets. Contact support.")
-		case errors.Is(err, repositories.ErrTicketSalesClosed):
-			respondTicketSalesClosed(c)
 		default:
 			utils.RespondInternalServerError(c, "Failed to purchase ticket")
 		}
@@ -478,8 +476,6 @@ func (h *TicketHandler) UpgradeTicket(c *gin.Context) {
 			utils.RespondError(c, 409, "CANNOT_DOWNGRADE", "Can only upgrade to a higher-priced tier")
 		case errors.Is(err, repositories.ErrTicketNotApproved):
 			utils.RespondError(c, 409, "TICKET_NOT_APPROVED", "Only approved tickets can be upgraded")
-		case errors.Is(err, repositories.ErrTicketSalesClosed):
-			respondTicketSalesClosed(c)
 		default:
 			utils.RespondInternalServerError(c, "Failed to upgrade ticket")
 		}
