@@ -96,6 +96,8 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 		v1.GET("/ping", CheckHealth)
 		SetupAuthRoutes(v1, h)
 
+		v1.GET("/event/settings", h.Event.GetEventSettings)
+
 		// Public ticket routes (optional JWT so admins can get normalized tier payloads, e.g. is_active)
 		tickets := v1.Group("/tickets")
 		tickets.Use(middlewares.OptionalJWTAuthMiddleware())
@@ -223,6 +225,21 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminUsers.GET("/blacklisted", h.Ticket.GetBlacklistedUsers)
 				adminUsers.PATCH("/:id/blacklist", h.Ticket.BlacklistUser)
 				adminUsers.PATCH("/:id/unblacklist", h.Ticket.UnblacklistUser)
+			}
+
+			adminEvent := admin.Group("/event")
+			adminEvent.Use(middlewares.RequireRole(role.RoleAdmin))
+			{
+				adminEvent.GET("/settings", h.Event.GetEventSettingsForAdmin)
+				adminEvent.PATCH("/settings", h.Event.UpdateEventSettingsForAdmin)
+				adminEvent.POST("/ticket-sales/open", h.Event.OpenTicketSalesForAdmin)
+				adminEvent.POST("/ticket-sales/close", h.Event.CloseTicketSalesForAdmin)
+				adminEvent.POST("/panel-registration/open", h.Event.OpenPanelRegistrationForAdmin)
+				adminEvent.POST("/panel-registration/close", h.Event.ClosePanelRegistrationForAdmin)
+				adminEvent.POST("/talent-registration/open", h.Event.OpenTalentRegistrationForAdmin)
+				adminEvent.POST("/talent-registration/close", h.Event.CloseTalentRegistrationForAdmin)
+				adminEvent.POST("/dealer-registration/open", h.Event.OpenDealerRegistrationForAdmin)
+				adminEvent.POST("/dealer-registration/close", h.Event.CloseDealerRegistrationForAdmin)
 			}
 
 			// Admin-only ticket management (literal paths first so /statistics, /tiers etc. don’t match as :id)

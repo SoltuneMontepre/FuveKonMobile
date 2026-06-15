@@ -25,6 +25,7 @@ type Services struct {
 	Analytics    *AnalyticsService
 	LostFound    *LostFoundService
 	S3           *S3Service
+	Event        *EventService
 }
 
 func NewServices(repos *repositories.Repositories, redisClient *redis.Client, loginMaxFail int, loginFailBlockMinutes int) *Services {
@@ -56,5 +57,6 @@ func NewServices(repos *repositories.Repositories, redisClient *redis.Client, lo
 		Analytics:    NewAnalyticsService(repos, ticket),
 		LostFound:    NewLostFoundService(repos),
 		S3:           s3Service,
+		Event:        NewEventService(repos),
 	}
 }

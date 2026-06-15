@@ -29,6 +29,7 @@ func AutoMigrate(db *gorm.DB) error {
 		&models.Notification{},
 		&models.DeviceToken{},
 		&models.LostFoundItem{},
+		&models.EventSettings{},
 	}
 
 	// AutoMigrate (creates tables, adds columns, indexes)

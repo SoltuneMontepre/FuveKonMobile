@@ -14,6 +14,7 @@ type Repositories struct {
 	Notification *NotificationRepository
 	DeviceToken  *DeviceTokenRepository
 	LostFound    *LostFoundRepository
+	Event        *EventSettingsRepository
 }
 
 func NewRepositories(db *gorm.DB) *Repositories {
@@ -29,5 +30,6 @@ func NewRepositories(db *gorm.DB) *Repositories {
 		Notification: NewNotificationRepository(db),
 		DeviceToken:  NewDeviceTokenRepository(db),
 		LostFound:    NewLostFoundRepository(db),
+		Event:        NewEventSettingsRepository(db),
 	}
 }
