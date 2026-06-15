@@ -353,11 +353,10 @@ class _SubmissionTile extends StatelessWidget {
     final theme = Theme.of(context);
     final previewUrl = item.previewImageUrl;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: FuvekonColors.darkSurfaceElevated,
-        borderRadius: BorderRadius.circular(16),
-      ),
+    return Material(
+      color: FuvekonColors.darkSurfaceElevated,
+      borderRadius: BorderRadius.circular(16),
+      clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: onTap,
         leading: previewUrl != null

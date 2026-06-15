@@ -81,11 +81,10 @@ class _HistoryTile extends StatelessWidget {
       ScanOutcome.rejected => 'Từ chối',
     };
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: FuvekonColors.darkSurfaceElevated,
-        borderRadius: BorderRadius.circular(16),
-      ),
+    return Material(
+      color: FuvekonColors.darkSurfaceElevated,
+      borderRadius: BorderRadius.circular(16),
+      clipBehavior: Clip.antiAlias,
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: color.withValues(alpha: 0.15),
