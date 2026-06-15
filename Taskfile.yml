@@ -59,9 +59,8 @@ tasks:
 
   backend:_tools:
     internal: true
-    dir: "{{.BACKEND_DIR}}"
     cmds:
-      - go run ./tools/devctl/main.go ensure-tools
+      - echo "Dev tools ready (services run with go run, no air required)"
 
   backend:_env:
     internal: true
@@ -136,20 +135,19 @@ tasks:
     internal: true
     deps:
       - backend:_run:general
-      - backend:_run:rbac
       - backend:_run:worker
 
   backend:_run:general:
     internal: true
-    dir: "{{.BACKEND_DIR}}"
+    dir: Fuvekonse/services/general-service
     cmds:
-      - go run ./tools/devctl/main.go run-air ./services/general-service
+      - go run ./cmd/main.go
 
   backend:_run:rbac:
     internal: true
-    dir: "{{.BACKEND_DIR}}"
+    dir: Fuvekonse/services/rbac-service
     cmds:
-      - go run ./tools/devctl/main.go run-air ./services/rbac-service
+      - go run ./cmd/main.go
 
   backend:_run:worker:
     internal: true

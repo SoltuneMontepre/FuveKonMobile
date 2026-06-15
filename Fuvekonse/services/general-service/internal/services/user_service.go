@@ -26,6 +26,26 @@ func NewUserService(repos *repositories.Repositories) *UserService {
 	return &UserService{repos: repos}
 }
 
+func (s *UserService) effectivePermissions(user *models.User) ([]string, error) {
+	hasOverrides, err := s.repos.RBAC.HasUserPermissionOverrides(user.Id)
+	if err != nil {
+		return nil, err
+	}
+	if hasOverrides {
+		return s.repos.RBAC.ListUserPermissions(user.Id)
+	}
+	return s.repos.RBAC.ListRolePermissions(user.Role)
+}
+
+func (s *UserService) mapAdminDetailedResponse(ctx context.Context, user *models.User) (*responses.UserDetailedResponse, error) {
+	isDealer, isHasTicket := s.detailedResponseFlags(ctx, user)
+	perms, err := s.effectivePermissions(user)
+	if err != nil {
+		return nil, err
+	}
+	return mappers.MapUserToDetailedResponseWithPermissions(user, isDealer, isHasTicket, perms), nil
+}
+
 // isUserDeleted checks if a user is soft-deleted by examining both IsDeleted flag and DeletedAt timestamp
 func isUserDeleted(user *models.User) bool {
 	return user.IsDeleted || (user.DeletedAt != nil && !user.DeletedAt.IsZero())
@@ -185,7 +205,11 @@ func (s *UserService) GetAllUsers(page, pageSize int, search string) ([]*respons
 	// Map users to response DTOs
 	userResponses := make([]*responses.UserDetailedResponse, len(users))
 	for i, user := range users {
-		userResponses[i] = mappers.MapUserToDetailedResponse(user)
+		resp, err := s.mapAdminDetailedResponse(context.Background(), user)
+		if err != nil {
+			return nil, nil, err
+		}
+		userResponses[i] = resp
 	}
 
 	// Calculate pagination metadata
@@ -210,8 +234,7 @@ func (s *UserService) GetUserByIDForAdmin(userID string) (*responses.UserDetaile
 		return nil, err
 	}
 
-	isDealer, isHasTicket := s.detailedResponseFlags(context.Background(), user)
-	return mappers.MapUserToDetailedResponseWithDealer(user, isDealer, isHasTicket), nil
+	return s.mapAdminDetailedResponse(context.Background(), user)
 }
 
 // UpdateUserByAdmin updates user information by admin
@@ -252,12 +275,27 @@ func (s *UserService) UpdateUserByAdmin(userID string, req *requests.AdminUpdate
 		user.IsVerified = *req.IsVerified
 	}
 
+	if req.Permissions != nil {
+		for _, code := range *req.Permissions {
+			if !constants.IsValidPermission(code) {
+				return nil, fmt.Errorf("invalid permission: %s", code)
+			}
+		}
+		if err := s.repos.RBAC.ReplaceUserPermissions(user.Id, *req.Permissions); err != nil {
+			return nil, errors.New("failed to update user permissions")
+		}
+	} else if req.Role != nil {
+		if err := s.repos.RBAC.ClearUserPermissions(user.Id); err != nil {
+			return nil, errors.New("failed to reset user permissions")
+		}
+	}
+
 	// Save updated user
 	if err := s.repos.User.UpdateUser(user); err != nil {
 		return nil, errors.New("failed to update user")
 	}
 
-	return mappers.MapUserToDetailedResponse(user), nil
+	return s.mapAdminDetailedResponse(context.Background(), user)
 }
 
 // GetUserCountByCountry returns counts of non-deleted users grouped by country (admin only)

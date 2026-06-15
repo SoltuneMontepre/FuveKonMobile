@@ -3,6 +3,8 @@ package database
 import (
 	"fmt"
 	"general-service/internal/models"
+	"general-service/internal/repositories"
+	"general-service/internal/services"
 	"log"
 
 	"gorm.io/gorm"
@@ -30,6 +32,9 @@ func AutoMigrate(db *gorm.DB) error {
 		&models.DeviceToken{},
 		&models.LostFoundItem{},
 		&models.EventSettings{},
+		&models.Permission{},
+		&models.RolePermission{},
+		&models.UserPermission{},
 	}
 
 	// AutoMigrate (creates tables, adds columns, indexes)
@@ -299,6 +304,20 @@ func MigrateAndSeed(db *gorm.DB) error {
 	// 	return fmt.Errorf("failed to seed data: %w", err)
 	// }
 
+	if err := seedRBACData(db); err != nil {
+		return fmt.Errorf("failed to seed RBAC data: %w", err)
+	}
+
+	return nil
+}
+
+func seedRBACData(db *gorm.DB) error {
+	repos := repositories.NewRepositories(db)
+	svc := services.NewRBACService(repos)
+	if err := svc.SeedDefaults(); err != nil {
+		return err
+	}
+	log.Println("RBAC roles and permissions seeded")
 	return nil
 }
 

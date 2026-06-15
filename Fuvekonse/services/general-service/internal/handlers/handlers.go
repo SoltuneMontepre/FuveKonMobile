@@ -9,6 +9,7 @@ type Handlers struct {
 	Auth         *AuthHandler
 	User         *UserHandler
 	Ticket       *TicketHandler
+	Event        *EventHandler
 	Dealer       *DealerHandler
 	Conbook      *ConbookHandler
 	Panel        *PanelHandler
@@ -21,7 +22,7 @@ type Handlers struct {
 	DevMail      *DevMailHandler
 	LostFound    *LostFoundHandler
 	S3           *S3Handler
-	Event        *EventHandler
+	RBAC         *RBACHandler
 }
 
 func NewHandlers(services *services.Services, queuePublisher queue.Publisher) *Handlers {
@@ -29,6 +30,7 @@ func NewHandlers(services *services.Services, queuePublisher queue.Publisher) *H
 		Auth:         NewAuthHandler(services),
 		User:         NewUserHandler(services),
 		Ticket:       NewTicketHandler(services, queuePublisher),
+		Event:        NewEventHandler(services),
 		Dealer:       NewDealerHandler(services),
 		Conbook:      NewConbookHandler(services),
 		Panel:        NewPanelHandler(services),
@@ -41,6 +43,6 @@ func NewHandlers(services *services.Services, queuePublisher queue.Publisher) *H
 		DevMail:      NewDevMailHandler(services),
 		LostFound:    NewLostFoundHandler(services),
 		S3:           NewS3Handler(services),
-		Event:        NewEventHandler(services),
+		RBAC:         NewRBACHandler(services),
 	}
 }
