@@ -13,17 +13,16 @@ class S3UploadResult {
 
 /// Uploads files via Fuvekon general-service `/s3/presign` (same flow as web `useUploadToS3.ts`).
 class S3UploadService {
-  S3UploadService({
-    required ApiClient apiClient,
-    Dio? uploadDio,
-  })  : _apiClient = apiClient,
-        _uploadDio = uploadDio ??
-            Dio(
-              BaseOptions(
-                connectTimeout: AppConfig.connectTimeout,
-                receiveTimeout: AppConfig.receiveTimeout,
-              ),
-            );
+  S3UploadService({required ApiClient apiClient, Dio? uploadDio})
+    : _apiClient = apiClient,
+      _uploadDio =
+          uploadDio ??
+          Dio(
+            BaseOptions(
+              connectTimeout: AppConfig.connectTimeout,
+              receiveTimeout: AppConfig.receiveTimeout,
+            ),
+          );
 
   final ApiClient _apiClient;
   final Dio _uploadDio;
@@ -41,7 +40,7 @@ class S3UploadService {
         'fileName': fileName,
         'fileType': contentType,
         'contentLength': bytes.length,
-        if (folder != null) 'folder': folder,
+        'folder': ?folder,
         'expiresIn': 3600,
       },
     );
@@ -58,9 +57,7 @@ class S3UploadService {
     );
 
     if (!parsed.isSuccess || parsed.data == null) {
-      throw ServerException(
-        parsed.errorMessage ?? parsed.message,
-      );
+      throw ServerException(parsed.errorMessage ?? parsed.message);
     }
 
     final data = parsed.data!;

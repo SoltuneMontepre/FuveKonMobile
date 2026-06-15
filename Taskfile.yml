@@ -1,0 +1,23 @@
+version: "3"
+
+# FuveKonMobile - Root Taskfile
+#
+# Include Fuvekonse backend tasks voi namespace 'backend'.
+# Cai dat Task runner neu chua co:
+#   go install github.com/go-task/task/v3/cmd/task@latest
+#
+# Chay 'task --list' de xem tat ca task.
+
+includes:
+  backend:
+    taskfile: ./Fuvekonse/Taskfile.yml
+    dir: ./Fuvekonse
+
+tasks:
+  subtree-pull:
+    desc: "Pull latest Fuvekonse tu GitHub vao git subtree (Fuvekonse/)"
+    cmds:
+      - echo ">>> Pulling latest Fuvekonse from GitHub..."
+      - git subtree pull --prefix Fuvekonse https://github.com/SoltuneMontepre/Fuvekonse.git main --squash
+      - echo ">>> Done! Fuvekonse subtree is up to date."
+
