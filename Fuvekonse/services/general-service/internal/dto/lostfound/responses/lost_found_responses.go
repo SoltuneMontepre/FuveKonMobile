@@ -7,23 +7,18 @@ import (
 )
 
 type LostFoundResponse struct {
-	Id                uuid.UUID  `json:"id"`
-	ItemType          string     `json:"item_type"`
-	Title             string     `json:"title"`
-	Description       string     `json:"description"`
-	Location          string     `json:"location"`
-	ImageUrl          string     `json:"image_url,omitempty"`
-	ContactInfo       string     `json:"contact_info,omitempty"`
-	StaffNotes        string     `json:"staff_notes,omitempty"`
-	Status            string     `json:"status"`
-	SubmittedByUserId uuid.UUID  `json:"submitted_by_user_id"`
-	ClaimedByUserId   *uuid.UUID `json:"claimed_by_user_id,omitempty"`
-	ClaimMessage      string     `json:"claim_message,omitempty"`
-	ClaimedAt         *time.Time `json:"claimed_at,omitempty"`
-	ConfirmedByUserId *uuid.UUID `json:"confirmed_by_user_id,omitempty"`
-	ConfirmedAt       *time.Time `json:"confirmed_at,omitempty"`
-	CreatedAt         time.Time  `json:"created_at"`
-	ModifiedAt        time.Time  `json:"modified_at"`
+	Id                uuid.UUID `json:"id"`
+	ItemType          string    `json:"item_type"`
+	Title             string    `json:"title"`
+	Description       string    `json:"description"`
+	Location          string    `json:"location"`
+	ImageUrl          string    `json:"image_url,omitempty"`
+	ContactInfo       string    `json:"contact_info,omitempty"`
+	StaffNotes        string    `json:"staff_notes,omitempty"`
+	Status            string    `json:"status"`
+	SubmittedByUserId uuid.UUID `json:"submitted_by_user_id"`
+	CreatedAt         time.Time `json:"created_at"`
+	ModifiedAt        time.Time `json:"modified_at"`
 }
 
 type LostFoundListResponse struct {

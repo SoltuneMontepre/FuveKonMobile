@@ -12,12 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var (
-	ErrLostFoundNotFound       = errors.New("lost and found item not found")
-	ErrLostFoundNotOpen        = errors.New("lost and found item is not open for claims")
-	ErrLostFoundNotClaimed     = errors.New("lost and found item has not been claimed")
-	ErrLostFoundAlreadyClaimed = errors.New("lost and found item has already been claimed")
-)
+var ErrLostFoundNotFound = errors.New("lost and found item not found")
 
 type LostFoundRepository struct {
 	db *gorm.DB
@@ -127,62 +122,6 @@ func (r *LostFoundRepository) SetStatus(ctx context.Context, id uuid.UUID, statu
 		}).Error
 }
 
-func (r *LostFoundRepository) Claim(ctx context.Context, id, userID uuid.UUID, claimMessage string) error {
-	now := time.Now()
-	result := r.db.WithContext(ctx).Model(&models.LostFoundItem{}).
-		Where("id = ? AND is_deleted = ? AND status = ?", id, false, models.LostFoundStatusOpen).
-		Updates(map[string]interface{}{
-			"status":             models.LostFoundStatusClaimed,
-			"claimed_by_user_id": userID,
-			"claim_message":      claimMessage,
-			"claimed_at":           now,
-			"modified_at":          now,
-		})
-	if result.Error != nil {
-		return result.Error
-	}
-	if result.RowsAffected == 0 {
-		existing, err := r.GetByID(ctx, id)
-		if err != nil {
-			return err
-		}
-		if existing.Status != models.LostFoundStatusOpen {
-			if existing.Status == models.LostFoundStatusClaimed || existing.Status == models.LostFoundStatusResolved {
-				return ErrLostFoundAlreadyClaimed
-			}
-			return ErrLostFoundNotOpen
-		}
-		return ErrLostFoundNotFound
-	}
-	return nil
-}
-
-func (r *LostFoundRepository) ConfirmClaim(ctx context.Context, id, staffUserID uuid.UUID) error {
-	now := time.Now()
-	result := r.db.WithContext(ctx).Model(&models.LostFoundItem{}).
-		Where("id = ? AND is_deleted = ? AND status = ?", id, false, models.LostFoundStatusClaimed).
-		Updates(map[string]interface{}{
-			"status":               models.LostFoundStatusResolved,
-			"confirmed_by_user_id": staffUserID,
-			"confirmed_at":         now,
-			"modified_at":          now,
-		})
-	if result.Error != nil {
-		return result.Error
-	}
-	if result.RowsAffected == 0 {
-		existing, err := r.GetByID(ctx, id)
-		if err != nil {
-			return err
-		}
-		if existing.Status != models.LostFoundStatusClaimed {
-			return ErrLostFoundNotClaimed
-		}
-		return ErrLostFoundNotFound
-	}
-	return nil
-}
-
 func (r *LostFoundRepository) Delete(ctx context.Context, id uuid.UUID) error {
 	if _, err := r.GetByID(ctx, id); err != nil {
 		return err
@@ -192,8 +131,8 @@ func (r *LostFoundRepository) Delete(ctx context.Context, id uuid.UUID) error {
 	return r.db.WithContext(ctx).Model(&models.LostFoundItem{}).
 		Where("id = ?", id).
 		Updates(map[string]interface{}{
-			"is_deleted":  true,
-			"deleted_at":  now,
+			"is_deleted": true,
+			"deleted_at": now,
 			"modified_at": now,
 		}).Error
 }

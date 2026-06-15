@@ -30,14 +30,6 @@ func NewTalentService(repos *repositories.Repositories) *TalentService {
 }
 
 func (s *TalentService) CreateTalent(ctx context.Context, userIDStr string, req *requests.CreateTalentRequest) (*responses.TalentResponse, error) {
-	open, err := s.repos.Event.IsTalentRegistrationOpen(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if !open {
-		return nil, repositories.ErrTalentRegistrationClosed
-	}
-
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
 		return nil, errors.New("invalid user id")

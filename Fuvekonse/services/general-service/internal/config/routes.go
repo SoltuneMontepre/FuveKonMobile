@@ -96,8 +96,6 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 		v1.GET("/ping", CheckHealth)
 		SetupAuthRoutes(v1, h)
 
-		v1.GET("/event/settings", h.Event.GetEventSettings)
-
 		// Public ticket routes (optional JWT so admins can get normalized tier payloads, e.g. is_active)
 		tickets := v1.Group("/tickets")
 		tickets.Use(middlewares.OptionalJWTAuthMiddleware())
@@ -203,7 +201,6 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			protectedLostFound := protected.Group("/lost-found")
 			{
 				protectedLostFound.GET("", h.LostFound.ListLostFoundForTicketHolder)
-				protectedLostFound.POST("/:id/claim", h.LostFound.ClaimLostFound)
 				protectedLostFound.GET("/:id", h.LostFound.GetLostFoundByIDForTicketHolder)
 			}
 		}
@@ -212,6 +209,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 		admin := v1.Group("/admin")
 		admin.Use(middlewares.JWTAuthMiddleware())
 		{
+			// Admin-only user management
 			adminUsers := admin.Group("/users")
 			adminUsers.Use(middlewares.RequireRole(role.RoleAdmin))
 			{
@@ -225,22 +223,6 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminUsers.GET("/blacklisted", h.Ticket.GetBlacklistedUsers)
 				adminUsers.PATCH("/:id/blacklist", h.Ticket.BlacklistUser)
 				adminUsers.PATCH("/:id/unblacklist", h.Ticket.UnblacklistUser)
-			}
-
-			// Admin-only convention / event controls (ticket sales window, etc.)
-			adminEvent := admin.Group("/event")
-			adminEvent.Use(middlewares.RequireRole(role.RoleAdmin))
-			{
-				adminEvent.GET("/settings", h.Event.GetEventSettingsForAdmin)
-				adminEvent.PATCH("/settings", h.Event.UpdateEventSettingsForAdmin)
-				adminEvent.POST("/ticket-sales/open", h.Event.OpenTicketSalesForAdmin)
-				adminEvent.POST("/ticket-sales/close", h.Event.CloseTicketSalesForAdmin)
-				adminEvent.POST("/panel-registration/open", h.Event.OpenPanelRegistrationForAdmin)
-				adminEvent.POST("/panel-registration/close", h.Event.ClosePanelRegistrationForAdmin)
-				adminEvent.POST("/talent-registration/open", h.Event.OpenTalentRegistrationForAdmin)
-				adminEvent.POST("/talent-registration/close", h.Event.CloseTalentRegistrationForAdmin)
-				adminEvent.POST("/dealer-registration/open", h.Event.OpenDealerRegistrationForAdmin)
-				adminEvent.POST("/dealer-registration/close", h.Event.CloseDealerRegistrationForAdmin)
 			}
 
 			// Admin-only ticket management (literal paths first so /statistics, /tiers etc. don’t match as :id)
@@ -374,7 +356,6 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminLostFound.GET("/:id", h.LostFound.GetLostFoundByID)
 				adminLostFound.PUT("/:id", h.LostFound.UpdateLostFound)
 				adminLostFound.PATCH("/:id/status", h.LostFound.UpdateLostFoundStatus)
-				adminLostFound.PATCH("/:id/confirm", h.LostFound.ConfirmLostFoundClaim)
 				adminLostFound.DELETE("/:id", h.LostFound.DeleteLostFound)
 			}
 

@@ -53,7 +53,6 @@ func NewTicketService(repos *repositories.Repositories, mail *MailService) *Tick
 
 // GetAllTiers returns all visible ticket tiers for public listing (excludes deleted and hidden).
 // When showActiveForAdmin is true, all returned tiers have IsActive set to true in the response (admin UI / purchase testing).
-// When ticket sales are closed globally, public callers see tiers as inactive.
 func (s *TicketService) GetAllTiers(ctx context.Context, showActiveForAdmin bool) ([]responses.TicketTierResponse, error) {
 	tiers, err := s.repos.Ticket.GetVisibleTiers(ctx)
 	if err != nil {
@@ -64,17 +63,6 @@ func (s *TicketService) GetAllTiers(ctx context.Context, showActiveForAdmin bool
 	if showActiveForAdmin {
 		for i := range out {
 			out[i].IsActive = true
-		}
-		return out, nil
-	}
-
-	salesOpen, err := s.repos.Event.IsTicketSalesOpen(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if !salesOpen {
-		for i := range out {
-			out[i].IsActive = false
 		}
 	}
 	return out, nil
@@ -105,15 +93,6 @@ func (s *TicketService) GetTierByID(ctx context.Context, tierID string, showActi
 	resp := mappers.MapTicketTierToResponse(tier, false)
 	if showActiveForAdmin {
 		resp.IsActive = true
-		return resp, nil
-	}
-
-	salesOpen, err := s.repos.Event.IsTicketSalesOpen(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if !salesOpen {
-		resp.IsActive = false
 	}
 	return resp, nil
 }
@@ -266,16 +245,6 @@ func (s *TicketService) GetMyTicket(ctx context.Context, userID string) (*respon
 // PurchaseTicket creates a new pending ticket for the user.
 // When adminBypass is true (admin role), repository skips normal purchase validations.
 func (s *TicketService) PurchaseTicket(ctx context.Context, userID string, req *requests.PurchaseTicketRequest, adminBypass bool) (*responses.UserTicketResponse, error) {
-	if !adminBypass {
-		salesOpen, err := s.repos.Event.IsTicketSalesOpen(ctx)
-		if err != nil {
-			return nil, err
-		}
-		if !salesOpen {
-			return nil, repositories.ErrTicketSalesClosed
-		}
-	}
-
 	uid, err := uuid.Parse(userID)
 	if err != nil {
 		return nil, ErrInvalidUserID
@@ -396,16 +365,6 @@ func (s *TicketService) UpdateTshirtSize(ctx context.Context, userID string, req
 // UpgradeTicket upgrades the user's ticket to a higher-priced tier.
 // Returns the upgraded ticket with price difference information.
 func (s *TicketService) UpgradeTicket(ctx context.Context, userID string, req *requests.UpgradeTicketRequest, adminBypass bool) (*responses.UpgradeTicketResponse, error) {
-	if !adminBypass {
-		salesOpen, err := s.repos.Event.IsTicketSalesOpen(ctx)
-		if err != nil {
-			return nil, err
-		}
-		if !salesOpen {
-			return nil, repositories.ErrTicketSalesClosed
-		}
-	}
-
 	uid, err := uuid.Parse(userID)
 	if err != nil {
 		return nil, ErrInvalidUserID
