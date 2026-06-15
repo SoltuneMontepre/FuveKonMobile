@@ -35,7 +35,7 @@ tasks:
       - echo ">>> Done! Fuvekonse/ is up to date."
 
   backend:setup:
-    desc: One-time setup — tools, env files, Docker images, DB migration.
+    desc: One-time setup — tools, env files, Docker images, DB migration, seed users.
     cmds:
       - task: backend:_check
       - task: backend:_tools
@@ -46,6 +46,7 @@ tasks:
       - task: backend:_infra
       - task: backend:_wait
       - task: backend:_migrate
+      - task: backend:_seed
       - echo ""
       - echo "Backend ready!"
       - echo "  API     http://localhost:8085/swagger/index.html"
@@ -142,6 +143,12 @@ tasks:
     dir: "{{.BACKEND_DIR}}/services/general-service"
     cmds:
       - go run ./cmd/migrate
+
+  backend:_seed:
+    internal: true
+    dir: "{{.BACKEND_DIR}}/services/general-service"
+    cmds:
+      - go run ./cmd/seed
 
   backend:_services:
     internal: true
