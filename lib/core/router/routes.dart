@@ -3,11 +3,13 @@ abstract final class Routes {
   static const splash = '/splash';
   static const onboarding = '/onboarding';
   static const language = '/language';
+  static const introduction = '/introduction';
 
   static const onboardingRoutes = {
     splash,
     onboarding,
     language,
+    introduction,
   };
 
   // —— Public ——

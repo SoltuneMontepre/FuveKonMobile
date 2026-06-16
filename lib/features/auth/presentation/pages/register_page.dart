@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/utils/auth_messages.dart';
 import 'package:fuvekonmobile/features/auth/domain/entities/register_input.dart';
 import 'package:fuvekonmobile/features/auth/domain/usecases/register_usecase.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/auth_nav_links.dart';
-import 'package:fuvekonmobile/features/auth/presentation/widgets/auth_page_layout.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/register_form.dart';
+import 'package:fuvekonmobile/features/auth/presentation/widgets/register_page_layout.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -21,12 +22,22 @@ class _RegisterPageState extends State<RegisterPage> {
   final _registerUseCase = sl<RegisterUseCase>();
   bool _isLoading = false;
 
+  String _deriveNickname(String fullName, String phone) {
+    final trimmed = fullName.trim();
+    if (trimmed.isNotEmpty) {
+      final firstWord = trimmed.split(RegExp(r'\s+')).first;
+      final slug = firstWord.replaceAll(RegExp(r'[^\w]'), '');
+      if (slug.isNotEmpty) return slug;
+    }
+    final digits = phone.replaceAll(RegExp(r'\D'), '');
+    if (digits.isNotEmpty) return 'user$digits';
+    return 'user${DateTime.now().millisecondsSinceEpoch % 10000}';
+  }
+
   Future<void> _onSubmit({
     required String fullName,
-    required String nickname,
     required String email,
-    required String dateOfBirth,
-    required String country,
+    required String phone,
     required String password,
     required String confirmPassword,
   }) async {
@@ -35,10 +46,10 @@ class _RegisterPageState extends State<RegisterPage> {
     final result = await _registerUseCase(
       RegisterInput(
         fullName: fullName,
-        nickname: nickname,
+        nickname: _deriveNickname(fullName, phone),
         email: email,
-        dateOfBirth: dateOfBirth,
-        country: country,
+        dateOfBirth: '2000-01-01',
+        country: 'Vietnam',
         password: password,
         confirmPassword: confirmPassword,
       ),
@@ -50,9 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
     switch (result) {
       case Success():
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Account created. Check your email for a code.'),
-          ),
+          SnackBar(content: Text(context.l10n.registerSuccessMessage)),
         );
         context.go(Routes.verifyOtp, extra: email);
       case Error(:final failure):
@@ -61,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
             content: Text(
               authErrorMessage(
                 failure.message,
-                fallback: 'Registration failed. Please try again.',
+                fallback: context.l10n.registerFailureMessage,
               ),
             ),
           ),
@@ -71,17 +80,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthPageLayout(
-      heroTitle: 'Create account',
-      heroSubtitle: 'Join Fuvekon to get started',
-      footer: const AuthNavLinks(
-        leading: AuthNavLink(label: 'Sign in', route: Routes.login),
-        trailing: AuthNavLink(
-          label: 'Forgot password?',
-          route: Routes.forgotPassword,
-        ),
-      ),
-      child: RegisterForm(isLoading: _isLoading, onSubmit: _onSubmit),
+    return RegisterPageLayout(
+      footer: const RegisterNavLinks(),
+      form: RegisterForm(isLoading: _isLoading, onSubmit: _onSubmit),
     );
   }
 }

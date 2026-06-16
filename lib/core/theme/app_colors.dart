@@ -40,7 +40,7 @@ abstract final class FuvekonColors {
   static const tier4 = Color(0xFF673095);
 
   // ── Dark mode ──
-  static const darkBg = Color(0xFF121212);
+  static const darkBg = Color(0xFF0B1318);
   static const darkSurface = Color(0xFF1A1F1C);
   static const darkSurfaceElevated = Color(0xFF242B27);
   static const darkBorder = Color(0xFF2E3A34);

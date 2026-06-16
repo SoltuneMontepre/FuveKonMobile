@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/auth/auth_session_controller.dart';
 import 'package:fuvekonmobile/core/config/app_config.dart';
@@ -8,9 +7,11 @@ import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
 import 'package:fuvekonmobile/core/router/app_router.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/theme/app_theme.dart';
+import 'package:fuvekonmobile/core/theme/theme_mode_notifier.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_state.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 
 class FuvekonApp extends StatelessWidget {
   const FuvekonApp({super.key});
@@ -18,6 +19,7 @@ class FuvekonApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localeNotifier = sl<LocaleNotifier>();
+    final themeModeNotifier = sl<ThemeModeNotifier>();
 
     return BlocProvider(
       create: (_) => sl<AuthBloc>()..add(const AuthEvent.started()),
@@ -26,23 +28,17 @@ class FuvekonApp extends StatelessWidget {
           listener: (_, state) => sl<AuthSessionNotifier>().update(state),
           child: RoleSessionSync(
             child: ListenableBuilder(
-              listenable: localeNotifier,
+              listenable: Listenable.merge([localeNotifier, themeModeNotifier]),
               builder: (context, _) {
                 return MaterialApp.router(
                   title: AppConfig.appName,
                   theme: AppTheme.light,
                   darkTheme: AppTheme.dark,
-                  themeMode: ThemeMode.dark,
+                  themeMode: themeModeNotifier.themeMode,
                   locale: localeNotifier.locale,
-                  supportedLocales: const [
-                    Locale('vi'),
-                    Locale('en'),
-                  ],
-                  localizationsDelegates: const [
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                  ],
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
                   routerConfig: sl<AppRouter>().router,
                 );
               },

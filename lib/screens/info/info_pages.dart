@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/screens/info/event_rules_page.dart';
 import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';
+
+export 'event_rules_page.dart';
+export 'faq_page.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -14,29 +18,12 @@ class AboutPage extends StatelessWidget {
   }
 }
 
-class FaqPage extends StatelessWidget {
-  const FaqPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'FAQ',
-      subtitle: 'Frequently asked questions.',
-      icon: Icons.help_outline,
-    );
-  }
-}
-
 class TosPage extends StatelessWidget {
   const TosPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'Terms of Service',
-      subtitle: 'Event terms and policies.',
-      icon: Icons.gavel_outlined,
-    );
+    return const EventRulesPage();
   }
 }
 

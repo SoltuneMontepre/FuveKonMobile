@@ -16,5 +16,9 @@ abstract final class OnboardingRoutes {
           path: Routes.language,
           builder: (context, state) => const LanguageSelectionPage(),
         ),
+        GoRoute(
+          path: Routes.introduction,
+          builder: (context, state) => const IntroductionPage(),
+        ),
       ];
 }
