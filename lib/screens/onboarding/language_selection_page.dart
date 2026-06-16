@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
@@ -16,15 +17,35 @@ class LanguageSelectionPage extends StatefulWidget {
 class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
   String _selected = 'vi';
 
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedLanguage();
+  }
+
+  Future<void> _loadSavedLanguage() async {
+    final saved = await sl<AppPreferences>().languageCode;
+    if (!mounted || saved == null) return;
+    setState(() => _selected = saved);
+    sl<LocaleNotifier>().update(Locale(saved));
+  }
+
+  void _selectLanguage(String code) {
+    setState(() => _selected = code);
+    sl<LocaleNotifier>().update(Locale(code));
+  }
+
   Future<void> _continue() async {
     await sl<AppPreferences>().setLanguageCode(_selected);
     sl<LocaleNotifier>().update(Locale(_selected));
     if (!mounted) return;
-    context.go(Routes.login);
+    context.go(Routes.introduction);
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
       body: SafeArea(
@@ -35,7 +56,7 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
             children: [
               const SizedBox(height: 24),
               Text(
-                'Chọn ngôn ngữ',
+                l10n.languageTitle,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
@@ -43,32 +64,32 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Vui lòng chọn ngôn ngữ để tiếp tục',
+                l10n.languageSubtitle,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                     ),
               ),
               const SizedBox(height: 40),
               _LanguageOption(
-                label: 'Tiếng Việt',
+                label: l10n.languageVietnamese,
                 selected: _selected == 'vi',
-                onTap: () => setState(() => _selected = 'vi'),
+                onTap: () => _selectLanguage('vi'),
               ),
               const SizedBox(height: 16),
               _LanguageOption(
-                label: 'English',
+                label: l10n.languageEnglish,
                 selected: _selected == 'en',
-                onTap: () => setState(() => _selected = 'en'),
+                onTap: () => _selectLanguage('en'),
               ),
               const Spacer(),
               FilledButton(
                 onPressed: _continue,
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Tiếp tục'),
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_forward, size: 18),
+                    Text(l10n.continueButton),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.arrow_forward, size: 18),
                   ],
                 ),
               ),

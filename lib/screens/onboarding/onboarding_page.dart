@@ -21,22 +21,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
       title: 'Khám phá sự kiện và hoạt động nổi bật',
       body:
           'Hòa mình vào không gian giao lưu văn hóa, mua sắm và trải nghiệm nghệ thuật độc đáo.',
-      icon: Icons.celebration_outlined,
-      gradient: [Color(0xFF1A2E24), Color(0xFF2D5A40)],
+      imageAsset: 'assets/images/logo/onboarding.png',
     ),
     _OnboardingSlide(
       title: 'Kết nối cộng đồng yêu nghệ thuật',
       body:
           'Gặp gỡ nghệ sĩ, dealer và fan cùng đam mê trong một không gian sôi động.',
-      icon: Icons.groups_outlined,
-      gradient: [Color(0xFF1E2430), Color(0xFF3A4F5C)],
+      imageAsset: 'assets/images/logo/onboarding.png',
     ),
     _OnboardingSlide(
       title: 'Quản lý vé và trải nghiệm của bạn',
       body:
           'Mua vé, theo dõi lịch trình và tận hưởng sự kiện một cách thuận tiện nhất.',
-      icon: Icons.confirmation_num_outlined,
-      gradient: [Color(0xFF241E30), Color(0xFF4A3A5C)],
+      imageAsset: 'assets/images/logo/onboarding.png',
     ),
   ];
 
@@ -49,7 +46,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Future<void> _finish() async {
     await sl<AppPreferences>().setOnboardingCompleted(true);
     if (!mounted) return;
-    context.go(Routes.language);
+    context.go(Routes.login);
   }
 
   void _next() {
@@ -66,15 +63,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FuvekonColors.darkBg,
+      backgroundColor: _OnboardingColors.screenBg,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-            FuvekonSpacing.page,
-            16,
-            FuvekonSpacing.page,
-            12,
-          ),
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
           child: Column(
             children: [
               Expanded(
@@ -82,26 +74,38 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   controller: _pageController,
                   itemCount: _slides.length,
                   onPageChanged: (index) => setState(() => _currentPage = index),
-                  itemBuilder: (context, index) =>
-                      _OnboardingSlideCard(slide: _slides[index]),
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 4),
+                    child: _OnboardingSlideCard(slide: _slides[index]),
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
               _PageIndicator(
                 count: _slides.length,
                 current: _currentPage,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextButton(
                     onPressed: _finish,
+                    style: TextButton.styleFrom(
+                      foregroundColor: _OnboardingColors.skipText,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 0,
+                        vertical: 14,
+                      ),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
                     child: const Text(
                       'BỎ QUA',
                       style: TextStyle(
-                        color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
+                        letterSpacing: 1.2,
+                        fontSize: 13,
                       ),
                     ),
                   ),
@@ -109,10 +113,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   FilledButton(
                     onPressed: _next,
                     style: FilledButton.styleFrom(
-                      backgroundColor: FuvekonColors.outline,
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(140, 48),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      backgroundColor: _OnboardingColors.accentGreen,
+                      foregroundColor: const Color(0xFFE8EDE9),
+                      minimumSize: const Size(168, 52),
+                      padding: const EdgeInsets.symmetric(horizontal: 28),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      elevation: 0,
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -121,9 +129,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           _currentPage == _slides.length - 1
                               ? 'BẮT ĐẦU'
                               : 'TIẾP THEO',
-                          style: const TextStyle(fontWeight: FontWeight.w700),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.8,
+                            fontSize: 14,
+                          ),
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 10),
                         const Icon(Icons.arrow_forward, size: 18),
                       ],
                     ),
@@ -138,18 +150,35 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 }
 
+abstract final class _OnboardingColors {
+  static const screenBg = Color(0xFF121212);
+  static const accentGreen = Color(0xFF4A7C59);
+  static const cardPanel = Color(0xFFD1EAD8);
+  static const textDark = Color(0xFF0A2E1F);
+  static const skipText = Color(0xFF888888);
+  static const inactiveDot = Color(0xFF3D3D3D);
+
+  static const cardRadius = 36.0;
+
+  /// Desaturate + slight green cast to match Figma hero art.
+  static const grayscaleMatrix = <double>[
+    0.18, 0.55, 0.09, 0, 0,
+    0.18, 0.55, 0.09, 0, 0,
+    0.18, 0.55, 0.09, 0, 0,
+    0, 0, 0, 1, 0,
+  ];
+}
+
 class _OnboardingSlide {
   const _OnboardingSlide({
     required this.title,
     required this.body,
-    required this.icon,
-    required this.gradient,
+    this.imageAsset,
   });
 
   final String title;
   final String body;
-  final IconData icon;
-  final List<Color> gradient;
+  final String? imageAsset;
 }
 
 class _OnboardingSlideCard extends StatelessWidget {
@@ -159,79 +188,135 @@ class _OnboardingSlideCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(FuvekonRadii.card),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 5,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: slide.gradient,
-                ),
-              ),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          FuvekonColors.darkPrimary.withValues(alpha: 0.08),
-                          Colors.transparent,
-                          FuvekonColors.outline.withValues(alpha: 0.15),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Icon(
-                      slide.icon,
-                      size: 88,
-                      color: FuvekonColors.darkPrimary.withValues(alpha: 0.35),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: ColoredBox(
-              color: FuvekonColors.darkCard,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      slide.title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: FuvekonColors.textPrimary,
-                            fontWeight: FontWeight.w800,
-                            height: 1.25,
-                          ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      slide.body,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: FuvekonColors.textSecondary,
-                            height: 1.5,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(_OnboardingColors.cardRadius),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.45),
+            blurRadius: 32,
+            spreadRadius: -4,
+            offset: const Offset(0, 12),
           ),
         ],
       ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(_OnboardingColors.cardRadius),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 13,
+              child: _SlideHero(imageAsset: slide.imageAsset!),
+            ),
+            Expanded(
+              flex: 10,
+              child: ColoredBox(
+                color: _OnboardingColors.cardPanel,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 28, 32, 24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        slide.title,
+                        style: const TextStyle(
+                          color: _OnboardingColors.textDark,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 22,
+                          height: 1.35,
+                          letterSpacing: -0.2,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 14),
+                      Text(
+                        slide.body,
+                        style: TextStyle(
+                          color: _OnboardingColors.textDark.withValues(
+                            alpha: 0.88,
+                          ),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15.5,
+                          height: 1.55,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SlideHero extends StatelessWidget {
+  const _SlideHero({required this.imageAsset});
+
+  final String imageAsset;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        ColorFiltered(
+          colorFilter: const ColorFilter.matrix(
+            _OnboardingColors.grayscaleMatrix,
+          ),
+          child: Image.asset(
+            imageAsset,
+            fit: BoxFit.cover,
+            alignment: Alignment.center,
+            errorBuilder: (context, error, stackTrace) => ColoredBox(
+              color: FuvekonColors.darkSurface,
+              child: Icon(
+                Icons.image_outlined,
+                size: 64,
+                color: Colors.white.withValues(alpha: 0.2),
+              ),
+            ),
+          ),
+        ),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                const Color(0xFF1A3328).withValues(alpha: 0.25),
+                Colors.transparent,
+                Colors.transparent,
+              ],
+              stops: const [0, 0.35, 1],
+            ),
+          ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 110,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  _OnboardingColors.cardPanel.withValues(alpha: 0),
+                  _OnboardingColors.cardPanel.withValues(alpha: 0.35),
+                  _OnboardingColors.cardPanel.withValues(alpha: 0.92),
+                  _OnboardingColors.cardPanel,
+                ],
+                stops: const [0, 0.35, 0.72, 1],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -252,15 +337,16 @@ class _PageIndicator extends StatelessWidget {
       children: List.generate(count, (index) {
         final active = index == current;
         return AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          width: active ? 10 : 8,
-          height: active ? 10 : 8,
+          duration: const Duration(milliseconds: 280),
+          curve: Curves.easeOutCubic,
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          width: active ? 32 : 8,
+          height: 8,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(999),
             color: active
-                ? FuvekonColors.darkPrimary
-                : FuvekonColors.darkSurfaceElevated,
+                ? _OnboardingColors.accentGreen
+                : _OnboardingColors.inactiveDot,
           ),
         );
       }),

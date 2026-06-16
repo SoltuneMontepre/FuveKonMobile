@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:go_router/go_router.dart';
@@ -57,9 +58,77 @@ class LoginNavLinks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AuthNavLinks(
-      leading: AuthNavLink(label: 'Create account', route: Routes.register),
-      trailing: AuthNavLink(label: 'Forgot password?', route: Routes.forgotPassword),
+    final l10n = context.l10n;
+
+    return Column(
+      children: [
+        Text(
+          l10n.loginNoAccount,
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.55),
+            fontSize: 14,
+          ),
+        ),
+        const SizedBox(height: 6),
+        TextButton(
+          onPressed: () => context.go(Routes.register),
+          style: TextButton.styleFrom(
+            foregroundColor: const Color(0xFFD1EAD8),
+            padding: EdgeInsets.zero,
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Text(
+            l10n.loginRegisterLink,
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 16,
+              letterSpacing: 0.3,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class RegisterNavLinks extends StatelessWidget {
+  const RegisterNavLinks({super.key});
+
+  static const _textDark = Color(0xFF0A2E1F);
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Text(
+          l10n.registerHasAccount,
+          style: TextStyle(
+            color: _textDark.withValues(alpha: 0.65),
+            fontSize: 14,
+          ),
+        ),
+        TextButton(
+          onPressed: () => context.go(Routes.login),
+          style: TextButton.styleFrom(
+            foregroundColor: _textDark,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Text(
+            l10n.registerLoginLink,
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 14.5,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
