@@ -94,6 +94,24 @@ class UpdateLostFoundInput {
       };
 }
 
+class ConfirmLostFoundReturnInput {
+  const ConfirmLostFoundReturnInput({
+    required this.verifiedDescription,
+    required this.verifiedOwnership,
+    required this.verifiedIdentity,
+  });
+
+  final bool verifiedDescription;
+  final bool verifiedOwnership;
+  final bool verifiedIdentity;
+
+  Map<String, dynamic> toJson() => {
+        'verified_description': verifiedDescription,
+        'verified_ownership': verifiedOwnership,
+        'verified_identity': verifiedIdentity,
+      };
+}
+
 class AdminLostFoundService {
   AdminLostFoundService({required AdminLostFoundApi api}) : _api = api;
 
@@ -175,5 +193,16 @@ class AdminLostFoundService {
     if (!response.isSuccess) {
       throw ServerException(response.errorMessage ?? response.message);
     }
+  }
+
+  Future<AdminLostFoundItem> confirmReturn(
+    String id,
+    ConfirmLostFoundReturnInput input,
+  ) async {
+    final response = await _api.confirmReturn(id, input.toJson());
+    if (!response.isSuccess || response.data == null) {
+      throw ServerException(response.errorMessage ?? response.message);
+    }
+    return AdminLostFoundItem.fromJson(response.data!);
   }
 }

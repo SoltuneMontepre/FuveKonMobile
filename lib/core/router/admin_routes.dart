@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/screens/admin/admin_shell.dart';
 import 'package:fuvekonmobile/screens/admin/pages/admin_pages.dart';
-import 'package:fuvekonmobile/features/profile/presentation/pages/profile_page.dart';
-import 'package:fuvekonmobile/screens/admin/pages/admin_users_page.dart';
 import 'package:fuvekonmobile/screens/admin/pages/operations_home_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -46,6 +44,21 @@ abstract final class AdminRoutes {
                   path: 'dealers',
                   parentNavigatorKey: rootNavigatorKey,
                   builder: (context, state) => const AdminDealersPage(),
+                ),
+                GoRoute(
+                  path: 'schedules',
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (context, state) => const AdminSchedulesPage(),
+                  routes: [
+                    GoRoute(
+                      path: ':id',
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) {
+                        final scheduleId = state.pathParameters['id']!;
+                        return AdminScheduleDetailPage(scheduleId: scheduleId);
+                      },
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: 'users',
@@ -112,15 +125,24 @@ abstract final class AdminRoutes {
             GoRoute(
               path: Routes.adminLostFound,
               builder: (context, state) => const AdminLostFoundPage(),
+              routes: [
+                GoRoute(
+                  path: ':id/return',
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (context, state) {
+                    final itemId = state.pathParameters['id']!;
+                    return AdminLostFoundReturnPage(itemId: itemId);
+                  },
+                ),
+              ],
             ),
           ],
         ),
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: Routes.adminAccount,
-              builder: (context, state) =>
-                  const ProfilePage(title: 'Tài khoản'),
+              path: Routes.adminSystem,
+              builder: (context, state) => const AdminSystemPage(),
             ),
           ],
         ),

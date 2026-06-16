@@ -124,7 +124,92 @@ func (h *ScheduleHandler) UpdateSchedule(c *gin.Context) {
 	utils.RespondSuccess(c, sched, "Schedule updated successfully")
 }
 
-// Note: schedule-scoped create endpoints were removed. Use global venues/locations and attach them to schedules.
+// Note: schedule-scoped create endpoints are preferred. Global venues/locations
+// can still be attached via AttachLocation for reuse across schedules.
+
+// CreateVenue godoc
+// @Summary Create a schedule-scoped venue (admin/staff)
+// @Tags admin-schedules
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "Schedule ID" format(uuid)
+// @Param request body requests.CreateScheduleVenueRequest true "Venue payload"
+// @Success 201 {object} map[string]interface{}
+// @Router /admin/admin-schedules/{id}/venues [post]
+func (h *ScheduleHandler) CreateVenue(c *gin.Context) {
+	ctx := c.Request.Context()
+	scheduleID := c.Param("id")
+	if scheduleID == "" {
+		utils.RespondValidationError(c, "Schedule ID is required")
+		return
+	}
+
+	var req requests.CreateScheduleVenueRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.RespondValidationError(c, err.Error())
+		return
+	}
+
+	venue, err := h.services.Schedule.CreateVenue(ctx, scheduleID, &req)
+	if err != nil {
+		if errors.Is(err, repositories.ErrScheduleNotFound) {
+			utils.RespondNotFound(c, "Schedule not found")
+			return
+		}
+		utils.RespondInternalServerError(c, "Failed to create venue")
+		return
+	}
+
+	utils.RespondCreated(c, venue, "Venue created successfully")
+}
+
+// CreateLocation godoc
+// @Summary Create a schedule-scoped location (admin/staff)
+// @Tags admin-schedules
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "Schedule ID" format(uuid)
+// @Param vid path string true "Venue ID" format(uuid)
+// @Param request body requests.CreateScheduleLocationRequest true "Location payload"
+// @Success 201 {object} map[string]interface{}
+// @Router /admin/admin-schedules/{id}/venues/{vid}/locations [post]
+func (h *ScheduleHandler) CreateLocation(c *gin.Context) {
+	ctx := c.Request.Context()
+	scheduleID := c.Param("id")
+	if scheduleID == "" {
+		utils.RespondValidationError(c, "Schedule ID is required")
+		return
+	}
+	vid := c.Param("vid")
+	if vid == "" {
+		utils.RespondValidationError(c, "Venue ID is required")
+		return
+	}
+
+	var req requests.CreateScheduleLocationRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.RespondValidationError(c, err.Error())
+		return
+	}
+
+	loc, err := h.services.Schedule.CreateLocation(ctx, scheduleID, vid, &req)
+	if err != nil {
+		if errors.Is(err, repositories.ErrScheduleNotFound) {
+			utils.RespondNotFound(c, "Schedule not found")
+			return
+		}
+		if errors.Is(err, repositories.ErrVenueNotFound) {
+			utils.RespondNotFound(c, "Venue not found")
+			return
+		}
+		utils.RespondInternalServerError(c, "Failed to create location")
+		return
+	}
+
+	utils.RespondCreated(c, loc, "Location created successfully")
+}
 
 // AttachLocation godoc
 // @Summary Attach an existing global location to a schedule's venue (admin/staff)
@@ -280,10 +365,6 @@ func (h *ScheduleHandler) CreateEvent(c *gin.Context) {
 		return
 	}
 	lid := c.Param("lid")
-	if lid == "" {
-		utils.RespondValidationError(c, "Location ID is required")
-		return
-	}
 
 	var req requests.EventInput
 	if err := c.ShouldBindJSON(&req); err != nil {

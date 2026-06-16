@@ -157,7 +157,8 @@ func setupRouter(db *gorm.DB) (*gin.Engine, error) {
 	// Initialize repositories and services
 	repos := repositories.NewRepositories(db)
 	svc := services.NewServices(repos, database.RedisClient, loginMaxFail, loginFailBlockMinutes)
-	h := handlers.NewHandlers(svc, queuePublisher)
+	healthSvc := services.NewHealthService(db, database.SetWithExpiration, svc.S3, sqsClient)
+	h := handlers.NewHandlers(svc, queuePublisher, healthSvc)
 
 	// Setup router with middleware
 	router := gin.Default()

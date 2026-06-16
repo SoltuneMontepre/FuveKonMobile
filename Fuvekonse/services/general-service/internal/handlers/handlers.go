@@ -23,9 +23,10 @@ type Handlers struct {
 	LostFound    *LostFoundHandler
 	S3           *S3Handler
 	RBAC         *RBACHandler
+	Health       *HealthHandler
 }
 
-func NewHandlers(services *services.Services, queuePublisher queue.Publisher) *Handlers {
+func NewHandlers(services *services.Services, queuePublisher queue.Publisher, health *services.HealthService) *Handlers {
 	return &Handlers{
 		Auth:         NewAuthHandler(services),
 		User:         NewUserHandler(services),
@@ -44,5 +45,6 @@ func NewHandlers(services *services.Services, queuePublisher queue.Publisher) *H
 		LostFound:    NewLostFoundHandler(services),
 		S3:           NewS3Handler(services),
 		RBAC:         NewRBACHandler(services),
+		Health:       NewHealthHandler(health),
 	}
 }

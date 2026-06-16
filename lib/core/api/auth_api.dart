@@ -148,6 +148,21 @@ class AccountApi extends BaseApi {
       mapData: (value) => AccountJson.fromJson(mapJsonObject(value)!),
     );
   }
+
+  Future<ApiResponse<List<String>>> getMyPermissions({
+    bool throwOnFailure = true,
+  }) {
+    return get(
+      ApiConstants.usersMePermissions,
+      mapData: (value) {
+        final map = mapJsonObject(value);
+        final raw = map?['permissions'];
+        if (raw is! List) return const <String>[];
+        return raw.whereType<String>().toList();
+      },
+      throwOnFailure: throwOnFailure,
+    );
+  }
 }
 
 /// Parsed account from `GET /users/me` (Fuvekon `Account` model).

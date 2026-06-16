@@ -19,6 +19,7 @@ import 'package:fuvekonmobile/core/router/public_routes.dart';
 
 import 'package:fuvekonmobile/core/router/routes.dart';
 
+import 'package:fuvekonmobile/core/api/auth_api.dart';
 import 'package:fuvekonmobile/features/profile/domain/usecases/get_me_usecase.dart';
 
 import 'package:get_it/get_it.dart';
@@ -124,27 +125,16 @@ class AppRouter {
 
 
     if (Routes.isAdminRoute(location)) {
-
-      if (_authSessionNotifier.isAdmin) {
-
-        return null;
-
+      final role = _authSessionNotifier.role;
+      if (role == null || !role.isPrivileged) {
+        return _authSessionNotifier.homeRoute;
       }
 
-
-
-      if (_authSessionNotifier.isStaff &&
-
-          Routes.isStaffAccessibleAdminRoute(location)) {
-
+      if (_authSessionNotifier.canAccessAdminRoute(location)) {
         return null;
-
       }
 
-
-
-      return _authSessionNotifier.homeRoute;
-
+      return Routes.admin;
     }
 
 
@@ -197,6 +187,8 @@ class _RoleSessionSyncState extends State<RoleSessionSync> {
 
   final _getMeUseCase = sl<GetMeUseCase>();
 
+  final _accountApi = sl<AccountApi>();
+
 
 
   @override
@@ -237,6 +229,8 @@ class _RoleSessionSyncState extends State<RoleSessionSync> {
 
       _notifier.updateVerified(null);
 
+      _notifier.updatePermissions(const []);
+
       return;
 
     }
@@ -244,6 +238,8 @@ class _RoleSessionSyncState extends State<RoleSessionSync> {
 
 
     final result = await _getMeUseCase();
+
+    final permsResult = await _accountApi.getMyPermissions(throwOnFailure: false);
 
     switch (result) {
 
@@ -258,6 +254,16 @@ class _RoleSessionSyncState extends State<RoleSessionSync> {
         _notifier.updateRole(null);
 
         _notifier.updateVerified(null);
+
+    }
+
+    if (permsResult.isSuccess && permsResult.data != null) {
+
+      _notifier.updatePermissions(permsResult.data!);
+
+    } else {
+
+      _notifier.updatePermissions(const []);
 
     }
 

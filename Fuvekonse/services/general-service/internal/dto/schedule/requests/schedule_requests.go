@@ -10,9 +10,19 @@ type EventInput struct {
 	EndAt       time.Time `json:"end_at" binding:"required"`
 }
 
-// Note: schedule-scoped nested venue/location creation has been removed to
-// favour global reusable venues/locations. Use the admin global endpoints
-// to create `Venue`/`Location` and then attach them to schedules.
+// CreateScheduleVenueRequest creates a venue scoped to a single schedule.
+type CreateScheduleVenueRequest struct {
+	Name        string `json:"name" binding:"required,min=1,max=255"`
+	Description string `json:"description" binding:"omitempty,max=1000"`
+	Order       int    `json:"order" binding:"omitempty"`
+}
+
+// CreateScheduleLocationRequest creates a location scoped to a schedule venue.
+type CreateScheduleLocationRequest struct {
+	Name        string `json:"name" binding:"required,min=1,max=255"`
+	Description string `json:"description" binding:"omitempty,max=1000"`
+	Order       int    `json:"order" binding:"omitempty"`
+}
 
 // CreateScheduleRequest is the body for creating a schedule with nested venues and events.
 type CreateScheduleRequest struct {

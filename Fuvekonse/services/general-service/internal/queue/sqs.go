@@ -83,6 +83,22 @@ func NewSQSClient(ctx context.Context) (*SQSClient, error) {
 	}, nil
 }
 
+// Client exposes the underlying AWS SQS client for health checks.
+func (c *SQSClient) Client() *sqs.Client {
+	if c == nil {
+		return nil
+	}
+	return c.client
+}
+
+// QueueURL returns the configured queue URL.
+func (c *SQSClient) QueueURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.queueURL
+}
+
 // PublishTicketJob sends a ticket job message to the queue.
 func (c *SQSClient) PublishTicketJob(ctx context.Context, msg *TicketJobMessage) error {
 	if c == nil {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/screens/info/lost_found_models.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
 
 class AdminDetailField {
@@ -772,6 +773,7 @@ class AdminTicketTierItem {
 class AdminLostFoundItem implements AdminListItem {
   const AdminLostFoundItem({
     required this.id,
+    this.displayCode = '',
     required this.itemType,
     required this.title,
     required this.description,
@@ -780,6 +782,14 @@ class AdminLostFoundItem implements AdminListItem {
     required this.contactInfo,
     required this.staffNotes,
     required this.status,
+    this.recipientName = '',
+    this.recipientIdCard = '',
+    this.recipientPhone = '',
+    this.verifiedDescription = false,
+    this.verifiedOwnership = false,
+    this.verifiedIdentity = false,
+    this.returnedAt,
+    this.activeClaim,
     this.createdAt,
     this.modifiedAt,
   });
@@ -787,6 +797,7 @@ class AdminLostFoundItem implements AdminListItem {
   factory AdminLostFoundItem.fromJson(Map<String, dynamic> json) {
     return AdminLostFoundItem(
       id: json['id']?.toString() ?? '',
+      displayCode: json['display_code'] as String? ?? '',
       itemType: json['item_type'] as String? ?? 'found',
       title: json['title'] as String? ?? 'Vật thất lạc',
       description: json['description'] as String? ?? '',
@@ -795,6 +806,18 @@ class AdminLostFoundItem implements AdminListItem {
       contactInfo: json['contact_info'] as String? ?? '',
       staffNotes: json['staff_notes'] as String? ?? '',
       status: json['status'] as String? ?? 'open',
+      recipientName: json['recipient_name'] as String? ?? '',
+      recipientIdCard: json['recipient_id_card'] as String? ?? '',
+      recipientPhone: json['recipient_phone'] as String? ?? '',
+      verifiedDescription: json['verified_description'] as bool? ?? false,
+      verifiedOwnership: json['verified_ownership'] as bool? ?? false,
+      verifiedIdentity: json['verified_identity'] as bool? ?? false,
+      returnedAt: parseAdminDate(json['returned_at']),
+      activeClaim: json['active_claim'] is Map<String, dynamic>
+          ? AdminLostFoundClaim.fromJson(
+              json['active_claim'] as Map<String, dynamic>,
+            )
+          : null,
       createdAt: parseAdminDate(json['created_at']),
       modifiedAt: parseAdminDate(json['modified_at']),
     );
@@ -802,6 +825,7 @@ class AdminLostFoundItem implements AdminListItem {
 
   @override
   final String id;
+  final String displayCode;
   final String itemType;
   @override
   final String title;
@@ -811,8 +835,36 @@ class AdminLostFoundItem implements AdminListItem {
   final String contactInfo;
   final String staffNotes;
   final String status;
+  final String recipientName;
+  final String recipientIdCard;
+  final String recipientPhone;
+  final bool verifiedDescription;
+  final bool verifiedOwnership;
+  final bool verifiedIdentity;
+  final DateTime? returnedAt;
+  final AdminLostFoundClaim? activeClaim;
   final DateTime? createdAt;
   final DateTime? modifiedAt;
+
+  String get itemCode {
+    if (displayCode.isNotEmpty) return displayCode;
+    final compact = id.replaceAll('-', '');
+    if (compact.length >= 5) {
+      return 'FND-${compact.substring(compact.length - 5).toUpperCase()}';
+    }
+    return 'FND-${compact.toUpperCase()}';
+  }
+
+  bool get canConfirmReturn =>
+      itemType == 'found' &&
+      status == 'claimed' &&
+      activeClaim?.isPending == true;
+
+  static String maskSensitive(String value) {
+    final trimmed = value.trim();
+    if (trimmed.length <= 3) return 'x' * trimmed.length;
+    return '${trimmed.substring(0, 3)}${'x' * (trimmed.length - 3)}';
+  }
 
   static String itemTypeLabel(String type) => switch (type) {
         'lost' => 'Thất lạc',
@@ -848,6 +900,7 @@ class AdminLostFoundItem implements AdminListItem {
   @override
   List<AdminDetailField> get details => [
         AdminDetailField(label: 'Tiêu đề', value: title),
+        AdminDetailField(label: 'Mã vật phẩm', value: itemCode),
         AdminDetailField(label: 'Loại', value: itemTypeLabel(itemType)),
         AdminDetailField(label: 'Trạng thái', value: statusLabel(status)),
         if (description.isNotEmpty)
@@ -860,6 +913,21 @@ class AdminLostFoundItem implements AdminListItem {
           AdminDetailField(label: 'Ảnh', imageUrl: imageUrl),
         if (staffNotes.isNotEmpty)
           AdminDetailField(label: 'Ghi chú nhân viên', value: staffNotes),
+        if (returnedAt != null && recipientName.isNotEmpty) ...[
+          AdminDetailField(label: 'Người nhận', value: recipientName),
+          AdminDetailField(
+            label: 'CCCD người nhận',
+            value: maskSensitive(recipientIdCard),
+          ),
+          AdminDetailField(
+            label: 'SĐT người nhận',
+            value: maskSensitive(recipientPhone),
+          ),
+          AdminDetailField(
+            label: 'Hoàn trả lúc',
+            value: formatAdminDate(returnedAt),
+          ),
+        ],
         AdminDetailField(
           label: 'Ngày tạo',
           value: formatAdminDate(createdAt),

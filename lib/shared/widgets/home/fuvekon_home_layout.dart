@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
 
-/// Top bar: menu, brand, search — matches the logged-in home screen.
+/// Top bar: brand and profile — matches the logged-in home screen.
 class FuvekonHomeAppBar extends StatelessWidget {
   const FuvekonHomeAppBar({
     super.key,
-    this.onMenuTap,
-    this.onSearchTap,
+    this.avatarUrl,
+    this.initials = '?',
+    this.onProfileTap,
   });
 
-  final VoidCallback? onMenuTap;
-  final VoidCallback? onSearchTap;
+  final String? avatarUrl;
+  final String initials;
+  final VoidCallback? onProfileTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +21,7 @@ class FuvekonHomeAppBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       child: Row(
         children: [
-          IconButton(
-            onPressed: onMenuTap,
-            icon: const Icon(Icons.menu_rounded, color: FuvekonColors.darkText),
-          ),
+          const SizedBox(width: 48),
           Expanded(
             child: Text(
               'FUVEKON',
@@ -34,8 +34,14 @@ class FuvekonHomeAppBar extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: onSearchTap,
-            icon: const Icon(Icons.search_rounded, color: FuvekonColors.darkText),
+            onPressed: onProfileTap,
+            padding: EdgeInsets.zero,
+            tooltip: 'Hồ sơ',
+            icon: S3Avatar(
+              imageUrl: avatarUrl,
+              initials: initials,
+              radius: 18,
+            ),
           ),
         ],
       ),

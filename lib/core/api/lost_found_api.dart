@@ -82,4 +82,66 @@ class AdminLostFoundApi extends BaseApi {
   Future<ApiResponse<void>> deleteItem(String id) {
     return delete<void>(ApiConstants.adminLostFoundItem(id));
   }
+
+  Future<ApiResponse<Map<String, dynamic>>> confirmReturn(
+    String id,
+    Map<String, dynamic> payload,
+  ) {
+    return post(
+      ApiConstants.adminLostFoundReturn(id),
+      data: payload,
+      mapData: mapJsonObject,
+    );
+  }
+}
+
+class LostFoundFilter {
+  const LostFoundFilter({
+    this.search,
+    this.page = 1,
+    this.pageSize = 20,
+  });
+
+  final String? search;
+  final int page;
+  final int pageSize;
+
+  Map<String, dynamic> toQuery() => buildQuery({
+        if (search != null) 'search': search,
+        'page': page,
+        'page_size': pageSize,
+      });
+}
+
+/// User lost & found endpoints (ticket holders).
+class LostFoundApi extends BaseApi {
+  LostFoundApi(super.client);
+
+  Future<ApiResponse<Map<String, dynamic>>> list([
+    LostFoundFilter filter = const LostFoundFilter(),
+  ]) {
+    return get(
+      ApiConstants.lostFound,
+      queryParameters: filter.toQuery(),
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
+    return get(
+      ApiConstants.lostFoundItem(id),
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> claim(
+    String id, {
+    String message = '',
+  }) {
+    return post(
+      ApiConstants.lostFoundClaim(id),
+      data: {if (message.isNotEmpty) 'message': message},
+      mapData: mapJsonObject,
+    );
+  }
 }

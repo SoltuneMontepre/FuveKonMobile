@@ -31,6 +31,7 @@ func AutoMigrate(db *gorm.DB) error {
 		&models.Notification{},
 		&models.DeviceToken{},
 		&models.LostFoundItem{},
+		&models.LostFoundClaim{},
 		&models.EventSettings{},
 		&models.Permission{},
 		&models.RolePermission{},

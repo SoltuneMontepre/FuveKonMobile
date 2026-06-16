@@ -1,4 +1,5 @@
 import 'package:fuvekonmobile/core/api/analytics_api.dart';
+import 'package:fuvekonmobile/core/api/lost_found_api.dart';
 import 'package:fuvekonmobile/core/api/fuvekon_apis.dart';
 import 'package:fuvekonmobile/core/network/api_client.dart';
 import 'package:fuvekonmobile/core/services/s3_upload_service.dart';
@@ -7,7 +8,11 @@ import 'package:fuvekonmobile/screens/admin/services/admin_conbook_service.dart'
 import 'package:fuvekonmobile/screens/admin/services/admin_dashboard_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_dealer_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.dart';
+import 'package:fuvekonmobile/screens/info/lost_found_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_panel_service.dart';
+import 'package:fuvekonmobile/screens/admin/services/admin_schedule_service.dart';
+import 'package:fuvekonmobile/screens/admin/services/admin_event_settings_service.dart';
+import 'package:fuvekonmobile/screens/admin/services/admin_system_status_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/scan_ticket_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_ticket_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
@@ -29,7 +34,13 @@ void registerApiModule(GetIt sl) {
     ..registerLazySingleton(() => sl<FuvekonApis>().adminPanel)
     ..registerLazySingleton(() => sl<FuvekonApis>().conbook)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminLostFound)
+    ..registerLazySingleton(() => sl<FuvekonApis>().lostFound)
+    ..registerLazySingleton(() => sl<FuvekonApis>().schedule)
+    ..registerLazySingleton(() => sl<FuvekonApis>().adminSchedule)
+    ..registerLazySingleton(() => sl<FuvekonApis>().adminVenue)
     ..registerLazySingleton(() => sl<FuvekonApis>().analytics)
+    ..registerLazySingleton(() => sl<FuvekonApis>().health)
+    ..registerLazySingleton(() => sl<FuvekonApis>().event)
     ..registerLazySingleton(
       () => ScanTicketService(
         adminTicketApi: sl(),
@@ -52,9 +63,24 @@ void registerApiModule(GetIt sl) {
       () => AdminUserService(adminUserApi: sl()),
     )
     ..registerLazySingleton(
-      () => AdminLostFoundService(api: sl()),
+      () => AdminLostFoundService(api: sl<AdminLostFoundApi>()),
+    )
+    ..registerLazySingleton(
+      () => LostFoundService(api: sl<LostFoundApi>()),
     )
     ..registerLazySingleton(
       () => AdminDashboardService(analyticsApi: sl<AnalyticsApi>()),
+    )
+    ..registerLazySingleton(
+      () => AdminScheduleService(
+        scheduleApi: sl(),
+        adminScheduleApi: sl(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => AdminSystemStatusService(healthApi: sl()),
+    )
+    ..registerLazySingleton(
+      () => AdminEventSettingsService(eventApi: sl()),
     );
 }

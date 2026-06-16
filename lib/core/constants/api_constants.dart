@@ -14,6 +14,7 @@ abstract final class ApiConstants {
   // —— Users (account) ——
   static const String usersMe = '/users/me';
   static const String usersMeAvatar = '/users/me/avatar';
+  static const String usersMePermissions = '/users/me/permissions';
 
   // —— Tickets (user) ——
   static const String ticketTiers = '/tickets/tiers';
@@ -68,6 +69,25 @@ abstract final class ApiConstants {
 
   // —— Analytics ——
   static const String adminAnalyticsDashboard = '/admin/analytics/dashboard';
+  static const String adminHealth = '/admin/health';
+
+  // —— Event controls (admin) ——
+  static const String adminEventSettings = '/admin/event/settings';
+  static const String adminEventTicketSalesOpen = '/admin/event/ticket-sales/open';
+  static const String adminEventTicketSalesClose =
+      '/admin/event/ticket-sales/close';
+  static const String adminEventPanelRegistrationOpen =
+      '/admin/event/panel-registration/open';
+  static const String adminEventPanelRegistrationClose =
+      '/admin/event/panel-registration/close';
+  static const String adminEventTalentRegistrationOpen =
+      '/admin/event/talent-registration/open';
+  static const String adminEventTalentRegistrationClose =
+      '/admin/event/talent-registration/close';
+  static const String adminEventDealerRegistrationOpen =
+      '/admin/event/dealer-registration/open';
+  static const String adminEventDealerRegistrationClose =
+      '/admin/event/dealer-registration/close';
 
   // —— Dealers ——
   static const String dealerRegister = '/dealer/register';
@@ -116,9 +136,48 @@ abstract final class ApiConstants {
   static String adminConbookDeny(String id) => '/admin/conbooks/$id/deny';
   static String adminConbookPending(String id) => '/admin/conbooks/$id/pending';
 
+  // —— Schedules ——
+  static const String schedules = '/schedules';
+  static String schedule(String id) => '/schedules/$id';
+  static const String adminSchedules = '/admin/schedules';
+  static String adminSchedule(String id) => '/admin/schedules/$id';
+  static String adminScheduleAttachLocation(String scheduleId, String venueId) =>
+      '/admin/admin-schedules/$scheduleId/venues/$venueId/locations/attach';
+  static String adminScheduleVenues(String scheduleId) =>
+      '/admin/admin-schedules/$scheduleId/venues';
+  static String adminScheduleVenueLocations(String scheduleId, String venueId) =>
+      '/admin/admin-schedules/$scheduleId/venues/$venueId/locations';
+  static String adminScheduleVenue(String scheduleId, String venueId) =>
+      '/admin/admin-schedules/$scheduleId/venues/$venueId';
+  static String adminScheduleEvent(
+    String scheduleId,
+    String venueId,
+    String locationId,
+  ) =>
+      '/admin/admin-schedules/$scheduleId/venues/$venueId/locations/$locationId/events';
+  static String adminScheduleEventById(
+    String scheduleId,
+    String venueId,
+    String eventId,
+  ) =>
+      '/admin/admin-schedules/$scheduleId/venues/$venueId/events/$eventId';
+
+  // —— Venues (admin, global) ——
+  static const String adminVenues = '/admin/venues';
+  static String adminVenue(String venueId) => '/admin/venues/$venueId';
+  static String adminVenueLocations(String venueId) =>
+      '/admin/venues/$venueId/locations';
+
   // —— Lost & Found (admin) ——
   static const String adminLostFound = '/admin/lost-found';
   static String adminLostFoundItem(String id) => '/admin/lost-found/$id';
   static String adminLostFoundStatus(String id) =>
       '/admin/lost-found/$id/status';
+  static String adminLostFoundReturn(String id) =>
+      '/admin/lost-found/$id/return';
+
+  // —— Lost & Found (user) ——
+  static const String lostFound = '/lost-found';
+  static String lostFoundItem(String id) => '/lost-found/$id';
+  static String lostFoundClaim(String id) => '/lost-found/$id/claim';
 }

@@ -94,6 +94,54 @@ func (s *ScheduleService) DeleteSchedule(ctx context.Context, idStr string) erro
 	return s.repos.Schedule.DeleteSchedule(ctx, id)
 }
 
+// CreateVenue creates a schedule-scoped venue without requiring a global venue.
+func (s *ScheduleService) CreateVenue(ctx context.Context, scheduleIDStr string, req *requests.CreateScheduleVenueRequest) (*schedresponses.VenueResponse, error) {
+	sid, err := uuid.Parse(scheduleIDStr)
+	if err != nil {
+		return nil, errors.New("invalid schedule id")
+	}
+
+	sv := &models.ScheduleVenue{
+		Name:        req.Name,
+		Description: req.Description,
+		Order:       req.Order,
+	}
+	created, err := s.repos.Schedule.CreateVenue(ctx, sid, sv)
+	if err != nil {
+		return nil, err
+	}
+	resp := mappers.MapVenueToResponse(created)
+	return &resp, nil
+}
+
+// CreateLocation creates a schedule-scoped location under a schedule venue.
+func (s *ScheduleService) CreateLocation(ctx context.Context, scheduleIDStr string, venueIDStr string, req *requests.CreateScheduleLocationRequest) (*schedresponses.LocationResponse, error) {
+	sid, err := uuid.Parse(scheduleIDStr)
+	if err != nil {
+		return nil, errors.New("invalid schedule id")
+	}
+	vid, err := uuid.Parse(venueIDStr)
+	if err != nil {
+		return nil, errors.New("invalid venue id")
+	}
+
+	if _, err := s.repos.Schedule.GetVenueByID(ctx, vid); err != nil {
+		return nil, repositories.ErrVenueNotFound
+	}
+
+	sl := &models.ScheduleLocation{
+		Name:        req.Name,
+		Description: req.Description,
+		Order:       req.Order,
+	}
+	created, err := s.repos.Schedule.CreateLocation(ctx, sid, vid, sl)
+	if err != nil {
+		return nil, err
+	}
+	resp := mappers.MapLocationToResponse(created)
+	return &resp, nil
+}
+
 // UpdateVenue updates a venue's fields. Accepts either a schedule-scoped venue id or a global Venue id.
 func (s *ScheduleService) UpdateVenue(ctx context.Context, scheduleIDStr string, venueIDStr string, req *requests.UpdateVenueRequest) (*schedresponses.VenueResponse, error) {
 	sid, err := uuid.Parse(scheduleIDStr)

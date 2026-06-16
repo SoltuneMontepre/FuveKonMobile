@@ -73,8 +73,8 @@ func (r *LostFoundRepository) List(ctx context.Context, q requests.ListLostFound
 	if search := strings.TrimSpace(q.Search); search != "" {
 		like := "%" + search + "%"
 		base = base.Where(
-			"title ILIKE ? OR description ILIKE ? OR location ILIKE ? OR contact_info ILIKE ?",
-			like, like, like, like,
+			"title ILIKE ? OR description ILIKE ? OR location ILIKE ? OR contact_info ILIKE ? OR display_code ILIKE ?",
+			like, like, like, like, like,
 		)
 	}
 

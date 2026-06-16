@@ -78,6 +78,10 @@ abstract final class PublicRoutes {
           builder: (context, state) => const SchedulePage(),
         ),
         GoRoute(
+          path: Routes.lostFound,
+          builder: (context, state) => const LostFoundPage(),
+        ),
+        GoRoute(
           path: Routes.recap,
           builder: (context, state) => const RecapPage(),
         ),

@@ -67,6 +67,7 @@ abstract final class Routes {
   static const faq = '/faq';
   static const tos = '/tos';
   static const schedule = '/schedule';
+  static const lostFound = '/lost-found';
   static const recap = '/recap';
 
   // —— Admin / staff ——
@@ -77,11 +78,15 @@ abstract final class Routes {
   static const adminScanTicket = '/admin/scan-ticket';
   static const adminHistory = '/admin/history';
   static const adminLostFound = '/admin/lost-found';
+  static String adminLostFoundReturn(String id) => '/admin/lost-found/$id/return';
+  static const adminSystem = '/admin/system';
   static const adminAccount = '/admin/account';
   static const adminArtSubmit = '/admin/art-submit';
   static const adminPanels = '/admin/panels';
   static const adminTalents = '/admin/talents';
   static const adminDealers = '/admin/dealers';
+  static const adminSchedules = '/admin/schedules';
+  static String adminScheduleDetail(String id) => '/admin/schedules/$id';
   static const adminUsers = '/admin/users';
   static String adminUserDetail(String id) => '/admin/users/$id';
   static String adminUserEdit(String id) => '/admin/users/$id/edit';
@@ -99,6 +104,7 @@ abstract final class Routes {
     faq,
     tos,
     schedule,
+    lostFound,
     recap,
     ...guestRoutes,
   };
@@ -124,15 +130,4 @@ abstract final class Routes {
       location == admin || location.startsWith('$admin/');
 
   static bool isStaffRoute(String location) => isAdminRoute(location);
-
-  static const staffShellRoutes = {
-    admin,
-    adminScanTicket,
-    adminHistory,
-    adminLostFound,
-    adminAccount,
-  };
-
-  static bool isStaffAccessibleAdminRoute(String location) =>
-      staffShellRoutes.contains(location);
 }

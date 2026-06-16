@@ -31,3 +31,13 @@ type ListLostFoundQuery struct {
 	Page     int
 	PageSize int
 }
+
+type ConfirmLostFoundReturnRequest struct {
+	VerifiedDescription bool `json:"verified_description" binding:"eq=true"`
+	VerifiedOwnership   bool `json:"verified_ownership" binding:"eq=true"`
+	VerifiedIdentity    bool `json:"verified_identity" binding:"eq=true"`
+}
+
+type ClaimLostFoundRequest struct {
+	Message string `json:"message" binding:"max=1000"`
+}

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/auth/user_permissions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,77 +7,52 @@ class AdminBottomNavBar extends StatelessWidget {
   const AdminBottomNavBar({
     super.key,
     required this.currentBranchIndex,
-    required this.isAdmin,
+    required this.hasPermission,
     required this.onTap,
   });
 
   final int currentBranchIndex;
-  final bool isAdmin;
+  final bool Function(String permission) hasPermission;
   final ValueChanged<int> onTap;
 
-  static const _adminBranchIndices = [0, 1, 2, 3, 4, 5];
-  static const _staffBranchIndices = [0, 2, 3, 4, 5];
+  static const _branchLabels = {
+    0: ('Trang chủ', Icons.home_outlined),
+    1: ('Thống kê', Icons.analytics_outlined),
+    2: ('Quét mã', Icons.qr_code_scanner_outlined),
+    3: ('Lịch sử', Icons.history_rounded),
+    4: ('Thất lạc', Icons.inventory_2_outlined),
+    5: ('Hệ thống', Icons.dns_outlined),
+  };
 
-  static const _allItems = [
-    _NavItem(
-      label: 'Trang chủ',
-      icon: Icons.home_outlined,
-      route: Routes.admin,
-      adminOnly: false,
-    ),
-    _NavItem(
-      label: 'Thống kê',
-      icon: Icons.analytics_outlined,
-      route: Routes.adminDashboard,
-      adminOnly: true,
-    ),
-    _NavItem(
-      label: 'Quét mã',
-      icon: Icons.qr_code_scanner_outlined,
-      route: Routes.adminScanTicket,
-      adminOnly: false,
-    ),
-    _NavItem(
-      label: 'Lịch sử',
-      icon: Icons.history_rounded,
-      route: Routes.adminHistory,
-      adminOnly: false,
-    ),
-    _NavItem(
-      label: 'Thất lạc',
-      icon: Icons.inventory_2_outlined,
-      route: Routes.adminLostFound,
-      adminOnly: false,
-    ),
-    _NavItem(
-      label: 'Tài khoản',
-      icon: Icons.person_outline,
-      route: Routes.adminAccount,
-      adminOnly: false,
-    ),
-  ];
-
-  List<_NavItem> _itemsFor(bool isAdmin) =>
-      _allItems.where((item) => !item.adminOnly || isAdmin).toList();
-
-  List<int> _branchIndicesFor(bool isAdmin) =>
-      isAdmin ? _adminBranchIndices : _staffBranchIndices;
-
-  int _navIndexForBranch(int branchIndex, bool isAdmin) {
-    return _branchIndicesFor(isAdmin).indexOf(branchIndex);
+  List<_NavItem> _visibleItems() {
+    return UserPermissions.adminShellBranches
+        .where(
+          (branch) =>
+              branch.requiredPermission == null ||
+              hasPermission(branch.requiredPermission!),
+        )
+        .map((branch) {
+          final meta = _branchLabels[branch.branchIndex]!;
+          return _NavItem(
+            label: meta.$1,
+            icon: meta.$2,
+            route: branch.route,
+            branchIndex: branch.branchIndex,
+          );
+        })
+        .toList();
   }
 
-  int _branchIndexForNav(int navIndex, bool isAdmin) {
-    return _branchIndicesFor(isAdmin)[navIndex];
+  int _navIndexForBranch(List<_NavItem> items, int branchIndex) {
+    return items.indexWhere((item) => item.branchIndex == branchIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    final items = _itemsFor(isAdmin);
-    final currentNavIndex = _navIndexForBranch(
-      currentBranchIndex,
-      isAdmin,
-    );
+    final items = _visibleItems();
+    if (items.isEmpty) return const SizedBox.shrink();
+
+    final currentNavIndex = _navIndexForBranch(items, currentBranchIndex);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -102,11 +77,7 @@ class AdminBottomNavBar extends StatelessWidget {
                   selected: selected,
                   onTap: () {
                     if (selected) return;
-                    final branchIndex = _branchIndexForNav(
-                      index,
-                      isAdmin,
-                    );
-                    onTap(branchIndex);
+                    onTap(item.branchIndex);
                     context.go(item.route);
                   },
                 ),
@@ -124,13 +95,13 @@ class _NavItem {
     required this.label,
     required this.icon,
     required this.route,
-    required this.adminOnly,
+    required this.branchIndex,
   });
 
   final String label;
   final IconData icon;
   final String route;
-  final bool adminOnly;
+  final int branchIndex;
 }
 
 class _NavButton extends StatelessWidget {

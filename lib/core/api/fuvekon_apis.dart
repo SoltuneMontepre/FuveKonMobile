@@ -1,12 +1,15 @@
 import 'package:fuvekonmobile/core/api/admin_ticket_api.dart';
 import 'package:fuvekonmobile/core/api/admin_user_api.dart';
 import 'package:fuvekonmobile/core/api/analytics_api.dart';
+import 'package:fuvekonmobile/core/api/event_api.dart';
+import 'package:fuvekonmobile/core/api/health_api.dart';
 import 'package:fuvekonmobile/core/api/auth_api.dart';
 import 'package:fuvekonmobile/core/api/conbook_api.dart';
 import 'package:fuvekonmobile/core/api/dealer_api.dart';
 import 'package:fuvekonmobile/core/api/lost_found_api.dart';
 import 'package:fuvekonmobile/core/api/panel_api.dart';
 import 'package:fuvekonmobile/core/api/talent_api.dart';
+import 'package:fuvekonmobile/core/api/schedule_api.dart';
 import 'package:fuvekonmobile/core/api/ticket_api.dart';
 import 'package:fuvekonmobile/core/network/api_client.dart';
 
@@ -26,7 +29,13 @@ class FuvekonApis {
         adminPanel = AdminPanelApi(client),
         conbook = ConbookApi(client),
         adminLostFound = AdminLostFoundApi(client),
-        analytics = AnalyticsApi(client);
+        lostFound = LostFoundApi(client),
+        schedule = ScheduleApi(client),
+        adminSchedule = AdminScheduleApi(client),
+        adminVenue = AdminVenueApi(client),
+        analytics = AnalyticsApi(client),
+        health = HealthApi(client),
+        event = EventApi(client);
 
   final AuthApi auth;
   final AccountApi account;
@@ -41,5 +50,11 @@ class FuvekonApis {
   final AdminPanelApi adminPanel;
   final ConbookApi conbook;
   final AdminLostFoundApi adminLostFound;
+  final LostFoundApi lostFound;
+  final ScheduleApi schedule;
+  final AdminScheduleApi adminSchedule;
+  final AdminVenueApi adminVenue;
   final AnalyticsApi analytics;
+  final HealthApi health;
+  final EventApi event;
 }

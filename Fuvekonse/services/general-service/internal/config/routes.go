@@ -91,6 +91,9 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 		c.JSON(200, gin.H{"status": "redis healthy"})
 	})
 
+	router.GET("/health/s3", h.Health.CheckS3)
+	router.GET("/health/sqs", h.Health.CheckSQS)
+
 	v1 := router.Group("/v1")
 	{
 		v1.GET("/ping", CheckHealth)
@@ -205,6 +208,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			{
 				protectedLostFound.GET("", h.LostFound.ListLostFoundForTicketHolder)
 				protectedLostFound.GET("/:id", h.LostFound.GetLostFoundByIDForTicketHolder)
+				protectedLostFound.POST("/:id/claim", h.LostFound.ClaimLostFound)
 			}
 		}
 
@@ -341,12 +345,14 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 					adminVenues.POST(":vid/locations", h.Venue.CreateLocation)
 				}
 				// Venue management (admin/staff)
+				adminSchedules.POST("/:id/venues", h.Schedule.CreateVenue)
 				adminSchedules.PUT("/:id/venues/:vid", h.Schedule.UpdateVenue)
 				adminSchedules.DELETE("/:id/venues/:vid", h.Schedule.DeleteVenue)
 
 				// Event management under a venue (admin/staff)
 				adminSchedules.POST("/:id/venues/:vid/events", h.Schedule.CreateEvent)
-				// Locations within a venue (attach global locations to a schedule, then create events)
+				// Locations within a venue
+				adminSchedules.POST("/:id/venues/:vid/locations", h.Schedule.CreateLocation)
 				adminSchedules.POST("/:id/venues/:vid/locations/attach", h.Schedule.AttachLocation)
 				adminSchedules.POST("/:id/venues/:vid/locations/:lid/events", h.Schedule.CreateEvent)
 				adminSchedules.PUT("/:id/venues/:vid/events/:eid", h.Schedule.UpdateEvent)
@@ -382,6 +388,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminLostFound.GET("/:id", h.LostFound.GetLostFoundByID)
 				adminLostFound.PUT("/:id", h.LostFound.UpdateLostFound)
 				adminLostFound.PATCH("/:id/status", h.LostFound.UpdateLostFoundStatus)
+				adminLostFound.POST("/:id/return", h.LostFound.ConfirmLostFoundReturn)
 				adminLostFound.DELETE("/:id", h.LostFound.DeleteLostFound)
 			}
 
@@ -390,6 +397,12 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			adminAnalytics.Use(middlewares.RequirePermission(repos.RBAC, role.PermViewDashboard))
 			{
 				adminAnalytics.GET("/dashboard", h.Analytics.GetDashboard)
+			}
+
+			adminHealth := admin.Group("/health")
+			adminHealth.Use(middlewares.RequireRole(role.RoleStaff, role.RoleAdmin))
+			{
+				adminHealth.GET("", h.Health.GetSystemHealth)
 			}
 		}
 

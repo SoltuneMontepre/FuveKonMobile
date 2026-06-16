@@ -280,7 +280,9 @@ abstract final class AppTheme {
         backgroundColor: isLight
             ? FuvekonColors.textPrimary
             : FuvekonColors.darkSurfaceElevated,
-        contentTextStyle: TextStyle(color: colorScheme.onInverseSurface),
+        contentTextStyle: TextStyle(
+          color: isLight ? FuvekonColors.main : FuvekonColors.darkText,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FuvekonRadii.input),
         ),

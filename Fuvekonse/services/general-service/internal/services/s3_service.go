@@ -165,6 +165,17 @@ func NewS3Service(ctx context.Context) (*S3Service, error) {
 	}, nil
 }
 
+// Ping verifies the configured bucket is reachable.
+func (s *S3Service) Ping(ctx context.Context) error {
+	if s == nil || s.client == nil || s.bucketName == "" {
+		return ErrS3NotConfigured
+	}
+	_, err := s.client.HeadBucket(ctx, &s3.HeadBucketInput{
+		Bucket: aws.String(s.bucketName),
+	})
+	return err
+}
+
 func (s *S3Service) PresignUpload(ctx context.Context, input PresignUploadInput) (*PresignUploadResult, error) {
 	if s == nil || s.presignClient == nil {
 		return nil, ErrS3NotConfigured

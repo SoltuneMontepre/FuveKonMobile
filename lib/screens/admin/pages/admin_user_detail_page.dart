@@ -5,7 +5,6 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
-import 'package:fuvekonmobile/screens/admin/widgets/admin_user_ticket_widgets.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
 import 'package:go_router/go_router.dart';
 
@@ -226,13 +225,6 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
           permissionsSummary: formatAdminPermissionsSummary(effectivePermissions),
         ),
         const SizedBox(height: FuvekonSpacing.section),
-        AdminUserTicketSection(
-          userId: user.id,
-          userEmail: user.email,
-          isDeleted: user.isDeleted,
-          onTicketChanged: _load,
-        ),
-        const SizedBox(height: 12),
         if (!user.isVerified && !user.isDeleted)
           _ActionButton(
             label: 'Xác minh tài khoản',
