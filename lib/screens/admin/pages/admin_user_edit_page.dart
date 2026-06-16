@@ -3,9 +3,8 @@ import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
+import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
 import 'package:go_router/go_router.dart';
-
-const _roleOptions = ['User', 'Admin', 'Dealer', 'Staff'];
 
 class AdminUserEditPage extends StatefulWidget {
   const AdminUserEditPage({super.key, required this.userId});
@@ -33,6 +32,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
   bool _saving = false;
   late String _role;
   late bool _isVerified;
+  late List<String> _permissions;
 
   @override
   void initState() {
@@ -46,6 +46,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
     _avatarController = TextEditingController();
     _role = 'User';
     _isVerified = false;
+    _permissions = const [];
     _load();
   }
 
@@ -77,8 +78,11 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
       _avatarController.text = user.avatar ?? '';
       setState(() {
         _user = user;
-        _role = _roleOptions.contains(user.role) ? user.role : 'User';
+        _role = adminRoleOptions.contains(user.role) ? user.role : 'User';
         _isVerified = user.isVerified;
+        _permissions = isAdminRole(_role)
+            ? List<String>.from(adminPermissionCodes)
+            : List<String>.from(user.permissions);
         _loading = false;
       });
     } catch (e) {
@@ -88,6 +92,29 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
         _loading = false;
       });
     }
+  }
+
+  void _selectRole(String role) {
+    if (_saving || role == _role) return;
+    setState(() {
+      _role = role;
+      _permissions = List<String>.from(defaultPermissionsForRole(role));
+    });
+  }
+
+  void _togglePermission(String code) {
+    if (_saving || isAdminRole(_role)) return;
+
+    final next = Set<String>.from(_permissions);
+    if (next.contains(code)) {
+      next.remove(code);
+    } else {
+      next.add(code);
+    }
+    setState(() {
+      _permissions =
+          adminPermissionCodes.where((item) => next.contains(item)).toList();
+    });
   }
 
   Future<void> _save() async {
@@ -106,6 +133,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
           avatar: _avatarController.text.trim(),
           role: _role,
           isVerified: _isVerified,
+          permissions: isAdminRole(_role) ? null : _permissions,
         ),
       );
       if (!mounted) return;
@@ -181,6 +209,10 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
     }
 
     final user = _user!;
+    final effectivePermissions = isAdminRole(_role)
+        ? adminPermissionCodes
+        : _permissions;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(FuvekonSpacing.page),
       child: Form(
@@ -188,113 +220,144 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextFormField(
-              initialValue: user.email,
-              readOnly: true,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                prefixIcon: Icon(Icons.email_outlined),
-              ),
+            AdminUserProfileHeader(
+              displayName: user.displayName,
+              email: user.email,
+              avatarUrl: user.avatar,
+              initials: user.initials,
+              role: _role,
             ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _fursonaController,
-              enabled: !_saving,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                labelText: 'Fursona',
-                prefixIcon: Icon(Icons.pets_outlined),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _firstNameController,
-              enabled: !_saving,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                labelText: 'Họ',
-                prefixIcon: Icon(Icons.badge_outlined),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _lastNameController,
-              enabled: !_saving,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                labelText: 'Tên',
-                prefixIcon: Icon(Icons.badge_outlined),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _countryController,
-              enabled: !_saving,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                labelText: 'Quốc gia',
-                prefixIcon: Icon(Icons.public_outlined),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _idCardController,
-              enabled: !_saving,
-              decoration: const InputDecoration(
-                labelText: 'CCCD/CMND',
-                prefixIcon: Icon(Icons.credit_card_outlined),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _avatarController,
-              enabled: !_saving,
-              decoration: const InputDecoration(
-                labelText: 'Ảnh đại diện (URL)',
-                prefixIcon: Icon(Icons.image_outlined),
-              ),
-              validator: (value) {
-                final trimmed = value?.trim() ?? '';
-                if (trimmed.isEmpty) return null;
-                final uri = Uri.tryParse(trimmed);
-                if (uri == null || !uri.hasScheme) {
-                  return 'URL không hợp lệ';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-            DropdownButtonFormField<String>(
-              key: ValueKey(_role),
-              initialValue: _role,
-              decoration: const InputDecoration(
-                labelText: 'Vai trò',
-                prefixIcon: Icon(Icons.admin_panel_settings_outlined),
-              ),
-              items: [
-                for (final role in _roleOptions)
-                  DropdownMenuItem(
-                    value: role,
-                    child: Text(adminRoleLabel(role)),
+            const SizedBox(height: FuvekonSpacing.section),
+            AdminUserEditSectionCard(
+              title: 'Thông tin cá nhân',
+              subtitle: 'Cập nhật hồ sơ và liên hệ của người dùng',
+              child: Column(
+                children: [
+                  TextFormField(
+                    initialValue: user.email,
+                    readOnly: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon: Icon(Icons.email_outlined),
+                    ),
                   ),
-              ],
-              onChanged: _saving
-                  ? null
-                  : (value) {
-                      if (value != null) setState(() => _role = value);
+                  const SizedBox(height: 14),
+                  TextFormField(
+                    controller: _fursonaController,
+                    enabled: !_saving,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                      labelText: 'Fursona',
+                      prefixIcon: Icon(Icons.pets_outlined),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _firstNameController,
+                          enabled: !_saving,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: const InputDecoration(
+                            labelText: 'Họ',
+                            prefixIcon: Icon(Icons.badge_outlined),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _lastNameController,
+                          enabled: !_saving,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: const InputDecoration(
+                            labelText: 'Tên',
+                            prefixIcon: Icon(Icons.badge_outlined),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  TextFormField(
+                    controller: _countryController,
+                    enabled: !_saving,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                      labelText: 'Quốc gia',
+                      prefixIcon: Icon(Icons.public_outlined),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  TextFormField(
+                    controller: _idCardController,
+                    enabled: !_saving,
+                    decoration: const InputDecoration(
+                      labelText: 'CCCD/CMND',
+                      prefixIcon: Icon(Icons.credit_card_outlined),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  TextFormField(
+                    controller: _avatarController,
+                    enabled: !_saving,
+                    decoration: const InputDecoration(
+                      labelText: 'Ảnh đại diện (URL)',
+                      prefixIcon: Icon(Icons.image_outlined),
+                    ),
+                    validator: (value) {
+                      final trimmed = value?.trim() ?? '';
+                      if (trimmed.isEmpty) return null;
+                      final uri = Uri.tryParse(trimmed);
+                      if (uri == null || !uri.hasScheme) {
+                        return 'URL không hợp lệ';
+                      }
+                      return null;
                     },
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 8),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('Đã xác minh'),
-              subtitle: const Text('Tài khoản đã được xác minh email'),
-              value: _isVerified,
-              onChanged: _saving
-                  ? null
-                  : (value) => setState(() => _isVerified = value),
+            const SizedBox(height: FuvekonSpacing.section),
+            AdminUserEditSectionCard(
+              title: 'Trạng thái tài khoản',
+              child: SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Đã xác minh'),
+                subtitle: const Text('Tài khoản đã được xác minh email'),
+                value: _isVerified,
+                onChanged: _saving
+                    ? null
+                    : (value) => setState(() => _isVerified = value),
+              ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: FuvekonSpacing.section),
+            const AdminUserSectionTitle(title: 'Vai trò'),
+            const SizedBox(height: 12),
+            AdminUserRoleGrid(
+              selectedRole: _role,
+              enabled: !_saving,
+              onRoleSelected: _selectRole,
+            ),
+            const SizedBox(height: FuvekonSpacing.section),
+            const AdminUserSectionTitle(title: 'Permission Group'),
+            const SizedBox(height: 12),
+            AdminUserPermissionGroup(
+              permissions: effectivePermissions,
+              enabled: !_saving && !isAdminRole(_role),
+              onToggle: _togglePermission,
+            ),
+            if (isAdminRole(_role)) ...[
+              const SizedBox(height: 8),
+              Text(
+                'Quản trị viên có toàn bộ quyền.',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: FuvekonColors.darkTextSecondary,
+                    ),
+              ),
+            ],
+            const SizedBox(height: FuvekonSpacing.section),
             FilledButton(
               onPressed: _saving ? null : _save,
               child: _saving

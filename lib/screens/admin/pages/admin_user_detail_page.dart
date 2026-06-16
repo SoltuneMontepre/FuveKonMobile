@@ -4,7 +4,8 @@ import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
-import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
+import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
+import 'package:fuvekonmobile/screens/admin/widgets/admin_user_ticket_widgets.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
 import 'package:go_router/go_router.dart';
 
@@ -205,28 +206,32 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     }
 
     final user = _user!;
+    final effectivePermissions = isAdminRole(user.role)
+        ? adminPermissionCodes
+        : user.permissions;
+
     return ListView(
       padding: const EdgeInsets.all(FuvekonSpacing.page),
       children: [
-        Center(
-          child: S3Avatar(
-            imageUrl: user.avatar,
-            initials: user.initials,
-            radius: 48,
-          ),
+        AdminUserProfileHeader(
+          displayName: user.displayName,
+          email: user.email,
+          avatarUrl: user.avatar,
+          initials: user.initials,
+          role: user.role,
         ),
-        const SizedBox(height: 12),
-        Center(
-          child: Text(
-            user.displayName,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: FuvekonColors.darkText,
-                  fontWeight: FontWeight.w700,
-                ),
-          ),
+        const SizedBox(height: FuvekonSpacing.section),
+        _UserDetailsSection(
+          user: user,
+          permissionsSummary: formatAdminPermissionsSummary(effectivePermissions),
         ),
-        const SizedBox(height: 20),
-        for (final field in user.details) _DetailField(field: field),
+        const SizedBox(height: FuvekonSpacing.section),
+        AdminUserTicketSection(
+          userId: user.id,
+          userEmail: user.email,
+          isDeleted: user.isDeleted,
+          onTicketChanged: _load,
+        ),
         const SizedBox(height: 12),
         if (!user.isVerified && !user.isDeleted)
           _ActionButton(
@@ -257,6 +262,43 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
             loading: _actionInProgress,
             onPressed: _confirmDelete,
           ),
+      ],
+    );
+  }
+}
+
+class _UserDetailsSection extends StatelessWidget {
+  const _UserDetailsSection({
+    required this.user,
+    required this.permissionsSummary,
+  });
+
+  final AdminUserItem user;
+  final String permissionsSummary;
+
+  @override
+  Widget build(BuildContext context) {
+    final fields = user.details
+        .where((field) => field.label != 'Vai trò' && field.label != 'Email')
+        .toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final field in fields) _DetailField(field: field),
+        _DetailField(
+          field: AdminDetailField(
+            label: 'Vai trò',
+            value:
+                '${adminRoleTitle(user.role)} (${adminRoleSubtitle(user.role)})',
+          ),
+        ),
+        _DetailField(
+          field: AdminDetailField(
+            label: 'Quyền',
+            value: permissionsSummary,
+          ),
+        ),
       ],
     );
   }

@@ -9,6 +9,8 @@ export 'admin_scan_history_page.dart';
 export 'admin_scan_ticket_page.dart';
 export 'admin_user_detail_page.dart';
 export 'admin_user_edit_page.dart';
+export 'admin_tier_edit_page.dart';
+export 'admin_tickets_page.dart';
 export 'admin_users_page.dart';
 
 class AdminDashboardUsersPage extends StatelessWidget {
@@ -20,19 +22,6 @@ class AdminDashboardUsersPage extends StatelessWidget {
       title: 'Dashboard Users',
       subtitle: 'User analytics and breakdowns.',
       icon: Icons.people_outline,
-    );
-  }
-}
-
-class AdminTicketsPage extends StatelessWidget {
-  const AdminTicketsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'Ticket Management',
-      subtitle: 'Manage ticket tiers, sales, and inventory.',
-      icon: Icons.confirmation_number_outlined,
     );
   }
 }

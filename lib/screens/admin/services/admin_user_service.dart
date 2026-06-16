@@ -44,6 +44,7 @@ class AdminUpdateUserInput {
     this.role,
     this.idCard,
     this.isVerified,
+    this.permissions,
   });
 
   final String? fursonaName;
@@ -54,6 +55,7 @@ class AdminUpdateUserInput {
   final String? role;
   final String? idCard;
   final bool? isVerified;
+  final List<String>? permissions;
 
   Map<String, dynamic> toJson() => {
         if (fursonaName != null) 'fursona_name': fursonaName,
@@ -64,6 +66,7 @@ class AdminUpdateUserInput {
         if (role != null) 'role': role,
         if (idCard != null) 'id_card': idCard,
         if (isVerified != null) 'is_verified': isVerified,
+        if (permissions != null) 'permissions': permissions,
       };
 }
 

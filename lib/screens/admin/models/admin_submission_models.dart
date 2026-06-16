@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
 
 class AdminDetailField {
   const AdminDetailField({
@@ -206,12 +207,60 @@ String parseAdminRole(dynamic value) {
   };
 }
 
+List<String> _parsePermissionCodes(dynamic value) {
+  if (value is! List) return const [];
+  return value.whereType<String>().toList();
+}
+
 String adminRoleLabel(String role) => switch (role.toLowerCase()) {
       'admin' => 'Quản trị viên',
       'dealer' => 'Dealer',
       'staff' => 'Nhân viên',
       _ => 'Người dùng',
     };
+
+const adminRoleOptions = ['User', 'Dealer', 'Staff', 'Admin'];
+
+const adminPermissionCodes = [
+  'manage_tickets',
+  'scan_tickets',
+  'approve_profiles',
+  'send_notifications',
+  'view_dashboard',
+  'manage_users',
+];
+
+String adminRoleTitle(String role) => switch (role.toLowerCase()) {
+      'admin' => 'Admin',
+      'dealer' => 'Dealer',
+      'staff' => 'Staff',
+      _ => 'Attendee',
+    };
+
+String adminRoleSubtitle(String role) => switch (role.toLowerCase()) {
+      'admin' => 'Quản trị viên',
+      'dealer' => 'Nhà triển lãm',
+      'staff' => 'Nhân viên hỗ trợ',
+      _ => 'Khách tham quan',
+    };
+
+String adminPermissionLabel(String code) => switch (code) {
+      'manage_tickets' => 'Quản lý vé',
+      'scan_tickets' => 'Quét vé',
+      'approve_profiles' => 'Duyệt hồ sơ',
+      'send_notifications' => 'Gửi thông báo',
+      'view_dashboard' => 'Xem dashboard',
+      'manage_users' => 'Quản lý người dùng',
+      _ => code,
+    };
+
+List<String> defaultPermissionsForRole(String role) => switch (role.toLowerCase()) {
+      'admin' => List<String>.from(adminPermissionCodes),
+      'staff' => const ['scan_tickets', 'view_dashboard'],
+      _ => const [],
+    };
+
+bool isAdminRole(String role) => role.toLowerCase() == 'admin';
 
 class AdminUserItem implements AdminListItem {
   const AdminUserItem({
@@ -234,6 +283,7 @@ class AdminUserItem implements AdminListItem {
     this.blacklistedAt,
     this.isDeleted = false,
     this.createdAt,
+    this.permissions = const [],
   });
 
   factory AdminUserItem.fromJson(Map<String, dynamic> json) {
@@ -258,6 +308,7 @@ class AdminUserItem implements AdminListItem {
       blacklistedAt: parseAdminDate(json['blacklisted_at']),
       isDeleted: json['is_deleted'] as bool? ?? false,
       createdAt: parseAdminDate(json['created_at']),
+      permissions: _parsePermissionCodes(json['permissions']),
     );
   }
 
@@ -295,6 +346,7 @@ class AdminUserItem implements AdminListItem {
   final DateTime? blacklistedAt;
   final bool isDeleted;
   final DateTime? createdAt;
+  final List<String> permissions;
 
   String get displayName {
     if (fursonaName != null && fursonaName!.isNotEmpty) return fursonaName!;
@@ -446,6 +498,275 @@ class AdminConbookItem implements AdminListItem {
           value: formatAdminDate(createdAt),
         ),
       ];
+}
+
+String ticketStatusLabelVi(TicketStatus status) => switch (status) {
+      TicketStatus.pending => 'Chờ thanh toán',
+      TicketStatus.selfConfirmed => 'Chờ duyệt',
+      TicketStatus.approved => 'Đã duyệt',
+      TicketStatus.denied => 'Từ chối',
+      TicketStatus.adminGranted => 'Cấp bởi admin',
+    };
+
+Color ticketStatusColor(TicketStatus status) => switch (status) {
+      TicketStatus.pending => const Color(0xFFFBBF24),
+      TicketStatus.selfConfirmed => const Color(0xFF60A5FA),
+      TicketStatus.approved => const Color(0xFF10B981),
+      TicketStatus.denied => const Color(0xFFF0A0A8),
+      TicketStatus.adminGranted => const Color(0xFFA78BFA),
+    };
+
+class AdminTicketItem implements AdminListItem {
+  const AdminTicketItem({
+    required this.id,
+    required this.referenceCode,
+    required this.status,
+    required this.ticketNumber,
+    this.conBadgeName,
+    this.badgeImage,
+    this.namecardUrl,
+    required this.isFursuiter,
+    required this.isFursuitStaff,
+    required this.isCheckedIn,
+    this.tshirtSize,
+    this.denialReason,
+    this.tierName,
+    this.tierCode,
+    this.tierId,
+    this.userId,
+    this.userEmail,
+    this.userFursonaName,
+    this.userFirstName,
+    this.userLastName,
+    this.userAvatar,
+    this.userIdCard,
+    this.userIsBlacklisted = false,
+    this.createdAt,
+    this.approvedAt,
+    this.deniedAt,
+  });
+
+  factory AdminTicketItem.fromJson(Map<String, dynamic> json) {
+    final user = json['user'];
+    final userMap =
+        user is Map ? Map<String, dynamic>.from(user) : <String, dynamic>{};
+    final tier = json['tier'];
+    final tierMap =
+        tier is Map ? Map<String, dynamic>.from(tier) : <String, dynamic>{};
+
+    return AdminTicketItem(
+      id: json['id']?.toString() ?? '',
+      referenceCode: json['reference_code'] as String? ?? '',
+      status: TicketStatus.fromApi(json['status'] as String?) ??
+          TicketStatus.pending,
+      ticketNumber: json['ticket_number'] as int? ?? 0,
+      conBadgeName: json['con_badge_name'] as String?,
+      badgeImage: json['badge_image'] as String?,
+      namecardUrl: json['namecard_url'] as String?,
+      isFursuiter: json['is_fursuiter'] as bool? ?? false,
+      isFursuitStaff: json['is_fursuit_staff'] as bool? ?? false,
+      isCheckedIn: json['is_checked_in'] as bool? ?? false,
+      tshirtSize: json['tshirt_size'] as String?,
+      denialReason: json['denial_reason'] as String?,
+      tierName: tierMap['ticket_name'] as String?,
+      tierCode: tierMap['tier_code'] as String?,
+      tierId: tierMap['id']?.toString(),
+      userId: userMap['id']?.toString(),
+      userEmail: userMap['email'] as String?,
+      userFursonaName: userMap['fursona_name'] as String?,
+      userFirstName: userMap['first_name'] as String?,
+      userLastName: userMap['last_name'] as String?,
+      userAvatar: userMap['avatar'] as String?,
+      userIdCard: userMap['id_card'] as String?,
+      userIsBlacklisted: userMap['is_blacklisted'] as bool? ?? false,
+      createdAt: parseAdminDate(json['created_at']),
+      approvedAt: parseAdminDate(json['approved_at']),
+      deniedAt: parseAdminDate(json['denied_at']),
+    );
+  }
+
+  @override
+  final String id;
+  final String referenceCode;
+  final TicketStatus status;
+  final int ticketNumber;
+  final String? conBadgeName;
+  final String? badgeImage;
+  final String? namecardUrl;
+  final bool isFursuiter;
+  final bool isFursuitStaff;
+  final bool isCheckedIn;
+  final String? tshirtSize;
+  final String? denialReason;
+  final String? tierName;
+  final String? tierCode;
+  final String? tierId;
+  final String? userId;
+  final String? userEmail;
+  final String? userFursonaName;
+  final String? userFirstName;
+  final String? userLastName;
+  final String? userAvatar;
+  final String? userIdCard;
+  final bool userIsBlacklisted;
+  final DateTime? createdAt;
+  final DateTime? approvedAt;
+  final DateTime? deniedAt;
+
+  String get holderName {
+    if (conBadgeName != null && conBadgeName!.isNotEmpty) return conBadgeName!;
+    if (userFursonaName != null && userFursonaName!.isNotEmpty) {
+      return userFursonaName!;
+    }
+    final parts = [userFirstName, userLastName]
+        .whereType<String>()
+        .where((s) => s.isNotEmpty);
+    final joined = parts.join(' ').trim();
+    if (joined.isNotEmpty) return joined;
+    return userEmail ?? referenceCode;
+  }
+
+  bool get canApprove => status == TicketStatus.selfConfirmed;
+
+  bool get canDeny =>
+      status == TicketStatus.selfConfirmed ||
+      status == TicketStatus.pending;
+
+  bool get canResendQr =>
+      status == TicketStatus.approved || status == TicketStatus.adminGranted;
+
+  @override
+  String get title => holderName;
+
+  @override
+  String? get previewImageUrl =>
+      userAvatar != null && userAvatar!.isNotEmpty ? userAvatar : badgeImage;
+
+  @override
+  String? get subtitle {
+    final parts = <String>[
+      referenceCode,
+      if (tierName != null && tierName!.isNotEmpty) tierName!,
+      ticketStatusLabelVi(status),
+      if (isCheckedIn) 'Đã check-in',
+    ];
+    return parts.join(' • ');
+  }
+
+  @override
+  List<AdminDetailField> get details => [
+        AdminDetailField(label: 'Mã vé', value: referenceCode),
+        AdminDetailField(label: 'Số vé', value: '#$ticketNumber'),
+        AdminDetailField(
+          label: 'Trạng thái',
+          value: ticketStatusLabelVi(status),
+        ),
+        if (tierName?.isNotEmpty == true)
+          AdminDetailField(label: 'Hạng vé', value: tierName!),
+        if (tierCode?.isNotEmpty == true)
+          AdminDetailField(label: 'Mã hạng', value: tierCode!),
+        if (conBadgeName?.isNotEmpty == true)
+          AdminDetailField(label: 'Tên badge', value: conBadgeName!),
+        if (userEmail?.isNotEmpty == true)
+          AdminDetailField(label: 'Email', value: userEmail!),
+        if (userIdCard?.isNotEmpty == true)
+          AdminDetailField(label: 'CCCD/CMND', value: userIdCard!),
+        if (userIsBlacklisted)
+          AdminDetailField(label: 'Người dùng', value: 'Bị cấm mua vé'),
+        AdminDetailField(
+          label: 'Fursuiter',
+          value: isFursuiter ? 'Có' : 'Không',
+        ),
+        AdminDetailField(
+          label: 'Fursuit staff',
+          value: isFursuitStaff ? 'Có' : 'Không',
+        ),
+        if (tshirtSize?.isNotEmpty == true)
+          AdminDetailField(label: 'Size áo', value: tshirtSize!),
+        AdminDetailField(
+          label: 'Check-in',
+          value: isCheckedIn ? 'Đã check-in' : 'Chưa check-in',
+        ),
+        if (denialReason?.isNotEmpty == true)
+          AdminDetailField(label: 'Lý do từ chối', value: denialReason!),
+        if (badgeImage?.isNotEmpty == true)
+          AdminDetailField(label: 'Ảnh badge', imageUrl: badgeImage),
+        if (namecardUrl?.isNotEmpty == true)
+          AdminDetailField(label: 'Namecard', imageUrl: namecardUrl),
+        AdminDetailField(
+          label: 'Ngày tạo',
+          value: formatAdminDate(createdAt),
+        ),
+        if (approvedAt != null)
+          AdminDetailField(
+            label: 'Ngày duyệt',
+            value: formatAdminDate(approvedAt),
+          ),
+        if (deniedAt != null)
+          AdminDetailField(
+            label: 'Ngày từ chối',
+            value: formatAdminDate(deniedAt),
+          ),
+      ];
+}
+
+class AdminTicketTierItem {
+  const AdminTicketTierItem({
+    required this.id,
+    required this.tierCode,
+    required this.ticketName,
+    required this.description,
+    required this.price,
+    this.priceUsd,
+    this.stock,
+    required this.isSoldOut,
+    required this.isActive,
+    required this.isVisible,
+    this.benefits = const [],
+  });
+
+  factory AdminTicketTierItem.fromJson(Map<String, dynamic> json) {
+    final benefitsRaw = json['benefits'];
+    return AdminTicketTierItem(
+      id: json['id']?.toString() ?? '',
+      tierCode: json['tier_code'] as String? ?? '',
+      ticketName: json['ticket_name'] as String? ?? 'Hạng vé',
+      description: json['description'] as String? ?? '',
+      price: _parseDecimal(json['price']),
+      priceUsd: _parseOptionalDecimal(json['price_usd']),
+      stock: (json['stock'] as num?)?.toInt(),
+      isSoldOut: json['is_sold_out'] as bool? ?? false,
+      isActive: json['is_active'] as bool? ?? false,
+      isVisible: json['is_visible'] as bool? ?? false,
+      benefits: benefitsRaw is List
+          ? benefitsRaw.whereType<String>().toList()
+          : const [],
+    );
+  }
+
+  static double _parseDecimal(dynamic value) {
+    if (value == null) return 0;
+    if (value is num) return value.toDouble();
+    return double.tryParse(value.toString()) ?? 0;
+  }
+
+  static double? _parseOptionalDecimal(dynamic value) {
+    if (value == null) return null;
+    if (value is num) return value.toDouble();
+    return double.tryParse(value.toString());
+  }
+
+  final String id;
+  final String tierCode;
+  final String ticketName;
+  final String description;
+  final double price;
+  final double? priceUsd;
+  final int? stock;
+  final bool isSoldOut;
+  final bool isActive;
+  final bool isVisible;
+  final List<String> benefits;
 }
 
 class AdminLostFoundItem implements AdminListItem {

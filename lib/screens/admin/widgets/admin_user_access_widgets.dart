@@ -1,0 +1,419 @@
+import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
+import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
+
+class AdminUserSectionTitle extends StatelessWidget {
+  const AdminUserSectionTitle({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: FuvekonColors.darkAppBarTitle,
+            fontWeight: FontWeight.w600,
+          ),
+    );
+  }
+}
+
+class AdminUserEditSectionCard extends StatelessWidget {
+  const AdminUserEditSectionCard({
+    super.key,
+    required this.title,
+    required this.child,
+    this.subtitle,
+  });
+
+  final String title;
+  final String? subtitle;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: FuvekonColors.darkSurfaceElevated,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: FuvekonColors.darkBorder.withValues(alpha: 0.6),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: FuvekonColors.darkText,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            if (subtitle != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                subtitle!,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: FuvekonColors.darkTextSecondary,
+                ),
+              ),
+            ],
+            const SizedBox(height: 16),
+            child,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AdminUserProfileHeader extends StatelessWidget {
+  const AdminUserProfileHeader({
+    super.key,
+    required this.displayName,
+    required this.email,
+    this.avatarUrl,
+    this.initials = '?',
+    this.role,
+  });
+
+  final String displayName;
+  final String email;
+  final String? avatarUrl;
+  final String initials;
+  final String? role;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: FuvekonColors.darkCard,
+        borderRadius: BorderRadius.circular(FuvekonRadii.card),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          children: [
+            S3Avatar(
+              imageUrl: avatarUrl,
+              initials: initials,
+              radius: 32,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    displayName,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: FuvekonColors.darkCardText,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    email,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: FuvekonColors.textSecondary,
+                    ),
+                  ),
+                  if (role != null) ...[
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color:
+                            FuvekonColors.darkPrimary.withValues(alpha: 0.25),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Text(
+                        '${adminRoleTitle(role!)} Hiện tại',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: FuvekonColors.secondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AdminUserRoleGrid extends StatelessWidget {
+  const AdminUserRoleGrid({
+    super.key,
+    required this.selectedRole,
+    required this.enabled,
+    required this.onRoleSelected,
+  });
+
+  final String selectedRole;
+  final bool enabled;
+  final ValueChanged<String> onRoleSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      mainAxisSpacing: 12,
+      crossAxisSpacing: 12,
+      childAspectRatio: 1.45,
+      children: [
+        for (final role in adminRoleOptions)
+          _RoleCard(
+            role: role,
+            selected: selectedRole.toLowerCase() == role.toLowerCase(),
+            enabled: enabled,
+            onTap: () => onRoleSelected(role),
+          ),
+      ],
+    );
+  }
+}
+
+class _RoleCard extends StatelessWidget {
+  const _RoleCard({
+    required this.role,
+    required this.selected,
+    required this.enabled,
+    required this.onTap,
+  });
+
+  final String role;
+  final bool selected;
+  final bool enabled;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final borderColor = selected
+        ? FuvekonColors.darkPrimary
+        : FuvekonColors.darkBorder.withValues(alpha: 0.7);
+    final bg = selected
+        ? FuvekonColors.darkSurface
+        : FuvekonColors.darkBg.withValues(alpha: 0.35);
+
+    return Material(
+      color: bg,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: enabled ? onTap : null,
+        borderRadius: BorderRadius.circular(16),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: borderColor, width: selected ? 1.5 : 1),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        adminRoleTitle(role),
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          color: FuvekonColors.darkText,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    _RoleRadioIndicator(selected: selected),
+                  ],
+                ),
+                const Spacer(),
+                Text(
+                  adminRoleSubtitle(role),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: FuvekonColors.darkTextSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RoleRadioIndicator extends StatelessWidget {
+  const _RoleRadioIndicator({required this.selected});
+
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      width: 20,
+      height: 20,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: selected
+              ? FuvekonColors.darkPrimary
+              : FuvekonColors.darkTextSecondary,
+          width: 2,
+        ),
+        color: selected ? FuvekonColors.darkPrimary : Colors.transparent,
+      ),
+      child: selected
+          ? const Center(
+              child: CircleAvatar(
+                radius: 4,
+                backgroundColor: FuvekonColors.darkButtonText,
+              ),
+            )
+          : null,
+    );
+  }
+}
+
+class AdminUserPermissionGroup extends StatelessWidget {
+  const AdminUserPermissionGroup({
+    super.key,
+    required this.permissions,
+    required this.enabled,
+    required this.onToggle,
+  });
+
+  final List<String> permissions;
+  final bool enabled;
+  final ValueChanged<String> onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: FuvekonColors.darkBg.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: FuvekonColors.darkBorder.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Column(
+        children: [
+          for (var i = 0; i < adminPermissionCodes.length; i++) ...[
+            if (i > 0)
+              Divider(
+                height: 1,
+                color: FuvekonColors.darkBorder.withValues(alpha: 0.5),
+              ),
+            _PermissionTile(
+              code: adminPermissionCodes[i],
+              checked: permissions.contains(adminPermissionCodes[i]),
+              enabled: enabled,
+              onTap: () => onToggle(adminPermissionCodes[i]),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _PermissionTile extends StatelessWidget {
+  const _PermissionTile({
+    required this.code,
+    required this.checked,
+    required this.enabled,
+    required this.onTap,
+  });
+
+  final String code;
+  final bool checked;
+  final bool enabled;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: enabled ? onTap : null,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  adminPermissionLabel(code),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: FuvekonColors.darkText,
+                  ),
+                ),
+              ),
+              _PermissionCheckbox(checked: checked, enabled: enabled),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PermissionCheckbox extends StatelessWidget {
+  const _PermissionCheckbox({required this.checked, required this.enabled});
+
+  final bool checked;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final bg = checked ? FuvekonColors.darkPrimary : Colors.transparent;
+    final border = checked
+        ? FuvekonColors.darkPrimary
+        : FuvekonColors.darkTextSecondary.withValues(alpha: enabled ? 1 : 0.4);
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: border, width: 1.5),
+      ),
+      child: checked
+          ? const Icon(
+              Icons.check_rounded,
+              size: 16,
+              color: FuvekonColors.darkButtonText,
+            )
+          : null,
+    );
+  }
+}
+
+String formatAdminPermissionsSummary(List<String> permissions) {
+  if (permissions.isEmpty) return 'Không có';
+  return permissions.map(adminPermissionLabel).join(' • ');
+}
