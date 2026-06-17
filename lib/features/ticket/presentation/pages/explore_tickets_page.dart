@@ -79,7 +79,7 @@ class _ExploreTicketsView extends StatelessWidget {
 class _ExploreTicketsHeader extends StatelessWidget {
   const _ExploreTicketsHeader();
 
-  static const _brandColor = Color(0xFFD1EAD8);
+  static const _brandColor = FuvekonColors.darkPrimary;
 
   @override
   Widget build(BuildContext context) {
@@ -172,8 +172,8 @@ class _ExploreTicketsFooter extends StatelessWidget {
 
   final bool isAuthenticated;
 
-  static const _ctaColor = Color(0xFFA8D1B7);
-  static const _ctaTextColor = Color(0xFF0A2E1F);
+  static const _ctaColor = FuvekonColors.darkButton;
+  static const _ctaTextColor = FuvekonColors.darkButtonText;
 
   @override
   Widget build(BuildContext context) {

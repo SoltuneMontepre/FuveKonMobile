@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
-import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:go_router/go_router.dart';
 
 class AuthNavLinks extends StatelessWidget {
@@ -73,7 +74,7 @@ class LoginNavLinks extends StatelessWidget {
         TextButton(
           onPressed: () => context.go(Routes.register),
           style: TextButton.styleFrom(
-            foregroundColor: const Color(0xFFD1EAD8),
+            foregroundColor: FuvekonColors.darkPrimary,
             padding: EdgeInsets.zero,
             minimumSize: Size.zero,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -95,7 +96,7 @@ class LoginNavLinks extends StatelessWidget {
 class RegisterNavLinks extends StatelessWidget {
   const RegisterNavLinks({super.key});
 
-  static const _textDark = Color(0xFF0A2E1F);
+  static const _textDark = FuvekonColors.darkButtonText;
 
   @override
   Widget build(BuildContext context) {

@@ -74,7 +74,7 @@ class _HeroSection extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withValues(alpha: 0.15),
+                  FuvekonColors.darkDeep.withValues(alpha: 0.15),
                   FuvekonColors.darkBg.withValues(alpha: 0.55),
                   FuvekonColors.darkBg,
                 ],
@@ -132,7 +132,7 @@ class _StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.42),
+        color: FuvekonColors.darkDeep.withValues(alpha: 0.42),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
       ),
@@ -158,7 +158,7 @@ class _SearchField extends StatelessWidget {
     return Container(
       height: 48,
       decoration: BoxDecoration(
-        color: const Color(0xFF1A2220),
+        color: FuvekonColors.surfaceContainerLow,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
@@ -210,7 +210,7 @@ class _SectionHeader extends StatelessWidget {
           width: 4,
           height: 22,
           decoration: BoxDecoration(
-            color: const Color(0xFF9CCCA9),
+            color: FuvekonColors.darkPrimary,
             borderRadius: BorderRadius.circular(999),
           ),
         ),
@@ -219,7 +219,7 @@ class _SectionHeader extends StatelessWidget {
           child: Text(
             title,
             style: const TextStyle(
-              color: Color(0xFFD1EAD8),
+              color: FuvekonColors.darkPrimary,
               fontSize: 18,
               fontWeight: FontWeight.w700,
             ),
@@ -256,14 +256,16 @@ class _FeaturedEventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: const Color(0xFFF0F2F0),
-        borderRadius: BorderRadius.circular(20),
+        color: FuvekonColors.darkCard,
+        borderRadius: BorderRadius.circular(FuvekonRadii.card),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(FuvekonRadii.card),
+            ),
             child: Stack(
               children: [
                 AspectRatio(
@@ -288,18 +290,22 @@ class _FeaturedEventCard extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF9CCCA9),
+                      color: FuvekonColors.darkPrimary,
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.star, size: 12, color: Color(0xFF154C5B)),
+                        const Icon(
+                          Icons.star,
+                          size: 12,
+                          color: FuvekonColors.darkButtonText,
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           l10n.authHomeHotBadge,
                           style: const TextStyle(
-                            color: Color(0xFF154C5B),
+                            color: FuvekonColors.darkButtonText,
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                           ),
@@ -319,7 +325,7 @@ class _FeaturedEventCard extends StatelessWidget {
                 Text(
                   l10n.authHomeFeaturedEventTitle,
                   style: const TextStyle(
-                    color: Color(0xFF0A2E1F),
+                    color: FuvekonColors.darkCardText,
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
                   ),
@@ -338,8 +344,8 @@ class _FeaturedEventCard extends StatelessWidget {
                 FilledButton(
                   onPressed: onBuyTicket,
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFF9CCCA9),
-                    foregroundColor: const Color(0xFF154C5B),
+                    backgroundColor: FuvekonColors.darkButton,
+                    foregroundColor: FuvekonColors.darkButtonText,
                     minimumSize: const Size.fromHeight(46),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(999),
@@ -372,13 +378,13 @@ class _MetaRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 15, color: const Color(0xFF48715B)),
+        Icon(icon, size: 15, color: FuvekonColors.textSecondary),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             label,
             style: const TextStyle(
-              color: Color(0xFF48715B),
+              color: FuvekonColors.textSecondary,
               fontSize: 13,
             ),
           ),

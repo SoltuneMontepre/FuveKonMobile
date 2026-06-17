@@ -107,11 +107,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
 }
 
 abstract final class _IntroColors {
-  static const cardBg = Color(0xFFF0F2F0);
-  static const textDark = Color(0xFF0A2E1F);
-  static const textMuted = Color(0xFF48715B);
-  static const accentGreen = Color(0xFF4A7C59);
-  static const heroTitle = Color(0xFFD1EAD8);
+  static const cardBg = FuvekonColors.mintCard;
+  static const textDark = FuvekonColors.darkButtonText;
+  static const textMuted = FuvekonColors.textSecondary;
+  static const accentGreen = FuvekonColors.sageGreenContainer;
+  static const heroTitle = FuvekonColors.darkPrimary;
 }
 
 class _HeroBanner extends StatelessWidget {
@@ -294,7 +294,7 @@ class _AudienceCard extends StatelessWidget {
     final items = [
       (
         icon: Icons.brush_outlined,
-        color: const Color(0xFF4A7C59),
+        color: FuvekonColors.sageGreenContainer,
         title: l10n.introAudienceArtistTitle,
         body: l10n.introAudienceArtistBody,
       ),

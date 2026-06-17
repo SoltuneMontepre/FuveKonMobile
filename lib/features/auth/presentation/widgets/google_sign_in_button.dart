@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   const GoogleSignInButton({
@@ -17,7 +18,7 @@ class GoogleSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bg = lightStyle ? Colors.white : null;
-    final fg = lightStyle ? const Color(0xFF0A2E1F) : null;
+    final fg = lightStyle ? FuvekonColors.darkButtonText : null;
     final border = lightStyle
         ? BorderSide(color: Colors.black.withValues(alpha: 0.12))
         : null;

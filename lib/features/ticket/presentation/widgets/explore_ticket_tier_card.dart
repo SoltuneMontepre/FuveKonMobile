@@ -24,9 +24,9 @@ class ExploreTicketTierCard extends StatelessWidget {
   final ExploreTierStyle style;
   final VoidCallback? onTap;
 
-  static const _gold = Color(0xFFC9A030);
-  static const _goldLight = Color(0xFFF5D060);
-  static const _popularBadge = Color(0xFF4A7C59);
+  static const _gold = FuvekonColors.lightGold;
+  static const _goldLight = Color(0xFFFFE088);
+  static const _popularBadge = FuvekonColors.sageGreenContainer;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +37,13 @@ class ExploreTicketTierCard extends StatelessWidget {
     final isPopular = style == ExploreTierStyle.popular;
 
     final bgColor = isPremium
-        ? const Color(0xFF1A1F1C)
+        ? FuvekonColors.surfaceContainerLow
         : FuvekonColors.darkCard;
     final titleColor = isPremium ? _goldLight : FuvekonColors.darkCardText;
     final priceColor = isPremium ? Colors.white : FuvekonColors.darkCardText;
     final benefitColor =
         isPremium ? FuvekonColors.darkTextSecondary : FuvekonColors.textSecondary;
-    final checkColor = isPremium ? _gold : const Color(0xFF4A7C59);
+    final checkColor = isPremium ? _gold : FuvekonColors.sageGreenContainer;
 
     return GestureDetector(
       onTap: onTap,

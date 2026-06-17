@@ -27,7 +27,7 @@ class NotificationsPage extends StatelessWidget {
                 Text(
                   l10n.navNotifications,
                   style: const TextStyle(
-                    color: Color(0xFFD1EAD8),
+                    color: FuvekonColors.darkPrimary,
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                   ),

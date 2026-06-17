@@ -4,9 +4,9 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 
 abstract final class _LoginColors {
-  static const cardBg = Color(0xFFD1EAD8);
-  static const textDark = Color(0xFF0A2E1F);
-  static const titleAccent = Color(0xFFD1EAD8);
+  static const cardBg = FuvekonColors.mintCard;
+  static const textDark = FuvekonColors.darkButtonText;
+  static const titleAccent = FuvekonColors.darkPrimary;
 }
 
 class LoginPageLayout extends StatelessWidget {

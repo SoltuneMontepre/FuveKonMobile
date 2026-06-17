@@ -8,11 +8,11 @@ import 'package:fuvekonmobile/shared/services/google_sign_in_service.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class _LoginFormColors {
-  static const textDark = Color(0xFF0A2E1F);
-  static const inputFill = Color(0xFF2A332E);
-  static const inputHint = Color(0xFF8FA898);
-  static const accentGreen = Color(0xFF4A7C59);
-  static const forgotGold = FuvekonColors.tier3;
+  static const textDark = FuvekonColors.darkButtonText;
+  static const inputFill = FuvekonColors.surfaceContainerHigh;
+  static const inputHint = FuvekonColors.darkTextSecondary;
+  static const accentGreen = FuvekonColors.sageGreenContainer;
+  static const forgotGold = FuvekonColors.lightGold;
 }
 
 class LoginForm extends StatefulWidget {

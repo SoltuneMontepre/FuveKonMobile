@@ -81,7 +81,7 @@ class _TicketTierDetailView extends StatelessWidget {
 class _DetailHeader extends StatelessWidget {
   const _DetailHeader();
 
-  static const _brandColor = Color(0xFFD1EAD8);
+  static const _brandColor = FuvekonColors.darkPrimary;
 
   @override
   Widget build(BuildContext context) {
@@ -187,10 +187,10 @@ class _TicketHeroCard extends StatelessWidget {
 
   final TicketTier tier;
 
-  static const _cardBg = Color(0xFFE7F0E8);
-  static const _textDark = Color(0xFF1E3D32);
-  static const _muted = Color(0xFF8AA093);
-  static const _badge = Color(0xFF4A7C59);
+  static const _cardBg = FuvekonColors.mintCard;
+  static const _textDark = FuvekonColors.darkCardText;
+  static const _muted = FuvekonColors.textSecondary;
+  static const _badge = FuvekonColors.sageGreenContainer;
 
   @override
   Widget build(BuildContext context) {
@@ -391,7 +391,7 @@ class _BenefitRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: const Color(0xFF4A7C59), size: 18),
+        Icon(icon, color: FuvekonColors.sageGreenContainer, size: 18),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
@@ -605,7 +605,7 @@ class _ComparisonValue extends StatelessWidget {
       return Icon(
         value == '✓' ? Icons.check_rounded : Icons.close_rounded,
         color: value == '✓'
-            ? const Color(0xFFC9A030)
+            ? FuvekonColors.lightGold
             : FuvekonColors.darkTextSecondary,
         size: 18,
       );
@@ -629,8 +629,8 @@ class _BottomCta extends StatelessWidget {
 
   final bool isAuthenticated;
 
-  static const _ctaColor = Color(0xFFA8D1B7);
-  static const _ctaTextColor = Color(0xFF0A2E1F);
+  static const _ctaColor = FuvekonColors.darkButton;
+  static const _ctaTextColor = FuvekonColors.darkButtonText;
 
   @override
   Widget build(BuildContext context) {
@@ -776,11 +776,11 @@ class _TierDetailConfig {
         description:
             'Trải nghiệm lễ hội trọn vẹn với các đặc quyền ưu tiên. Đắm chìm trong không gian nghệ thuật cao cấp và tận hưởng dịch vụ hàng đầu.',
         bannerColors: const [
-          Color(0xFF19211F),
-          Color(0xFFE1E8DD),
-          Color(0xFF65776F),
+          FuvekonColors.surfaceContainerLow,
+          FuvekonColors.mintCard,
+          FuvekonColors.sageGreenContainer,
         ],
-        accent: const Color(0xFFC9A030),
+        accent: FuvekonColors.lightGold,
       );
     }
 
@@ -792,11 +792,11 @@ class _TierDetailConfig {
         description:
             'Gói trải nghiệm cao nhất với bộ quà tặng giới hạn, quyền lợi ưu tiên và các đặc quyền dành riêng cho người đồng hành đặc biệt.',
         bannerColors: const [
-          Color(0xFF170F1E),
-          Color(0xFF4F2A67),
-          Color(0xFFE1C46A),
+          FuvekonColors.surfaceContainerLow,
+          FuvekonColors.dustyRoseContainer,
+          FuvekonColors.lightGold,
         ],
-        accent: const Color(0xFFF5D060),
+        accent: const Color(0xFFFFE088),
       );
     }
 
@@ -808,11 +808,11 @@ class _TierDetailConfig {
         description:
             'Nâng cấp hành trình tham dự với nhiều vật phẩm kỷ niệm, check-in ưu tiên và trải nghiệm sự kiện chỉn chu hơn.',
         bannerColors: const [
-          Color(0xFF2C2414),
-          Color(0xFFC9A030),
-          Color(0xFFE7F0E8),
+          FuvekonColors.surfaceContainerLow,
+          FuvekonColors.goldContainer,
+          FuvekonColors.mintCard,
         ],
-        accent: const Color(0xFFF5D060),
+        accent: const Color(0xFFFFE088),
       );
     }
 
@@ -823,11 +823,11 @@ class _TierDetailConfig {
       description:
           'Tấm vé tiêu chuẩn để tham gia không gian triển lãm, nhận badge và các vật phẩm cơ bản của sự kiện.',
       bannerColors: const [
-        Color(0xFF24323A),
-        Color(0xFFE7F0E8),
-        Color(0xFF86A894),
+        FuvekonColors.surfaceContainerHigh,
+        FuvekonColors.mintCard,
+        FuvekonColors.sageGreen,
       ],
-      accent: const Color(0xFF4A7C59),
+      accent: FuvekonColors.sageGreenContainer,
     );
   }
 }

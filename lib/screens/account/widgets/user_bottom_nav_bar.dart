@@ -35,7 +35,7 @@ class UserBottomNavBar extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: FuvekonColors.darkSurface,
+        color: FuvekonColors.darkDeep,
         border: Border(
           top: BorderSide(
             color: FuvekonColors.darkBorder.withValues(alpha: 0.6),
@@ -65,7 +65,7 @@ class UserBottomNavBar extends StatelessWidget {
                         Icon(
                           items[index].icon,
                           color: selected
-                              ? const Color(0xFF9CCCA9)
+                              ? FuvekonColors.darkPrimary
                               : FuvekonColors.darkTextSecondary,
                           size: 24,
                         ),
@@ -74,7 +74,7 @@ class UserBottomNavBar extends StatelessWidget {
                           items[index].label,
                           style: TextStyle(
                             color: selected
-                                ? const Color(0xFF9CCCA9)
+                                ? FuvekonColors.darkPrimary
                                 : FuvekonColors.darkTextSecondary,
                             fontWeight:
                                 selected ? FontWeight.w600 : FontWeight.w500,
@@ -87,7 +87,7 @@ class UserBottomNavBar extends StatelessWidget {
                           width: selected ? 5 : 0,
                           height: selected ? 5 : 0,
                           decoration: const BoxDecoration(
-                            color: Color(0xFF9CCCA9),
+                            color: FuvekonColors.darkPrimary,
                             shape: BoxShape.circle,
                           ),
                         ),

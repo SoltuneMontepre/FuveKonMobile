@@ -44,7 +44,7 @@ class FuvekonGuestDrawer extends StatelessWidget {
                 'FUVEKON',
                 style: TextStyle(
                   color: isDark
-                      ? const Color(0xFFD1EAD8)
+                      ? FuvekonColors.darkPrimary
                       : FuvekonColors.textPrimary,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 2,
@@ -130,7 +130,8 @@ class _DrawerNavTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final selectedColor = const Color(0xFF4A7C59);
+    final selectedColor =
+        isDark ? FuvekonColors.darkPrimary : FuvekonColors.primary;
 
     return ListTile(
       leading: Icon(
@@ -174,10 +175,10 @@ class FuvekonTopNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final brandColor =
-        isDark ? const Color(0xFFD1EAD8) : FuvekonColors.textPrimary;
+        isDark ? FuvekonColors.darkPrimary : FuvekonColors.textPrimary;
     final iconColor = isDark ? Colors.white : FuvekonColors.textPrimary;
     final borderColor = isDark
-        ? const Color(0xFF2A2A2A)
+        ? FuvekonColors.darkBorder
         : FuvekonColors.inputBorder.withValues(alpha: 0.45);
 
     return DecoratedBox(
@@ -246,7 +247,7 @@ class FuvekonNavScaffold extends StatelessWidget {
 class FuvekonLandingHeader extends StatelessWidget {
   const FuvekonLandingHeader({super.key});
 
-  static const brandColor = Color(0xFFD1EAD8);
+  static const brandColor = FuvekonColors.darkPrimary;
 
   @override
   Widget build(BuildContext context) {
