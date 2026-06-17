@@ -82,6 +82,11 @@ class AdminUserProfileHeader extends StatelessWidget {
     this.avatarUrl,
     this.initials = '?',
     this.role,
+    this.detailStyle = false,
+    this.isVerified = false,
+    this.isBlacklisted = false,
+    this.isDeleted = false,
+    this.country,
   });
 
   final String displayName;
@@ -89,10 +94,27 @@ class AdminUserProfileHeader extends StatelessWidget {
   final String? avatarUrl;
   final String initials;
   final String? role;
+  final bool detailStyle;
+  final bool isVerified;
+  final bool isBlacklisted;
+  final bool isDeleted;
+  final String? country;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    if (detailStyle) {
+      return _DetailProfileHeader(
+        displayName: displayName,
+        email: email,
+        avatarUrl: avatarUrl,
+        initials: initials,
+        role: role,
+        isVerified: isVerified,
+        isBlacklisted: isBlacklisted,
+        isDeleted: isDeleted,
+        country: country,
+      );
+    }
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -115,17 +137,17 @@ class AdminUserProfileHeader extends StatelessWidget {
                 children: [
                   Text(
                     displayName,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: FuvekonColors.darkCardText,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: FuvekonColors.darkCardText,
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     email,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: FuvekonColors.textSecondary,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: FuvekonColors.textSecondary,
+                        ),
                   ),
                   if (role != null) ...[
                     const SizedBox(height: 10),
@@ -141,10 +163,10 @@ class AdminUserProfileHeader extends StatelessWidget {
                       ),
                       child: Text(
                         '${adminRoleTitle(role!)} Hiện tại',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: FuvekonColors.secondary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              color: FuvekonColors.secondary,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ),
                   ],
@@ -153,6 +175,214 @@ class AdminUserProfileHeader extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _DetailProfileHeader extends StatelessWidget {
+  const _DetailProfileHeader({
+    required this.displayName,
+    required this.email,
+    this.avatarUrl,
+    required this.initials,
+    this.role,
+    required this.isVerified,
+    required this.isBlacklisted,
+    required this.isDeleted,
+    this.country,
+  });
+
+  final String displayName;
+  final String email;
+  final String? avatarUrl;
+  final String initials;
+  final String? role;
+  final bool isVerified;
+  final bool isBlacklisted;
+  final bool isDeleted;
+  final String? country;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: FuvekonColors.darkPrimary.withValues(alpha: 0.7),
+                  width: 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: FuvekonColors.darkPrimary.withValues(alpha: 0.25),
+                    blurRadius: 16,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: S3Avatar(
+                imageUrl: avatarUrl,
+                initials: initials,
+                radius: 44,
+              ),
+            ),
+            if (isVerified)
+              Positioned(
+                right: 2,
+                bottom: 2,
+                child: Container(
+                  width: 26,
+                  height: 26,
+                  decoration: BoxDecoration(
+                    color: FuvekonColors.available,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: FuvekonColors.darkBg,
+                      width: 2,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.check_rounded,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Text(
+          displayName,
+          textAlign: TextAlign.center,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: FuvekonColors.darkText,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          email,
+          textAlign: TextAlign.center,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: FuvekonColors.darkTextSecondary,
+          ),
+        ),
+        if (country != null && country!.isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Text(
+            country!,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.8),
+            ),
+          ),
+        ],
+        if (role != null) ...[
+          const SizedBox(height: 14),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _StatusPill(
+                icon: Icons.person_outline_rounded,
+                label: adminRoleSubtitle(role!),
+                background: FuvekonColors.darkSurfaceElevated,
+                foreground: FuvekonColors.darkTextSecondary,
+              ),
+              _StatusPill(
+                label: _statusLabel,
+                background: _statusBackground,
+                foreground: _statusForeground,
+                leading: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: isDeleted
+                        ? FuvekonColors.darkTextSecondary
+                        : isBlacklisted
+                            ? const Color(0xFFFBBF24)
+                            : FuvekonColors.available,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
+
+  String get _statusLabel {
+    if (isDeleted) return 'Đã xóa';
+    if (isBlacklisted) return 'Bị cấm';
+    return 'Hoạt động';
+  }
+
+  Color get _statusBackground {
+    if (isDeleted) return FuvekonColors.darkSurfaceElevated;
+    if (isBlacklisted) return const Color(0xFFFBBF24).withValues(alpha: 0.2);
+    return FuvekonColors.darkCard;
+  }
+
+  Color get _statusForeground {
+    if (isDeleted) return FuvekonColors.darkTextSecondary;
+    if (isBlacklisted) return const Color(0xFFFBBF24);
+    return FuvekonColors.darkCardText;
+  }
+}
+
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({
+    this.icon,
+    required this.label,
+    required this.background,
+    required this.foreground,
+    this.leading,
+  });
+
+  final IconData? icon;
+  final String label;
+  final Color background;
+  final Color foreground;
+  final Widget? leading;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: FuvekonColors.darkBorder.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (leading != null)
+            leading!
+          else if (icon != null)
+            Icon(icon, size: 14, color: foreground),
+          if (leading != null || icon != null) const SizedBox(width: 6),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: foreground,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+        ],
       ),
     );
   }

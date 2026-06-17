@@ -55,8 +55,7 @@ class AdminScheduleService {
     String id,
     UpdateScheduleInput input,
   ) async {
-    final response =
-        await _adminScheduleApi.updateSchedule(id, input.toJson());
+    final response = await _adminScheduleApi.updateSchedule(id, input.toJson());
     if (!response.isSuccess || response.data == null) {
       throw ServerException(response.errorMessage ?? response.message);
     }
@@ -70,106 +69,44 @@ class AdminScheduleService {
     }
   }
 
-  Future<AdminScheduleVenue> createVenue({
+  Future<AdminTimelineItem> createTimelineItem({
     required String scheduleId,
-    required CreateScheduleVenueInput input,
+    required TimelineItemInput input,
   }) async {
-    final response =
-        await _adminScheduleApi.createVenue(scheduleId, input.toJson());
-    if (!response.isSuccess || response.data == null) {
-      throw ServerException(response.errorMessage ?? response.message);
-    }
-    return AdminScheduleVenue.fromJson(response.data!);
-  }
-
-  Future<AdminScheduleLocation> createLocation({
-    required String scheduleId,
-    required String venueId,
-    required CreateScheduleLocationInput input,
-  }) async {
-    final response = await _adminScheduleApi.createLocation(
+    final response = await _adminScheduleApi.createTimelineItem(
       scheduleId,
-      venueId,
       input.toJson(),
     );
     if (!response.isSuccess || response.data == null) {
       throw ServerException(response.errorMessage ?? response.message);
     }
-    return AdminScheduleLocation.fromJson(response.data!);
+    return AdminTimelineItem.fromJson(response.data!);
   }
 
-  /// Ensures a default venue and location exist so events can be added directly.
-  Future<({AdminScheduleVenue venue, AdminScheduleLocation location})>
-      ensureDefaultVenueAndLocation(String scheduleId) async {
-    final venue = await createVenue(
-      scheduleId: scheduleId,
-      input: const CreateScheduleVenueInput(name: 'Sự kiện'),
-    );
-    final location = await createLocation(
-      scheduleId: scheduleId,
-      venueId: venue.id,
-      input: const CreateScheduleLocationInput(name: 'Chung'),
-    );
-    return (venue: venue, location: location);
-  }
-
-  Future<AdminScheduleEvent> createEvent({
+  Future<AdminTimelineItem> updateTimelineItem({
     required String scheduleId,
-    required String venueId,
-    required String locationId,
-    required EventInput input,
+    required String itemId,
+    required TimelineItemInput input,
   }) async {
-    final response = await _adminScheduleApi.createEvent(
+    final response = await _adminScheduleApi.updateTimelineItem(
       scheduleId,
-      venueId,
-      locationId,
+      itemId,
       input.toJson(),
     );
     if (!response.isSuccess || response.data == null) {
       throw ServerException(response.errorMessage ?? response.message);
     }
-    return AdminScheduleEvent.fromJson(response.data!);
+    return AdminTimelineItem.fromJson(response.data!);
   }
 
-  Future<AdminScheduleEvent> updateEvent({
+  Future<void> deleteTimelineItem({
     required String scheduleId,
-    required String venueId,
-    required String eventId,
-    required EventInput input,
+    required String itemId,
   }) async {
-    final response = await _adminScheduleApi.updateEvent(
+    final response = await _adminScheduleApi.deleteTimelineItem(
       scheduleId,
-      venueId,
-      eventId,
-      input.toJson(),
+      itemId,
     );
-    if (!response.isSuccess || response.data == null) {
-      throw ServerException(response.errorMessage ?? response.message);
-    }
-    return AdminScheduleEvent.fromJson(response.data!);
-  }
-
-  Future<void> deleteEvent({
-    required String scheduleId,
-    required String venueId,
-    required String eventId,
-  }) async {
-    final response = await _adminScheduleApi.deleteEvent(
-      scheduleId,
-      venueId,
-      eventId,
-    );
-    if (!response.isSuccess) {
-      throw ServerException(response.errorMessage ?? response.message);
-    }
-  }
-
-  Future<void> deleteVenue({
-    required String scheduleId,
-    required String venueId,
-  }) async {
-    final response =
-        await _adminScheduleApi.deleteVenue(scheduleId, venueId);
     if (!response.isSuccess) {
       throw ServerException(response.errorMessage ?? response.message);
     }

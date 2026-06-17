@@ -4,116 +4,70 @@ class AdminScheduleItem {
     required this.name,
     this.startAt,
     this.endAt,
-    this.venues = const [],
+    this.dayCount = 0,
+    this.timelineItemCount = 0,
+    this.days = const [],
   });
 
   final String id;
   final String name;
   final DateTime? startAt;
   final DateTime? endAt;
-  final List<AdminScheduleVenue> venues;
-
-  int get eventCount => venues.fold(
-        0,
-        (sum, venue) =>
-            sum +
-            venue.locations.fold(
-              0,
-              (locSum, loc) => locSum + loc.events.length,
-            ),
-      );
+  final int dayCount;
+  final int timelineItemCount;
+  final List<AdminScheduleDay> days;
 
   factory AdminScheduleItem.fromJson(Map<String, dynamic> json) {
-    final venuesRaw = json['venues'];
+    final daysRaw = json['days'];
     return AdminScheduleItem(
       id: json['id']?.toString() ?? '',
       name: json['name']?.toString() ?? '',
       startAt: _parseDate(json['start_at']),
       endAt: _parseDate(json['end_at']),
-      venues: venuesRaw is List
-          ? venuesRaw
-              .whereType<Map<String, dynamic>>()
-              .map(AdminScheduleVenue.fromJson)
-              .toList()
+      dayCount: json['day_count'] as int? ?? 0,
+      timelineItemCount: json['timeline_item_count'] as int? ?? 0,
+      days: daysRaw is List
+          ? daysRaw
+                .whereType<Map<String, dynamic>>()
+                .map(AdminScheduleDay.fromJson)
+                .toList()
           : const [],
     );
   }
 }
 
-class AdminScheduleVenue {
-  const AdminScheduleVenue({
-    required this.id,
-    required this.name,
-    this.description = '',
-    this.order = 0,
-    this.locations = const [],
+class AdminScheduleDay {
+  const AdminScheduleDay({
+    required this.date,
+    this.timeline = const [],
   });
 
-  final String id;
-  final String name;
-  final String description;
-  final int order;
-  final List<AdminScheduleLocation> locations;
+  final String date;
+  final List<AdminTimelineItem> timeline;
 
-  factory AdminScheduleVenue.fromJson(Map<String, dynamic> json) {
-    final locationsRaw = json['locations'];
-    return AdminScheduleVenue(
-      id: json['id']?.toString() ?? '',
-      name: json['name']?.toString() ?? '',
-      description: json['description']?.toString() ?? '',
-      order: json['order'] as int? ?? 0,
-      locations: locationsRaw is List
-          ? locationsRaw
-              .whereType<Map<String, dynamic>>()
-              .map(AdminScheduleLocation.fromJson)
-              .toList()
+  factory AdminScheduleDay.fromJson(Map<String, dynamic> json) {
+    final timelineRaw = json['timeline'];
+    return AdminScheduleDay(
+      date: json['date']?.toString() ?? '',
+      timeline: timelineRaw is List
+          ? timelineRaw
+                .whereType<Map<String, dynamic>>()
+                .map(AdminTimelineItem.fromJson)
+                .toList()
           : const [],
     );
   }
 }
 
-class AdminScheduleLocation {
-  const AdminScheduleLocation({
-    required this.id,
-    required this.name,
-    this.description = '',
-    this.order = 0,
-    this.locationRefId,
-    this.events = const [],
-  });
-
-  final String id;
-  final String name;
-  final String description;
-  final int order;
-  final String? locationRefId;
-  final List<AdminScheduleEvent> events;
-
-  factory AdminScheduleLocation.fromJson(Map<String, dynamic> json) {
-    final eventsRaw = json['events'];
-    return AdminScheduleLocation(
-      id: json['id']?.toString() ?? '',
-      name: json['name']?.toString() ?? '',
-      description: json['description']?.toString() ?? '',
-      order: json['order'] as int? ?? 0,
-      locationRefId: json['location_ref_id']?.toString(),
-      events: eventsRaw is List
-          ? eventsRaw
-              .whereType<Map<String, dynamic>>()
-              .map(AdminScheduleEvent.fromJson)
-              .toList()
-          : const [],
-    );
-  }
-}
-
-class AdminScheduleEvent {
-  const AdminScheduleEvent({
+class AdminTimelineItem {
+  const AdminTimelineItem({
     required this.id,
     required this.title,
     this.description = '',
     required this.startAt,
     required this.endAt,
+    this.category = '',
+    this.location = '',
   });
 
   final String id;
@@ -121,14 +75,18 @@ class AdminScheduleEvent {
   final String description;
   final DateTime startAt;
   final DateTime endAt;
+  final String category;
+  final String location;
 
-  factory AdminScheduleEvent.fromJson(Map<String, dynamic> json) {
-    return AdminScheduleEvent(
+  factory AdminTimelineItem.fromJson(Map<String, dynamic> json) {
+    return AdminTimelineItem(
       id: json['id']?.toString() ?? '',
       title: json['title']?.toString() ?? '',
       description: json['description']?.toString() ?? '',
       startAt: _parseDate(json['start_at']) ?? DateTime.now(),
       endAt: _parseDate(json['end_at']) ?? DateTime.now(),
+      category: json['category']?.toString() ?? '',
+      location: json['location']?.toString() ?? '',
     );
   }
 }
@@ -154,9 +112,9 @@ class AdminGlobalVenue {
       description: json['description']?.toString() ?? '',
       locations: locationsRaw is List
           ? locationsRaw
-              .whereType<Map<String, dynamic>>()
-              .map(AdminGlobalLocation.fromJson)
-              .toList()
+                .whereType<Map<String, dynamic>>()
+                .map(AdminGlobalLocation.fromJson)
+                .toList()
           : const [],
     );
   }
@@ -197,85 +155,51 @@ class CreateScheduleInput {
   final DateTime endAt;
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'start_at': startAt.toUtc().toIso8601String(),
-        'end_at': endAt.toUtc().toIso8601String(),
-      };
+    'name': name,
+    'start_at': startAt.toUtc().toIso8601String(),
+    'end_at': endAt.toUtc().toIso8601String(),
+  };
 }
 
 class UpdateScheduleInput {
-  const UpdateScheduleInput({
-    this.name,
-    this.startAt,
-    this.endAt,
-  });
+  const UpdateScheduleInput({this.name, this.startAt, this.endAt});
 
   final String? name;
   final DateTime? startAt;
   final DateTime? endAt;
 
   Map<String, dynamic> toJson() => {
-        if (name != null) 'name': name,
-        if (startAt != null) 'start_at': startAt!.toUtc().toIso8601String(),
-        if (endAt != null) 'end_at': endAt!.toUtc().toIso8601String(),
-      };
+    if (name != null) 'name': name,
+    if (startAt != null) 'start_at': startAt!.toUtc().toIso8601String(),
+    if (endAt != null) 'end_at': endAt!.toUtc().toIso8601String(),
+  };
 }
 
-class EventInput {
-  const EventInput({
+class TimelineItemInput {
+  const TimelineItemInput({
     required this.title,
     this.description = '',
     required this.startAt,
     required this.endAt,
+    this.category = '',
+    this.location = '',
   });
 
   final String title;
   final String description;
   final DateTime startAt;
   final DateTime endAt;
+  final String category;
+  final String location;
 
   Map<String, dynamic> toJson() => {
-        'title': title,
-        if (description.isNotEmpty) 'description': description,
-        'start_at': startAt.toUtc().toIso8601String(),
-        'end_at': endAt.toUtc().toIso8601String(),
-      };
-}
-
-class CreateScheduleVenueInput {
-  const CreateScheduleVenueInput({
-    required this.name,
-    this.description = '',
-    this.order = 0,
-  });
-
-  final String name;
-  final String description;
-  final int order;
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        if (description.isNotEmpty) 'description': description,
-        if (order != 0) 'order': order,
-      };
-}
-
-class CreateScheduleLocationInput {
-  const CreateScheduleLocationInput({
-    required this.name,
-    this.description = '',
-    this.order = 0,
-  });
-
-  final String name;
-  final String description;
-  final int order;
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        if (description.isNotEmpty) 'description': description,
-        if (order != 0) 'order': order,
-      };
+    'title': title,
+    if (description.isNotEmpty) 'description': description,
+    'start_at': startAt.toUtc().toIso8601String(),
+    'end_at': endAt.toUtc().toIso8601String(),
+    if (category.isNotEmpty) 'category': category,
+    if (location.isNotEmpty) 'location': location,
+  };
 }
 
 DateTime? _parseDate(dynamic value) {

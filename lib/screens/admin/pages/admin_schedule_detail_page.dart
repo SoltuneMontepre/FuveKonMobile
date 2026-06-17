@@ -25,7 +25,7 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
   bool _loading = true;
   String? _error;
   bool _actionInProgress = false;
-  DateTime? _selectedDate;
+  String? _selectedDate;
   String _selectedCategory = 'Tất cả';
 
   @override
@@ -58,61 +58,39 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
     }
   }
 
-  DateTime _defaultSelectedDate(AdminScheduleItem schedule) {
-    final days = _scheduleDays(schedule);
-    if (days.isEmpty) return DateTime.now();
+  String? _defaultSelectedDate(AdminScheduleItem schedule) {
+    if (schedule.days.isEmpty) return null;
 
-    final today = DateTime.now();
-    final todayDate = DateTime(today.year, today.month, today.day);
-    for (final day in days) {
-      if (_isSameDay(day, todayDate)) return day;
+    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    for (final day in schedule.days) {
+      if (day.date == today) return day.date;
     }
-    return days.first;
+    return schedule.days.first.date;
   }
 
-  List<DateTime> _scheduleDays(AdminScheduleItem schedule) {
-    final start = schedule.startAt;
-    final end = schedule.endAt;
-    if (start == null || end == null) return const [];
-
-    var cursor = DateTime(start.year, start.month, start.day);
-    final last = DateTime(end.year, end.month, end.day);
-    final days = <DateTime>[];
-    while (!cursor.isAfter(last)) {
-      days.add(cursor);
-      cursor = cursor.add(const Duration(days: 1));
-    }
-    return days;
-  }
-
-  List<String> _venueCategories(AdminScheduleItem schedule) {
-    return schedule.venues.map((v) => v.name).toSet().toList()..sort();
-  }
-
-  List<_TimelineEntry> _timelineEntries(AdminScheduleItem schedule) {
+  AdminScheduleDay? _selectedDay(AdminScheduleItem schedule) {
     final selected = _selectedDate;
-    if (selected == null) return const [];
-
-    final entries = <_TimelineEntry>[];
-    for (final venue in schedule.venues) {
-      for (final location in venue.locations) {
-        for (final event in location.events) {
-          if (!_isSameDay(event.startAt, selected)) continue;
-          if (_selectedCategory != 'Tất cả' && venue.name != _selectedCategory) {
-            continue;
-          }
-          entries.add(
-            _TimelineEntry(
-              event: event,
-              venue: venue,
-              location: location,
-            ),
-          );
-        }
-      }
+    if (selected == null) return null;
+    for (final day in schedule.days) {
+      if (day.date == selected) return day;
     }
+    return null;
+  }
 
-    entries.sort((a, b) => a.event.startAt.compareTo(b.event.startAt));
+  List<String> _categoriesForDay(AdminScheduleDay? day) {
+    if (day == null) return const [];
+    return day.timeline.map((item) => item.category).where((c) => c.isNotEmpty).toSet().toList()..sort();
+  }
+
+  List<_TimelineEntry> _timelineEntries(AdminScheduleDay? day) {
+    if (day == null) return const [];
+
+    final entries = day.timeline
+        .where((item) => _selectedCategory == 'Tất cả' || item.category == _selectedCategory)
+        .map((item) => _TimelineEntry(item: item))
+        .toList();
+
+    entries.sort((a, b) => a.item.startAt.compareTo(b.item.startAt));
     _markLocationConflicts(entries);
     return entries;
   }
@@ -122,35 +100,29 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
       for (var j = i + 1; j < entries.length; j++) {
         final a = entries[i];
         final b = entries[j];
-        if (!_eventsOverlap(a.event, b.event)) continue;
-        if (!_sharePhysicalLocation(a.location, b.location)) continue;
+        if (!_itemsOverlap(a.item, b.item)) continue;
+        if (a.item.location.isEmpty || a.item.location != b.item.location) continue;
         a.hasLocationConflict = true;
         b.hasLocationConflict = true;
       }
     }
   }
 
-  bool _sharePhysicalLocation(
-    AdminScheduleLocation a,
-    AdminScheduleLocation b,
-  ) {
-    final refA = a.locationRefId;
-    final refB = b.locationRefId;
-    if (refA != null && refB != null) return refA == refB;
-    return a.id == b.id;
-  }
-
-  bool _eventsOverlap(AdminScheduleEvent a, AdminScheduleEvent b) {
+  bool _itemsOverlap(AdminTimelineItem a, AdminTimelineItem b) {
     return a.startAt.isBefore(b.endAt) && b.startAt.isBefore(a.endAt);
   }
 
-  bool _isSameDay(DateTime a, DateTime b) {
-    return a.year == b.year && a.month == b.month && a.day == b.day;
+  String _dayAbbrev(String date) {
+    final parsed = DateTime.tryParse(date);
+    if (parsed == null) return '';
+    const labels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+    return labels[parsed.weekday - 1];
   }
 
-  String _dayAbbrev(DateTime date) {
-    const labels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
-    return labels[date.weekday - 1];
+  String _dayNumber(String date) {
+    final parsed = DateTime.tryParse(date);
+    if (parsed == null) return '';
+    return '${parsed.day}';
   }
 
   Future<void> _runAction(Future<void> Function() action) async {
@@ -207,7 +179,7 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Xóa lịch trình?'),
-        content: const Text('Tất cả sự kiện trong lịch sẽ bị xóa.'),
+        content: const Text('Tất cả mục trong lịch sẽ bị xóa.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -231,11 +203,14 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
     });
   }
 
-  Future<void> _openEventForm({
-    required AdminScheduleVenue venue,
-    required AdminScheduleLocation location,
-    AdminScheduleEvent? event,
-  }) async {
+  DateTime _defaultStartForSelectedDay() {
+    final selected = _selectedDate;
+    final parsed = selected != null ? DateTime.tryParse(selected) : null;
+    final base = parsed ?? DateTime.now();
+    return DateTime(base.year, base.month, base.day, 10);
+  }
+
+  Future<void> _openTimelineForm({AdminTimelineItem? item}) async {
     final saved = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
@@ -243,21 +218,21 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => _EventFormSheet(
-        initial: event,
+      builder: (context) => _TimelineItemFormSheet(
+        initial: item,
+        defaultStart: item?.startAt ?? _defaultStartForSelectedDay(),
+        defaultEnd: item?.endAt ??
+            _defaultStartForSelectedDay().add(const Duration(hours: 1)),
         onSubmit: (input) async {
-          if (event == null) {
-            await _service.createEvent(
+          if (item == null) {
+            await _service.createTimelineItem(
               scheduleId: widget.scheduleId,
-              venueId: venue.id,
-              locationId: location.id,
               input: input,
             );
           } else {
-            await _service.updateEvent(
+            await _service.updateTimelineItem(
               scheduleId: widget.scheduleId,
-              venueId: venue.id,
-              eventId: event.id,
+              itemId: item.id,
               input: input,
             );
           }
@@ -267,117 +242,12 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
     if (saved == true) await _load();
   }
 
-  Future<void> _pickLocationAndAddEvent() async {
-    final schedule = _schedule;
-    if (schedule == null) return;
-
-    var locations = <({AdminScheduleVenue venue, AdminScheduleLocation location})>[];
-    for (final venue in schedule.venues) {
-      for (final location in venue.locations) {
-        locations.add((venue: venue, location: location));
-      }
-    }
-
-    if (locations.isEmpty) {
-      setState(() => _actionInProgress = true);
-      try {
-        final created =
-            await _service.ensureDefaultVenueAndLocation(widget.scheduleId);
-        if (!mounted) return;
-        await _load();
-        if (!mounted) return;
-        final refreshed = _schedule;
-        if (refreshed == null) return;
-        AdminScheduleVenue? venue;
-        AdminScheduleLocation? location;
-        for (final v in refreshed.venues) {
-          if (v.id == created.venue.id) {
-            venue = v;
-            for (final l in v.locations) {
-              if (l.id == created.location.id) {
-                location = l;
-                break;
-              }
-            }
-            break;
-          }
-        }
-        if (venue != null && location != null) {
-          await _openEventForm(venue: venue, location: location);
-        }
-      } catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-            ),
-          ),
-        );
-      } finally {
-        if (mounted) setState(() => _actionInProgress = false);
-      }
-      return;
-    }
-
-    if (locations.length == 1) {
-      final only = locations.first;
-      await _openEventForm(venue: only.venue, location: only.location);
-      return;
-    }
-
-    final picked = await showModalBottomSheet<
-        ({AdminScheduleVenue venue, AdminScheduleLocation location})>(
-      context: context,
-      backgroundColor: FuvekonColors.darkSurfaceElevated,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 12),
-              Text(
-                'Chọn vị trí',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: FuvekonColors.darkText,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-              const SizedBox(height: 8),
-              ...locations.map(
-                (item) => ListTile(
-                  leading: const Icon(
-                    Icons.place_outlined,
-                    color: FuvekonColors.darkPrimary,
-                  ),
-                  title: Text(item.location.name),
-                  subtitle: Text(item.venue.name),
-                  onTap: () => Navigator.pop(context, item),
-                ),
-              ),
-              const SizedBox(height: 8),
-            ],
-          ),
-        );
-      },
-    );
-
-    if (picked == null) return;
-    await _openEventForm(venue: picked.venue, location: picked.location);
-  }
-
-  Future<void> _confirmDeleteEvent({
-    required AdminScheduleVenue venue,
-    required AdminScheduleEvent event,
-  }) async {
+  Future<void> _confirmDeleteItem(AdminTimelineItem item) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Xóa sự kiện?'),
-        content: Text('Xóa "${event.title}"?'),
+        title: const Text('Xóa mục lịch trình?'),
+        content: Text('Xóa "${item.title}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -393,10 +263,9 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
     if (confirmed != true) return;
 
     await _runAction(
-      () => _service.deleteEvent(
+      () => _service.deleteTimelineItem(
         scheduleId: widget.scheduleId,
-        venueId: venue.id,
-        eventId: event.id,
+        itemId: item.id,
       ),
     );
   }
@@ -408,7 +277,7 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
       floatingActionButton: _schedule == null
           ? null
           : FloatingActionButton(
-              onPressed: _actionInProgress ? null : _pickLocationAndAddEvent,
+              onPressed: _actionInProgress ? null : () => _openTimelineForm(),
               backgroundColor: FuvekonColors.darkPrimary,
               foregroundColor: FuvekonColors.darkButtonText,
               elevation: 0,
@@ -449,37 +318,37 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
     }
 
     final schedule = _schedule!;
-    final days = _scheduleDays(schedule);
-    final categories = _venueCategories(schedule);
-    final entries = _timelineEntries(schedule);
+    final selectedDay = _selectedDay(schedule);
+    final categories = _categoriesForDay(selectedDay);
+    final entries = _timelineEntries(selectedDay);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _ScheduleHeaderBar(
-          title: schedule.name.isNotEmpty ? schedule.name : 'Lịch trình sự kiện',
+          title: schedule.name.isNotEmpty ? schedule.name : 'Lịch trình',
           onBack: () => context.pop(),
           onEdit: _openEditSchedule,
           onDelete: _confirmDeleteSchedule,
           actionInProgress: _actionInProgress,
         ),
-        if (days.isNotEmpty) ...[
+        if (schedule.days.isNotEmpty) ...[
           const SizedBox(height: 12),
           SizedBox(
             height: 72,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: FuvekonSpacing.page),
-              itemCount: days.length,
+              itemCount: schedule.days.length,
               separatorBuilder: (_, _) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
-                final day = days[index];
-                final selected = _selectedDate != null && _isSameDay(day, _selectedDate!);
+                final day = schedule.days[index];
+                final selected = _selectedDate == day.date;
                 return _DateChip(
-                  dayLabel: _dayAbbrev(day),
-                  dateLabel: '${day.day}',
+                  dayLabel: _dayAbbrev(day.date),
+                  dateLabel: _dayNumber(day.date),
                   selected: selected,
-                  onTap: () => setState(() => _selectedDate = day),
+                  onTap: () => setState(() => _selectedDate = day.date),
                 );
               },
             ),
@@ -517,49 +386,43 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
           child: entries.isEmpty
               ? _buildEmptyDay()
               : RefreshIndicator(
-                      onRefresh: _load,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.fromLTRB(
-                          FuvekonSpacing.page,
-                          0,
-                          FuvekonSpacing.page,
-                          96,
-                        ),
-                        itemCount: entries.length,
-                        itemBuilder: (context, index) {
-                          final entry = entries[index];
-                          final isLast = index == entries.length - 1;
-                          return _TimelineEventTile(
-                            entry: entry,
-                            isLast: isLast,
-                            onTap: () => _openEventForm(
-                              venue: entry.venue,
-                              location: entry.location,
-                              event: entry.event,
-                            ),
-                            onDelete: () => _confirmDeleteEvent(
-                              venue: entry.venue,
-                              event: entry.event,
-                            ),
-                          );
-                        },
-                      ),
+                  onRefresh: _load,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(
+                      FuvekonSpacing.page,
+                      0,
+                      FuvekonSpacing.page,
+                      96,
                     ),
+                    itemCount: entries.length,
+                    itemBuilder: (context, index) {
+                      final entry = entries[index];
+                      final isLast = index == entries.length - 1;
+                      return _TimelineItemTile(
+                        entry: entry,
+                        isLast: isLast,
+                        onTap: () => _openTimelineForm(item: entry.item),
+                        onDelete: () => _confirmDeleteItem(entry.item),
+                      );
+                    },
+                  ),
+                ),
         ),
       ],
     );
   }
 
   Widget _buildEmptyDay() {
+    final selected = _selectedDate;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(FuvekonSpacing.page),
         child: EmptyState(
           icon: Icons.event_busy_outlined,
-          title: 'Không có sự kiện',
-          subtitle: _selectedDate == null
+          title: 'Chưa có mục lịch trình',
+          subtitle: selected == null
               ? 'Chọn ngày để xem lịch trình.'
-              : 'Chưa có sự kiện vào ngày ${DateFormat('dd/MM').format(_selectedDate!)}.',
+              : 'Chưa có mục nào vào ngày ${DateFormat('dd/MM').format(DateTime.parse(selected))}.',
         ),
       ),
     );
@@ -567,15 +430,9 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
 }
 
 class _TimelineEntry {
-  _TimelineEntry({
-    required this.event,
-    required this.venue,
-    required this.location,
-  });
+  _TimelineEntry({required this.item});
 
-  final AdminScheduleEvent event;
-  final AdminScheduleVenue venue;
-  final AdminScheduleLocation location;
+  final AdminTimelineItem item;
   bool hasLocationConflict = false;
 }
 
@@ -665,9 +522,7 @@ class _DateChip extends StatelessWidget {
           width: 56,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            border: selected
-                ? null
-                : Border.all(color: FuvekonColors.darkBorder),
+            border: selected ? null : Border.all(color: FuvekonColors.darkBorder),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -723,17 +578,13 @@ class _CategoryChip extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: selected
-                  ? FuvekonColors.darkPrimary
-                  : FuvekonColors.darkBorder,
+              color: selected ? FuvekonColors.darkPrimary : FuvekonColors.darkBorder,
             ),
           ),
           child: Text(
             label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: selected
-                      ? FuvekonColors.darkPrimary
-                      : FuvekonColors.darkTextSecondary,
+                  color: selected ? FuvekonColors.darkPrimary : FuvekonColors.darkTextSecondary,
                   fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                 ),
           ),
@@ -743,8 +594,8 @@ class _CategoryChip extends StatelessWidget {
   }
 }
 
-class _TimelineEventTile extends StatelessWidget {
-  const _TimelineEventTile({
+class _TimelineItemTile extends StatelessWidget {
+  const _TimelineItemTile({
     required this.entry,
     required this.isLast,
     required this.onTap,
@@ -761,10 +612,9 @@ class _TimelineEventTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeFmt = DateFormat('HH:mm');
-    final event = entry.event;
+    final item = entry.item;
     final conflict = entry.hasLocationConflict;
-    final timeRange =
-        '${timeFmt.format(event.startAt)} - ${timeFmt.format(event.endAt)}';
+    final timeRange = '${timeFmt.format(item.startAt)} - ${timeFmt.format(item.endAt)}';
 
     return IntrinsicHeight(
       child: Row(
@@ -781,10 +631,7 @@ class _TimelineEventTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: conflict ? _conflictColor : FuvekonColors.darkPrimary,
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: FuvekonColors.darkBg,
-                      width: 2,
-                    ),
+                    border: Border.all(color: FuvekonColors.darkBg, width: 2),
                   ),
                 ),
                 if (!isLast)
@@ -810,14 +657,14 @@ class _TimelineEventTile extends StatelessWidget {
                       Text(
                         timeRange,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: conflict
-                                  ? FuvekonColors.darkText
-                                  : const Color(0xFFFBBF24),
+                              color: conflict ? FuvekonColors.darkText : const Color(0xFFFBBF24),
                               fontWeight: FontWeight.w700,
                             ),
                       ),
-                      const SizedBox(width: 8),
-                      _TagChip(label: entry.venue.name),
+                      if (item.category.isNotEmpty) ...[
+                        const SizedBox(width: 8),
+                        _TagChip(label: item.category),
+                      ],
                       if (conflict) ...[
                         const SizedBox(width: 6),
                         const _TagChip(
@@ -831,9 +678,7 @@ class _TimelineEventTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Material(
-                    color: conflict
-                        ? FuvekonColors.darkSurfaceElevated
-                        : FuvekonColors.darkCard,
+                    color: conflict ? FuvekonColors.darkSurfaceElevated : FuvekonColors.darkCard,
                     borderRadius: BorderRadius.circular(16),
                     child: InkWell(
                       onTap: onTap,
@@ -852,67 +697,52 @@ class _TimelineEventTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              event.title,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(
+                              item.title,
+                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                     color: conflict
                                         ? FuvekonColors.darkText
                                         : FuvekonColors.darkCardText,
                                     fontWeight: FontWeight.w700,
                                   ),
                             ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.place_outlined,
-                                  size: 16,
-                                  color: conflict
-                                      ? _conflictColor
-                                      : FuvekonColors.textSecondary,
-                                ),
-                                const SizedBox(width: 6),
-                                Expanded(
-                                  child: Text(
-                                    conflict
-                                        ? '${entry.location.name} (Trùng lịch)'
-                                        : entry.location.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: conflict
-                                              ? _conflictColor
-                                              : FuvekonColors.textSecondary,
-                                        ),
+                            if (item.location.isNotEmpty) ...[
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.place_outlined,
+                                    size: 16,
+                                    color: conflict ? _conflictColor : FuvekonColors.textSecondary,
                                   ),
-                                ),
-                              ],
-                            ),
-                            if (event.description.isNotEmpty) ...[
+                                  const SizedBox(width: 6),
+                                  Expanded(
+                                    child: Text(
+                                      conflict ? '${item.location} (Trùng lịch)' : item.location,
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: conflict
+                                                ? _conflictColor
+                                                : FuvekonColors.textSecondary,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                            if (item.description.isNotEmpty) ...[
                               const SizedBox(height: 6),
                               Row(
                                 children: [
                                   Icon(
                                     Icons.person_outline_rounded,
                                     size: 16,
-                                    color: conflict
-                                        ? FuvekonColors.darkTextSecondary
-                                        : FuvekonColors.textSecondary,
+                                    color: FuvekonColors.textSecondary,
                                   ),
                                   const SizedBox(width: 6),
                                   Expanded(
                                     child: Text(
-                                      event.description,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color: conflict
-                                                ? FuvekonColors.darkTextSecondary
-                                                : FuvekonColors.textSecondary,
+                                      item.description,
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: FuvekonColors.textSecondary,
                                           ),
                                     ),
                                   ),
@@ -955,9 +785,7 @@ class _TagChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? FuvekonColors.darkSurface,
         borderRadius: BorderRadius.circular(6),
-        border: backgroundColor == null
-            ? Border.all(color: FuvekonColors.darkBorder)
-            : null,
+        border: backgroundColor == null ? Border.all(color: FuvekonColors.darkBorder) : null,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -979,23 +807,29 @@ class _TagChip extends StatelessWidget {
   }
 }
 
-class _EventFormSheet extends StatefulWidget {
-  const _EventFormSheet({
+class _TimelineItemFormSheet extends StatefulWidget {
+  const _TimelineItemFormSheet({
     this.initial,
+    required this.defaultStart,
+    required this.defaultEnd,
     required this.onSubmit,
   });
 
-  final AdminScheduleEvent? initial;
-  final Future<void> Function(EventInput input) onSubmit;
+  final AdminTimelineItem? initial;
+  final DateTime defaultStart;
+  final DateTime defaultEnd;
+  final Future<void> Function(TimelineItemInput input) onSubmit;
 
   @override
-  State<_EventFormSheet> createState() => _EventFormSheetState();
+  State<_TimelineItemFormSheet> createState() => _TimelineItemFormSheetState();
 }
 
-class _EventFormSheetState extends State<_EventFormSheet> {
+class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
+  late final TextEditingController _categoryController;
+  late final TextEditingController _locationController;
   late DateTime _startAt;
   late DateTime _endAt;
   bool _submitting = false;
@@ -1005,17 +839,19 @@ class _EventFormSheetState extends State<_EventFormSheet> {
     super.initState();
     final initial = widget.initial;
     _titleController = TextEditingController(text: initial?.title ?? '');
-    _descriptionController =
-        TextEditingController(text: initial?.description ?? '');
-    final now = DateTime.now();
-    _startAt = initial?.startAt ?? DateTime(now.year, now.month, now.day, 10);
-    _endAt = initial?.endAt ?? DateTime(now.year, now.month, now.day, 11);
+    _descriptionController = TextEditingController(text: initial?.description ?? '');
+    _categoryController = TextEditingController(text: initial?.category ?? '');
+    _locationController = TextEditingController(text: initial?.location ?? '');
+    _startAt = initial?.startAt ?? widget.defaultStart;
+    _endAt = initial?.endAt ?? widget.defaultEnd;
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _categoryController.dispose();
+    _locationController.dispose();
     super.dispose();
   }
 
@@ -1037,9 +873,7 @@ class _EventFormSheetState extends State<_EventFormSheet> {
     );
     if (time == null || !mounted) return;
 
-    onChanged(
-      DateTime(date.year, date.month, date.day, time.hour, time.minute),
-    );
+    onChanged(DateTime(date.year, date.month, date.day, time.hour, time.minute));
     setState(() {});
   }
 
@@ -1047,9 +881,7 @@ class _EventFormSheetState extends State<_EventFormSheet> {
     if (!_formKey.currentState!.validate()) return;
     if (!_endAt.isAfter(_startAt)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Thời gian kết thúc phải sau thời gian bắt đầu.'),
-        ),
+        const SnackBar(content: Text('Thời gian kết thúc phải sau thời gian bắt đầu.')),
       );
       return;
     }
@@ -1057,11 +889,13 @@ class _EventFormSheetState extends State<_EventFormSheet> {
     setState(() => _submitting = true);
     try {
       await widget.onSubmit(
-        EventInput(
+        TimelineItemInput(
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim(),
           startAt: _startAt,
           endAt: _endAt,
+          category: _categoryController.text.trim(),
+          location: _locationController.text.trim(),
         ),
       );
       if (!mounted) return;
@@ -1070,9 +904,7 @@ class _EventFormSheetState extends State<_EventFormSheet> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
+          content: Text(e.toString().replaceFirst('ServerException: ', 'Lỗi: ')),
         ),
       );
     } finally {
@@ -1080,8 +912,7 @@ class _EventFormSheetState extends State<_EventFormSheet> {
     }
   }
 
-  String _formatDateTime(DateTime value) =>
-      DateFormat('dd/MM/yyyy HH:mm').format(value);
+  String _formatDateTime(DateTime value) => DateFormat('dd/MM/yyyy HH:mm').format(value);
 
   @override
   Widget build(BuildContext context) {
@@ -1108,7 +939,7 @@ class _EventFormSheetState extends State<_EventFormSheet> {
             ),
             const SizedBox(height: 16),
             Text(
-              isEdit ? 'Chỉnh sửa sự kiện' : 'Thêm sự kiện',
+              isEdit ? 'Chỉnh sửa mục' : 'Thêm mục lịch trình',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: FuvekonColors.darkText,
                     fontWeight: FontWeight.w700,
@@ -1132,6 +963,22 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                 labelText: 'Diễn giả / mô tả (tuỳ chọn)',
               ),
               maxLines: 3,
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _categoryController,
+              decoration: const InputDecoration(
+                labelText: 'Hạng mục (tuỳ chọn)',
+                hintText: 'Panel, Workshop...',
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _locationController,
+              decoration: const InputDecoration(
+                labelText: 'Địa điểm (tuỳ chọn)',
+                hintText: 'Hall A, Sân khấu chính...',
+              ),
             ),
             const SizedBox(height: 12),
             DateTimeField(

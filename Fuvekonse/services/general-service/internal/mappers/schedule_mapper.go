@@ -3,59 +3,29 @@ package mappers
 import (
 	"general-service/internal/dto/schedule/responses"
 	"general-service/internal/models"
+	"sort"
+	"time"
 )
 
-func MapScheduleToResponse(s *models.Schedule) responses.ScheduleResponse {
-	venues := make([]responses.VenueResponse, 0, len(s.Venues))
-	for i := range s.Venues {
-		v := s.Venues[i]
-		locs := make([]responses.LocationResponse, 0, len(v.Locations))
-		for j := range v.Locations {
-			l := v.Locations[j]
-			events := make([]responses.EventResponse, 0, len(l.Events))
-			for k := range l.Events {
-				e := l.Events[k]
-				events = append(events, responses.EventResponse{
-					Id:          e.Id,
-					Title:       e.Title,
-					Description: e.Description,
-					StartAt:     e.StartAt,
-					EndAt:       e.EndAt,
-					CreatedAt:   e.CreatedAt,
-					ModifiedAt:  e.ModifiedAt,
-				})
-			}
-			locs = append(locs, responses.LocationResponse{
-				Id:            l.Id,
-				Name:          l.Name,
-				Description:   l.Description,
-				Order:         l.Order,
-				LocationRefId: l.LocationRefId,
-				Events:        events,
-				CreatedAt:     l.CreatedAt,
-				ModifiedAt:    l.ModifiedAt,
-			})
-		}
+type timelineSource struct {
+	item     models.ScheduleEvent
+	category string
+	location string
+}
 
-		venues = append(venues, responses.VenueResponse{
-			Id:          v.Id,
-			Name:        v.Name,
-			Description: v.Description,
-			Order:       v.Order,
-			Locations:   locs,
-			CreatedAt:   v.CreatedAt,
-			ModifiedAt:  v.ModifiedAt,
-		})
-	}
+func MapScheduleToResponse(s *models.Schedule) responses.ScheduleResponse {
+	sources := collectTimelineSources(s)
 
 	return responses.ScheduleResponse{
-		Id:         s.Id,
-		Name:       s.Name,
-		StartAt:    s.StartAt,
-		EndAt:      s.EndAt,
-		Venues:     venues,
-		CreatedAt:  s.CreatedAt,
-		ModifiedAt: s.ModifiedAt,
+		Id:                s.Id,
+		Name:              s.Name,
+		StartAt:           s.StartAt,
+		EndAt:             s.EndAt,
+		DayCount:          countScheduleDays(s.StartAt, s.EndAt),
+		TimelineItemCount: len(sources),
+		Days:              buildScheduleDays(s.StartAt, s.EndAt, sources),
+		CreatedAt:         s.CreatedAt,
+		ModifiedAt:        s.ModifiedAt,
 	}
 }
 
@@ -67,64 +37,103 @@ func MapSchedulesToResponse(items []models.Schedule) []responses.ScheduleRespons
 	return out
 }
 
-// MapEventToResponse converts a ScheduleEvent model to an EventResponse.
-func MapEventToResponse(e *models.ScheduleEvent) responses.EventResponse {
-	return responses.EventResponse{
+func MapTimelineItemToResponse(
+	e *models.ScheduleEvent,
+	category string,
+	location string,
+) responses.TimelineItemResponse {
+	return responses.TimelineItemResponse{
 		Id:          e.Id,
 		Title:       e.Title,
 		Description: e.Description,
 		StartAt:     e.StartAt,
 		EndAt:       e.EndAt,
+		Category:    category,
+		Location:    location,
 		CreatedAt:   e.CreatedAt,
 		ModifiedAt:  e.ModifiedAt,
 	}
 }
 
-// MapVenueToResponse converts a ScheduleVenue model to a VenueResponse (including events).
-func MapVenueToResponse(v *models.ScheduleVenue) responses.VenueResponse {
-	locs := make([]responses.LocationResponse, 0, len(v.Locations))
-	for i := range v.Locations {
-		loc := v.Locations[i]
-		events := make([]responses.EventResponse, 0, len(loc.Events))
-		for j := range loc.Events {
-			events = append(events, MapEventToResponse(&loc.Events[j]))
+func collectTimelineSources(s *models.Schedule) []timelineSource {
+	sources := make([]timelineSource, 0)
+	for i := range s.Venues {
+		v := s.Venues[i]
+		for j := range v.Locations {
+			l := v.Locations[j]
+			for k := range l.Events {
+				sources = append(sources, timelineSource{
+					item:     l.Events[k],
+					category: v.Name,
+					location: l.Name,
+				})
+			}
 		}
-		locs = append(locs, responses.LocationResponse{
-			Id:            loc.Id,
-			Name:          loc.Name,
-			Description:   loc.Description,
-			Order:         loc.Order,
-			LocationRefId: loc.LocationRefId,
-			Events:        events,
-			CreatedAt:     loc.CreatedAt,
-			ModifiedAt:    loc.ModifiedAt,
-		})
 	}
-	return responses.VenueResponse{
-		Id:          v.Id,
-		Name:        v.Name,
-		Description: v.Description,
-		Order:       v.Order,
-		Locations:   locs,
-		CreatedAt:   v.CreatedAt,
-		ModifiedAt:  v.ModifiedAt,
-	}
+	return sources
 }
 
-// MapLocationToResponse converts a ScheduleLocation model to a LocationResponse.
-func MapLocationToResponse(l *models.ScheduleLocation) responses.LocationResponse {
-	events := make([]responses.EventResponse, 0, len(l.Events))
-	for i := range l.Events {
-		events = append(events, MapEventToResponse(&l.Events[i]))
+func countScheduleDays(startAt, endAt *time.Time) int {
+	if startAt == nil || endAt == nil {
+		return 0
 	}
-	return responses.LocationResponse{
-		Id:            l.Id,
-		Name:          l.Name,
-		Description:   l.Description,
-		Order:         l.Order,
-		LocationRefId: l.LocationRefId,
-		Events:        events,
-		CreatedAt:     l.CreatedAt,
-		ModifiedAt:    l.ModifiedAt,
+	first := truncateToDate(*startAt)
+	last := truncateToDate(*endAt)
+	if last.Before(first) {
+		return 0
 	}
+	return int(last.Sub(first).Hours()/24) + 1
+}
+
+func buildScheduleDays(
+	startAt *time.Time,
+	endAt *time.Time,
+	sources []timelineSource,
+) []responses.ScheduleDayResponse {
+	if startAt == nil || endAt == nil {
+		return []responses.ScheduleDayResponse{}
+	}
+
+	first := truncateToDate(*startAt)
+	last := truncateToDate(*endAt)
+	if last.Before(first) {
+		return []responses.ScheduleDayResponse{}
+	}
+
+	byDate := make(map[string][]responses.TimelineItemResponse)
+	for cursor := first; !cursor.After(last); cursor = cursor.AddDate(0, 0, 1) {
+		byDate[cursor.Format("2006-01-02")] = []responses.TimelineItemResponse{}
+	}
+
+	for _, src := range sources {
+		dateKey := src.item.StartAt.Format("2006-01-02")
+		if _, ok := byDate[dateKey]; !ok {
+			continue
+		}
+		byDate[dateKey] = append(byDate[dateKey], MapTimelineItemToResponse(
+			&src.item,
+			src.category,
+			src.location,
+		))
+	}
+
+	days := make([]responses.ScheduleDayResponse, 0, len(byDate))
+	for cursor := first; !cursor.After(last); cursor = cursor.AddDate(0, 0, 1) {
+		dateKey := cursor.Format("2006-01-02")
+		items := byDate[dateKey]
+		sort.Slice(items, func(i, j int) bool {
+			return items[i].StartAt.Before(items[j].StartAt)
+		})
+		days = append(days, responses.ScheduleDayResponse{
+			Date:     dateKey,
+			Timeline: items,
+		})
+	}
+
+	return days
+}
+
+func truncateToDate(value time.Time) time.Time {
+	y, m, d := value.Date()
+	return time.Date(y, m, d, 0, 0, 0, 0, value.Location())
 }

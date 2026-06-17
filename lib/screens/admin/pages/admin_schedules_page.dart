@@ -85,9 +85,7 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
         backgroundColor: FuvekonColors.darkPrimary,
         foregroundColor: FuvekonColors.darkButtonText,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         child: const Icon(Icons.add_rounded, size: 30),
       ),
       body: SafeArea(
@@ -105,11 +103,11 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
                   ),
                   Expanded(
                     child: Text(
-                      'Lịch trình sự kiện',
+                      'Quản lý lịch trình',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: FuvekonColors.darkAppBarTitle,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: FuvekonColors.darkAppBarTitle,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ],
@@ -139,8 +137,8 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
                 _error!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
               const SizedBox(height: 16),
               FilledButton(onPressed: _load, child: const Text('Thử lại')),
@@ -160,7 +158,7 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
               const EmptyState(
                 icon: Icons.calendar_month_outlined,
                 title: 'Chưa có lịch trình',
-                subtitle: 'Tạo lịch trình sự kiện đầu tiên.',
+                subtitle: 'Tạo lịch trình theo ngày và khung giờ.',
               ),
               const SizedBox(height: 16),
               FilledButton.icon(
@@ -190,7 +188,8 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
           return _ScheduleCard(
             name: item.name,
             dateRange: _formatRange(item),
-            eventCount: item.eventCount,
+            dayCount: item.dayCount,
+            timelineItemCount: item.timelineItemCount,
             onTap: () => context.push(Routes.adminScheduleDetail(item.id)),
           );
         },
@@ -203,13 +202,15 @@ class _ScheduleCard extends StatelessWidget {
   const _ScheduleCard({
     required this.name,
     required this.dateRange,
-    required this.eventCount,
+    required this.dayCount,
+    required this.timelineItemCount,
     required this.onTap,
   });
 
   final String name;
   final String dateRange;
-  final int eventCount;
+  final int dayCount;
+  final int timelineItemCount;
   final VoidCallback onTap;
 
   @override
@@ -231,9 +232,9 @@ class _ScheduleCard extends StatelessWidget {
                     child: Text(
                       name,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: FuvekonColors.darkCardText,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: FuvekonColors.darkCardText,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                   Icon(
@@ -246,16 +247,24 @@ class _ScheduleCard extends StatelessWidget {
               Text(
                 dateRange,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: FuvekonColors.textSecondary,
-                    ),
+                  color: FuvekonColors.textSecondary,
+                ),
               ),
               const SizedBox(height: 10),
               Row(
                 children: [
-                  _MetaChip(
-                    icon: Icons.event_outlined,
-                    label: '$eventCount sự kiện',
-                  ),
+                  if (dayCount > 0)
+                    _MetaChip(
+                      icon: Icons.calendar_today_outlined,
+                      label: '$dayCount ngày',
+                    ),
+                  if (dayCount > 0 && timelineItemCount > 0)
+                    const SizedBox(width: 8),
+                  if (timelineItemCount > 0)
+                    _MetaChip(
+                      icon: Icons.timeline_outlined,
+                      label: '$timelineItemCount mục',
+                    ),
                 ],
               ),
             ],
@@ -288,8 +297,8 @@ class _MetaChip extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: FuvekonColors.textSecondary,
-                ),
+              color: FuvekonColors.textSecondary,
+            ),
           ),
         ],
       ),
@@ -298,11 +307,7 @@ class _MetaChip extends StatelessWidget {
 }
 
 class AdminScheduleFormSheet extends StatefulWidget {
-  const AdminScheduleFormSheet({
-    super.key,
-    this.initial,
-    this.onSubmit,
-  });
+  const AdminScheduleFormSheet({super.key, this.initial, this.onSubmit});
 
   final AdminScheduleItem? initial;
   final Future<void> Function(CreateScheduleInput input)? onSubmit;
@@ -325,7 +330,8 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
     _nameController = TextEditingController(text: initial?.name ?? '');
     final now = DateTime.now();
     _startAt = initial?.startAt ?? DateTime(now.year, now.month, now.day, 8);
-    _endAt = initial?.endAt ??
+    _endAt =
+        initial?.endAt ??
         DateTime(now.year, now.month, now.day, 22).add(const Duration(days: 1));
   }
 
@@ -363,7 +369,9 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
     if (!_formKey.currentState!.validate()) return;
     if (!_endAt.isAfter(_startAt)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Thời gian kết thúc phải sau thời gian bắt đầu.')),
+        const SnackBar(
+          content: Text('Thời gian kết thúc phải sau thời gian bắt đầu.'),
+        ),
       );
       return;
     }
@@ -426,9 +434,9 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
             Text(
               isEdit ? 'Chỉnh sửa lịch trình' : 'Tạo lịch trình mới',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: FuvekonColors.darkText,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: FuvekonColors.darkText,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: 16),
             TextFormField(
