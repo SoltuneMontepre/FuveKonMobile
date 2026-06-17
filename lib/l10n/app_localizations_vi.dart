@@ -355,6 +355,76 @@ class AppLocalizationsVi extends AppLocalizations {
   String get landingViewTickets => 'Xem vé';
 
   @override
+  String get exploreTicketsTitle => 'Khám phá các loại vé';
+
+  @override
+  String get exploreTicketsSubtitle =>
+      'Lựa chọn trải nghiệm phù hợp nhất với bạn tại triển lãm.';
+
+  @override
+  String get exploreTicketsFooterInfo =>
+      'Bạn có thể xem thông tin vé trước. Để mua vé, vui lòng đăng ký hoặc đăng nhập.';
+
+  @override
+  String get exploreTicketsRegisterCta => 'Đăng ký để mua vé';
+
+  @override
+  String get exploreTicketsBuyCta => 'Mua vé ngay';
+
+  @override
+  String get exploreTicketsLoginPrompt => 'Đã có tài khoản?';
+
+  @override
+  String get exploreTicketsLoginLink => 'Đăng nhập ngay';
+
+  @override
+  String get exploreTicketsPopularBadge => 'Phổ biến nhất';
+
+  @override
+  String get exploreTicketsSoldOut => 'Hết vé';
+
+  @override
+  String get exploreTicketsEmpty => 'Hiện chưa có hạng vé nào.';
+
+  @override
+  String get exploreTicketsRetry => 'Thử lại';
+
+  @override
+  String get ticketDetailBenefitsTitle => 'Quyền lợi đi kèm';
+
+  @override
+  String ticketDetailCompareTitle(String standardTier) {
+    return 'So sánh với $standardTier';
+  }
+
+  @override
+  String get ticketDetailTotal => 'Tổng cộng';
+
+  @override
+  String get ticketDetailCompareAccess => 'Quyền truy cập';
+
+  @override
+  String get ticketDetailCompareCheckIn => 'Check-in';
+
+  @override
+  String get ticketDetailComparePriority => 'Ưu tiên';
+
+  @override
+  String get ticketDetailCompareShared => 'Thông thường';
+
+  @override
+  String get ticketDetailCompareBadge => 'Badge';
+
+  @override
+  String get ticketDetailCompareCustom => 'Tùy chỉnh';
+
+  @override
+  String get ticketDetailCompareNormal => 'Tiêu chuẩn';
+
+  @override
+  String get ticketDetailCompareGifts => 'Quà tặng thêm';
+
+  @override
   String get landingExperienceTitle => 'Trải Nghiệm Hoàn Hảo';
 
   @override

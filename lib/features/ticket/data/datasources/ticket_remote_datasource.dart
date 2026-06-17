@@ -9,6 +9,8 @@ import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 abstract interface class TicketRemoteDataSource {
   Future<List<TicketTier>> getTiers();
 
+  Future<TicketTier> getTierById(String tierId);
+
   Future<UserTicket?> getMyTicket();
 
   Future<PurchaseTicketResult> purchaseTicket(String tierId);
@@ -32,6 +34,16 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
         .whereType<Map>()
         .map((e) => _mapTier(Map<String, dynamic>.from(e)))
         .toList();
+  }
+
+  @override
+  Future<TicketTier> getTierById(String tierId) async {
+    final response = await _ticketApi.getTierById(tierId);
+    final data = response.data;
+    if (data == null) {
+      throw const ServerException('Failed to load ticket tier.');
+    }
+    return _mapTier(data);
   }
 
   @override
@@ -89,6 +101,7 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
       priceUsd: _parseOptionalDecimal(json['price_usd']),
       isSoldOut: json['is_sold_out'] as bool? ?? false,
       isActive: json['is_active'] as bool? ?? false,
+      isVisible: json['is_visible'] as bool? ?? true,
     );
   }
 

@@ -752,6 +752,138 @@ abstract class AppLocalizations {
   /// **'Xem vé'**
   String get landingViewTickets;
 
+  /// No description provided for @exploreTicketsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khám phá các loại vé'**
+  String get exploreTicketsTitle;
+
+  /// No description provided for @exploreTicketsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lựa chọn trải nghiệm phù hợp nhất với bạn tại triển lãm.'**
+  String get exploreTicketsSubtitle;
+
+  /// No description provided for @exploreTicketsFooterInfo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có thể xem thông tin vé trước. Để mua vé, vui lòng đăng ký hoặc đăng nhập.'**
+  String get exploreTicketsFooterInfo;
+
+  /// No description provided for @exploreTicketsRegisterCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký để mua vé'**
+  String get exploreTicketsRegisterCta;
+
+  /// No description provided for @exploreTicketsBuyCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua vé ngay'**
+  String get exploreTicketsBuyCta;
+
+  /// No description provided for @exploreTicketsLoginPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có tài khoản?'**
+  String get exploreTicketsLoginPrompt;
+
+  /// No description provided for @exploreTicketsLoginLink.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập ngay'**
+  String get exploreTicketsLoginLink;
+
+  /// No description provided for @exploreTicketsPopularBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phổ biến nhất'**
+  String get exploreTicketsPopularBadge;
+
+  /// No description provided for @exploreTicketsSoldOut.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hết vé'**
+  String get exploreTicketsSoldOut;
+
+  /// No description provided for @exploreTicketsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiện chưa có hạng vé nào.'**
+  String get exploreTicketsEmpty;
+
+  /// No description provided for @exploreTicketsRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get exploreTicketsRetry;
+
+  /// No description provided for @ticketDetailBenefitsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền lợi đi kèm'**
+  String get ticketDetailBenefitsTitle;
+
+  /// No description provided for @ticketDetailCompareTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'So sánh với {standardTier}'**
+  String ticketDetailCompareTitle(String standardTier);
+
+  /// No description provided for @ticketDetailTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng cộng'**
+  String get ticketDetailTotal;
+
+  /// No description provided for @ticketDetailCompareAccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền truy cập'**
+  String get ticketDetailCompareAccess;
+
+  /// No description provided for @ticketDetailCompareCheckIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Check-in'**
+  String get ticketDetailCompareCheckIn;
+
+  /// No description provided for @ticketDetailComparePriority.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ưu tiên'**
+  String get ticketDetailComparePriority;
+
+  /// No description provided for @ticketDetailCompareShared.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông thường'**
+  String get ticketDetailCompareShared;
+
+  /// No description provided for @ticketDetailCompareBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Badge'**
+  String get ticketDetailCompareBadge;
+
+  /// No description provided for @ticketDetailCompareCustom.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tùy chỉnh'**
+  String get ticketDetailCompareCustom;
+
+  /// No description provided for @ticketDetailCompareNormal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiêu chuẩn'**
+  String get ticketDetailCompareNormal;
+
+  /// No description provided for @ticketDetailCompareGifts.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quà tặng thêm'**
+  String get ticketDetailCompareGifts;
+
   /// No description provided for @landingExperienceTitle.
   ///
   /// In vi, this message translates to:

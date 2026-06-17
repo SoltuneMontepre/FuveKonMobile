@@ -355,6 +355,76 @@ class AppLocalizationsEn extends AppLocalizations {
   String get landingViewTickets => 'View tickets';
 
   @override
+  String get exploreTicketsTitle => 'Explore ticket types';
+
+  @override
+  String get exploreTicketsSubtitle =>
+      'Choose the experience that suits you best at the exhibition.';
+
+  @override
+  String get exploreTicketsFooterInfo =>
+      'You can browse ticket details first. To purchase, please register or sign in.';
+
+  @override
+  String get exploreTicketsRegisterCta => 'Register to buy tickets';
+
+  @override
+  String get exploreTicketsBuyCta => 'Buy tickets now';
+
+  @override
+  String get exploreTicketsLoginPrompt => 'Already have an account?';
+
+  @override
+  String get exploreTicketsLoginLink => 'Sign in now';
+
+  @override
+  String get exploreTicketsPopularBadge => 'Most popular';
+
+  @override
+  String get exploreTicketsSoldOut => 'Sold out';
+
+  @override
+  String get exploreTicketsEmpty => 'No ticket tiers are available yet.';
+
+  @override
+  String get exploreTicketsRetry => 'Retry';
+
+  @override
+  String get ticketDetailBenefitsTitle => 'Included benefits';
+
+  @override
+  String ticketDetailCompareTitle(String standardTier) {
+    return 'Compare with $standardTier';
+  }
+
+  @override
+  String get ticketDetailTotal => 'Total';
+
+  @override
+  String get ticketDetailCompareAccess => 'Access';
+
+  @override
+  String get ticketDetailCompareCheckIn => 'Check-in';
+
+  @override
+  String get ticketDetailComparePriority => 'Priority';
+
+  @override
+  String get ticketDetailCompareShared => 'Shared';
+
+  @override
+  String get ticketDetailCompareBadge => 'Badge';
+
+  @override
+  String get ticketDetailCompareCustom => 'Custom';
+
+  @override
+  String get ticketDetailCompareNormal => 'Standard';
+
+  @override
+  String get ticketDetailCompareGifts => 'Extra gifts';
+
+  @override
   String get landingExperienceTitle => 'Perfect Experience';
 
   @override

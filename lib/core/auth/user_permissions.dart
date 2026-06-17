@@ -32,7 +32,7 @@ abstract final class UserPermissions {
       route: Routes.adminLostFound,
       requiredPermission: approveProfiles,
     ),
-    const AdminShellBranch(
+    AdminShellBranch(
       branchIndex: 5,
       route: Routes.adminSystem,
     ),

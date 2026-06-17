@@ -7,6 +7,8 @@ import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 abstract interface class TicketRepository {
   Future<Result<List<TicketTier>>> getTiers();
 
+  Future<Result<TicketTier>> getTierById(String tierId);
+
   Future<Result<UserTicket?>> getMyTicket();
 
   Future<Result<PurchaseTicketResult>> purchaseTicket(String tierId);

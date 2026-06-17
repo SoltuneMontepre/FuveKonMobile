@@ -1,15 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/pages/explore_tickets_page.dart';
 
-class TicketInfoPage extends StatelessWidget {
-  const TicketInfoPage({super.key});
+export 'package:fuvekonmobile/features/ticket/presentation/pages/explore_tickets_page.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'Tickets',
-      subtitle: 'Ticket tiers, pricing, and event access info.',
-      icon: Icons.confirmation_number_outlined,
-    );
-  }
-}
+/// Legacy alias — guest ticket browse screen at `/ticket`.
+typedef TicketInfoPage = ExploreTicketsPage;
