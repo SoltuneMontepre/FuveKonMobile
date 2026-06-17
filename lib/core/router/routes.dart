@@ -34,6 +34,7 @@ abstract final class Routes {
 
   // —— Tickets ——
   static const ticket = '/ticket';
+  static String ticketDetail(String id) => '/ticket/$id';
   static const ticketPurchase = '/ticket/purchase';
   static String ticketPurchaseStep(String id) => '/ticket/purchase/$id';
 

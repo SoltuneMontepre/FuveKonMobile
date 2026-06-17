@@ -25,6 +25,18 @@
   "loginSubmit": "Sign in",
   "loginOrDivider": "OR",
   "loginGoogle": "Sign in with Google",
+  "authGoogleNotConfigured":
+      "Google Sign-In is not configured. Add GOOGLE_CLIENT_ID to .env and restart the app.",
+  "authGoogleUnsupportedPlatform":
+      "Google Sign-In is not supported on Linux/Windows. Run the app on Android, iOS, Web (Chrome), or macOS.",
+  "authGoogleLoginFailed":
+      "Google sign-in failed. Please try again or use email and password.",
+  "authGoogleDeveloperError":
+      "Google OAuth is misconfigured on Android. In Google Cloud Console, create an Android OAuth client for package com.example.fuvekonmobile and add your debug keystore SHA-1 (Android Studio → Gradle → signingReport).",
+  "authGoogleIdTokenMissing":
+      "Google did not return an ID token. Check GOOGLE_CLIENT_ID (Web client) in .env and the Android OAuth client in Google Cloud.",
+  "authGoogleRegistrationDetailsRequired":
+      "Please complete registration with your profile details.",
   "loginNoAccount": "Don't have an account?",
   "loginRegisterLink": "Register",
 
@@ -162,6 +174,36 @@
   "landingHeroBody": "Experience a unique cultural space with smart ticket management and scheduling. Join now so you don't miss the most wonderful moments.",
   "landingRegister": "Register",
   "landingViewTickets": "View tickets",
+
+  "exploreTicketsTitle": "Explore ticket types",
+  "exploreTicketsSubtitle": "Choose the experience that suits you best at the exhibition.",
+  "exploreTicketsFooterInfo": "You can browse ticket details first. To purchase, please register or sign in.",
+  "exploreTicketsRegisterCta": "Register to buy tickets",
+  "exploreTicketsBuyCta": "Buy tickets now",
+  "exploreTicketsLoginPrompt": "Already have an account?",
+  "exploreTicketsLoginLink": "Sign in now",
+  "exploreTicketsPopularBadge": "Most popular",
+  "exploreTicketsSoldOut": "Sold out",
+  "exploreTicketsEmpty": "No ticket tiers are available yet.",
+  "exploreTicketsRetry": "Retry",
+  "ticketDetailBenefitsTitle": "Included benefits",
+  "ticketDetailCompareTitle": "Compare with {standardTier}",
+  "@ticketDetailCompareTitle": {
+    "placeholders": {
+      "standardTier": {
+        "type": "String"
+      }
+    }
+  },
+  "ticketDetailTotal": "Total",
+  "ticketDetailCompareAccess": "Access",
+  "ticketDetailCompareCheckIn": "Check-in",
+  "ticketDetailComparePriority": "Priority",
+  "ticketDetailCompareShared": "Shared",
+  "ticketDetailCompareBadge": "Badge",
+  "ticketDetailCompareCustom": "Custom",
+  "ticketDetailCompareNormal": "Standard",
+  "ticketDetailCompareGifts": "Extra gifts",
   "landingExperienceTitle": "Perfect Experience",
   "landingExperienceBody": "Manage your journey at the event with ease.",
 

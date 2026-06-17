@@ -30,6 +30,18 @@
   "loginSubmit": "Đăng nhập",
   "loginOrDivider": "HOẶC",
   "loginGoogle": "Đăng nhập với Google",
+  "authGoogleNotConfigured":
+      "Chưa cấu hình Google Sign-In. Thêm GOOGLE_CLIENT_ID vào file .env rồi khởi động lại app.",
+  "authGoogleUnsupportedPlatform":
+      "Google Sign-In chưa hỗ trợ trên Linux/Windows. Hãy chạy app trên Android, iOS, Web (Chrome) hoặc macOS.",
+  "authGoogleLoginFailed":
+      "Đăng nhập Google thất bại. Vui lòng thử lại hoặc dùng email/mật khẩu.",
+  "authGoogleDeveloperError":
+      "Lỗi cấu hình Google OAuth trên Android. Trong Google Cloud Console, tạo OAuth client Android với package com.example.fuvekonmobile và thêm SHA-1 của debug keystore (Android Studio → Gradle → signingReport).",
+  "authGoogleIdTokenMissing":
+      "Google không trả về ID token. Kiểm tra GOOGLE_CLIENT_ID (Web client) trong .env và OAuth client Android trên Google Cloud.",
+  "authGoogleRegistrationDetailsRequired":
+      "Vui lòng hoàn tất đăng ký với thông tin cá nhân.",
   "loginNoAccount": "Chưa có tài khoản?",
   "loginRegisterLink": "Đăng ký",
 
@@ -167,6 +179,36 @@
   "landingHeroBody": "Trải nghiệm không gian văn hóa độc bản với hệ thống quản lý vé và lịch trình thông minh. Tham gia ngay để không bỏ lỡ những khoảnh khắc tuyệt vời nhất.",
   "landingRegister": "Đăng ký",
   "landingViewTickets": "Xem vé",
+
+  "exploreTicketsTitle": "Khám phá các loại vé",
+  "exploreTicketsSubtitle": "Lựa chọn trải nghiệm phù hợp nhất với bạn tại triển lãm.",
+  "exploreTicketsFooterInfo": "Bạn có thể xem thông tin vé trước. Để mua vé, vui lòng đăng ký hoặc đăng nhập.",
+  "exploreTicketsRegisterCta": "Đăng ký để mua vé",
+  "exploreTicketsBuyCta": "Mua vé ngay",
+  "exploreTicketsLoginPrompt": "Đã có tài khoản?",
+  "exploreTicketsLoginLink": "Đăng nhập ngay",
+  "exploreTicketsPopularBadge": "Phổ biến nhất",
+  "exploreTicketsSoldOut": "Hết vé",
+  "exploreTicketsEmpty": "Hiện chưa có hạng vé nào.",
+  "exploreTicketsRetry": "Thử lại",
+  "ticketDetailBenefitsTitle": "Quyền lợi đi kèm",
+  "ticketDetailCompareTitle": "So sánh với {standardTier}",
+  "@ticketDetailCompareTitle": {
+    "placeholders": {
+      "standardTier": {
+        "type": "String"
+      }
+    }
+  },
+  "ticketDetailTotal": "Tổng cộng",
+  "ticketDetailCompareAccess": "Quyền truy cập",
+  "ticketDetailCompareCheckIn": "Check-in",
+  "ticketDetailComparePriority": "Ưu tiên",
+  "ticketDetailCompareShared": "Thông thường",
+  "ticketDetailCompareBadge": "Badge",
+  "ticketDetailCompareCustom": "Tùy chỉnh",
+  "ticketDetailCompareNormal": "Tiêu chuẩn",
+  "ticketDetailCompareGifts": "Quà tặng thêm",
   "landingExperienceTitle": "Trải Nghiệm Hoàn Hảo",
   "landingExperienceBody": "Quản lý hành trình của bạn tại sự kiện một cách dễ dàng.",
 

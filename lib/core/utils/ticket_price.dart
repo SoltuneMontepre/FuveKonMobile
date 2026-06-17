@@ -3,7 +3,7 @@ import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 import 'package:intl/intl.dart';
 
 String formatTicketPriceVnd(double price) {
-  return '${NumberFormat.decimalPattern('vi-VN').format(price)} VND';
+  return '${NumberFormat.decimalPattern('vi-VN').format(price)} VNĐ';
 }
 
 String formatTicketPriceUsd(double price) {

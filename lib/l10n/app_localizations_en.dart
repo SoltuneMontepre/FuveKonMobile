@@ -68,6 +68,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginGoogle => 'Sign in with Google';
 
   @override
+  String get authGoogleNotConfigured =>
+      'Google Sign-In is not configured. Add GOOGLE_CLIENT_ID to .env and restart the app.';
+
+  @override
+  String get authGoogleUnsupportedPlatform =>
+      'Google Sign-In is not supported on Linux/Windows. Run the app on Android, iOS, Web (Chrome), or macOS.';
+
+  @override
+  String get authGoogleLoginFailed =>
+      'Google sign-in failed. Please try again or use email and password.';
+
+  @override
+  String get authGoogleDeveloperError =>
+      'Google OAuth is misconfigured on Android. In Google Cloud Console, create an Android OAuth client for package com.example.fuvekonmobile and add your debug keystore SHA-1 (Android Studio → Gradle → signingReport).';
+
+  @override
+  String get authGoogleIdTokenMissing =>
+      'Google did not return an ID token. Check GOOGLE_CLIENT_ID (Web client) in .env and the Android OAuth client in Google Cloud.';
+
+  @override
+  String get authGoogleRegistrationDetailsRequired =>
+      'Please complete registration with your profile details.';
+
+  @override
   String get loginNoAccount => 'Don\'t have an account?';
 
   @override
@@ -449,6 +473,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get landingViewTickets => 'View tickets';
+
+  @override
+  String get exploreTicketsTitle => 'Explore ticket types';
+
+  @override
+  String get exploreTicketsSubtitle =>
+      'Choose the experience that suits you best at the exhibition.';
+
+  @override
+  String get exploreTicketsFooterInfo =>
+      'You can browse ticket details first. To purchase, please register or sign in.';
+
+  @override
+  String get exploreTicketsRegisterCta => 'Register to buy tickets';
+
+  @override
+  String get exploreTicketsBuyCta => 'Buy tickets now';
+
+  @override
+  String get exploreTicketsLoginPrompt => 'Already have an account?';
+
+  @override
+  String get exploreTicketsLoginLink => 'Sign in now';
+
+  @override
+  String get exploreTicketsPopularBadge => 'Most popular';
+
+  @override
+  String get exploreTicketsSoldOut => 'Sold out';
+
+  @override
+  String get exploreTicketsEmpty => 'No ticket tiers are available yet.';
+
+  @override
+  String get exploreTicketsRetry => 'Retry';
+
+  @override
+  String get ticketDetailBenefitsTitle => 'Included benefits';
+
+  @override
+  String ticketDetailCompareTitle(String standardTier) {
+    return 'Compare with $standardTier';
+  }
+
+  @override
+  String get ticketDetailTotal => 'Total';
+
+  @override
+  String get ticketDetailCompareAccess => 'Access';
+
+  @override
+  String get ticketDetailCompareCheckIn => 'Check-in';
+
+  @override
+  String get ticketDetailComparePriority => 'Priority';
+
+  @override
+  String get ticketDetailCompareShared => 'Shared';
+
+  @override
+  String get ticketDetailCompareBadge => 'Badge';
+
+  @override
+  String get ticketDetailCompareCustom => 'Custom';
+
+  @override
+  String get ticketDetailCompareNormal => 'Standard';
+
+  @override
+  String get ticketDetailCompareGifts => 'Extra gifts';
 
   @override
   String get landingExperienceTitle => 'Perfect Experience';

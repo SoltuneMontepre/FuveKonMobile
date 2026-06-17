@@ -19,7 +19,7 @@ class AuthenticatedHomePage extends StatelessWidget {
     final l10n = context.l10n;
 
     return ColoredBox(
-      color: FuvekonColors.premiumBackground,
+      color: FuvekonColors.darkBg,
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: _HeroSection(l10n: l10n)),
@@ -111,14 +111,14 @@ class _BentoGrid extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.confirmation_number_outlined,
-                      color: FuvekonColors.premiumOnMintCard,
+                      color: FuvekonColors.onSageGreen,
                       size: 28,
                     ),
                     const SizedBox(height: 12),
                     Text(
                       l10n.authHomeMyTicketTitle,
                       style: const TextStyle(
-                        color: FuvekonColors.premiumOnMintCard,
+                        color: FuvekonColors.onSageGreen,
                         fontWeight: FontWeight.w800,
                         fontSize: 16,
                       ),
@@ -145,14 +145,14 @@ class _BentoGrid extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.calendar_today_outlined,
-                      color: FuvekonColors.premiumOnMintCard,
+                      color: FuvekonColors.onSageGreen,
                       size: 28,
                     ),
                     const SizedBox(height: 12),
                     Text(
                       l10n.authHomeTodayScheduleTitle,
                       style: const TextStyle(
-                        color: FuvekonColors.premiumOnMintCard,
+                        color: FuvekonColors.onSageGreen,
                         fontWeight: FontWeight.w800,
                         fontSize: 16,
                       ),
@@ -183,12 +183,12 @@ class _BentoGrid extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: FuvekonColors.premiumPrimary.withValues(alpha: 0.25),
+                  color: FuvekonColors.sageGreen.withValues(alpha: 0.25),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
                   Icons.local_activity_outlined,
-                  color: FuvekonColors.premiumOnMintCard,
+                  color: FuvekonColors.onSageGreen,
                 ),
               ),
               const SizedBox(width: 14),
@@ -199,7 +199,7 @@ class _BentoGrid extends StatelessWidget {
                     Text(
                       l10n.authHomeBuyTicketBanner,
                       style: const TextStyle(
-                        color: FuvekonColors.premiumOnMintCard,
+                        color: FuvekonColors.onSageGreen,
                         fontWeight: FontWeight.w800,
                         fontSize: 15,
                       ),
@@ -267,17 +267,17 @@ class _ShortcutRow extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 decoration: BoxDecoration(
-                  color: FuvekonColors.premiumSurfaceContainer,
+                  color: FuvekonColors.surfaceContainer,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: FuvekonColors.premiumOutline.withValues(alpha: 0.2),
+                    color: FuvekonColors.outlineToken.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Column(
                   children: [
                     Icon(
                       item.icon,
-                      color: FuvekonColors.premiumPrimary,
+                      color: FuvekonColors.sageGreen,
                       size: 22,
                     ),
                     const SizedBox(height: 6),
@@ -285,7 +285,7 @@ class _ShortcutRow extends StatelessWidget {
                       item.label,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        color: FuvekonColors.premiumOnSurfaceVariant,
+                        color: FuvekonColors.onSurfaceVariant,
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
                       ),
@@ -320,7 +320,7 @@ class _HeroSection extends StatelessWidget {
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
             errorBuilder: (context, error, stackTrace) => ColoredBox(
-              color: FuvekonColors.premiumSurfaceContainer,
+              color: FuvekonColors.surfaceContainer,
             ),
           ),
           DecoratedBox(
@@ -330,8 +330,8 @@ class _HeroSection extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.black.withValues(alpha: 0.15),
-                  FuvekonColors.premiumBackground.withValues(alpha: 0.55),
-                  FuvekonColors.premiumBackground,
+                  FuvekonColors.darkBg.withValues(alpha: 0.55),
+                  FuvekonColors.darkBg,
                 ],
                 stops: const [0.35, 0.72, 1],
               ),
@@ -387,7 +387,7 @@ class _StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.42),
+        color: FuvekonColors.deepNavy.withValues(alpha: 0.42),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
       ),
@@ -413,7 +413,7 @@ class _SearchField extends StatelessWidget {
     return Container(
       height: 48,
       decoration: BoxDecoration(
-        color: FuvekonColors.premiumNav.withValues(alpha: 0.85),
+        color: FuvekonColors.deepNavy.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
@@ -474,7 +474,7 @@ class _FeaturedEventCard extends StatelessWidget {
                     AuthenticatedHomePage.featuredEventAsset,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => ColoredBox(
-                      color: FuvekonColors.premiumSurfaceContainer,
+                      color: FuvekonColors.surfaceContainer,
                       child: Icon(
                         Icons.image_outlined,
                         color: Colors.white.withValues(alpha: 0.3),
@@ -492,7 +492,7 @@ class _FeaturedEventCard extends StatelessWidget {
                       vertical: 5,
                     ),
                     decoration: BoxDecoration(
-                      color: FuvekonColors.premiumPrimary,
+                      color: FuvekonColors.sageGreen,
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Row(
@@ -501,13 +501,13 @@ class _FeaturedEventCard extends StatelessWidget {
                         const Icon(
                           Icons.star,
                           size: 12,
-                          color: FuvekonColors.premiumOnPrimary,
+                          color: FuvekonColors.onSageGreen,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           l10n.authHomeHotBadge,
                           style: const TextStyle(
-                            color: FuvekonColors.premiumOnPrimary,
+                            color: FuvekonColors.onSageGreen,
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                           ),
@@ -527,7 +527,7 @@ class _FeaturedEventCard extends StatelessWidget {
                 Text(
                   l10n.authHomeFeaturedEventTitle,
                   style: const TextStyle(
-                    color: FuvekonColors.premiumOnMintCard,
+                    color: FuvekonColors.onSageGreen,
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
                   ),

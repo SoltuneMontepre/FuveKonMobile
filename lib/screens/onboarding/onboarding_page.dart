@@ -151,10 +151,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
 }
 
 abstract final class _OnboardingColors {
-  static const screenBg = Color(0xFF121212);
-  static const accentGreen = Color(0xFF4A7C59);
-  static const cardPanel = Color(0xFFD1EAD8);
-  static const textDark = Color(0xFF0A2E1F);
+  static const screenBg = FuvekonColors.darkBg;
+  static const accentGreen = FuvekonColors.sageGreenContainer;
+  static const cardPanel = FuvekonColors.mintCard;
+  static const textDark = FuvekonColors.darkButtonText;
   static const skipText = Color(0xFF888888);
   static const inactiveDot = Color(0xFF3D3D3D);
 

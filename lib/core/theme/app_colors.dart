@@ -1,82 +1,114 @@
 import 'package:flutter/material.dart';
 
-/// Brand palette: legacy web tokens + FUVEKON Premium Mobile ([color.md]).
+/// FUVEKON Premium Mobile System palette from [color.md].
 abstract final class FuvekonColors {
-  // ── Premium mobile (color.md / Figma) ──
-  static const premiumCanvas = Color(0xFF1E1E1E);
-  static const premiumBackground = Color(0xFF131313);
-  static const premiumNav = Color(0xFF07131A);
-  static const premiumPrimary = Color(0xFFA9CFB8);
-  static const premiumOnPrimary = Color(0xFF133726);
-  static const premiumSecondary = Color(0xFFDFBEC9);
-  static const premiumTertiary = Color(0xFFE9C349);
-  static const premiumOnSurface = Color(0xFFE5E2E1);
-  static const premiumOnSurfaceVariant = Color(0xFFC1C8C2);
-  static const premiumOutline = Color(0xFF8B928C);
-  static const premiumMintCard = Color(0xFFE4EEE3);
-  static const premiumOnMintCard = Color(0xFF1E3D32);
+  // ── Design system tokens (color.md YAML) ──
+  static const surface = Color(0xFF131313);
+  static const surfaceBright = Color(0xFF393939);
+  static const surfaceContainerLowest = Color(0xFF0E0E0E);
+  static const surfaceContainerLow = Color(0xFF1B1B1C);
+  static const surfaceContainer = Color(0xFF202020);
+  static const surfaceContainerHigh = Color(0xFF2A2A2A);
+  static const surfaceContainerHighest = Color(0xFF353535);
+  static const deepNavy = Color(0xFF07131A);
+  static const charcoal = Color(0xFF1E1E1E);
+  static const mintCard = Color(0xFFE4EEE3);
+  static const onSurface = Color(0xFFE5E2E1);
+  static const onSurfaceVariant = Color(0xFFC1C8C2);
+  static const outlineToken = Color(0xFF8B928C);
+  static const outlineVariantToken = Color(0xFF414843);
+  static const sageGreen = Color(0xFFA9CFB8);
+  static const onSageGreen = Color(0xFF133726);
+  static const sageGreenContainer = Color(0xFF567A66);
+  static const onSageGreenContainer = Color(0xFFE5FFED);
+  static const dustyRose = Color(0xFFDFBEC9);
+  static const onDustyRose = Color(0xFF402A33);
+  static const dustyRoseContainer = Color(0xFF584049);
+  static const onDustyRoseContainer = Color(0xFFCDADB8);
+  static const lightGold = Color(0xFFE9C349);
+  static const onLightGold = Color(0xFF3C2F00);
+  static const goldContainer = Color(0xFFCCA730);
+  static const primaryFixed = Color(0xFFC4ECD3);
+  static const secondaryFixed = Color(0xFFFCDAE5);
+  static const onError = Color(0xFF690005);
+
+  // ── Semantic aliases used by customer UI widgets ──
+  static const premiumCanvas = charcoal;
+  static const premiumBackground = charcoal;
+  static const premiumNav = deepNavy;
+  static const premiumPrimary = sageGreen;
+  static const premiumOnPrimary = onSageGreen;
+  static const premiumSecondary = dustyRose;
+  static const premiumTertiary = lightGold;
+  static const premiumOnSurface = onSurface;
+  static const premiumOnSurfaceVariant = onSurfaceVariant;
+  static const premiumOutline = outlineToken;
+  static const premiumMintCard = mintCard;
+  static const premiumOnMintCard = onSageGreen;
   static const premiumOnMintCardMuted = Color(0xFF48715B);
-  static const premiumDecorativeGold = Color(0xFFE9C349);
-  static const premiumSurfaceContainer = Color(0xFF202020);
-  static const premiumSurfaceContainerHigh = Color(0xFF2A2A2A);
+  static const premiumDecorativeGold = lightGold;
+  static const premiumSurfaceContainer = surfaceContainer;
+  static const premiumSurfaceContainerHigh = surfaceContainerHigh;
 
-  // ── Light surfaces (legacy) ──
-  static const main = Color(0xFFE9F5E7);
-  static const paper = Color(0xFFE9F0E9);
-  static const bg = Color(0xFFE2EEE2);
-  static const bgSecondary = Color(0xFFD2DDD2);
+  // ── Light surfaces ──
+  static const main = mintCard;
+  static const paper = mintCard;
+  static const bg = Color(0xFFEAF3E9);
+  static const bgSecondary = Color(0xFFD6E2D7);
 
-  // ── Brand greens (legacy) ──
-  static const primary = Color(0xFF7CBC97);
-  static const secondary = Color(0xFF548780);
-  static const button = Color(0xFF9CCCA9);
-  static const buttonHover = Color(0xFF8BBF9A);
-  static const buttonActive = Color(0xFF7AB38D);
-  static const outline = Color(0xFF2D9B63);
+  // ── Brand ──
+  static const primary = sageGreen;
+  static const secondary = sageGreenContainer;
+  static const button = sageGreen;
+  static const buttonHover = primaryFixed;
+  static const buttonActive = Color(0xFF8EBDA3);
+  static const outline = outlineToken;
   static const available = Color(0xFF10B981);
 
-  // ── Text (legacy) ──
-  static const textPrimary = Color(0xFF154C5B);
-  static const textSecondary = Color(0xFF48715B);
-  static const textOnCard = Color(0xFF1E3D32);
-  static const onPrimary = Color(0xFF154C5B);
+  // ── Text ──
+  static const textPrimary = onSageGreen;
+  static const textSecondary = Color(0xFF426653);
+  static const textOnCard = onSageGreen;
+  static const onPrimary = onSageGreen;
 
   // ── Inputs & upload ──
   static const inputFill = Color(0xFFFFFFFF);
-  static const inputBorder = Color(0xFFD8E0D8);
-  static const uploadZoneBg = Color(0xFFF3F8F4);
-  static const uploadZoneBorder = Color(0xFFB8D4C0);
+  static const inputBorder = outlineVariantToken;
+  static const uploadZoneBg = Color(0xFFF1F7F0);
+  static const uploadZoneBorder = sageGreen;
 
   // ── Info / notes ──
-  static const infoAccent = Color(0xFFE8A0A8);
-  static const infoTitle = Color(0xFFF0C4C8);
+  static const infoAccent = dustyRose;
+  static const infoTitle = dustyRose;
 
   // ── Ticket tier accents ──
-  static const tier1 = Color(0xFF2D3C3F);
-  static const tier2 = Color(0xFF979591);
-  static const tier3 = Color(0xFFB99B59);
-  static const tier4 = Color(0xFF673095);
+  static const tier1 = sageGreenContainer;
+  static const tier2 = dustyRoseContainer;
+  static const tier3 = goldContainer;
+  static const tier4 = surfaceContainerHighest;
 
-  // ── Dark mode (customer shell uses premium tokens below) ──
-  static const darkBg = premiumCanvas;
-  static const darkSurface = Color(0xFF1A1F1C);
-  static const darkSurfaceElevated = premiumSurfaceContainerHigh;
-  static const darkBorder = Color(0xFF2E3A34);
-  static const darkText = premiumOnSurface;
-  static const darkTextSecondary = premiumOnSurfaceVariant;
-  static const darkAppBarTitle = premiumPrimary;
-  static const darkPrimary = premiumPrimary;
-  static const darkButton = premiumPrimary;
-  static const darkButtonText = premiumOnPrimary;
-  static const darkCard = premiumMintCard;
-  static const darkCardText = premiumOnMintCard;
-  static const darkNotesSurface = Color(0xFF1E2421);
+  // ── Dark mode (elevation layering per color.md) ──
+  static const darkBg = charcoal;
+  static const darkDeep = deepNavy;
+  static const darkSurface = surfaceContainerLow;
+  static const darkSurfaceElevated = surfaceContainerHigh;
+  static const darkSurfaceHighest = surfaceContainerHighest;
+  static const darkBorder = outlineVariantToken;
+  static const darkText = onSurface;
+  static const darkTextSecondary = onSurfaceVariant;
+  static const darkAppBarTitle = sageGreen;
+  static const darkPrimary = sageGreen;
+  static const darkButton = sageGreen;
+  static const darkButtonText = onSageGreen;
+  static const darkCard = mintCard;
+  static const darkCardText = onSageGreen;
+  static const darkNotesSurface = surfaceContainer;
 
-  // ── Status badge colors ──
-  static const statusSuccessBg = Color(0xFFC4ECD3);
-  static const statusPendingBg = Color(0xFF567A66);
-  static const statusDeniedBg = Color(0xFFFCDAE5);
-  static const statusDeniedText = Color(0xFF690005);
+  // ── Status badges (color.md Components → Badges) ──
+  static const statusSuccessBg = primaryFixed;
+  static const statusPendingBg = sageGreenContainer;
+  static const statusDeniedBg = secondaryFixed;
+  static const statusDeniedText = onError;
 }
 
 /// Layout tokens shared across light and dark themes.

@@ -584,7 +584,7 @@ class _GrantTicketDialogState extends State<_GrantTicketDialog> {
     return AlertDialog(
       title: const Text('Cấp vé'),
       content: DropdownButtonFormField<String>(
-        value: _selectedTierId,
+        initialValue: _selectedTierId,
         decoration: const InputDecoration(labelText: 'Hạng vé'),
         items: [
           for (final tier in widget.tiers)
@@ -733,7 +733,7 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<TicketStatus>(
-              value: _editableStatuses.contains(_status)
+              initialValue: _editableStatuses.contains(_status)
                   ? _status
                   : TicketStatus.approved,
               decoration: const InputDecoration(labelText: 'Trạng thái'),
@@ -751,7 +751,7 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
             const SizedBox(height: 12),
             if (widget.tiers.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: _tierId,
+                initialValue: _tierId,
                 decoration: const InputDecoration(labelText: 'Hạng vé'),
                 items: [
                   for (final tier in widget.tiers)
@@ -769,7 +769,7 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String?>(
-              value: _tshirtSize,
+              initialValue: _tshirtSize,
               decoration: const InputDecoration(labelText: 'Size áo'),
               items: [
                 const DropdownMenuItem(value: null, child: Text('Chưa chọn')),

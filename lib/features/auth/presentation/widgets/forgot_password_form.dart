@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
 
 abstract final class _ForgotFormColors {
-  static const textDark = Color(0xFF0A2E1F);
+  static const textDark = FuvekonColors.darkButtonText;
   static const inputFill = Color(0xFFF8FCFA);
-  static const inputHint = Color(0xFF8FA898);
-  static const accentGreen = Color(0xFF4A7C59);
-  static const iconCircle = Color(0xFF121212);
+  static const inputHint = FuvekonColors.textSecondary;
+  static const accentGreen = FuvekonColors.sageGreenContainer;
+  static const iconCircle = FuvekonColors.surface;
 }
 
 class ForgotPasswordForm extends StatefulWidget {

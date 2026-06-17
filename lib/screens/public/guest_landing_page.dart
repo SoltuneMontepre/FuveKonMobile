@@ -140,12 +140,12 @@ class GuestLandingPage extends StatelessWidget {
 }
 
 abstract final class _LandingColors {
-  static const heroTitle = Color(0xFFD1EAD8);
-  static const mintButton = Color(0xFFD1EAD8);
-  static const mintButtonText = Color(0xFF0A2E1F);
-  static const pinkButton = Color(0xFFE8C4D0);
-  static const pinkButtonText = Color(0xFF3D1F2A);
-  static const badgeDot = Color(0xFFE8C547);
+  static const heroTitle = FuvekonColors.darkPrimary;
+  static const mintButton = FuvekonColors.darkButton;
+  static const mintButtonText = FuvekonColors.darkButtonText;
+  static const pinkButton = FuvekonColors.dustyRose;
+  static const pinkButtonText = FuvekonColors.onDustyRose;
+  static const badgeDot = FuvekonColors.lightGold;
 }
 
 class _LandingBackground extends StatelessWidget {
@@ -173,7 +173,7 @@ class _EventBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.35),
+        color: FuvekonColors.darkDeep.withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
       ),

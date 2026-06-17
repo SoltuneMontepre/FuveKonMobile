@@ -2,15 +2,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class _RegisterFormColors {
-  static const textDark = Color(0xFF0A2E1F);
+  static const textDark = FuvekonColors.darkButtonText;
   static const inputFill = Color(0xFFF8FCFA);
-  static const inputHint = Color(0xFF8FA898);
-  static const iconMuted = Color(0xFF6B8F78);
-  static const accentGreen = Color(0xFF2D6A4F);
-  static const linkGreen = Color(0xFF1B4332);
+  static const inputHint = FuvekonColors.textSecondary;
+  static const iconMuted = FuvekonColors.sageGreenContainer;
+  static const accentGreen = FuvekonColors.sageGreenContainer;
+  static const linkGreen = FuvekonColors.darkButtonText;
 }
 
 class RegisterForm extends StatefulWidget {

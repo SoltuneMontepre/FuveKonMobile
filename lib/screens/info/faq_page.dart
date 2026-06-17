@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/info/faq_content.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 
@@ -193,9 +194,9 @@ class _FaqPageState extends State<FaqPage> {
 }
 
 abstract final class _FaqColors {
-  static const titleAccent = Color(0xFFD1EAD8);
-  static const categoryBg = Color(0xFFD1EAD8);
-  static const textDark = Color(0xFF0A2E1F);
+  static const titleAccent = FuvekonColors.darkPrimary;
+  static const categoryBg = FuvekonColors.mintCard;
+  static const textDark = FuvekonColors.darkButtonText;
 }
 
 class _FaqCategory {
@@ -267,7 +268,7 @@ class _FaqCategoryTile extends StatelessWidget {
             margin: const EdgeInsets.only(top: 4),
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
             decoration: BoxDecoration(
-              color: const Color(0xFF1A1F1C),
+              color: FuvekonColors.surfaceContainerLow,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: _FaqColors.categoryBg.withValues(alpha: 0.25),

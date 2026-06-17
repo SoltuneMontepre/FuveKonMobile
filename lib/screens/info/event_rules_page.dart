@@ -221,11 +221,11 @@ class _RulesBody extends StatelessWidget {
 }
 
 abstract final class _RulesColors {
-  static const title = Color(0xFFD1EAD8);
-  static const cardBg = Color(0xFFF0F2F0);
-  static const textDark = Color(0xFF0A2E1F);
-  static const textMuted = Color(0xFF48715B);
-  static const accentGreen = Color(0xFF4A7C59);
+  static const title = FuvekonColors.darkPrimary;
+  static const cardBg = FuvekonColors.mintCard;
+  static const textDark = FuvekonColors.darkButtonText;
+  static const textMuted = FuvekonColors.textSecondary;
+  static const accentGreen = FuvekonColors.sageGreenContainer;
 }
 
 class _RuleCard extends StatelessWidget {

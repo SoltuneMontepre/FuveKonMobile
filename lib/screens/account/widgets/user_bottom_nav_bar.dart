@@ -37,13 +37,13 @@ class UserBottomNavBar extends StatelessWidget {
 
     return ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: FuvekonColors.premiumNav.withValues(alpha: 0.92),
+            color: FuvekonColors.deepNavy.withValues(alpha: 0.92),
             border: Border(
               top: BorderSide(
-                color: FuvekonColors.premiumPrimary.withValues(alpha: 0.12),
+                color: FuvekonColors.sageGreen.withValues(alpha: 0.12),
               ),
             ),
           ),
@@ -70,8 +70,8 @@ class UserBottomNavBar extends StatelessWidget {
                             Icon(
                               items[index].icon,
                               color: selected
-                                  ? FuvekonColors.premiumPrimary
-                                  : FuvekonColors.premiumOnSurfaceVariant,
+                                  ? FuvekonColors.sageGreen
+                                  : FuvekonColors.onSurfaceVariant,
                               size: 24,
                             ),
                             const SizedBox(height: 4),
@@ -79,8 +79,8 @@ class UserBottomNavBar extends StatelessWidget {
                               items[index].label,
                               style: TextStyle(
                                 color: selected
-                                    ? FuvekonColors.premiumPrimary
-                                    : FuvekonColors.premiumOnSurfaceVariant,
+                                    ? FuvekonColors.sageGreen
+                                    : FuvekonColors.onSurfaceVariant,
                                 fontWeight: selected
                                     ? FontWeight.w600
                                     : FontWeight.w500,
@@ -93,7 +93,7 @@ class UserBottomNavBar extends StatelessWidget {
                               width: selected ? 5 : 0,
                               height: selected ? 5 : 0,
                               decoration: const BoxDecoration(
-                                color: FuvekonColors.premiumPrimary,
+                                color: FuvekonColors.sageGreen,
                                 shape: BoxShape.circle,
                               ),
                             ),
