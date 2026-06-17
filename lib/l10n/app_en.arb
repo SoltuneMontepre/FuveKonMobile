@@ -92,6 +92,15 @@
   "navFaq": "FAQ",
   "navRules": "Rules",
   "navLogin": "Sign in",
+  "navHome": "Home",
+
+  "landingBadge": "TOP EVENT",
+  "landingHeroTitle": "Anime Event",
+  "landingHeroBody": "Experience a unique cultural space with smart ticket management and scheduling. Join now so you don't miss the most wonderful moments.",
+  "landingRegister": "Register",
+  "landingViewTickets": "View tickets",
+  "landingExperienceTitle": "Perfect Experience",
+  "landingExperienceBody": "Manage your journey at the event with ease.",
 
   "rulesTitle": "Event rules",
   "rulesIntro": "Please read the following rules carefully to ensure a safe, professional, and memorable convention for everyone.",

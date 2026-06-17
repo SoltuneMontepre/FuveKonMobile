@@ -263,6 +263,32 @@ class AppLocalizationsVi extends AppLocalizations {
   String get navLogin => 'Đăng nhập';
 
   @override
+  String get navHome => 'Trang chủ';
+
+  @override
+  String get landingBadge => 'SỰ KIỆN HÀNG ĐẦU';
+
+  @override
+  String get landingHeroTitle => 'Sự kiện Anime';
+
+  @override
+  String get landingHeroBody =>
+      'Trải nghiệm không gian văn hóa độc bản với hệ thống quản lý vé và lịch trình thông minh. Tham gia ngay để không bỏ lỡ những khoảnh khắc tuyệt vời nhất.';
+
+  @override
+  String get landingRegister => 'Đăng ký';
+
+  @override
+  String get landingViewTickets => 'Xem vé';
+
+  @override
+  String get landingExperienceTitle => 'Trải Nghiệm Hoàn Hảo';
+
+  @override
+  String get landingExperienceBody =>
+      'Quản lý hành trình của bạn tại sự kiện một cách dễ dàng.';
+
+  @override
   String get rulesTitle => 'Nội quy sự kiện';
 
   @override

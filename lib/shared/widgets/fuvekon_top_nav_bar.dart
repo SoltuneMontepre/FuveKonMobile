@@ -6,6 +6,155 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/theme_mode_notifier.dart';
 import 'package:go_router/go_router.dart';
 
+class FuvekonGuestDrawer extends StatelessWidget {
+  const FuvekonGuestDrawer({super.key});
+
+  static void open(BuildContext context) {
+    Scaffold.of(context).openDrawer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final themeModeNotifier = sl<ThemeModeNotifier>();
+    final location = GoRouterState.of(context).matchedLocation;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final navItems = [
+      (icon: Icons.home_outlined, label: l10n.navHome, route: Routes.home),
+      (
+        icon: Icons.account_balance_outlined,
+        label: l10n.navIntroduction,
+        route: Routes.introduction,
+      ),
+      (icon: Icons.help_outline, label: l10n.navFaq, route: Routes.faq),
+      (icon: Icons.description_outlined, label: l10n.navRules, route: Routes.tos),
+      (icon: Icons.login_outlined, label: l10n.navLogin, route: Routes.login),
+    ];
+
+    return Drawer(
+      backgroundColor: isDark ? FuvekonColors.darkSurface : FuvekonColors.paper,
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
+              child: Text(
+                'FUVEKON',
+                style: TextStyle(
+                  color: isDark
+                      ? const Color(0xFFD1EAD8)
+                      : FuvekonColors.textPrimary,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 2,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            const Divider(height: 1),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                children: [
+                  for (final item in navItems)
+                    _DrawerNavTile(
+                      icon: item.icon,
+                      label: item.label,
+                      selected: _isSelected(item.route, location),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        if (location != item.route) {
+                          context.go(item.route);
+                        }
+                      },
+                    ),
+                  const Divider(height: 24, indent: 16, endIndent: 16),
+                  _DrawerNavTile(
+                    icon: Icons.translate,
+                    label: l10n.languageTitle,
+                    selected: location == Routes.language,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      context.go(Routes.language);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      themeModeNotifier.isDark
+                          ? Icons.light_mode_outlined
+                          : Icons.dark_mode_outlined,
+                      color: isDark ? Colors.white : FuvekonColors.textPrimary,
+                    ),
+                    title: Text(
+                      themeModeNotifier.isDark
+                          ? l10n.themeSwitchToLight
+                          : l10n.themeSwitchToDark,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : FuvekonColors.textPrimary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onTap: themeModeNotifier.toggle,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static bool _isSelected(String route, String location) {
+    if (route == Routes.login) {
+      return FuvekonTopNavBar.isAuthRoute(location);
+    }
+    return location == route || location.startsWith('$route/');
+  }
+}
+
+class _DrawerNavTile extends StatelessWidget {
+  const _DrawerNavTile({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final selectedColor = const Color(0xFF4A7C59);
+
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: selected
+            ? selectedColor
+            : (isDark ? Colors.white70 : FuvekonColors.textSecondary),
+      ),
+      title: Text(
+        label,
+        style: TextStyle(
+          color: selected
+              ? selectedColor
+              : (isDark ? Colors.white : FuvekonColors.textPrimary),
+          fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+        ),
+      ),
+      selected: selected,
+      onTap: onTap,
+    );
+  }
+}
+
+/// Minimal top bar: hamburger menu + brand title.
 class FuvekonTopNavBar extends StatelessWidget {
   const FuvekonTopNavBar({super.key});
 
@@ -23,19 +172,7 @@ class FuvekonTopNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final location = GoRouterState.of(context).matchedLocation;
-    final themeModeNotifier = sl<ThemeModeNotifier>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    final items = [
-      (label: l10n.navIntroduction, route: Routes.introduction),
-      (label: l10n.navFaq, route: Routes.faq),
-      (label: l10n.navRules, route: Routes.tos),
-      (label: l10n.navLogin, route: Routes.login),
-    ];
-
-    final background = Theme.of(context).scaffoldBackgroundColor;
     final brandColor =
         isDark ? const Color(0xFFD1EAD8) : FuvekonColors.textPrimary;
     final iconColor = isDark ? Colors.white : FuvekonColors.textPrimary;
@@ -45,110 +182,33 @@ class FuvekonTopNavBar extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: background,
+        color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(bottom: BorderSide(color: borderColor)),
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 4, 10),
-        child: Column(
+        padding: const EdgeInsets.fromLTRB(4, 8, 12, 10),
+        child: Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'FUVEKON',
-                    style: TextStyle(
-                      color: brandColor,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 2,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    themeModeNotifier.isDark
-                        ? Icons.light_mode_outlined
-                        : Icons.dark_mode_outlined,
-                    color: iconColor,
-                  ),
-                  tooltip: themeModeNotifier.isDark
-                      ? l10n.themeSwitchToLight
-                      : l10n.themeSwitchToDark,
-                  onPressed: themeModeNotifier.toggle,
-                  visualDensity: VisualDensity.compact,
-                ),
-                IconButton(
-                  icon: Icon(Icons.translate, color: iconColor),
-                  tooltip: l10n.languageTitle,
-                  onPressed: () => context.go(Routes.language),
-                  visualDensity: VisualDensity.compact,
-                ),
-              ],
+            IconButton(
+              icon: Icon(Icons.menu, color: iconColor),
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              onPressed: () => FuvekonGuestDrawer.open(context),
+              visualDensity: VisualDensity.compact,
             ),
-            const SizedBox(height: 6),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  for (var i = 0; i < items.length; i++) ...[
-                    if (i > 0) const SizedBox(width: 8),
-                    _NavChip(
-                      label: items[i].label,
-                      selected: isSelected(items[i].route, location),
-                      isDark: isDark,
-                      onTap: () {
-                        if (location == items[i].route) return;
-                        context.go(items[i].route);
-                      },
-                    ),
-                  ],
-                ],
+            Expanded(
+              child: Text(
+                'FUVEKON',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: brandColor,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 2,
+                  fontSize: 15,
+                ),
               ),
             ),
+            const SizedBox(width: 48),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _NavChip extends StatelessWidget {
-  const _NavChip({
-    required this.label,
-    required this.selected,
-    required this.isDark,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final bool isDark;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final unselectedBg =
-        isDark ? const Color(0xFF1E1E1E) : FuvekonColors.bgSecondary;
-    final unselectedText =
-        isDark ? const Color(0xFF8FA898) : FuvekonColors.textSecondary;
-
-    return Material(
-      color: selected ? const Color(0xFF4A7C59) : unselectedBg,
-      borderRadius: BorderRadius.circular(999),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(999),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: selected ? Colors.white : unselectedText,
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-              fontSize: 13,
-            ),
-          ),
         ),
       ),
     );
@@ -170,11 +230,49 @@ class FuvekonNavScaffold extends StatelessWidget {
     return Scaffold(
       backgroundColor:
           backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      drawer: const FuvekonGuestDrawer(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SafeArea(bottom: false, child: FuvekonTopNavBar()),
           Expanded(child: body),
+        ],
+      ),
+    );
+  }
+}
+
+/// Transparent header for landing page over background imagery.
+class FuvekonLandingHeader extends StatelessWidget {
+  const FuvekonLandingHeader({super.key});
+
+  static const brandColor = Color(0xFFD1EAD8);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 4, 12, 8),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.menu, color: brandColor),
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            onPressed: () => FuvekonGuestDrawer.open(context),
+            visualDensity: VisualDensity.compact,
+          ),
+          const Expanded(
+            child: Text(
+              'FUVEKON',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: brandColor,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 2,
+                fontSize: 15,
+              ),
+            ),
+          ),
+          const SizedBox(width: 48),
         ],
       ),
     );

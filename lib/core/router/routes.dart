@@ -66,6 +66,7 @@ abstract final class Routes {
   static const about = '/about';
   static const faq = '/faq';
   static const tos = '/tos';
+  static String get tosOnboarding => '$tos?onboarding=1';
   static const schedule = '/schedule';
   static const lostFound = '/lost-found';
   static const recap = '/recap';

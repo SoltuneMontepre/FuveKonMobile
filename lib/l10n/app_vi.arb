@@ -97,6 +97,15 @@
   "navFaq": "FAQ",
   "navRules": "Nội quy",
   "navLogin": "Đăng nhập",
+  "navHome": "Trang chủ",
+
+  "landingBadge": "SỰ KIỆN HÀNG ĐẦU",
+  "landingHeroTitle": "Sự kiện Anime",
+  "landingHeroBody": "Trải nghiệm không gian văn hóa độc bản với hệ thống quản lý vé và lịch trình thông minh. Tham gia ngay để không bỏ lỡ những khoảnh khắc tuyệt vời nhất.",
+  "landingRegister": "Đăng ký",
+  "landingViewTickets": "Xem vé",
+  "landingExperienceTitle": "Trải Nghiệm Hoàn Hảo",
+  "landingExperienceBody": "Quản lý hành trình của bạn tại sự kiện một cách dễ dàng.",
 
   "rulesTitle": "Nội quy sự kiện",
   "rulesIntro": "Vui lòng đọc kỹ các quy định dưới đây để đảm bảo một kỳ triển lãm an toàn, chuyên nghiệp và đáng nhớ cho tất cả mọi người.",

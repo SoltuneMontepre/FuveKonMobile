@@ -263,6 +263,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navLogin => 'Sign in';
 
   @override
+  String get navHome => 'Home';
+
+  @override
+  String get landingBadge => 'TOP EVENT';
+
+  @override
+  String get landingHeroTitle => 'Anime Event';
+
+  @override
+  String get landingHeroBody =>
+      'Experience a unique cultural space with smart ticket management and scheduling. Join now so you don\'t miss the most wonderful moments.';
+
+  @override
+  String get landingRegister => 'Register';
+
+  @override
+  String get landingViewTickets => 'View tickets';
+
+  @override
+  String get landingExperienceTitle => 'Perfect Experience';
+
+  @override
+  String get landingExperienceBody =>
+      'Manage your journey at the event with ease.';
+
+  @override
   String get rulesTitle => 'Event rules';
 
   @override

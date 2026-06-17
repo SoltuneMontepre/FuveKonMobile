@@ -584,6 +584,54 @@ abstract class AppLocalizations {
   /// **'Đăng nhập'**
   String get navLogin;
 
+  /// No description provided for @navHome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trang chủ'**
+  String get navHome;
+
+  /// No description provided for @landingBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'SỰ KIỆN HÀNG ĐẦU'**
+  String get landingBadge;
+
+  /// No description provided for @landingHeroTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện Anime'**
+  String get landingHeroTitle;
+
+  /// No description provided for @landingHeroBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trải nghiệm không gian văn hóa độc bản với hệ thống quản lý vé và lịch trình thông minh. Tham gia ngay để không bỏ lỡ những khoảnh khắc tuyệt vời nhất.'**
+  String get landingHeroBody;
+
+  /// No description provided for @landingRegister.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký'**
+  String get landingRegister;
+
+  /// No description provided for @landingViewTickets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem vé'**
+  String get landingViewTickets;
+
+  /// No description provided for @landingExperienceTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trải Nghiệm Hoàn Hảo'**
+  String get landingExperienceTitle;
+
+  /// No description provided for @landingExperienceBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý hành trình của bạn tại sự kiện một cách dễ dàng.'**
+  String get landingExperienceBody;
+
   /// No description provided for @rulesTitle.
   ///
   /// In vi, this message translates to:
