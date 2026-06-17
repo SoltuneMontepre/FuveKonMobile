@@ -68,6 +68,30 @@ class AppLocalizationsVi extends AppLocalizations {
   String get loginGoogle => 'Đăng nhập với Google';
 
   @override
+  String get authGoogleNotConfigured =>
+      'Chưa cấu hình Google Sign-In. Thêm GOOGLE_CLIENT_ID vào file .env rồi khởi động lại app.';
+
+  @override
+  String get authGoogleUnsupportedPlatform =>
+      'Google Sign-In chưa hỗ trợ trên Linux/Windows. Hãy chạy app trên Android, iOS, Web (Chrome) hoặc macOS.';
+
+  @override
+  String get authGoogleLoginFailed =>
+      'Đăng nhập Google thất bại. Vui lòng thử lại hoặc dùng email/mật khẩu.';
+
+  @override
+  String get authGoogleDeveloperError =>
+      'Lỗi cấu hình Google OAuth trên Android. Trong Google Cloud Console, tạo OAuth client Android với package com.example.fuvekonmobile và thêm SHA-1 của debug keystore (Android Studio → Gradle → signingReport).';
+
+  @override
+  String get authGoogleIdTokenMissing =>
+      'Google không trả về ID token. Kiểm tra GOOGLE_CLIENT_ID (Web client) trong .env và OAuth client Android trên Google Cloud.';
+
+  @override
+  String get authGoogleRegistrationDetailsRequired =>
+      'Vui lòng hoàn tất đăng ký với thông tin cá nhân.';
+
+  @override
   String get loginNoAccount => 'Chưa có tài khoản?';
 
   @override

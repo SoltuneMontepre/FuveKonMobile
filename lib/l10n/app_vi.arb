@@ -30,6 +30,18 @@
   "loginSubmit": "Đăng nhập",
   "loginOrDivider": "HOẶC",
   "loginGoogle": "Đăng nhập với Google",
+  "authGoogleNotConfigured":
+      "Chưa cấu hình Google Sign-In. Thêm GOOGLE_CLIENT_ID vào file .env rồi khởi động lại app.",
+  "authGoogleUnsupportedPlatform":
+      "Google Sign-In chưa hỗ trợ trên Linux/Windows. Hãy chạy app trên Android, iOS, Web (Chrome) hoặc macOS.",
+  "authGoogleLoginFailed":
+      "Đăng nhập Google thất bại. Vui lòng thử lại hoặc dùng email/mật khẩu.",
+  "authGoogleDeveloperError":
+      "Lỗi cấu hình Google OAuth trên Android. Trong Google Cloud Console, tạo OAuth client Android với package com.example.fuvekonmobile và thêm SHA-1 của debug keystore (Android Studio → Gradle → signingReport).",
+  "authGoogleIdTokenMissing":
+      "Google không trả về ID token. Kiểm tra GOOGLE_CLIENT_ID (Web client) trong .env và OAuth client Android trên Google Cloud.",
+  "authGoogleRegistrationDetailsRequired":
+      "Vui lòng hoàn tất đăng ký với thông tin cá nhân.",
   "loginNoAccount": "Chưa có tài khoản?",
   "loginRegisterLink": "Đăng ký",
 

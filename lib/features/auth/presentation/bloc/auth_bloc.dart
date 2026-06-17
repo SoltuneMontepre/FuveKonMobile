@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
 import 'package:fuvekonmobile/core/utils/auth_messages.dart';
 import 'package:fuvekonmobile/features/auth/domain/entities/google_register_input.dart';
@@ -74,12 +77,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthGoogleSignInRequested event,
     Emitter<AuthState> emit,
   ) async {
+    if (!AppConfig.hasGoogleSignIn) {
+      emit(const AuthState.failure('googleNotConfigured'));
+      return;
+    }
+
     if (!_googleSignInService.isAvailable) {
-      emit(
-        AuthState.failure(
-          authErrorMessage('googleNotConfigured'),
-        ),
-      );
+      emit(const AuthState.failure('googleUnsupportedPlatform'));
       return;
     }
 
@@ -100,15 +104,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           if (failure.message == 'googleRegistrationDetailsRequired') {
             emit(AuthState.googleRegistrationRequired(idToken));
           } else {
-            emit(AuthState.failure(authErrorMessage(failure.message)));
+            emit(AuthState.failure(failure.message));
           }
       }
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        debugPrint('Google sign-in PlatformException: ${e.code} ${e.message}');
+      }
+      final key = GoogleSignInService.errorKeyFromPlatformException(e);
+      if (key == null) {
+        emit(const AuthState.unauthenticated());
+        return;
+      }
+      emit(AuthState.failure(key));
+    } on MissingPluginException {
+      emit(const AuthState.failure('googleUnsupportedPlatform'));
     } catch (_) {
-      emit(
-        AuthState.failure(
-          authErrorMessage('googleLoginFailed'),
-        ),
-      );
+      emit(const AuthState.failure('googleLoginFailed'));
     }
   }
 

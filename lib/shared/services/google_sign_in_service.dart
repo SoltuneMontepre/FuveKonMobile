@@ -1,25 +1,48 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// Native / web Google Sign-In; returns an ID token for `POST /auth/google`.
 ///
-/// [GoogleSignIn] is created lazily so the app can start on web when
-/// [AppConfig.hasGoogleSignIn] is false (no `GOOGLE_CLIENT_ID` in `.env`).
+/// Supported: Android, iOS, macOS, Web — **not** Linux or Windows desktop.
 class GoogleSignInService {
   GoogleSignIn? _instance;
 
-  bool get isAvailable => AppConfig.hasGoogleSignIn;
+  static bool get isPlatformSupported {
+    if (kIsWeb) return true;
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return true;
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+      case TargetPlatform.fuchsia:
+        return false;
+    }
+  }
+
+  bool get isAvailable => AppConfig.hasGoogleSignIn && isPlatformSupported;
 
   GoogleSignIn get _googleSignIn {
-    if (!isAvailable) {
+    if (!AppConfig.hasGoogleSignIn) {
       throw StateError(
         'Google Sign-In is not configured. Set GOOGLE_CLIENT_ID in .env.',
       );
     }
+    if (!isPlatformSupported) {
+      throw UnsupportedError('Google Sign-In is not supported on this platform.');
+    }
+
     return _instance ??= GoogleSignIn(
       scopes: const ['email', 'profile'],
-      // Web requires [clientId]; mobile uses [serverClientId] for ID tokens.
-      clientId: AppConfig.googleClientId,
+      // Web + Apple need [clientId]; Android uses [serverClientId] for ID tokens.
+      clientId: kIsWeb ||
+              defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.macOS
+          ? AppConfig.googleClientId
+          : null,
       serverClientId: AppConfig.googleClientId,
     );
   }
@@ -28,7 +51,6 @@ class GoogleSignInService {
   Future<String?> signInAndGetIdToken() async {
     if (!isAvailable) return null;
 
-    // Avoid stale account picking the wrong profile on repeat sign-in.
     await _googleSignIn.signOut();
 
     final account = await _googleSignIn.signIn();
@@ -37,8 +59,28 @@ class GoogleSignInService {
     final auth = await account.authentication;
     final idToken = auth.idToken;
     if (idToken == null || idToken.isEmpty) {
-      throw StateError('Google Sign-In did not return an ID token.');
+      throw PlatformException(
+        code: 'id_token_missing',
+        message:
+            'Google did not return an ID token. Check GOOGLE_CLIENT_ID (Web client) '
+            'and Android OAuth setup (SHA-1 + package com.example.fuvekonmobile).',
+      );
     }
     return idToken;
+  }
+
+  /// Maps [PlatformException] from Google Sign-In to app error keys.
+  static String? errorKeyFromPlatformException(PlatformException e) {
+    if (e.code == 'sign_in_canceled' || e.code == '12501') return null;
+
+    final message = e.message ?? '';
+    if (e.code == 'id_token_missing') return 'googleIdTokenMissing';
+    if (e.code == 'sign_in_failed' &&
+        (message.contains('10') ||
+            message.contains('DEVELOPER_ERROR') ||
+            message.contains('ApiException: 10'))) {
+      return 'googleDeveloperError';
+    }
+    return 'googleLoginFailed';
   }
 }

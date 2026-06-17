@@ -68,6 +68,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginGoogle => 'Sign in with Google';
 
   @override
+  String get authGoogleNotConfigured =>
+      'Google Sign-In is not configured. Add GOOGLE_CLIENT_ID to .env and restart the app.';
+
+  @override
+  String get authGoogleUnsupportedPlatform =>
+      'Google Sign-In is not supported on Linux/Windows. Run the app on Android, iOS, Web (Chrome), or macOS.';
+
+  @override
+  String get authGoogleLoginFailed =>
+      'Google sign-in failed. Please try again or use email and password.';
+
+  @override
+  String get authGoogleDeveloperError =>
+      'Google OAuth is misconfigured on Android. In Google Cloud Console, create an Android OAuth client for package com.example.fuvekonmobile and add your debug keystore SHA-1 (Android Studio → Gradle → signingReport).';
+
+  @override
+  String get authGoogleIdTokenMissing =>
+      'Google did not return an ID token. Check GOOGLE_CLIENT_ID (Web client) in .env and the Android OAuth client in Google Cloud.';
+
+  @override
+  String get authGoogleRegistrationDetailsRequired =>
+      'Please complete registration with your profile details.';
+
+  @override
   String get loginNoAccount => 'Don\'t have an account?';
 
   @override

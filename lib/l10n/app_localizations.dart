@@ -212,6 +212,42 @@ abstract class AppLocalizations {
   /// **'Đăng nhập với Google'**
   String get loginGoogle;
 
+  /// No description provided for @authGoogleNotConfigured.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa cấu hình Google Sign-In. Thêm GOOGLE_CLIENT_ID vào file .env rồi khởi động lại app.'**
+  String get authGoogleNotConfigured;
+
+  /// No description provided for @authGoogleUnsupportedPlatform.
+  ///
+  /// In vi, this message translates to:
+  /// **'Google Sign-In chưa hỗ trợ trên Linux/Windows. Hãy chạy app trên Android, iOS, Web (Chrome) hoặc macOS.'**
+  String get authGoogleUnsupportedPlatform;
+
+  /// No description provided for @authGoogleLoginFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập Google thất bại. Vui lòng thử lại hoặc dùng email/mật khẩu.'**
+  String get authGoogleLoginFailed;
+
+  /// No description provided for @authGoogleDeveloperError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lỗi cấu hình Google OAuth trên Android. Trong Google Cloud Console, tạo OAuth client Android với package com.example.fuvekonmobile và thêm SHA-1 của debug keystore (Android Studio → Gradle → signingReport).'**
+  String get authGoogleDeveloperError;
+
+  /// No description provided for @authGoogleIdTokenMissing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Google không trả về ID token. Kiểm tra GOOGLE_CLIENT_ID (Web client) trong .env và OAuth client Android trên Google Cloud.'**
+  String get authGoogleIdTokenMissing;
+
+  /// No description provided for @authGoogleRegistrationDetailsRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng hoàn tất đăng ký với thông tin cá nhân.'**
+  String get authGoogleRegistrationDetailsRequired;
+
   /// No description provided for @loginNoAccount.
   ///
   /// In vi, this message translates to:

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/google_sign_in_button.dart';
+import 'package:fuvekonmobile/shared/services/google_sign_in_service.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class _LoginFormColors {
@@ -87,6 +89,8 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final googleConfigured = AppConfig.hasGoogleSignIn;
+    final googleSupported = GoogleSignInService.isPlatformSupported;
 
     return Form(
       key: _formKey,
@@ -245,6 +249,18 @@ class _LoginFormState extends State<LoginForm> {
               label: l10n.loginGoogle,
               lightStyle: true,
             ),
+            if (googleConfigured && !googleSupported) ...[
+              const SizedBox(height: 10),
+              Text(
+                l10n.authGoogleUnsupportedPlatform,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: _LoginFormColors.textDark.withValues(alpha: 0.65),
+                  fontSize: 12,
+                  height: 1.4,
+                ),
+              ),
+            ],
           ],
         ],
       ),

@@ -25,6 +25,18 @@
   "loginSubmit": "Sign in",
   "loginOrDivider": "OR",
   "loginGoogle": "Sign in with Google",
+  "authGoogleNotConfigured":
+      "Google Sign-In is not configured. Add GOOGLE_CLIENT_ID to .env and restart the app.",
+  "authGoogleUnsupportedPlatform":
+      "Google Sign-In is not supported on Linux/Windows. Run the app on Android, iOS, Web (Chrome), or macOS.",
+  "authGoogleLoginFailed":
+      "Google sign-in failed. Please try again or use email and password.",
+  "authGoogleDeveloperError":
+      "Google OAuth is misconfigured on Android. In Google Cloud Console, create an Android OAuth client for package com.example.fuvekonmobile and add your debug keystore SHA-1 (Android Studio → Gradle → signingReport).",
+  "authGoogleIdTokenMissing":
+      "Google did not return an ID token. Check GOOGLE_CLIENT_ID (Web client) in .env and the Android OAuth client in Google Cloud.",
+  "authGoogleRegistrationDetailsRequired":
+      "Please complete registration with your profile details.",
   "loginNoAccount": "Don't have an account?",
   "loginRegisterLink": "Register",
 

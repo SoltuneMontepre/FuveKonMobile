@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
-import 'package:fuvekonmobile/core/utils/auth_messages.dart';
+import 'package:fuvekonmobile/core/utils/auth_error_l10n.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_state.dart';
@@ -25,10 +26,7 @@ class LoginPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                authErrorMessage(
-                  state.message,
-                  fallback: state.message,
-                ),
+                resolveAuthErrorMessage(context.l10n, state.message),
               ),
             ),
           );
