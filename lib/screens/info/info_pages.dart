@@ -5,6 +5,9 @@ import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';
 export 'event_rules_page.dart';
 export 'faq_page.dart';
 export 'lost_found_page.dart';
+export 'lost_found_detail_page.dart';
+export 'lost_found_report_page.dart';
+export 'lost_found_request_page.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});

@@ -1,5 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_status_badge.dart';
+
+FuveStatusBadgeVariant statusBadgeVariant(TicketStatus status) {
+  return switch (status) {
+    TicketStatus.approved || TicketStatus.adminGranted =>
+      FuveStatusBadgeVariant.success,
+    TicketStatus.pending || TicketStatus.selfConfirmed =>
+      FuveStatusBadgeVariant.pending,
+    TicketStatus.denied => FuveStatusBadgeVariant.denied,
+  };
+}
+
+String statusBadgeLabel(TicketStatus status) {
+  return switch (status) {
+    TicketStatus.pending => 'Chờ thanh toán',
+    TicketStatus.selfConfirmed => 'Đang xác minh',
+    TicketStatus.approved => 'Đã xác nhận',
+    TicketStatus.denied => 'Từ chối',
+    TicketStatus.adminGranted => 'Cấp bởi admin',
+  };
+}
 
 class TicketStatusLabel extends StatelessWidget {
   const TicketStatusLabel({super.key, required this.status});
@@ -8,48 +29,9 @@ class TicketStatusLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final (label, color, bg) = switch (status) {
-      TicketStatus.pending => (
-          'Pending payment',
-          Colors.amber.shade800,
-          Colors.amber.shade100,
-        ),
-      TicketStatus.selfConfirmed => (
-          'Verifying',
-          Colors.blue.shade800,
-          Colors.blue.shade100,
-        ),
-      TicketStatus.approved => (
-          'Confirmed',
-          Colors.green.shade800,
-          Colors.green.shade100,
-        ),
-      TicketStatus.denied => (
-          'Denied',
-          Colors.red.shade800,
-          Colors.red.shade100,
-        ),
-      TicketStatus.adminGranted => (
-          'Admin granted',
-          Colors.purple.shade800,
-          Colors.purple.shade100,
-        ),
-    };
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        label,
-        style: theme.textTheme.labelMedium?.copyWith(
-          color: color,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+    return FuveStatusBadge(
+      label: statusBadgeLabel(status),
+      variant: statusBadgeVariant(status),
     );
   }
 }

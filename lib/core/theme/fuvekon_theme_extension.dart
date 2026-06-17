@@ -41,16 +41,16 @@ class FuvekonThemeExtension extends ThemeExtension<FuvekonThemeExtension> {
   );
 
   static const dark = FuvekonThemeExtension(
-    contentCard: FuvekonColors.darkCard,
-    contentOnCard: FuvekonColors.darkCardText,
-    contentOnCardMuted: FuvekonColors.textSecondary,
-    appBarTitle: FuvekonColors.darkAppBarTitle,
-    uploadZoneBackground: FuvekonColors.uploadZoneBg,
-    uploadZoneBorder: FuvekonColors.uploadZoneBorder,
+    contentCard: FuvekonColors.premiumMintCard,
+    contentOnCard: FuvekonColors.premiumOnMintCard,
+    contentOnCardMuted: FuvekonColors.premiumOnMintCardMuted,
+    appBarTitle: FuvekonColors.premiumPrimary,
+    uploadZoneBackground: FuvekonColors.premiumSurfaceContainer,
+    uploadZoneBorder: FuvekonColors.premiumOutline,
     infoAccent: FuvekonColors.infoAccent,
     infoTitle: FuvekonColors.infoTitle,
-    notesSurface: FuvekonColors.darkNotesSurface,
-    link: FuvekonColors.darkPrimary,
+    notesSurface: FuvekonColors.premiumSurfaceContainer,
+    link: FuvekonColors.premiumPrimary,
   );
 
   @override

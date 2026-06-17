@@ -6,6 +6,7 @@ import 'package:fuvekonmobile/screens/info/lost_found_models.dart';
 import 'package:fuvekonmobile/screens/info/lost_found_service.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_section_header.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,7 +27,6 @@ class _LostFoundPageState extends State<LostFoundPage> {
   bool _loadingMore = false;
   String? _error;
   String _search = '';
-  String? _claimInProgress;
 
   @override
   void initState() {
@@ -91,170 +91,12 @@ class _LostFoundPageState extends State<LostFoundPage> {
     _load(refresh: true);
   }
 
-  Future<void> _claimItem(LostFoundPublicItem item) async {
-    setState(() => _claimInProgress = item.id);
-    try {
-      await _service.claim(item.id);
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Đã gửi yêu cầu nhận vật phẩm. Nhân viên sẽ xác minh và liên hệ bạn.',
-          ),
-        ),
-      );
-      await _load(refresh: true);
-    } catch (e) {
-      if (!mounted) return;
-      final message = e.toString().replaceFirst('ServerException: ', '');
-      if (message.contains('ticket')) {
-        _showTicketRequiredDialog();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _claimInProgress = null);
-    }
+  void _openItemDetail(LostFoundPublicItem item) {
+    context.push(Routes.lostFoundDetail(item.id));
   }
 
-  void _showTicketRequiredDialog() {
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Cần vé hợp lệ'),
-        content: const Text(
-          'Bạn cần đăng nhập và có vé đã được duyệt để xem và nhận đồ thất lạc.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Đóng'),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.pop(context);
-              context.go(Routes.login);
-            },
-            child: const Text('Đăng nhập'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showItemDetail(LostFoundPublicItem item) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: FuvekonColors.darkSurfaceElevated,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: FuvekonColors.darkBorder,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                item.title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: FuvekonColors.darkText,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '# ${item.itemCode}',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
-              ),
-              const SizedBox(height: 16),
-              if (item.imageUrl.isNotEmpty)
-                S3Image(
-                  imageUrl: item.imageUrl,
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              if (item.description.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                Text(
-                  item.description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: FuvekonColors.darkText,
-                      ),
-                ),
-              ],
-              if (item.location.isNotEmpty) ...[
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.place_outlined,
-                      size: 18,
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: Text(
-                        item.location,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: FuvekonColors.darkTextSecondary,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-              const SizedBox(height: 20),
-              if (item.userHasPendingClaim)
-                FilledButton(
-                  onPressed: null,
-                  child: const Text('Đã gửi yêu cầu nhận'),
-                )
-              else if (item.canClaim)
-                FilledButton(
-                  onPressed: _claimInProgress == item.id
-                      ? null
-                      : () {
-                          Navigator.pop(context);
-                          _claimItem(item);
-                        },
-                  child: _claimInProgress == item.id
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Text('Đây là của tôi'),
-                )
-              else
-                OutlinedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Đóng'),
-                ),
-            ],
-          ),
-        );
-      },
-    );
+  void _openReportPage() {
+    context.push(Routes.lostFoundReport);
   }
 
   @override
@@ -272,12 +114,10 @@ class _LostFoundPageState extends State<LostFoundPage> {
               FuvekonSpacing.page,
               8,
             ),
-            child: Text(
-              'Vật phẩm nhặt được',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: FuvekonColors.darkAppBarTitle,
-                fontWeight: FontWeight.w700,
-              ),
+            child: FuveSectionHeader(
+              title: 'Vật phẩm nhặt được',
+              actionLabel: 'Báo mất',
+              onActionTap: _openReportPage,
             ),
           ),
           Padding(
@@ -374,7 +214,10 @@ class _LostFoundPageState extends State<LostFoundPage> {
           final item = _items[index];
           return _LostFoundPublicTile(
             item: item,
-            onTap: () => _showItemDetail(item),
+            onTap: () => _openItemDetail(item),
+            onTrackTap: item.userHasClaimed
+                ? () => context.push(Routes.lostFoundRequest(item.id))
+                : null,
           );
         },
       ),
@@ -383,10 +226,15 @@ class _LostFoundPageState extends State<LostFoundPage> {
 }
 
 class _LostFoundPublicTile extends StatelessWidget {
-  const _LostFoundPublicTile({required this.item, required this.onTap});
+  const _LostFoundPublicTile({
+    required this.item,
+    required this.onTap,
+    this.onTrackTap,
+  });
 
   final LostFoundPublicItem item;
   final VoidCallback onTap;
+  final VoidCallback? onTrackTap;
 
   @override
   Widget build(BuildContext context) {
@@ -432,10 +280,19 @@ class _LostFoundPublicTile extends StatelessWidget {
             color: FuvekonColors.darkTextSecondary,
           ),
         ),
-        trailing: const Icon(
-          Icons.chevron_right_rounded,
-          color: FuvekonColors.darkTextSecondary,
-        ),
+        trailing: onTrackTap != null
+            ? IconButton(
+                tooltip: 'Theo dõi',
+                onPressed: onTrackTap,
+                icon: const Icon(
+                  Icons.timeline_outlined,
+                  color: FuvekonColors.darkPrimary,
+                ),
+              )
+            : const Icon(
+                Icons.chevron_right_rounded,
+                color: FuvekonColors.darkTextSecondary,
+              ),
       ),
     );
   }

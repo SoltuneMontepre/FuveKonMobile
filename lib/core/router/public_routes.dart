@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/screens/contribute/contribute_pages.dart';
+import 'package:fuvekonmobile/screens/contribute/conbook_info_page.dart';
 import 'package:fuvekonmobile/screens/info/info_pages.dart';
 import 'package:fuvekonmobile/screens/public/public_pages.dart';
 import 'package:fuvekonmobile/screens/ticket/ticket_pages.dart';
@@ -51,7 +52,14 @@ abstract final class PublicRoutes {
         ),
         GoRoute(
           path: Routes.artbook,
-          builder: (context, state) => const ArtbookSubmissionPage(),
+          builder: (context, state) => const ConbookInfoPage(),
+          routes: [
+            GoRoute(
+              path: 'submit',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) => const ArtbookSubmissionPage(),
+            ),
+          ],
         ),
         GoRoute(
           path: Routes.dealer,
@@ -82,6 +90,29 @@ abstract final class PublicRoutes {
         GoRoute(
           path: Routes.lostFound,
           builder: (context, state) => const LostFoundPage(),
+          routes: [
+            GoRoute(
+              path: 'report',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) => const LostFoundReportPage(),
+            ),
+            GoRoute(
+              path: 'requests/:id',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) {
+                final id = state.pathParameters['id']!;
+                return LostFoundRequestPage(requestId: id);
+              },
+            ),
+            GoRoute(
+              path: ':id',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) {
+                final id = state.pathParameters['id']!;
+                return LostFoundDetailPage(itemId: id);
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: Routes.recap,

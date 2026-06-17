@@ -101,7 +101,7 @@ class AuthApi extends BaseApi {
   }
 
   Future<ApiResponse<void>> changePassword(Map<String, dynamic> payload) {
-    return post<void>(ApiConstants.resetPassword, data: payload);
+    return post<void>(ApiConstants.changePassword, data: payload);
   }
 
   Future<ApiResponse<void>> resetPasswordConfirm({

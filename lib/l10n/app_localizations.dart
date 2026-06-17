@@ -602,6 +602,180 @@ abstract class AppLocalizations {
   /// **'Vé của tôi'**
   String get navMyTickets;
 
+  /// No description provided for @scheduleMyItinerary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lịch trình cá nhân'**
+  String get scheduleMyItinerary;
+
+  /// No description provided for @scheduleViewMap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bản đồ'**
+  String get scheduleViewMap;
+
+  /// No description provided for @scheduleActivityDetail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết hoạt động'**
+  String get scheduleActivityDetail;
+
+  /// No description provided for @scheduleEventDetail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết sự kiện'**
+  String get scheduleEventDetail;
+
+  /// No description provided for @scheduleVenueDetail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết địa điểm'**
+  String get scheduleVenueDetail;
+
+  /// No description provided for @scheduleDayFilter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn ngày'**
+  String get scheduleDayFilter;
+
+  /// No description provided for @scheduleActivities.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoạt động'**
+  String get scheduleActivities;
+
+  /// No description provided for @scheduleNoActivities.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có hoạt động trong ngày này'**
+  String get scheduleNoActivities;
+
+  /// No description provided for @scheduleBookmark.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm vào lịch cá nhân'**
+  String get scheduleBookmark;
+
+  /// No description provided for @scheduleBookmarked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu vào lịch'**
+  String get scheduleBookmarked;
+
+  /// No description provided for @scheduleAddedToItinerary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thêm vào lịch trình cá nhân'**
+  String get scheduleAddedToItinerary;
+
+  /// No description provided for @scheduleConflictTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trùng lịch'**
+  String get scheduleConflictTitle;
+
+  /// No description provided for @scheduleConflictMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoạt động này trùng khung giờ với \"{title}\" trong lịch cá nhân. Bạn có muốn thay thế không?'**
+  String scheduleConflictMessage(String title);
+
+  /// No description provided for @scheduleConflictReplace.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thay thế'**
+  String get scheduleConflictReplace;
+
+  /// No description provided for @scheduleConflictCancel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hủy'**
+  String get scheduleConflictCancel;
+
+  /// No description provided for @scheduleEmptyItinerary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có mục nào'**
+  String get scheduleEmptyItinerary;
+
+  /// No description provided for @scheduleEmptyItineraryHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bookmark panel, talent hoặc workshop từ lịch trình tổng.'**
+  String get scheduleEmptyItineraryHint;
+
+  /// No description provided for @scheduleRemoveBookmark.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa khỏi lịch'**
+  String get scheduleRemoveBookmark;
+
+  /// No description provided for @scheduleTime.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thời gian'**
+  String get scheduleTime;
+
+  /// No description provided for @scheduleLocation.
+  ///
+  /// In vi, this message translates to:
+  /// **'Địa điểm'**
+  String get scheduleLocation;
+
+  /// No description provided for @scheduleSpeakers.
+  ///
+  /// In vi, this message translates to:
+  /// **'Diễn giả'**
+  String get scheduleSpeakers;
+
+  /// No description provided for @scheduleDescription.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô tả'**
+  String get scheduleDescription;
+
+  /// No description provided for @scheduleVenues.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khu vực'**
+  String get scheduleVenues;
+
+  /// No description provided for @scheduleLocations.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vị trí'**
+  String get scheduleLocations;
+
+  /// No description provided for @scheduleKindPanel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Panel'**
+  String get scheduleKindPanel;
+
+  /// No description provided for @scheduleKindTalent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Talent'**
+  String get scheduleKindTalent;
+
+  /// No description provided for @scheduleKindWorkshop.
+  ///
+  /// In vi, this message translates to:
+  /// **'Workshop'**
+  String get scheduleKindWorkshop;
+
+  /// No description provided for @scheduleKindCeremony.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lễ'**
+  String get scheduleKindCeremony;
+
+  /// No description provided for @scheduleKindOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get scheduleKindOther;
+
   /// No description provided for @navNotifications.
   ///
   /// In vi, this message translates to:
@@ -685,6 +859,66 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Chưa có thông báo mới.'**
   String get authHomeNotificationsEmpty;
+
+  /// No description provided for @authHomeBentoTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng quan'**
+  String get authHomeBentoTitle;
+
+  /// No description provided for @authHomeMyTicketTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vé của tôi'**
+  String get authHomeMyTicketTitle;
+
+  /// No description provided for @authHomeMyTicketSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem e-ticket & QR'**
+  String get authHomeMyTicketSubtitle;
+
+  /// No description provided for @authHomeTodayScheduleTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lịch hôm nay'**
+  String get authHomeTodayScheduleTitle;
+
+  /// No description provided for @authHomeTodaySchedulePreview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Panel Voice Actor · 14:00'**
+  String get authHomeTodaySchedulePreview;
+
+  /// No description provided for @authHomeBuyTicketBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua vé FUVEKON'**
+  String get authHomeBuyTicketBanner;
+
+  /// No description provided for @authHomeBuyTicketBannerSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Early bird đang mở bán'**
+  String get authHomeBuyTicketBannerSubtitle;
+
+  /// No description provided for @authHomeShortcutsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiện ích'**
+  String get authHomeShortcutsTitle;
+
+  /// No description provided for @authHomeShortcutArtbook.
+  ///
+  /// In vi, this message translates to:
+  /// **'Artbook'**
+  String get authHomeShortcutArtbook;
+
+  /// No description provided for @authHomeShortcutLostFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'L&F'**
+  String get authHomeShortcutLostFound;
 
   /// No description provided for @landingBadge.
   ///

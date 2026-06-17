@@ -2,35 +2,47 @@ class LostFoundPublicItem {
   const LostFoundPublicItem({
     required this.id,
     this.displayCode = '',
+    this.itemType = 'found',
     required this.title,
     this.description = '',
     this.location = '',
     this.imageUrl = '',
+    this.contactInfo = '',
     this.status = 'open',
     this.userClaimStatus = '',
+    this.createdAt,
+    this.modifiedAt,
   });
 
   factory LostFoundPublicItem.fromJson(Map<String, dynamic> json) {
     return LostFoundPublicItem(
       id: json['id']?.toString() ?? '',
       displayCode: json['display_code'] as String? ?? '',
+      itemType: json['item_type'] as String? ?? 'found',
       title: json['title'] as String? ?? 'Vật phẩm',
       description: json['description'] as String? ?? '',
       location: json['location'] as String? ?? '',
       imageUrl: json['image_url'] as String? ?? '',
+      contactInfo: json['contact_info'] as String? ?? '',
       status: json['status'] as String? ?? 'open',
       userClaimStatus: json['user_claim_status'] as String? ?? '',
+      createdAt: _parseDateTime(json['created_at']),
+      modifiedAt: _parseDateTime(json['modified_at']),
     );
   }
 
   final String id;
   final String displayCode;
+  final String itemType;
   final String title;
   final String description;
   final String location;
   final String imageUrl;
+  final String contactInfo;
   final String status;
   final String userClaimStatus;
+  final DateTime? createdAt;
+  final DateTime? modifiedAt;
 
   String get itemCode {
     if (displayCode.isNotEmpty) return displayCode;
@@ -45,6 +57,53 @@ class LostFoundPublicItem {
   bool get userHasClaimed =>
       userClaimStatus == 'pending' || userClaimStatus == 'approved';
   bool get canClaim => status == 'open' && !userHasClaimed;
+
+  bool get isLostReport => itemType == 'lost';
+  bool get isReturned => status == 'resolved';
+
+  String get statusLabel => switch (status) {
+        'open' => 'Đang mở',
+        'claimed' => 'Đang xử lý',
+        'resolved' => 'Đã trả đồ',
+        _ => status,
+      };
+
+  String get userClaimStatusLabel => switch (userClaimStatus) {
+        'pending' => 'Chờ xác minh',
+        'approved' => 'Đã duyệt',
+        'rejected' => 'Từ chối',
+        _ => '',
+      };
+
+  static DateTime? _parseDateTime(Object? value) {
+    if (value is! String || value.isEmpty) return null;
+    return DateTime.tryParse(value);
+  }
+}
+
+class LostFoundReportInput {
+  const LostFoundReportInput({
+    required this.title,
+    this.description = '',
+    this.location = '',
+    this.imageUrl = '',
+    this.contactInfo = '',
+  });
+
+  final String title;
+  final String description;
+  final String location;
+  final String imageUrl;
+  final String contactInfo;
+
+  Map<String, dynamic> toJson() => {
+        'item_type': 'lost',
+        'title': title,
+        if (description.isNotEmpty) 'description': description,
+        if (location.isNotEmpty) 'location': location,
+        if (imageUrl.isNotEmpty) 'image_url': imageUrl,
+        if (contactInfo.isNotEmpty) 'contact_info': contactInfo,
+      };
 }
 
 class AdminLostFoundClaimUser {

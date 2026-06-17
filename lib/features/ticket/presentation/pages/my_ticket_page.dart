@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/my_ticket_bloc.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/my_ticket_event.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/my_ticket_state.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/widgets/my_ticket_card.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/widgets/name_card_section.dart';
+import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:go_router/go_router.dart';
 
+/// Màn 26–27 — my ticket with E-ticket QR on mint cards.
 class MyTicketPage extends StatelessWidget {
   const MyTicketPage({super.key});
 
@@ -25,10 +30,18 @@ class MyTicketPage extends StatelessWidget {
 class _MyTicketView extends StatelessWidget {
   const _MyTicketView();
 
+  bool _canUpgrade(MyTicketLoaded state) {
+    final status = state.ticket.status;
+    return status == TicketStatus.approved ||
+        status == TicketStatus.adminGranted;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('My ticket')),
+    return AppPageScaffold(
+      title: 'Vé của tôi',
+      showBackButton: false,
+      padding: EdgeInsets.zero,
       body: BlocConsumer<MyTicketBloc, MyTicketState>(
         listener: (context, state) {
           final bloc = context.read<MyTicketBloc>();
@@ -43,7 +56,7 @@ class _MyTicketView extends StatelessWidget {
           if (bloc.saveSucceeded) {
             bloc.saveSucceeded = false;
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Name card saved')),
+              const SnackBar(content: Text('Đã lưu name card')),
             );
           }
         },
@@ -65,16 +78,19 @@ class _MyTicketView extends StatelessWidget {
                       );
                 },
                 child: ListView(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(FuvekonSpacing.page),
                   children: [
                     MyTicketCard(
                       ticket: state.ticket,
                       onPay: state.ticket.needsPayment
                           ? () => _openPayment(context, state.ticket.tier?.id)
                           : null,
+                      onUpgrade: _canUpgrade(state)
+                          ? () => context.push(Routes.accountTicketUpgrade)
+                          : null,
                     ),
                     if (state.canViewNameCard) ...[
-                      const SizedBox(height: 16),
+                      const SizedBox(height: FuvekonSpacing.stackGapMd),
                       NameCardSection(state: state),
                     ],
                   ],
@@ -82,19 +98,20 @@ class _MyTicketView extends StatelessWidget {
               ),
             MyTicketEmpty() => Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(FuvekonSpacing.page),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const EmptyState(
-                        title: "You don't have a ticket",
-                        subtitle: 'Buy a ticket to attend the convention.',
+                        title: 'Bạn chưa có vé',
+                        subtitle: 'Mua vé để tham dự sự kiện.',
                         icon: Icons.confirmation_number_outlined,
                       ),
-                      const SizedBox(height: 24),
-                      FilledButton(
+                      const SizedBox(height: FuvekonSpacing.stackGapLg),
+                      FuvePillButton(
+                        label: 'Xem loại vé',
+                        icon: Icons.confirmation_number_outlined,
                         onPressed: () => context.go(Routes.ticketPurchase),
-                        child: const Text('Browse tickets'),
                       ),
                     ],
                   ),
@@ -131,13 +148,17 @@ class _MyTicketError extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(FuvekonSpacing.page),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(message, textAlign: TextAlign.center),
-            const SizedBox(height: 16),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            const SizedBox(height: FuvekonSpacing.field),
+            FuvePillButton(
+              label: 'Thử lại',
+              expanded: false,
+              onPressed: onRetry,
+            ),
           ],
         ),
       ),

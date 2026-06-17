@@ -9,6 +9,7 @@ abstract final class ApiConstants {
   static const String googleAuth = '/auth/google';
   static const String forgotPassword = '/auth/forgot-password';
   static const String resetPassword = '/auth/reset-password';
+  static const String changePassword = '/auth/change-password';
   static const String resetPasswordConfirm = '/auth/reset-password/confirm';
 
   // —— Users (account) ——
@@ -178,6 +179,8 @@ abstract final class ApiConstants {
 
   // —— Lost & Found (user) ——
   static const String lostFound = '/lost-found';
+  static const String lostFoundReport = '/lost-found/report';
   static String lostFoundItem(String id) => '/lost-found/$id';
   static String lostFoundClaim(String id) => '/lost-found/$id/claim';
+  static String lostFoundRequest(String id) => '/lost-found/requests/$id';
 }

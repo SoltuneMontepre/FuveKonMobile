@@ -272,6 +272,96 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navMyTickets => 'My tickets';
 
   @override
+  String get scheduleMyItinerary => 'My itinerary';
+
+  @override
+  String get scheduleViewMap => 'Venue map';
+
+  @override
+  String get scheduleActivityDetail => 'Activity detail';
+
+  @override
+  String get scheduleEventDetail => 'Event detail';
+
+  @override
+  String get scheduleVenueDetail => 'Venue detail';
+
+  @override
+  String get scheduleDayFilter => 'Select day';
+
+  @override
+  String get scheduleActivities => 'Activities';
+
+  @override
+  String get scheduleNoActivities => 'No activities on this day';
+
+  @override
+  String get scheduleBookmark => 'Add to my itinerary';
+
+  @override
+  String get scheduleBookmarked => 'Saved to itinerary';
+
+  @override
+  String get scheduleAddedToItinerary => 'Added to your itinerary';
+
+  @override
+  String get scheduleConflictTitle => 'Schedule conflict';
+
+  @override
+  String scheduleConflictMessage(String title) {
+    return 'This activity overlaps with \"$title\" in your itinerary. Replace it?';
+  }
+
+  @override
+  String get scheduleConflictReplace => 'Replace';
+
+  @override
+  String get scheduleConflictCancel => 'Cancel';
+
+  @override
+  String get scheduleEmptyItinerary => 'Nothing saved yet';
+
+  @override
+  String get scheduleEmptyItineraryHint =>
+      'Bookmark panels, talent shows, or workshops from the master schedule.';
+
+  @override
+  String get scheduleRemoveBookmark => 'Remove from itinerary';
+
+  @override
+  String get scheduleTime => 'Time';
+
+  @override
+  String get scheduleLocation => 'Location';
+
+  @override
+  String get scheduleSpeakers => 'Speakers';
+
+  @override
+  String get scheduleDescription => 'Description';
+
+  @override
+  String get scheduleVenues => 'Venues';
+
+  @override
+  String get scheduleLocations => 'Locations';
+
+  @override
+  String get scheduleKindPanel => 'Panel';
+
+  @override
+  String get scheduleKindTalent => 'Talent';
+
+  @override
+  String get scheduleKindWorkshop => 'Workshop';
+
+  @override
+  String get scheduleKindCeremony => 'Ceremony';
+
+  @override
+  String get scheduleKindOther => 'Other';
+
+  @override
   String get navNotifications => 'Notifications';
 
   @override
@@ -313,6 +403,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authHomeNotificationsEmpty => 'No new notifications yet.';
+
+  @override
+  String get authHomeBentoTitle => 'Overview';
+
+  @override
+  String get authHomeMyTicketTitle => 'My tickets';
+
+  @override
+  String get authHomeMyTicketSubtitle => 'View e-ticket & QR';
+
+  @override
+  String get authHomeTodayScheduleTitle => 'Today\'s schedule';
+
+  @override
+  String get authHomeTodaySchedulePreview => 'Panel Voice Actor · 2:00 PM';
+
+  @override
+  String get authHomeBuyTicketBanner => 'Buy FUVEKON tickets';
+
+  @override
+  String get authHomeBuyTicketBannerSubtitle => 'Early bird now open';
+
+  @override
+  String get authHomeShortcutsTitle => 'Shortcuts';
+
+  @override
+  String get authHomeShortcutArtbook => 'Artbook';
+
+  @override
+  String get authHomeShortcutLostFound => 'L&F';
 
   @override
   String get landingBadge => 'TOP EVENT';

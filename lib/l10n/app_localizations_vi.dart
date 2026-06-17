@@ -272,6 +272,96 @@ class AppLocalizationsVi extends AppLocalizations {
   String get navMyTickets => 'Vé của tôi';
 
   @override
+  String get scheduleMyItinerary => 'Lịch trình cá nhân';
+
+  @override
+  String get scheduleViewMap => 'Bản đồ';
+
+  @override
+  String get scheduleActivityDetail => 'Chi tiết hoạt động';
+
+  @override
+  String get scheduleEventDetail => 'Chi tiết sự kiện';
+
+  @override
+  String get scheduleVenueDetail => 'Chi tiết địa điểm';
+
+  @override
+  String get scheduleDayFilter => 'Chọn ngày';
+
+  @override
+  String get scheduleActivities => 'Hoạt động';
+
+  @override
+  String get scheduleNoActivities => 'Không có hoạt động trong ngày này';
+
+  @override
+  String get scheduleBookmark => 'Thêm vào lịch cá nhân';
+
+  @override
+  String get scheduleBookmarked => 'Đã lưu vào lịch';
+
+  @override
+  String get scheduleAddedToItinerary => 'Đã thêm vào lịch trình cá nhân';
+
+  @override
+  String get scheduleConflictTitle => 'Trùng lịch';
+
+  @override
+  String scheduleConflictMessage(String title) {
+    return 'Hoạt động này trùng khung giờ với \"$title\" trong lịch cá nhân. Bạn có muốn thay thế không?';
+  }
+
+  @override
+  String get scheduleConflictReplace => 'Thay thế';
+
+  @override
+  String get scheduleConflictCancel => 'Hủy';
+
+  @override
+  String get scheduleEmptyItinerary => 'Chưa có mục nào';
+
+  @override
+  String get scheduleEmptyItineraryHint =>
+      'Bookmark panel, talent hoặc workshop từ lịch trình tổng.';
+
+  @override
+  String get scheduleRemoveBookmark => 'Xóa khỏi lịch';
+
+  @override
+  String get scheduleTime => 'Thời gian';
+
+  @override
+  String get scheduleLocation => 'Địa điểm';
+
+  @override
+  String get scheduleSpeakers => 'Diễn giả';
+
+  @override
+  String get scheduleDescription => 'Mô tả';
+
+  @override
+  String get scheduleVenues => 'Khu vực';
+
+  @override
+  String get scheduleLocations => 'Vị trí';
+
+  @override
+  String get scheduleKindPanel => 'Panel';
+
+  @override
+  String get scheduleKindTalent => 'Talent';
+
+  @override
+  String get scheduleKindWorkshop => 'Workshop';
+
+  @override
+  String get scheduleKindCeremony => 'Lễ';
+
+  @override
+  String get scheduleKindOther => 'Khác';
+
+  @override
   String get navNotifications => 'Thông báo';
 
   @override
@@ -313,6 +403,36 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get authHomeNotificationsEmpty => 'Chưa có thông báo mới.';
+
+  @override
+  String get authHomeBentoTitle => 'Tổng quan';
+
+  @override
+  String get authHomeMyTicketTitle => 'Vé của tôi';
+
+  @override
+  String get authHomeMyTicketSubtitle => 'Xem e-ticket & QR';
+
+  @override
+  String get authHomeTodayScheduleTitle => 'Lịch hôm nay';
+
+  @override
+  String get authHomeTodaySchedulePreview => 'Panel Voice Actor · 14:00';
+
+  @override
+  String get authHomeBuyTicketBanner => 'Mua vé FUVEKON';
+
+  @override
+  String get authHomeBuyTicketBannerSubtitle => 'Early bird đang mở bán';
+
+  @override
+  String get authHomeShortcutsTitle => 'Tiện ích';
+
+  @override
+  String get authHomeShortcutArtbook => 'Artbook';
+
+  @override
+  String get authHomeShortcutLostFound => 'L&F';
 
   @override
   String get landingBadge => 'SỰ KIỆN HÀNG ĐẦU';

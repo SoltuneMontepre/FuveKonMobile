@@ -16,6 +16,8 @@ abstract interface class TicketRemoteDataSource {
   Future<UserTicket> confirmPayment();
 
   Future<UserTicket> updateBadgeDetails(UpdateBadgeDetailsInput input);
+
+  Future<UserTicket> upgradeTicket(String newTierId);
 }
 
 class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
@@ -69,6 +71,16 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
     final data = response.data;
     if (data == null) {
       throw const ServerException('Failed to update name card.');
+    }
+    return _mapUserTicket(data);
+  }
+
+  @override
+  Future<UserTicket> upgradeTicket(String newTierId) async {
+    final response = await _ticketApi.upgradeTicket(newTierId: newTierId);
+    final data = response.data;
+    if (data == null) {
+      throw const ServerException('Failed to upgrade ticket.');
     }
     return _mapUserTicket(data);
   }

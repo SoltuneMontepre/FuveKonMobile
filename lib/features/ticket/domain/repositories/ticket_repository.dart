@@ -14,4 +14,6 @@ abstract interface class TicketRepository {
   Future<Result<UserTicket>> confirmPayment();
 
   Future<Result<UserTicket>> updateBadgeDetails(UpdateBadgeDetailsInput input);
+
+  Future<Result<UserTicket>> upgradeTicket(String newTierId);
 }

@@ -40,26 +40,46 @@ abstract final class Routes {
   // —— Account (authenticated user dashboard) ——
   static const account = '/account';
   static const accountSchedule = '/account/schedule';
+  static String accountScheduleActivity(String id) =>
+      '/account/schedule/activity/$id';
+  static String accountScheduleEvent(String id) =>
+      '/account/schedule/event/$id';
+  static const accountScheduleMap = '/account/schedule/map';
+  static String accountScheduleVenue(String id) =>
+      '/account/schedule/venue/$id';
+  static const accountScheduleMy = '/account/schedule/my';
   static const accountTicket = '/account/ticket';
+  static const accountTicketUpgrade = '/account/ticket/upgrade';
   static const accountNotifications = '/account/notifications';
+  static String accountNotificationDetail(String id) =>
+      '/account/notifications/$id';
   static const accountProfile = '/account/profile';
   static const accountChangePassword = '/account/profile/change-password';
+  static const accountSettings = '/account/profile/settings';
+  static const accountVerifyIdentity = '/account/profile/verify-identity';
+  static const accountSubmissions = '/account/profile/submissions';
   static const accountConbook = '/account/profile/conbook';
+  static String accountConbookDetail(String id) => '/account/profile/conbook/$id';
   static const accountTalent = '/account/profile/talent';
+  static String accountTalentDetail(String id) => '/account/profile/talent/$id';
   static const accountPanel = '/account/profile/panel';
+  static String accountPanelDetail(String id) => '/account/profile/panel/$id';
   static const accountDealer = '/account/profile/dealer';
   static const accountDealerRegister = '/account/profile/dealer/register';
+  static const accountDealerStaff = '/account/profile/dealer/staff';
   static const accountEdit = '/account/profile/edit';
 
   static const unverifiedAccountRoutes = {
     accountProfile,
     accountChangePassword,
+    accountSettings,
   };
 
   // —— Contribute / registration (public) ——
   static const talent = '/talent';
   static const panel = '/panel';
   static const artbook = '/artbook';
+  static const artbookSubmit = '/artbook/submit';
   static const dealer = '/dealer';
   static const volunteer = '/volunteer';
 
@@ -70,6 +90,9 @@ abstract final class Routes {
   static String get tosOnboarding => '$tos?onboarding=1';
   static const schedule = '/schedule';
   static const lostFound = '/lost-found';
+  static const lostFoundReport = '/lost-found/report';
+  static String lostFoundDetail(String id) => '/lost-found/$id';
+  static String lostFoundRequest(String id) => '/lost-found/requests/$id';
   static const recap = '/recap';
 
   // —— Admin / staff ——
@@ -119,6 +142,9 @@ abstract final class Routes {
   static bool isPublicRoute(String location) {
     if (publicRoutes.contains(location)) return true;
     if (location.startsWith('$ticketPurchase/')) return true;
+    if (location.startsWith('$artbook/')) return true;
+    if (location == lostFoundReport) return true;
+    if (location.startsWith('$lostFound/')) return true;
     return false;
   }
 

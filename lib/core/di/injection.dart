@@ -7,6 +7,8 @@ import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/di/api_injection.dart';
 import 'package:fuvekonmobile/features/auth/di/auth_injection.dart';
 import 'package:fuvekonmobile/features/profile/di/profile_injection.dart';
+import 'package:fuvekonmobile/features/notification/di/notification_injection.dart';
+import 'package:fuvekonmobile/features/schedule/di/schedule_injection.dart';
 import 'package:fuvekonmobile/features/ticket/di/ticket_injection.dart';
 import 'package:fuvekonmobile/shared/services/app_preferences.dart';
 import 'package:fuvekonmobile/shared/services/scan_session_store.dart';
@@ -56,4 +58,6 @@ Future<void> configureDependencies() async {
   registerAuthModule(sl);
   registerProfileModule(sl);
   registerTicketModule(sl);
+  registerNotificationModule(sl);
+  registerScheduleModule(sl, useMock: true);
 }

@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/tickets_bloc.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/tickets_event.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/tickets_state.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/widgets/ticket_tier_card.dart';
+import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:go_router/go_router.dart';
 
+/// Màn 22 — purchase ticket tiers on mint cards.
 class TicketsPage extends StatelessWidget {
   const TicketsPage({super.key});
 
@@ -26,8 +32,9 @@ class _TicketsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Buy tickets')),
+    return AppPageScaffold(
+      title: 'Mua vé',
+      padding: EdgeInsets.zero,
       body: BlocConsumer<TicketsBloc, TicketsState>(
         listener: (context, state) async {
           final bloc = context.read<TicketsBloc>();
@@ -96,6 +103,8 @@ class _TicketsLoadedBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Stack(
       children: [
         RefreshIndicator(
@@ -106,80 +115,74 @@ class _TicketsLoadedBody extends StatelessWidget {
                 );
           },
           child: ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(FuvekonSpacing.page),
             children: [
               Text(
-                'Buy tickets',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                'Chọn loại vé',
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  color: FuvekonColors.premiumPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 4),
               Text(
-                'Select a ticket type',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                'Mỗi tài khoản chỉ mua được một vé',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: FuvekonSpacing.stackGapLg),
               if (_hasActiveTicket) ...[
-                Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: InkWell(
-                    onTap: () => context.go(Routes.accountTicket),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.confirmation_number,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'You already have a ticket',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.copyWith(fontWeight: FontWeight.w600),
-                                ),
-                                Text(
-                                  'View your ticket',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Icon(Icons.chevron_right),
-                        ],
+                FuveMintCard(
+                  onTap: () => context.go(Routes.accountTicket),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.confirmation_number,
+                        color: FuvekonColors.premiumOnMintCardMuted,
                       ),
-                    ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Bạn đã có vé',
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                color: context.fuvekonTheme.contentOnCard,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              'Xem vé của tôi',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: context.fuvekonTheme.contentOnCardMuted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.chevron_right,
+                        color: context.fuvekonTheme.contentOnCardMuted,
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: FuvekonSpacing.stackGapMd),
               ],
               if (state.account?.isBlacklisted == true &&
                   state.account?.role?.toLowerCase() != 'admin')
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Card(
-                    color: Colors.red.shade50,
-                    child: const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Text('Your account is restricted from purchasing.'),
+                  padding: const EdgeInsets.only(bottom: FuvekonSpacing.stackGapMd),
+                  child: FuveMintCard(
+                    child: Text(
+                      'Tài khoản của bạn bị hạn chế mua vé.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.error,
+                      ),
                     ),
                   ),
                 ),
@@ -187,8 +190,8 @@ class _TicketsLoadedBody extends StatelessWidget {
                 const SizedBox.shrink()
               else if (state.tiers.isEmpty)
                 const EmptyState(
-                  title: 'No ticket types available',
-                  subtitle: 'Check back later for ticket sales.',
+                  title: 'Chưa có loại vé',
+                  subtitle: 'Vui lòng quay lại sau.',
                   icon: Icons.confirmation_number_outlined,
                 )
               else
@@ -200,7 +203,7 @@ class _TicketsLoadedBody extends StatelessWidget {
                   final disabled = _purchaseBlocked || unavailable;
 
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: FuvekonSpacing.stackGapMd),
                     child: TicketTierCard(
                       tier: tier,
                       rank: rank,
@@ -217,7 +220,7 @@ class _TicketsLoadedBody extends StatelessWidget {
                   );
                 }),
               if (!_purchaseBlocked || !_hasActiveTicket) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: FuvekonSpacing.stackGapSm),
                 const _PurchaseNotices(),
               ],
             ],
@@ -237,47 +240,19 @@ class _PurchaseNotices extends StatelessWidget {
   const _PurchaseNotices();
 
   static const _notices = [
-    'Each account can only purchase 1 ticket.',
-    'After selecting a ticket, you will be redirected to the payment page.',
-    'Please transfer the exact amount and reference code as instructed.',
-    'After transferring, tap "I have paid" for staff verification.',
-    'Verification time: 3–5 business days.',
-    'No refunds after successful purchase.',
+    'Mỗi tài khoản chỉ mua được 1 vé.',
+    'Sau khi chọn vé, bạn sẽ được chuyển đến trang thanh toán.',
+    'Vui lòng chuyển khoản đúng số tiền và mã tham chiếu.',
+    'Sau khi chuyển khoản, nhấn "Tôi đã thanh toán" để xác minh.',
+    'Thời gian xác minh: 3–5 ngày làm việc.',
+    'Không hoàn tiền sau khi mua thành công.',
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Purchase notes',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            ...List.generate(_notices.length, (i) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${i + 1}. ',
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    Expanded(child: Text(_notices[i])),
-                  ],
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
+    return AppInfoSection(
+      title: 'Lưu ý khi mua vé',
+      items: _notices,
     );
   }
 }
@@ -292,13 +267,17 @@ class _TicketsError extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(FuvekonSpacing.page),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(message, textAlign: TextAlign.center),
-            const SizedBox(height: 16),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            const SizedBox(height: FuvekonSpacing.field),
+            FuvePillButton(
+              label: 'Thử lại',
+              expanded: false,
+              onPressed: onRetry,
+            ),
           ],
         ),
       ),

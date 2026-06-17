@@ -144,4 +144,21 @@ class LostFoundApi extends BaseApi {
       mapData: mapJsonObject,
     );
   }
+
+  Future<ApiResponse<Map<String, dynamic>>> report(
+    Map<String, dynamic> payload,
+  ) {
+    return post(
+      ApiConstants.lostFoundReport,
+      data: payload,
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> getRequest(String id) {
+    return get(
+      ApiConstants.lostFoundRequest(id),
+      mapData: mapJsonObject,
+    );
+  }
 }

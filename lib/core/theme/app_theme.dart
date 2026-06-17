@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 
@@ -45,36 +46,36 @@ abstract final class AppTheme {
         extension: FuvekonThemeExtension.dark,
         colorScheme: const ColorScheme(
           brightness: Brightness.dark,
-          primary: FuvekonColors.darkButton,
-          onPrimary: FuvekonColors.darkButtonText,
-          primaryContainer: FuvekonColors.darkPrimary,
-          onPrimaryContainer: FuvekonColors.darkButtonText,
-          secondary: FuvekonColors.secondary,
-          onSecondary: FuvekonColors.darkButtonText,
-          secondaryContainer: FuvekonColors.darkSurfaceElevated,
-          onSecondaryContainer: FuvekonColors.darkText,
-          tertiary: FuvekonColors.outline,
-          onTertiary: FuvekonColors.darkButtonText,
+          primary: FuvekonColors.premiumPrimary,
+          onPrimary: FuvekonColors.premiumOnPrimary,
+          primaryContainer: FuvekonColors.premiumPrimary,
+          onPrimaryContainer: FuvekonColors.premiumOnPrimary,
+          secondary: FuvekonColors.premiumSecondary,
+          onSecondary: FuvekonColors.premiumOnPrimary,
+          secondaryContainer: FuvekonColors.premiumSurfaceContainerHigh,
+          onSecondaryContainer: FuvekonColors.premiumOnSurface,
+          tertiary: FuvekonColors.premiumTertiary,
+          onTertiary: FuvekonColors.premiumOnPrimary,
           error: Color(0xFFF2B8B5),
           onError: Color(0xFF601410),
-          surface: FuvekonColors.darkSurface,
-          onSurface: FuvekonColors.darkText,
-          onSurfaceVariant: FuvekonColors.darkTextSecondary,
-          outline: FuvekonColors.darkBorder,
-          outlineVariant: Color(0x4D2A4034),
+          surface: FuvekonColors.premiumSurfaceContainer,
+          onSurface: FuvekonColors.premiumOnSurface,
+          onSurfaceVariant: FuvekonColors.premiumOnSurfaceVariant,
+          outline: FuvekonColors.premiumOutline,
+          outlineVariant: Color(0x4D8B928C),
           shadow: Color(0x66000000),
           scrim: Color(0x99000000),
-          inverseSurface: FuvekonColors.darkText,
-          onInverseSurface: FuvekonColors.darkBg,
-          inversePrimary: FuvekonColors.darkPrimary,
-          surfaceTint: FuvekonColors.darkPrimary,
+          inverseSurface: FuvekonColors.premiumOnSurface,
+          onInverseSurface: FuvekonColors.premiumBackground,
+          inversePrimary: FuvekonColors.premiumPrimary,
+          surfaceTint: FuvekonColors.premiumPrimary,
         ),
-        scaffoldBackground: FuvekonColors.darkBg,
-        cardColor: FuvekonColors.darkCard,
-        inputFill: FuvekonColors.inputFill,
-        dividerColor: FuvekonColors.darkBorder,
-        appBarForeground: FuvekonColors.darkAppBarTitle,
-        bodyMuted: FuvekonColors.darkTextSecondary,
+        scaffoldBackground: FuvekonColors.premiumBackground,
+        cardColor: FuvekonColors.premiumMintCard,
+        inputFill: FuvekonColors.premiumSurfaceContainerHigh,
+        dividerColor: FuvekonColors.premiumOutline.withValues(alpha: 0.35),
+        appBarForeground: FuvekonColors.premiumPrimary,
+        bodyMuted: FuvekonColors.premiumOnSurfaceVariant,
       );
 
   static ThemeData _buildTheme({
@@ -94,7 +95,8 @@ abstract final class AppTheme {
     final cardHeadline = extension.contentOnCard;
     final cardBody = extension.contentOnCardMuted;
 
-    final textTheme = TextTheme(
+    final textTheme = GoogleFonts.beVietnamProTextTheme(
+      TextTheme(
       displaySmall: TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.w700,
@@ -139,6 +141,7 @@ abstract final class AppTheme {
         fontWeight: FontWeight.w700,
         letterSpacing: 0.2,
         color: cardHeadline,
+      ),
       ),
     );
 

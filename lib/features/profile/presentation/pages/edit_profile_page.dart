@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/features/profile/domain/entities/account.dart';
 import 'package:fuvekonmobile/features/profile/domain/entities/update_profile_input.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/edit_profile_bloc.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/edit_profile_event.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/edit_profile_state.dart';
+import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key, required this.account});
@@ -65,9 +70,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
         );
   }
 
+  InputDecoration _decoration(String label, {IconData? icon}) {
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: icon != null ? Icon(icon) : null,
+      filled: true,
+      fillColor: FuvekonColors.inputFill,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(FuvekonRadii.input),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isVerified = widget.account.isVerified == true;
+    final ext = context.fuvekonTheme;
 
     return BlocProvider(
       create: (_) => sl<EditProfileBloc>(),
@@ -78,7 +96,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           switch (state) {
             case EditProfileSaved():
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Profile updated')),
+                const SnackBar(content: Text('Đã cập nhật hồ sơ')),
               );
               Navigator.of(context).pop(true);
             case EditProfileFailure(:final message):
@@ -89,134 +107,133 @@ class _EditProfilePageState extends State<EditProfilePage> {
               break;
           }
         },
-        child: Scaffold(
-          appBar: AppBar(title: const Text('Edit profile')),
+        child: AppPageScaffold(
+          title: 'Chỉnh sửa hồ sơ',
           body: BlocBuilder<EditProfileBloc, EditProfileState>(
             builder: (context, state) {
               final isSaving = state is EditProfileSaving;
 
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (!isVerified)
-                        Card(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .errorContainer
-                              .withValues(alpha: 0.5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.info_outline,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onErrorContainer,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    'Verify your email before editing your profile.',
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onErrorContainer,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: _formKey,
+                        child: FuveMintCard(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              if (!isVerified) ...[
+                                DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: ext.notesSurface,
+                                    borderRadius:
+                                        BorderRadius.circular(FuvekonRadii.notes),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(14),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.info_outline,
+                                            color: ext.infoAccent, size: 20),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: Text(
+                                            'Xác minh email trước khi chỉnh sửa hồ sơ.',
+                                            style: TextStyle(
+                                              color: ext.contentOnCardMuted,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
+                                const SizedBox(height: FuvekonSpacing.field),
                               ],
-                            ),
+                              TextFormField(
+                                initialValue: widget.account.email,
+                                readOnly: true,
+                                decoration: _decoration(
+                                  'Email',
+                                  icon: Icons.email_outlined,
+                                ),
+                              ),
+                              const SizedBox(height: FuvekonSpacing.field),
+                              TextFormField(
+                                controller: _fursonaController,
+                                enabled: isVerified && !isSaving,
+                                textCapitalization: TextCapitalization.words,
+                                decoration: _decoration(
+                                  'Nickname',
+                                  icon: Icons.pets_outlined,
+                                ),
+                              ),
+                              const SizedBox(height: FuvekonSpacing.field),
+                              TextFormField(
+                                controller: _firstNameController,
+                                enabled: isVerified && !isSaving,
+                                textCapitalization: TextCapitalization.words,
+                                decoration: _decoration(
+                                  'Họ',
+                                  icon: Icons.badge_outlined,
+                                ),
+                              ),
+                              const SizedBox(height: FuvekonSpacing.field),
+                              TextFormField(
+                                controller: _lastNameController,
+                                enabled: isVerified && !isSaving,
+                                textCapitalization: TextCapitalization.words,
+                                decoration: _decoration(
+                                  'Tên',
+                                  icon: Icons.badge_outlined,
+                                ),
+                              ),
+                              const SizedBox(height: FuvekonSpacing.field),
+                              TextFormField(
+                                controller: _countryController,
+                                enabled: isVerified && !isSaving,
+                                textCapitalization: TextCapitalization.words,
+                                decoration: _decoration(
+                                  'Quốc gia',
+                                  icon: Icons.public_outlined,
+                                ),
+                              ),
+                              const SizedBox(height: FuvekonSpacing.field),
+                              TextFormField(
+                                controller: _idCardController,
+                                enabled: isVerified && !isSaving,
+                                decoration: _decoration(
+                                  'CMND/Hộ chiếu',
+                                  icon: Icons.credit_card_outlined,
+                                ),
+                              ),
+                              const SizedBox(height: FuvekonSpacing.field),
+                              TextFormField(
+                                controller: _dobController,
+                                enabled: isVerified && !isSaving,
+                                keyboardType: TextInputType.datetime,
+                                decoration: _decoration(
+                                  'Ngày sinh',
+                                  icon: Icons.cake_outlined,
+                                ).copyWith(hintText: 'YYYY-MM-DD'),
+                              ),
+                            ],
                           ),
                         ),
-                      if (!isVerified) const SizedBox(height: 16),
-                      TextFormField(
-                        initialValue: widget.account.email,
-                        readOnly: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          prefixIcon: Icon(Icons.email_outlined),
-                        ),
                       ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _fursonaController,
-                        enabled: isVerified && !isSaving,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: const InputDecoration(
-                          labelText: 'Nickname',
-                          prefixIcon: Icon(Icons.pets_outlined),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _firstNameController,
-                        enabled: isVerified && !isSaving,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: const InputDecoration(
-                          labelText: 'First name',
-                          prefixIcon: Icon(Icons.badge_outlined),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _lastNameController,
-                        enabled: isVerified && !isSaving,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: const InputDecoration(
-                          labelText: 'Last name',
-                          prefixIcon: Icon(Icons.badge_outlined),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _countryController,
-                        enabled: isVerified && !isSaving,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: const InputDecoration(
-                          labelText: 'Country',
-                          prefixIcon: Icon(Icons.public_outlined),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _idCardController,
-                        enabled: isVerified && !isSaving,
-                        decoration: const InputDecoration(
-                          labelText: 'Passport/ID card',
-                          prefixIcon: Icon(Icons.credit_card_outlined),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _dobController,
-                        enabled: isVerified && !isSaving,
-                        keyboardType: TextInputType.datetime,
-                        decoration: const InputDecoration(
-                          labelText: 'Date of birth',
-                          prefixIcon: Icon(Icons.cake_outlined),
-                          hintText: 'YYYY-MM-DD',
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      FilledButton(
-                        onPressed:
-                            isVerified && !isSaving ? () => _submit(context) : null,
-                        child: isSaving
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : const Text('Save changes'),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  const SizedBox(height: FuvekonSpacing.stackGapMd),
+                  FuvePillButton(
+                    label: isSaving ? 'Đang lưu...' : 'Lưu thay đổi',
+                    icon: Icons.save_outlined,
+                    onPressed:
+                        isVerified && !isSaving ? () => _submit(context) : null,
+                  ),
+                ],
               );
             },
           ),
