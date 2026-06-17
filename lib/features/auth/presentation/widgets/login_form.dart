@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
@@ -211,7 +210,7 @@ class _LoginFormState extends State<LoginForm> {
                     ],
                   ),
           ),
-          if (AppConfig.hasGoogleSignIn && widget.onGoogleSignIn != null) ...[
+          if (widget.onGoogleSignIn != null) ...[
             const SizedBox(height: 24),
             Row(
               children: [
