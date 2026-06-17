@@ -20,11 +20,13 @@ class AboutPage extends StatelessWidget {
 }
 
 class TosPage extends StatelessWidget {
-  const TosPage({super.key});
+  const TosPage({super.key, this.onboarding = false});
+
+  final bool onboarding;
 
   @override
   Widget build(BuildContext context) {
-    return const EventRulesPage();
+    return EventRulesPage(onboarding: onboarding);
   }
 }
 

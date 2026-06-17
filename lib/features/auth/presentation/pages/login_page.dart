@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/utils/auth_messages.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
@@ -56,11 +55,9 @@ class LoginPage extends StatelessWidget {
                     ),
                   );
             },
-            onGoogleSignIn: AppConfig.hasGoogleSignIn
-                ? () => context.read<AuthBloc>().add(
-                      const AuthEvent.googleSignInRequested(),
-                    )
-                : null,
+            onGoogleSignIn: () => context.read<AuthBloc>().add(
+                  const AuthEvent.googleSignInRequested(),
+                ),
           ),
         );
       },

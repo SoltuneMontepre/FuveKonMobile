@@ -263,6 +263,81 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navLogin => 'Sign in';
 
   @override
+  String get navHome => 'Home';
+
+  @override
+  String get navSchedule => 'Schedule';
+
+  @override
+  String get navMyTickets => 'My tickets';
+
+  @override
+  String get navNotifications => 'Notifications';
+
+  @override
+  String get navAccount => 'Account';
+
+  @override
+  String get authHomeUpcomingBadge => 'Upcoming events';
+
+  @override
+  String get authHomeHeroTitle => 'Anime Culture Exchange Festival';
+
+  @override
+  String get authHomeHeroSubtitle =>
+      'Discover art spaces and unique experiences.';
+
+  @override
+  String get authHomeSearchHint => 'Search events, artists...';
+
+  @override
+  String get authHomeFeaturedTitle => 'Featured events';
+
+  @override
+  String get authHomeSeeAll => 'See all';
+
+  @override
+  String get authHomeHotBadge => 'Hot';
+
+  @override
+  String get authHomeFeaturedEventTitle => 'Contemporary Art Exhibition';
+
+  @override
+  String get authHomeFeaturedEventDate => 'October 20, 2023';
+
+  @override
+  String get authHomeFeaturedEventLocation => 'SECC Center';
+
+  @override
+  String get authHomeBuyTicket => 'Buy tickets';
+
+  @override
+  String get authHomeNotificationsEmpty => 'No new notifications yet.';
+
+  @override
+  String get landingBadge => 'TOP EVENT';
+
+  @override
+  String get landingHeroTitle => 'Anime Event';
+
+  @override
+  String get landingHeroBody =>
+      'Experience a unique cultural space with smart ticket management and scheduling. Join now so you don\'t miss the most wonderful moments.';
+
+  @override
+  String get landingRegister => 'Register';
+
+  @override
+  String get landingViewTickets => 'View tickets';
+
+  @override
+  String get landingExperienceTitle => 'Perfect Experience';
+
+  @override
+  String get landingExperienceBody =>
+      'Manage your journey at the event with ease.';
+
+  @override
   String get rulesTitle => 'Event rules';
 
   @override

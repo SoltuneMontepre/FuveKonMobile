@@ -15,7 +15,7 @@ abstract final class PublicRoutes {
       [
         GoRoute(
           path: Routes.home,
-          builder: (context, state) => const HomePage(),
+          builder: (context, state) => const GuestLandingPage(),
         ),
         GoRoute(
           path: Routes.ticket,
@@ -71,7 +71,9 @@ abstract final class PublicRoutes {
         ),
         GoRoute(
           path: Routes.tos,
-          builder: (context, state) => const TosPage(),
+          builder: (context, state) => TosPage(
+            onboarding: state.uri.queryParameters['onboarding'] == '1',
+          ),
         ),
         GoRoute(
           path: Routes.schedule,

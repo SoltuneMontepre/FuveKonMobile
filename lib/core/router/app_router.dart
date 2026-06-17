@@ -118,7 +118,7 @@ class AppRouter {
 
         !Routes.isUnverifiedAccountRoute(location)) {
 
-      return Routes.account;
+      return Routes.accountProfile;
 
     }
 
