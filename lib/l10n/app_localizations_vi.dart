@@ -266,6 +266,55 @@ class AppLocalizationsVi extends AppLocalizations {
   String get navHome => 'Trang chủ';
 
   @override
+  String get navSchedule => 'Lịch trình';
+
+  @override
+  String get navMyTickets => 'Vé của tôi';
+
+  @override
+  String get navNotifications => 'Thông báo';
+
+  @override
+  String get navAccount => 'Tài khoản';
+
+  @override
+  String get authHomeUpcomingBadge => 'Sự kiện sắp diễn ra';
+
+  @override
+  String get authHomeHeroTitle => 'Lễ Hội Giao Lưu Văn Hóa Anime';
+
+  @override
+  String get authHomeHeroSubtitle =>
+      'Khám phá không gian nghệ thuật và trải nghiệm độc đáo.';
+
+  @override
+  String get authHomeSearchHint => 'Tìm kiếm sự kiện, nghệ sĩ...';
+
+  @override
+  String get authHomeFeaturedTitle => 'Sự kiện nổi bật';
+
+  @override
+  String get authHomeSeeAll => 'Xem tất cả';
+
+  @override
+  String get authHomeHotBadge => 'Hot';
+
+  @override
+  String get authHomeFeaturedEventTitle => 'Triển Lãm Nghệ Thuật Đương Đại';
+
+  @override
+  String get authHomeFeaturedEventDate => '20 Tháng 10, 2023';
+
+  @override
+  String get authHomeFeaturedEventLocation => 'Trung Tâm SECC';
+
+  @override
+  String get authHomeBuyTicket => 'Mua vé';
+
+  @override
+  String get authHomeNotificationsEmpty => 'Chưa có thông báo mới.';
+
+  @override
   String get landingBadge => 'SỰ KIỆN HÀNG ĐẦU';
 
   @override

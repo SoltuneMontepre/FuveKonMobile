@@ -140,7 +140,7 @@ class _AdminHomeContentState extends State<_AdminHomeContent> {
           AdminHomeAppBar(
             avatarUrl: account.avatar,
             initials: account.initials,
-            onAvatarTap: () => context.push(Routes.account),
+            onAvatarTap: () => context.push(Routes.accountProfile),
           ),
           const SizedBox(height: 20),
           EventManagementSection(
@@ -291,7 +291,7 @@ class _StaffHomeContent extends StatelessWidget {
           FuvekonHomeAppBar(
             avatarUrl: account.avatar,
             initials: account.initials,
-            onProfileTap: () => context.push(Routes.account),
+            onProfileTap: () => context.push(Routes.accountProfile),
           ),
           const SizedBox(height: 8),
           FuvekonHomeGreeting(

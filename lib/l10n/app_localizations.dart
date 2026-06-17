@@ -590,6 +590,102 @@ abstract class AppLocalizations {
   /// **'Trang chủ'**
   String get navHome;
 
+  /// No description provided for @navSchedule.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lịch trình'**
+  String get navSchedule;
+
+  /// No description provided for @navMyTickets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vé của tôi'**
+  String get navMyTickets;
+
+  /// No description provided for @navNotifications.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông báo'**
+  String get navNotifications;
+
+  /// No description provided for @navAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản'**
+  String get navAccount;
+
+  /// No description provided for @authHomeUpcomingBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện sắp diễn ra'**
+  String get authHomeUpcomingBadge;
+
+  /// No description provided for @authHomeHeroTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lễ Hội Giao Lưu Văn Hóa Anime'**
+  String get authHomeHeroTitle;
+
+  /// No description provided for @authHomeHeroSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khám phá không gian nghệ thuật và trải nghiệm độc đáo.'**
+  String get authHomeHeroSubtitle;
+
+  /// No description provided for @authHomeSearchHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm kiếm sự kiện, nghệ sĩ...'**
+  String get authHomeSearchHint;
+
+  /// No description provided for @authHomeFeaturedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện nổi bật'**
+  String get authHomeFeaturedTitle;
+
+  /// No description provided for @authHomeSeeAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem tất cả'**
+  String get authHomeSeeAll;
+
+  /// No description provided for @authHomeHotBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hot'**
+  String get authHomeHotBadge;
+
+  /// No description provided for @authHomeFeaturedEventTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Triển Lãm Nghệ Thuật Đương Đại'**
+  String get authHomeFeaturedEventTitle;
+
+  /// No description provided for @authHomeFeaturedEventDate.
+  ///
+  /// In vi, this message translates to:
+  /// **'20 Tháng 10, 2023'**
+  String get authHomeFeaturedEventDate;
+
+  /// No description provided for @authHomeFeaturedEventLocation.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trung Tâm SECC'**
+  String get authHomeFeaturedEventLocation;
+
+  /// No description provided for @authHomeBuyTicket.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua vé'**
+  String get authHomeBuyTicket;
+
+  /// No description provided for @authHomeNotificationsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có thông báo mới.'**
+  String get authHomeNotificationsEmpty;
+
   /// No description provided for @landingBadge.
   ///
   /// In vi, this message translates to:

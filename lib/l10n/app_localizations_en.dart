@@ -266,6 +266,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHome => 'Home';
 
   @override
+  String get navSchedule => 'Schedule';
+
+  @override
+  String get navMyTickets => 'My tickets';
+
+  @override
+  String get navNotifications => 'Notifications';
+
+  @override
+  String get navAccount => 'Account';
+
+  @override
+  String get authHomeUpcomingBadge => 'Upcoming events';
+
+  @override
+  String get authHomeHeroTitle => 'Anime Culture Exchange Festival';
+
+  @override
+  String get authHomeHeroSubtitle =>
+      'Discover art spaces and unique experiences.';
+
+  @override
+  String get authHomeSearchHint => 'Search events, artists...';
+
+  @override
+  String get authHomeFeaturedTitle => 'Featured events';
+
+  @override
+  String get authHomeSeeAll => 'See all';
+
+  @override
+  String get authHomeHotBadge => 'Hot';
+
+  @override
+  String get authHomeFeaturedEventTitle => 'Contemporary Art Exhibition';
+
+  @override
+  String get authHomeFeaturedEventDate => 'October 20, 2023';
+
+  @override
+  String get authHomeFeaturedEventLocation => 'SECC Center';
+
+  @override
+  String get authHomeBuyTicket => 'Buy tickets';
+
+  @override
+  String get authHomeNotificationsEmpty => 'No new notifications yet.';
+
+  @override
   String get landingBadge => 'TOP EVENT';
 
   @override

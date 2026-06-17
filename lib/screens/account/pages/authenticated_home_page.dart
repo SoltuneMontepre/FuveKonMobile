@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 class AuthenticatedHomePage extends StatelessWidget {
@@ -50,7 +51,7 @@ class AuthenticatedHomePage extends StatelessWidget {
 class _HeroSection extends StatelessWidget {
   const _HeroSection({required this.l10n});
 
-  final dynamic l10n;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +249,7 @@ class _FeaturedEventCard extends StatelessWidget {
     required this.onBuyTicket,
   });
 
-  final dynamic l10n;
+  final AppLocalizations l10n;
   final VoidCallback onBuyTicket;
 
   @override

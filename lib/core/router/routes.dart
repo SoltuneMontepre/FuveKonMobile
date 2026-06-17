@@ -39,19 +39,20 @@ abstract final class Routes {
 
   // —— Account (authenticated user dashboard) ——
   static const account = '/account';
-  static const accountChangePassword = '/account/change-password';
+  static const accountSchedule = '/account/schedule';
   static const accountTicket = '/account/ticket';
-  static const accountConbook = '/account/conbook';
-  static const accountTalent = '/account/talent';
-  static const accountPanel = '/account/panel';
-  static const accountDealer = '/account/dealer';
-  static const accountDealerRegister = '/account/dealer/register';
-
-  /// Profile edit (not listed in web routes; kept for existing flow).
-  static const accountEdit = '/account/edit';
+  static const accountNotifications = '/account/notifications';
+  static const accountProfile = '/account/profile';
+  static const accountChangePassword = '/account/profile/change-password';
+  static const accountConbook = '/account/profile/conbook';
+  static const accountTalent = '/account/profile/talent';
+  static const accountPanel = '/account/profile/panel';
+  static const accountDealer = '/account/profile/dealer';
+  static const accountDealerRegister = '/account/profile/dealer/register';
+  static const accountEdit = '/account/profile/edit';
 
   static const unverifiedAccountRoutes = {
-    account,
+    accountProfile,
     accountChangePassword,
   };
 
