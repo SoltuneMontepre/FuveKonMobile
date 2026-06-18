@@ -6,8 +6,11 @@ class LostFoundPublicItem {
     this.description = '',
     this.location = '',
     this.imageUrl = '',
+    this.itemType = 'found',
     this.status = 'open',
     this.userClaimStatus = '',
+    this.createdAt,
+    this.modifiedAt,
   });
 
   factory LostFoundPublicItem.fromJson(Map<String, dynamic> json) {
@@ -18,8 +21,11 @@ class LostFoundPublicItem {
       description: json['description'] as String? ?? '',
       location: json['location'] as String? ?? '',
       imageUrl: json['image_url'] as String? ?? '',
+      itemType: json['item_type'] as String? ?? 'found',
       status: json['status'] as String? ?? 'open',
       userClaimStatus: json['user_claim_status'] as String? ?? '',
+      createdAt: DateTime.tryParse(json['created_at'] as String? ?? ''),
+      modifiedAt: DateTime.tryParse(json['modified_at'] as String? ?? ''),
     );
   }
 
@@ -29,8 +35,11 @@ class LostFoundPublicItem {
   final String description;
   final String location;
   final String imageUrl;
+  final String itemType;
   final String status;
   final String userClaimStatus;
+  final DateTime? createdAt;
+  final DateTime? modifiedAt;
 
   String get itemCode {
     if (displayCode.isNotEmpty) return displayCode;

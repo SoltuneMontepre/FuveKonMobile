@@ -61,6 +61,7 @@ abstract final class Routes {
   static const talent = '/talent';
   static const panel = '/panel';
   static const artbook = '/artbook';
+  static const artbookSubmit = '/artbook/submit';
   static const dealer = '/dealer';
   static const volunteer = '/volunteer';
 
@@ -101,6 +102,7 @@ abstract final class Routes {
     talent,
     panel,
     artbook,
+    artbookSubmit,
     dealer,
     volunteer,
     about,

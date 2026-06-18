@@ -278,6 +278,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get navIntroduction => 'Giới thiệu';
 
   @override
+  String get navArtbook => 'Conbook';
+
+  @override
   String get navFaq => 'FAQ';
 
   @override
@@ -285,6 +288,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get navLogin => 'Đăng nhập';
+
+  @override
+  String get navLogout => 'Đăng xuất';
 
   @override
   String get navHome => 'Trang chủ';
@@ -756,4 +762,135 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get faqLostFoundA4 =>
       'Staff cập nhật trạng thái (Lost / Found / Claimed) trên hệ thống. Bạn theo dõi tiến trình trong app hoặc liên hệ quầy.';
+
+  @override
+  String get artbookTitle => 'Conbook FUVEKON';
+
+  @override
+  String get artbookSubtitle => 'Hành trình Nghệ thuật - 2024';
+
+  @override
+  String get artbookDescription =>
+      'Cuốn sách tổng hợp hơn 50 tác phẩm nghệ thuật từ cộng đồng sáng tạo FUVEKON, được in trên giấy mỹ thuật cao cấp.';
+
+  @override
+  String get artbookPageCount => '120 Trang';
+
+  @override
+  String get artbookPaperType => 'Giấy Couche 150gsm';
+
+  @override
+  String get artbookSubmitCta => 'Gửi tác phẩm cho Conbook';
+
+  @override
+  String get artbookSubmitBack => 'QUAY LẠI';
+
+  @override
+  String get artbookSubmitTitle => 'Gửi Conbook';
+
+  @override
+  String get artbookSubmitIntro =>
+      'Nơi tôn vinh những tác phẩm xuất sắc. Hãy gửi kiệt tác của bạn để được BTC xem xét đưa vào cuốn Conbook FUVEKON.';
+
+  @override
+  String get artbookFormSectionTitle => 'Thông tin tác phẩm';
+
+  @override
+  String get artbookFieldTitle => 'Tên tác phẩm';
+
+  @override
+  String get artbookFieldTitleHint => 'Ví dụ: Giấc mơ chiều thu';
+
+  @override
+  String get artbookFieldAuthor => 'Tác giả / Bút danh';
+
+  @override
+  String get artbookFieldAuthorHint => 'Nhập bút danh của bạn';
+
+  @override
+  String get artbookFieldGenre => 'Thể loại';
+
+  @override
+  String get artbookFieldGenreHint => 'Chọn thể loại';
+
+  @override
+  String get artbookFieldDescription => 'Mô tả ý tưởng (Không bắt buộc)';
+
+  @override
+  String get artbookFieldDescriptionHint =>
+      'Chia sẻ câu chuyện đằng sau tác phẩm của bạn...';
+
+  @override
+  String get artbookFieldPortfolio => 'Link Portfolio';
+
+  @override
+  String get artbookFieldPortfolioHint => 'https://';
+
+  @override
+  String get artbookFieldPreview => 'Preview Tác phẩm';
+
+  @override
+  String get artbookFieldRequired => 'Vui lòng điền thông tin này';
+
+  @override
+  String get artbookUploadLabel => 'Kéo thả file hoặc Click để tải lên';
+
+  @override
+  String get artbookUploadHint => 'Hỗ trợ JPG, PNG, PDF. Tối đa 20MB.';
+
+  @override
+  String get artbookPreviewRequired => 'Vui lòng tải lên preview tác phẩm';
+
+  @override
+  String get artbookSubmitButton => 'Gửi tác phẩm cho Conbook';
+
+  @override
+  String get artbookRulesTitle => 'Quy định nộp bài';
+
+  @override
+  String get artbookRuleSizeTitle => 'KÍCH THƯỚC';
+
+  @override
+  String get artbookRuleSizeBody => 'A4 (210 x 297mm), lề an toàn 5mm.';
+
+  @override
+  String get artbookRuleFormatTitle => 'ĐỊNH DẠNG';
+
+  @override
+  String get artbookRuleFormatBody => 'Chế độ màu CMYK, tối thiểu 300dpi.';
+
+  @override
+  String get artbookRuleCopyrightTitle => 'BẢN QUYỀN';
+
+  @override
+  String get artbookRuleCopyrightBody =>
+      'Tác phẩm phải là nguyên bản, chưa từng xuất bản thương mại.';
+
+  @override
+  String get artbookDeadline => 'Hạn chót nộp tác phẩm: 20 Tháng 11, 2023';
+
+  @override
+  String get artbookLoginRequired =>
+      'Vui lòng đăng nhập để gửi tác phẩm Conbook';
+
+  @override
+  String get artbookSubmitSuccess => 'Đã gửi tác phẩm thành công!';
+
+  @override
+  String get artbookSubmitFailed => 'Không thể gửi tác phẩm. Vui lòng thử lại.';
+
+  @override
+  String get artbookGenreIllustration => 'Minh họa';
+
+  @override
+  String get artbookGenreComic => 'Truyện tranh';
+
+  @override
+  String get artbookGenrePhoto => 'Nhiếp ảnh';
+
+  @override
+  String get artbookGenreDigital => 'Digital Art';
+
+  @override
+  String get artbookGenreOther => 'Khác';
 }

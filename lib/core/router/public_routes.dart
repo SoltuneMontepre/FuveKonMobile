@@ -58,7 +58,14 @@ abstract final class PublicRoutes {
         ),
         GoRoute(
           path: Routes.artbook,
-          builder: (context, state) => const ArtbookSubmissionPage(),
+          builder: (context, state) => const ArtbookPage(),
+          routes: [
+            GoRoute(
+              path: 'submit',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) => const ArtbookSubmitPage(),
+            ),
+          ],
         ),
         GoRoute(
           path: Routes.dealer,
