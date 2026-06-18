@@ -86,4 +86,16 @@ class TicketRepositoryImpl implements TicketRepository {
       return Error(mapExceptionToFailure(error));
     }
   }
+
+  @override
+  Future<Result<UserTicket>> upgradeTicket(String newTierId) async {
+    try {
+      final ticket = await _remoteDataSource.upgradeTicket(newTierId);
+      return Success(ticket);
+    } on AppException catch (error) {
+      return Error(mapExceptionToFailure(error));
+    } catch (error) {
+      return Error(mapExceptionToFailure(error));
+    }
+  }
 }

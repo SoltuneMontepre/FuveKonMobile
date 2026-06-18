@@ -42,6 +42,8 @@ abstract final class Routes {
   static const account = '/account';
   static const accountSchedule = '/account/schedule';
   static const accountTicket = '/account/ticket';
+  static String accountTicketDetail(String id) => '/account/ticket/$id';
+  static const accountTicketUpgrade = '/account/ticket/upgrade';
   static const accountNotifications = '/account/notifications';
   static const accountProfile = '/account/profile';
   static const accountChangePassword = '/account/profile/change-password';

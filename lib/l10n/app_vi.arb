@@ -118,6 +118,50 @@
   "navNotifications": "Thông báo",
   "navAccount": "Tài khoản",
 
+  "myTicketsFilterActive": "Đang hiệu lực",
+  "myTicketsFilterUsed": "Đã dùng",
+  "myTicketsFilterAll": "Tất cả",
+  "myTicketsStatusActive": "Đang hiệu lực",
+  "myTicketsStatusUsed": "Đã dùng",
+  "myTicketsViewTicket": "Xem vé →",
+  "myTicketsEventDateRange": "20-22/10/2024",
+  "myTicketsEmptyTitle": "Bạn chưa có vé",
+  "myTicketsEmptySubtitle": "Mua vé để tham gia sự kiện.",
+  "myTicketsEmptyFilter": "Không có vé trong mục này",
+  "myTicketsBrowse": "Xem các hạng vé",
+
+  "eTicketEventLabel": "SỰ KIỆN",
+  "eTicketValid": "Hợp lệ",
+  "eTicketOwner": "Người sở hữu",
+  "eTicketTier": "Hạng vé",
+  "eTicketDay": "Ngày",
+  "eTicketScanHint": "Quét mã QR tại cổng kiểm soát",
+  "eTicketCodeLabel": "Mã vé",
+  "eTicketBenefitsTitle": "Quyền lợi vé {tier}",
+  "@eTicketBenefitsTitle": {
+    "placeholders": {
+      "tier": {"type": "String"}
+    }
+  },
+  "eTicketUpgrade": "Nâng cấp vé",
+  "eTicketSaveWallet": "Lưu vào ví Apple/Google",
+  "eTicketWalletSoon": "Tính năng lưu ví sẽ có sau.",
+
+  "ticketUpgradeTitle": "Nâng cấp hạng vé",
+  "ticketUpgradeCurrentLabel": "VÉ HIỆN TẠI CỦA BẠN",
+  "ticketUpgradeOptionsLabel": "Lựa chọn nâng cấp",
+  "ticketUpgradeExtraBenefits": "QUYỀN LỢI BỔ SUNG",
+  "ticketUpgradeTotalLabel": "TỔNG THANH TOÁN THÊM",
+  "ticketUpgradeContinue": "Tiếp tục nâng cấp",
+  "ticketUpgradeInfoNote": "Việc nâng cấp vé VIP lên Super VIP sẽ được hệ thống xử lý và xác nhận trong vòng 24h làm việc.",
+  "ticketUpgradeNoTicket": "Bạn chưa có vé để nâng cấp.",
+  "ticketUpgradeMaxTier": "Bạn đang ở hạng vé cao nhất ({tier}).",
+  "@ticketUpgradeMaxTier": {
+    "placeholders": {
+      "tier": {"type": "String"}
+    }
+  },
+
   "authHomeUpcomingBadge": "Sự kiện sắp diễn ra",
   "authHomeHeroTitle": "Lễ Hội Giao Lưu Văn Hóa Anime",
   "authHomeHeroSubtitle": "Khám phá không gian nghệ thuật và trải nghiệm độc đáo.",

@@ -662,6 +662,192 @@ abstract class AppLocalizations {
   /// **'Tài khoản'**
   String get navAccount;
 
+  /// No description provided for @myTicketsFilterActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang hiệu lực'**
+  String get myTicketsFilterActive;
+
+  /// No description provided for @myTicketsFilterUsed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã dùng'**
+  String get myTicketsFilterUsed;
+
+  /// No description provided for @myTicketsFilterAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả'**
+  String get myTicketsFilterAll;
+
+  /// No description provided for @myTicketsStatusActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang hiệu lực'**
+  String get myTicketsStatusActive;
+
+  /// No description provided for @myTicketsStatusUsed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã dùng'**
+  String get myTicketsStatusUsed;
+
+  /// No description provided for @myTicketsViewTicket.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem vé →'**
+  String get myTicketsViewTicket;
+
+  /// No description provided for @myTicketsEventDateRange.
+  ///
+  /// In vi, this message translates to:
+  /// **'20-22/10/2024'**
+  String get myTicketsEventDateRange;
+
+  /// No description provided for @myTicketsEmptyTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có vé'**
+  String get myTicketsEmptyTitle;
+
+  /// No description provided for @myTicketsEmptySubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua vé để tham gia sự kiện.'**
+  String get myTicketsEmptySubtitle;
+
+  /// No description provided for @myTicketsEmptyFilter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có vé trong mục này'**
+  String get myTicketsEmptyFilter;
+
+  /// No description provided for @myTicketsBrowse.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem các hạng vé'**
+  String get myTicketsBrowse;
+
+  /// No description provided for @eTicketEventLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'SỰ KIỆN'**
+  String get eTicketEventLabel;
+
+  /// No description provided for @eTicketValid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hợp lệ'**
+  String get eTicketValid;
+
+  /// No description provided for @eTicketOwner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người sở hữu'**
+  String get eTicketOwner;
+
+  /// No description provided for @eTicketTier.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạng vé'**
+  String get eTicketTier;
+
+  /// No description provided for @eTicketDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày'**
+  String get eTicketDay;
+
+  /// No description provided for @eTicketScanHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét mã QR tại cổng kiểm soát'**
+  String get eTicketScanHint;
+
+  /// No description provided for @eTicketCodeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã vé'**
+  String get eTicketCodeLabel;
+
+  /// No description provided for @eTicketBenefitsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền lợi vé {tier}'**
+  String eTicketBenefitsTitle(String tier);
+
+  /// No description provided for @eTicketUpgrade.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng cấp vé'**
+  String get eTicketUpgrade;
+
+  /// No description provided for @eTicketSaveWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu vào ví Apple/Google'**
+  String get eTicketSaveWallet;
+
+  /// No description provided for @eTicketWalletSoon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tính năng lưu ví sẽ có sau.'**
+  String get eTicketWalletSoon;
+
+  /// No description provided for @ticketUpgradeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng cấp hạng vé'**
+  String get ticketUpgradeTitle;
+
+  /// No description provided for @ticketUpgradeCurrentLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'VÉ HIỆN TẠI CỦA BẠN'**
+  String get ticketUpgradeCurrentLabel;
+
+  /// No description provided for @ticketUpgradeOptionsLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lựa chọn nâng cấp'**
+  String get ticketUpgradeOptionsLabel;
+
+  /// No description provided for @ticketUpgradeExtraBenefits.
+  ///
+  /// In vi, this message translates to:
+  /// **'QUYỀN LỢI BỔ SUNG'**
+  String get ticketUpgradeExtraBenefits;
+
+  /// No description provided for @ticketUpgradeTotalLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'TỔNG THANH TOÁN THÊM'**
+  String get ticketUpgradeTotalLabel;
+
+  /// No description provided for @ticketUpgradeContinue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục nâng cấp'**
+  String get ticketUpgradeContinue;
+
+  /// No description provided for @ticketUpgradeInfoNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Việc nâng cấp vé VIP lên Super VIP sẽ được hệ thống xử lý và xác nhận trong vòng 24h làm việc.'**
+  String get ticketUpgradeInfoNote;
+
+  /// No description provided for @ticketUpgradeNoTicket.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có vé để nâng cấp.'**
+  String get ticketUpgradeNoTicket;
+
+  /// No description provided for @ticketUpgradeMaxTier.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang ở hạng vé cao nhất ({tier}).'**
+  String ticketUpgradeMaxTier(String tier);
+
   /// No description provided for @authHomeUpcomingBadge.
   ///
   /// In vi, this message translates to:

@@ -308,6 +308,104 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navAccount => 'Account';
 
   @override
+  String get myTicketsFilterActive => 'Active';
+
+  @override
+  String get myTicketsFilterUsed => 'Used';
+
+  @override
+  String get myTicketsFilterAll => 'All';
+
+  @override
+  String get myTicketsStatusActive => 'Active';
+
+  @override
+  String get myTicketsStatusUsed => 'Used';
+
+  @override
+  String get myTicketsViewTicket => 'View ticket →';
+
+  @override
+  String get myTicketsEventDateRange => 'Oct 20–22, 2024';
+
+  @override
+  String get myTicketsEmptyTitle => 'You don\'t have a ticket';
+
+  @override
+  String get myTicketsEmptySubtitle => 'Buy a ticket to attend the event.';
+
+  @override
+  String get myTicketsEmptyFilter => 'No tickets in this tab';
+
+  @override
+  String get myTicketsBrowse => 'Browse ticket tiers';
+
+  @override
+  String get eTicketEventLabel => 'EVENT';
+
+  @override
+  String get eTicketValid => 'Valid';
+
+  @override
+  String get eTicketOwner => 'Owner';
+
+  @override
+  String get eTicketTier => 'Tier';
+
+  @override
+  String get eTicketDay => 'Date';
+
+  @override
+  String get eTicketScanHint => 'Scan the QR code at the entrance';
+
+  @override
+  String get eTicketCodeLabel => 'Ticket code';
+
+  @override
+  String eTicketBenefitsTitle(String tier) {
+    return '$tier ticket benefits';
+  }
+
+  @override
+  String get eTicketUpgrade => 'Upgrade ticket';
+
+  @override
+  String get eTicketSaveWallet => 'Save to Apple/Google Wallet';
+
+  @override
+  String get eTicketWalletSoon => 'Wallet save coming soon.';
+
+  @override
+  String get ticketUpgradeTitle => 'Upgrade ticket tier';
+
+  @override
+  String get ticketUpgradeCurrentLabel => 'YOUR CURRENT TICKET';
+
+  @override
+  String get ticketUpgradeOptionsLabel => 'Upgrade options';
+
+  @override
+  String get ticketUpgradeExtraBenefits => 'ADDITIONAL BENEFITS';
+
+  @override
+  String get ticketUpgradeTotalLabel => 'TOTAL ADDITIONAL PAYMENT';
+
+  @override
+  String get ticketUpgradeContinue => 'Continue upgrade';
+
+  @override
+  String get ticketUpgradeInfoNote =>
+      'Upgrading your ticket will be processed and confirmed within 24 business hours.';
+
+  @override
+  String get ticketUpgradeNoTicket => 'You don\'t have a ticket to upgrade.';
+
+  @override
+  String ticketUpgradeMaxTier(String tier) {
+    return 'You are already on the highest tier ($tier).';
+  }
+
+  @override
   String get authHomeUpcomingBadge => 'Upcoming events';
 
   @override
