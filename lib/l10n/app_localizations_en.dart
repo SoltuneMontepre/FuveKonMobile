@@ -278,6 +278,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navIntroduction => 'Introduction';
 
   @override
+  String get navArtbook => 'Conbook';
+
+  @override
   String get navFaq => 'FAQ';
 
   @override
@@ -285,6 +288,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navLogin => 'Sign in';
+
+  @override
+  String get navLogout => 'Sign out';
 
   @override
   String get navHome => 'Home';
@@ -875,4 +881,137 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get faqLostFoundA4 =>
       'Staff update status (Lost / Found / Claimed) in the system. Track progress in the app or contact the desk.';
+
+  @override
+  String get artbookTitle => 'FUVEKON Conbook';
+
+  @override
+  String get artbookSubtitle => 'Artistic Journey — 2024';
+
+  @override
+  String get artbookDescription =>
+      'A collection of over 50 artworks from the FUVEKON creative community, printed on premium art paper.';
+
+  @override
+  String get artbookPageCount => '120 Pages';
+
+  @override
+  String get artbookPaperType => '150gsm Couche paper';
+
+  @override
+  String get artbookSubmitCta => 'Submit artwork for Conbook';
+
+  @override
+  String get artbookSubmitBack => 'GO BACK';
+
+  @override
+  String get artbookSubmitTitle => 'Submit Conbook';
+
+  @override
+  String get artbookSubmitIntro =>
+      'A place to celebrate outstanding works. Send your masterpiece for the organizing committee to review for the FUVEKON Conbook.';
+
+  @override
+  String get artbookFormSectionTitle => 'Artwork information';
+
+  @override
+  String get artbookFieldTitle => 'Artwork title';
+
+  @override
+  String get artbookFieldTitleHint => 'e.g. Autumn daydream';
+
+  @override
+  String get artbookFieldAuthor => 'Author / Pen name';
+
+  @override
+  String get artbookFieldAuthorHint => 'Enter your pen name';
+
+  @override
+  String get artbookFieldGenre => 'Genre';
+
+  @override
+  String get artbookFieldGenreHint => 'Select a genre';
+
+  @override
+  String get artbookFieldDescription => 'Idea description (optional)';
+
+  @override
+  String get artbookFieldDescriptionHint =>
+      'Share the story behind your artwork...';
+
+  @override
+  String get artbookFieldPortfolio => 'Portfolio link';
+
+  @override
+  String get artbookFieldPortfolioHint => 'https://';
+
+  @override
+  String get artbookFieldPreview => 'Artwork preview';
+
+  @override
+  String get artbookFieldRequired => 'This field is required';
+
+  @override
+  String get artbookUploadLabel => 'Drag and drop or click to upload';
+
+  @override
+  String get artbookUploadHint => 'Supports JPG, PNG, PDF. Max 20MB.';
+
+  @override
+  String get artbookPreviewRequired => 'Please upload an artwork preview';
+
+  @override
+  String get artbookSubmitButton => 'Submit artwork for Conbook';
+
+  @override
+  String get artbookRulesTitle => 'Submission rules';
+
+  @override
+  String get artbookRuleSizeTitle => 'SIZE';
+
+  @override
+  String get artbookRuleSizeBody =>
+      'A4 (210 x 297mm) with a 5mm safety margin.';
+
+  @override
+  String get artbookRuleFormatTitle => 'FORMAT';
+
+  @override
+  String get artbookRuleFormatBody => 'CMYK color mode, minimum 300dpi.';
+
+  @override
+  String get artbookRuleCopyrightTitle => 'COPYRIGHT';
+
+  @override
+  String get artbookRuleCopyrightBody =>
+      'Must be original work that has never been commercially published.';
+
+  @override
+  String get artbookDeadline => 'Submission deadline: November 20, 2023';
+
+  @override
+  String get artbookLoginRequired =>
+      'Please sign in to submit your Conbook artwork';
+
+  @override
+  String get artbookSubmitSuccess => 'Artwork submitted successfully!';
+
+  @override
+  String get artbookSubmitFailed =>
+      'Could not submit artwork. Please try again.';
+
+  @override
+  String get artbookGenreIllustration => 'Illustration';
+
+  @override
+  String get artbookGenreComic => 'Comic';
+
+  @override
+  String get artbookGenrePhoto => 'Photography';
+
+  @override
+  String get artbookGenreDigital => 'Digital art';
+
+  @override
+  String get artbookGenreOther => 'Other';
 }

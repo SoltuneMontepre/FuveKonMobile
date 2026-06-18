@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/screens/contribute/contribute_pages.dart';
-import 'package:fuvekonmobile/screens/contribute/conbook_info_page.dart';
 import 'package:fuvekonmobile/screens/info/info_pages.dart';
 import 'package:fuvekonmobile/screens/public/public_pages.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/pages/explore_tickets_page.dart';
@@ -59,12 +58,12 @@ abstract final class PublicRoutes {
         ),
         GoRoute(
           path: Routes.artbook,
-          builder: (context, state) => const ConbookInfoPage(),
+          builder: (context, state) => const ArtbookPage(),
           routes: [
             GoRoute(
               path: 'submit',
               parentNavigatorKey: rootNavigatorKey,
-              builder: (context, state) => const ArtbookSubmissionPage(),
+              builder: (context, state) => const ArtbookSubmitPage(),
             ),
           ],
         ),

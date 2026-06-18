@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fuvekonmobile/core/api/conbook_api.dart';
 import 'package:fuvekonmobile/core/api/dealer_api.dart';
 import 'package:fuvekonmobile/core/api/panel_api.dart';
 import 'package:fuvekonmobile/core/api/talent_api.dart';
@@ -9,6 +8,9 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:go_router/go_router.dart';
+
+export 'artbook_page.dart';
+export 'artbook_submit_page.dart';
 
 /// Màn 46–48 — performance registration forms with mint card styling.
 class TalentRegistrationPage extends StatefulWidget {
@@ -202,123 +204,6 @@ class _PanelRegistrationPageState extends State<PanelRegistrationPage> {
               memberNameController: _memberNameController,
               enabled: !_isSubmitting,
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ArtbookSubmissionPage extends StatefulWidget {
-  const ArtbookSubmissionPage({super.key});
-
-  @override
-  State<ArtbookSubmissionPage> createState() => _ArtbookSubmissionPageState();
-}
-
-class _ArtbookSubmissionPageState extends State<ArtbookSubmissionPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _handleController = TextEditingController();
-  final _descController = TextEditingController();
-  final _imageUrlController = TextEditingController();
-  bool _isSubmitting = false;
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _handleController.dispose();
-    _descController.dispose();
-    _imageUrlController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submit() async {
-    if (!(_formKey.currentState?.validate() ?? false)) return;
-    setState(() => _isSubmitting = true);
-    try {
-      await sl<ConbookApi>().upload({
-        'title': _titleController.text.trim(),
-        'handle': _handleController.text.trim(),
-        'description': _descController.text.trim(),
-        'image_url': _imageUrlController.text.trim(),
-      });
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Đã gửi ảnh conbook')));
-      context.go(Routes.accountSubmissions);
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Không thể gửi: $e')));
-      }
-    } finally {
-      if (mounted) setState(() => _isSubmitting = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AppScrollPage(
-      title: 'Gửi Conbook',
-      footer: FuvePillButton(
-        label: _isSubmitting ? 'Đang gửi...' : 'Gửi conbook',
-        onPressed: _isSubmitting ? null : _submit,
-      ),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AppLabeledField(
-              label: 'Tiêu đề',
-              required: true,
-              field: TextFormField(
-                controller: _titleController,
-                enabled: !_isSubmitting,
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Nhập tiêu đề' : null,
-              ),
-            ),
-            const SizedBox(height: FuvekonSpacing.field),
-            AppLabeledField(
-              label: 'Handle / tên nghệ danh',
-              required: true,
-              field: TextFormField(
-                controller: _handleController,
-                enabled: !_isSubmitting,
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Nhập handle' : null,
-              ),
-            ),
-            const SizedBox(height: FuvekonSpacing.field),
-            AppLabeledField(
-              label: 'Mô tả',
-              field: TextFormField(
-                controller: _descController,
-                enabled: !_isSubmitting,
-                maxLines: 3,
-              ),
-            ),
-            const SizedBox(height: FuvekonSpacing.field),
-            AppLabeledField(
-              label: 'URL ảnh',
-              required: true,
-              field: TextFormField(
-                controller: _imageUrlController,
-                enabled: !_isSubmitting,
-                keyboardType: TextInputType.url,
-                validator: (v) {
-                  if (v == null || v.trim().isEmpty) return 'Nhập URL ảnh';
-                  if (!v.startsWith('http')) return 'URL không hợp lệ';
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(height: FuvekonSpacing.field),
-            const AppUploadZone(label: 'Hoặc tải ảnh lên (S3 — sắp có)'),
           ],
         ),
       ),

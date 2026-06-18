@@ -124,6 +124,7 @@ abstract final class Routes {
     talent,
     panel,
     artbook,
+    artbookSubmit,
     dealer,
     volunteer,
     about,

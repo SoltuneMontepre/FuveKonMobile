@@ -602,6 +602,12 @@ abstract class AppLocalizations {
   /// **'Giới thiệu'**
   String get navIntroduction;
 
+  /// No description provided for @navArtbook.
+  ///
+  /// In vi, this message translates to:
+  /// **'Conbook'**
+  String get navArtbook;
+
   /// No description provided for @navFaq.
   ///
   /// In vi, this message translates to:
@@ -619,6 +625,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đăng nhập'**
   String get navLogin;
+
+  /// No description provided for @navLogout.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng xuất'**
+  String get navLogout;
 
   /// No description provided for @navHome.
   ///
@@ -1711,6 +1723,258 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Staff cập nhật trạng thái (Lost / Found / Claimed) trên hệ thống. Bạn theo dõi tiến trình trong app hoặc liên hệ quầy.'**
   String get faqLostFoundA4;
+
+  /// No description provided for @artbookTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Conbook FUVEKON'**
+  String get artbookTitle;
+
+  /// No description provided for @artbookSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hành trình Nghệ thuật - 2024'**
+  String get artbookSubtitle;
+
+  /// No description provided for @artbookDescription.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuốn sách tổng hợp hơn 50 tác phẩm nghệ thuật từ cộng đồng sáng tạo FUVEKON, được in trên giấy mỹ thuật cao cấp.'**
+  String get artbookDescription;
+
+  /// No description provided for @artbookPageCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'120 Trang'**
+  String get artbookPageCount;
+
+  /// No description provided for @artbookPaperType.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giấy Couche 150gsm'**
+  String get artbookPaperType;
+
+  /// No description provided for @artbookSubmitCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi tác phẩm cho Conbook'**
+  String get artbookSubmitCta;
+
+  /// No description provided for @artbookSubmitBack.
+  ///
+  /// In vi, this message translates to:
+  /// **'QUAY LẠI'**
+  String get artbookSubmitBack;
+
+  /// No description provided for @artbookSubmitTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi Conbook'**
+  String get artbookSubmitTitle;
+
+  /// No description provided for @artbookSubmitIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nơi tôn vinh những tác phẩm xuất sắc. Hãy gửi kiệt tác của bạn để được BTC xem xét đưa vào cuốn Conbook FUVEKON.'**
+  String get artbookSubmitIntro;
+
+  /// No description provided for @artbookFormSectionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tin tác phẩm'**
+  String get artbookFormSectionTitle;
+
+  /// No description provided for @artbookFieldTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên tác phẩm'**
+  String get artbookFieldTitle;
+
+  /// No description provided for @artbookFieldTitleHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví dụ: Giấc mơ chiều thu'**
+  String get artbookFieldTitleHint;
+
+  /// No description provided for @artbookFieldAuthor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tác giả / Bút danh'**
+  String get artbookFieldAuthor;
+
+  /// No description provided for @artbookFieldAuthorHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập bút danh của bạn'**
+  String get artbookFieldAuthorHint;
+
+  /// No description provided for @artbookFieldGenre.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thể loại'**
+  String get artbookFieldGenre;
+
+  /// No description provided for @artbookFieldGenreHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn thể loại'**
+  String get artbookFieldGenreHint;
+
+  /// No description provided for @artbookFieldDescription.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô tả ý tưởng (Không bắt buộc)'**
+  String get artbookFieldDescription;
+
+  /// No description provided for @artbookFieldDescriptionHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ câu chuyện đằng sau tác phẩm của bạn...'**
+  String get artbookFieldDescriptionHint;
+
+  /// No description provided for @artbookFieldPortfolio.
+  ///
+  /// In vi, this message translates to:
+  /// **'Link Portfolio'**
+  String get artbookFieldPortfolio;
+
+  /// No description provided for @artbookFieldPortfolioHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'https://'**
+  String get artbookFieldPortfolioHint;
+
+  /// No description provided for @artbookFieldPreview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Preview Tác phẩm'**
+  String get artbookFieldPreview;
+
+  /// No description provided for @artbookFieldRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng điền thông tin này'**
+  String get artbookFieldRequired;
+
+  /// No description provided for @artbookUploadLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kéo thả file hoặc Click để tải lên'**
+  String get artbookUploadLabel;
+
+  /// No description provided for @artbookUploadHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hỗ trợ JPG, PNG, PDF. Tối đa 20MB.'**
+  String get artbookUploadHint;
+
+  /// No description provided for @artbookPreviewRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng tải lên preview tác phẩm'**
+  String get artbookPreviewRequired;
+
+  /// No description provided for @artbookSubmitButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi tác phẩm cho Conbook'**
+  String get artbookSubmitButton;
+
+  /// No description provided for @artbookRulesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quy định nộp bài'**
+  String get artbookRulesTitle;
+
+  /// No description provided for @artbookRuleSizeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'KÍCH THƯỚC'**
+  String get artbookRuleSizeTitle;
+
+  /// No description provided for @artbookRuleSizeBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'A4 (210 x 297mm), lề an toàn 5mm.'**
+  String get artbookRuleSizeBody;
+
+  /// No description provided for @artbookRuleFormatTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'ĐỊNH DẠNG'**
+  String get artbookRuleFormatTitle;
+
+  /// No description provided for @artbookRuleFormatBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chế độ màu CMYK, tối thiểu 300dpi.'**
+  String get artbookRuleFormatBody;
+
+  /// No description provided for @artbookRuleCopyrightTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'BẢN QUYỀN'**
+  String get artbookRuleCopyrightTitle;
+
+  /// No description provided for @artbookRuleCopyrightBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tác phẩm phải là nguyên bản, chưa từng xuất bản thương mại.'**
+  String get artbookRuleCopyrightBody;
+
+  /// No description provided for @artbookDeadline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn chót nộp tác phẩm: 20 Tháng 11, 2023'**
+  String get artbookDeadline;
+
+  /// No description provided for @artbookLoginRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng đăng nhập để gửi tác phẩm Conbook'**
+  String get artbookLoginRequired;
+
+  /// No description provided for @artbookSubmitSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi tác phẩm thành công!'**
+  String get artbookSubmitSuccess;
+
+  /// No description provided for @artbookSubmitFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể gửi tác phẩm. Vui lòng thử lại.'**
+  String get artbookSubmitFailed;
+
+  /// No description provided for @artbookGenreIllustration.
+  ///
+  /// In vi, this message translates to:
+  /// **'Minh họa'**
+  String get artbookGenreIllustration;
+
+  /// No description provided for @artbookGenreComic.
+  ///
+  /// In vi, this message translates to:
+  /// **'Truyện tranh'**
+  String get artbookGenreComic;
+
+  /// No description provided for @artbookGenrePhoto.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiếp ảnh'**
+  String get artbookGenrePhoto;
+
+  /// No description provided for @artbookGenreDigital.
+  ///
+  /// In vi, this message translates to:
+  /// **'Digital Art'**
+  String get artbookGenreDigital;
+
+  /// No description provided for @artbookGenreOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get artbookGenreOther;
 }
 
 class _AppLocalizationsDelegate

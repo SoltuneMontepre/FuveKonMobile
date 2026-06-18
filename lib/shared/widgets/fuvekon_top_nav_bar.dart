@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
+import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/theme_mode_notifier.dart';
+import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
 import 'package:go_router/go_router.dart';
 
 class FuvekonGuestDrawer extends StatelessWidget {
@@ -15,21 +19,44 @@ class FuvekonGuestDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = sl<AuthSessionNotifier>();
+
+    return ListenableBuilder(
+      listenable: auth,
+      builder: (context, _) {
+        return _FuvekonDrawerBody(isAuthenticated: auth.isAuthenticated);
+      },
+    );
+  }
+}
+
+class _FuvekonDrawerBody extends StatelessWidget {
+  const _FuvekonDrawerBody({required this.isAuthenticated});
+
+  final bool isAuthenticated;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
     final themeModeNotifier = sl<ThemeModeNotifier>();
     final location = GoRouterState.of(context).matchedLocation;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final homeRoute = isAuthenticated ? Routes.account : Routes.home;
 
     final navItems = [
-      (icon: Icons.home_outlined, label: l10n.navHome, route: Routes.home),
+      (icon: Icons.home_outlined, label: l10n.navHome, route: homeRoute),
       (
         icon: Icons.account_balance_outlined,
         label: l10n.navIntroduction,
         route: Routes.introduction,
       ),
+      (
+        icon: Icons.menu_book_outlined,
+        label: l10n.navArtbook,
+        route: Routes.artbook,
+      ),
       (icon: Icons.help_outline, label: l10n.navFaq, route: Routes.faq),
       (icon: Icons.description_outlined, label: l10n.navRules, route: Routes.tos),
-      (icon: Icons.login_outlined, label: l10n.navLogin, route: Routes.login),
     ];
 
     return Drawer(
@@ -61,11 +88,39 @@ class FuvekonGuestDrawer extends StatelessWidget {
                     _DrawerNavTile(
                       icon: item.icon,
                       label: item.label,
-                      selected: _isSelected(item.route, location),
+                      selected: _isSelected(
+                        item.route,
+                        location,
+                        isAuthenticated: isAuthenticated,
+                      ),
                       onTap: () {
                         Navigator.of(context).pop();
                         if (location != item.route) {
                           context.go(item.route);
+                        }
+                      },
+                    ),
+                  if (isAuthenticated)
+                    _DrawerNavTile(
+                      icon: Icons.person_outline,
+                      label: l10n.navAccount,
+                      selected: location.startsWith(Routes.accountProfile),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        if (location != Routes.accountProfile) {
+                          context.go(Routes.accountProfile);
+                        }
+                      },
+                    )
+                  else
+                    _DrawerNavTile(
+                      icon: Icons.login_outlined,
+                      label: l10n.navLogin,
+                      selected: FuvekonTopNavBar.isAuthRoute(location),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        if (!FuvekonTopNavBar.isAuthRoute(location)) {
+                          context.go(Routes.login);
                         }
                       },
                     ),
@@ -97,6 +152,26 @@ class FuvekonGuestDrawer extends StatelessWidget {
                     ),
                     onTap: themeModeNotifier.toggle,
                   ),
+                  if (isAuthenticated)
+                    ListTile(
+                      leading: Icon(
+                        Icons.logout,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                      title: Text(
+                        l10n.navLogout,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context
+                            .read<AuthBloc>()
+                            .add(const AuthEvent.logoutRequested());
+                      },
+                    ),
                 ],
               ),
             ),
@@ -106,9 +181,17 @@ class FuvekonGuestDrawer extends StatelessWidget {
     );
   }
 
-  static bool _isSelected(String route, String location) {
+  static bool _isSelected(
+    String route,
+    String location, {
+    required bool isAuthenticated,
+  }) {
     if (route == Routes.login) {
       return FuvekonTopNavBar.isAuthRoute(location);
+    }
+    if (isAuthenticated && route == Routes.account) {
+      return Routes.isAccountRoute(location) &&
+          !location.startsWith(Routes.accountProfile);
     }
     return location == route || location.startsWith('$route/');
   }
