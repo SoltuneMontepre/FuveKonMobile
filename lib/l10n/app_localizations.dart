@@ -158,6 +158,24 @@ abstract class AppLocalizations {
   /// **'Nơi kết nối cộng đồng sự kiện và nghệ thuật'**
   String get splashTagline;
 
+  /// No description provided for @startupHydrationFailedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể kết nối máy chủ'**
+  String get startupHydrationFailedTitle;
+
+  /// No description provided for @startupHydrationFailedBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiểm tra kết nối mạng hoặc cấu hình API, rồi thử lại.'**
+  String get startupHydrationFailedBody;
+
+  /// No description provided for @startupRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get startupRetry;
+
   /// No description provided for @brandTagline.
   ///
   /// In vi, this message translates to:

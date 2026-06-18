@@ -41,6 +41,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get splashTagline => 'Where event communities and art connect';
 
   @override
+  String get startupHydrationFailedTitle => 'Could not connect to the server';
+
+  @override
+  String get startupHydrationFailedBody =>
+      'Check your internet connection or API settings, then try again.';
+
+  @override
+  String get startupRetry => 'Try again';
+
+  @override
   String get brandTagline => 'Professional event information portal';
 
   @override

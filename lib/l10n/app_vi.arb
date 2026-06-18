@@ -19,6 +19,9 @@
   "themeSwitchToDark": "Chế độ tối",
 
   "splashTagline": "Nơi kết nối cộng đồng sự kiện và nghệ thuật",
+  "startupHydrationFailedTitle": "Không thể kết nối máy chủ",
+  "startupHydrationFailedBody": "Kiểm tra kết nối mạng hoặc cấu hình API, rồi thử lại.",
+  "startupRetry": "Thử lại",
 
   "brandTagline": "Cổng thông tin sự kiện chuyên nghiệp",
 

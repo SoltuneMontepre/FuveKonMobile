@@ -48,8 +48,14 @@ class _AdminShellState extends State<AdminShell> {
       isAdmin: _auth.isAdmin,
       hasPermission: _auth.hasPermission,
     );
+    if (branch == fallback) return;
+
     widget.navigationShell.goBranch(fallback);
-    context.go(UserPermissions.routeForBranch(fallback));
+    final targetRoute = UserPermissions.routeForBranch(fallback);
+    final currentLocation = GoRouterState.of(context).matchedLocation;
+    if (currentLocation != targetRoute) {
+      context.go(targetRoute);
+    }
   }
 
   @override

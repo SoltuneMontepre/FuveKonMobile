@@ -41,6 +41,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get splashTagline => 'Nơi kết nối cộng đồng sự kiện và nghệ thuật';
 
   @override
+  String get startupHydrationFailedTitle => 'Không thể kết nối máy chủ';
+
+  @override
+  String get startupHydrationFailedBody =>
+      'Kiểm tra kết nối mạng hoặc cấu hình API, rồi thử lại.';
+
+  @override
+  String get startupRetry => 'Thử lại';
+
+  @override
   String get brandTagline => 'Cổng thông tin sự kiện chuyên nghiệp';
 
   @override

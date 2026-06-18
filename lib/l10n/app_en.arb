@@ -14,6 +14,9 @@
   "themeSwitchToDark": "Dark mode",
 
   "splashTagline": "Where event communities and art connect",
+  "startupHydrationFailedTitle": "Could not connect to the server",
+  "startupHydrationFailedBody": "Check your internet connection or API settings, then try again.",
+  "startupRetry": "Try again",
 
   "brandTagline": "Professional event information portal",
 
