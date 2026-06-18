@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Runtime config loaded from `.env` (see `.env.example`).
@@ -19,8 +20,24 @@ abstract final class AppConfig {
   }
 
   /// Fuvekon general API: `https://api.fuve.vn/api/general/v1`
-  static String get baseUrl =>
-      _read('BASE_URL', defaultValue: 'https://api.fuve.vn/api/general/v1');
+  static String get baseUrl => _resolveDevApiHost(
+        _read('BASE_URL', defaultValue: 'https://api.fuve.vn/api/general/v1'),
+      );
+
+  /// Android emulator loopback is not the host machine; map dev localhost URLs.
+  static String _resolveDevApiHost(String url) {
+    if (kIsWeb || defaultTargetPlatform != TargetPlatform.android) {
+      return url;
+    }
+
+    final uri = Uri.tryParse(url);
+    if (uri == null) return url;
+
+    const loopbackHosts = {'localhost', '127.0.0.1'};
+    if (!loopbackHosts.contains(uri.host)) return url;
+
+    return uri.replace(host: '10.0.2.2').toString();
+  }
 
   /// Fuvekon Next.js site (used for non-API web assets if needed).
   static String get webBaseUrl =>

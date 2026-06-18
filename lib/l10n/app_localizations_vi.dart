@@ -432,6 +432,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get authHomeBuyTicket => 'Mua vé';
 
   @override
+  String get authHomeViewDetails => 'Xem chi tiết';
+
+  @override
+  String get authHomeViewTickets => 'Xem vé';
+
+  @override
   String get authHomeNotificationsEmpty => 'Chưa có thông báo mới.';
 
   @override

@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/features/schedule/domain/entities/featured_event_summary.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_section_header.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:intl/intl.dart';
 class AuthenticatedHomePage extends StatelessWidget {
   const AuthenticatedHomePage({super.key});
 
   static const heroBackgroundAsset = 'assets/images/background-trang-chu.png';
-  static const featuredEventAsset = 'assets/images/event.png';
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class AuthenticatedHomePage extends StatelessWidget {
                   const SizedBox(height: 16),
                   _FeaturedEventCard(
                     l10n: l10n,
-                    onBuyTicket: () => context.push(Routes.ticketPurchase),
+                    event: kHomeFeaturedEvent,
                   ),
                 ],
               ),
@@ -449,16 +449,24 @@ class _SearchField extends StatelessWidget {
 class _FeaturedEventCard extends StatelessWidget {
   const _FeaturedEventCard({
     required this.l10n,
-    required this.onBuyTicket,
+    required this.event,
   });
 
   final AppLocalizations l10n;
-  final VoidCallback onBuyTicket;
+  final FeaturedEventSummary event;
+
+  void _openEventDetail(BuildContext context) {
+    context.push(Routes.accountScheduleEvent(event.id));
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isPast = event.isPast;
+    final dateLabel = _formatFeaturedDateRange(context, event);
+
     return FuveMintCard(
       padding: EdgeInsets.zero,
+      onTap: () => _openEventDetail(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -471,7 +479,7 @@ class _FeaturedEventCard extends StatelessWidget {
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Image.asset(
-                    AuthenticatedHomePage.featuredEventAsset,
+                    event.imageAsset,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => ColoredBox(
                       color: FuvekonColors.surfaceContainer,
@@ -525,7 +533,7 @@ class _FeaturedEventCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  l10n.authHomeFeaturedEventTitle,
+                  event.title,
                   style: const TextStyle(
                     color: FuvekonColors.onSageGreen,
                     fontSize: 17,
@@ -535,17 +543,23 @@ class _FeaturedEventCard extends StatelessWidget {
                 const SizedBox(height: 10),
                 _MetaRow(
                   icon: Icons.calendar_today_outlined,
-                  label: l10n.authHomeFeaturedEventDate,
+                  label: dateLabel,
                 ),
                 const SizedBox(height: 6),
                 _MetaRow(
                   icon: Icons.location_on_outlined,
-                  label: l10n.authHomeFeaturedEventLocation,
+                  label: event.locationLabel,
                 ),
                 const SizedBox(height: 16),
                 FuvePillButton(
-                  label: l10n.authHomeBuyTicket,
-                  onPressed: onBuyTicket,
+                  label: isPast ? l10n.authHomeViewDetails : l10n.authHomeBuyTicket,
+                  onPressed: () {
+                    if (isPast) {
+                      _openEventDetail(context);
+                    } else {
+                      context.push(Routes.ticketPurchase);
+                    }
+                  },
                 ),
               ],
             ),
@@ -554,6 +568,24 @@ class _FeaturedEventCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String _formatFeaturedDateRange(
+  BuildContext context,
+  FeaturedEventSummary event,
+) {
+  final locale = Localizations.localeOf(context).toString();
+  final monthYear = DateFormat('MMMM y', locale).format(event.startAt);
+  if (event.startAt.year == event.endAt.year &&
+      event.startAt.month == event.endAt.month &&
+      event.startAt.day != event.endAt.day) {
+    return '${event.startAt.day} - ${event.endAt.day} $monthYear';
+  }
+  final format = DateFormat('d MMMM y', locale);
+  if (event.startAt == event.endAt) {
+    return format.format(event.startAt);
+  }
+  return '${format.format(event.startAt)} – ${format.format(event.endAt)}';
 }
 
 class _MetaRow extends StatelessWidget {

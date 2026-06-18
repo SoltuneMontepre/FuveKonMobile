@@ -1,5 +1,6 @@
 import 'package:fuvekonmobile/core/errors/failures.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
+import 'package:fuvekonmobile/features/schedule/domain/entities/featured_event_summary.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/itinerary_item.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/schedule_activity.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/schedule_event.dart';
@@ -207,12 +208,14 @@ class MockScheduleRepository implements ScheduleRepository {
 
     _event = ScheduleEvent(
       id: scheduleEventId,
-      name: 'FUVEKON 2026',
-      description:
-          'Lễ hội giao lưu văn hóa anime & furry lớn nhất miền Nam — 2 ngày panel, talent, dealer và cosplay.',
-      startAt: day1,
-      endAt: day2,
+      name: kHomeFeaturedEvent.title,
+      description: kHomeFeaturedEvent.description,
+      startAt: kHomeFeaturedEvent.startAt,
+      endAt: kHomeFeaturedEvent.endAt,
       venues: _venues,
+      locationLabel: kHomeFeaturedEvent.locationLabel,
+      tags: kHomeFeaturedEvent.tags,
+      heroImageAsset: kHomeFeaturedEvent.imageAsset,
     );
   }
 

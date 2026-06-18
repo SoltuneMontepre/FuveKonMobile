@@ -9,6 +9,9 @@ class ScheduleEvent extends Equatable {
     required this.startAt,
     required this.endAt,
     this.venues = const [],
+    this.locationLabel = '',
+    this.tags = const [],
+    this.heroImageAsset = 'assets/images/event.png',
   });
 
   final String id;
@@ -17,7 +20,22 @@ class ScheduleEvent extends Equatable {
   final DateTime startAt;
   final DateTime endAt;
   final List<Venue> venues;
+  final String locationLabel;
+  final List<String> tags;
+  final String heroImageAsset;
+
+  bool get isPast => endAt.isBefore(DateTime.now());
 
   @override
-  List<Object?> get props => [id, name, description, startAt, endAt, venues];
+  List<Object?> get props => [
+        id,
+        name,
+        description,
+        startAt,
+        endAt,
+        venues,
+        locationLabel,
+        tags,
+        heroImageAsset,
+      ];
 }

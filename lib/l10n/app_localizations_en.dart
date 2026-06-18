@@ -432,6 +432,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authHomeBuyTicket => 'Buy tickets';
 
   @override
+  String get authHomeViewDetails => 'View details';
+
+  @override
+  String get authHomeViewTickets => 'View tickets';
+
+  @override
   String get authHomeNotificationsEmpty => 'No new notifications yet.';
 
   @override

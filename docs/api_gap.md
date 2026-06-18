@@ -2,6 +2,20 @@
 
 This document tracks backend endpoints that the mobile client needs but are missing, incomplete, or not yet mapped in the Flutter data layer. Phase 2 schedule/itinerary work uses mock data until these gaps are closed.
 
+## Featured events (home — Màn 12 → Màn 13)
+
+| Need | Current API | Gap | Mobile behavior |
+|------|-------------|-----|-----------------|
+| Home featured event card | — | No `GET /events/featured` (or equivalent); no `hero_image`, `tags`, or `location_label` on `GET /schedules` | `kHomeFeaturedEvent` const in `featured_event_summary.dart`; CTA uses `endAt < now` client-side |
+| Event detail marketing payload | `GET /schedules/:id` | Returns schedule shape only (`name`, `start_at`, `end_at`, `venues`); missing hero image and tags | `EventDetailPage` loads `ScheduleRepository` (mock includes extended fields) |
+
+### Suggested backend contract (featured events)
+
+```
+GET /events/featured              → { id, title, description, location_label, start_at, end_at, hero_image_url, tags[] }
+GET /schedules/{id}               → extend with hero_image_url, tags[], location_label (or alias as event detail)
+```
+
 ## Schedule (public)
 
 | Need | Current API | Gap | Mobile stub |

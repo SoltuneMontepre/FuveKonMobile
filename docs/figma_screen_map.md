@@ -7,7 +7,7 @@ Figma file: [FUVE-for-PRM](https://www.figma.com/design/yzSZQWX1PB79nSbNMbKUXj/F
 | Màn 12 | Trang chủ | TBD | `/account` | `lib/screens/account/pages/authenticated_home_page.dart` |
 | Màn 16 | Lịch trình tổng | TBD | `/account/schedule` | `lib/features/schedule/presentation/pages/schedule_page.dart` |
 | Màn 17 | Chi tiết hoạt động | TBD | `/account/schedule/activity/:id` | `lib/features/schedule/presentation/pages/activity_detail_page.dart` |
-| Màn 13 | Chi tiết sự kiện | TBD | `/account/schedule/event/:id` | `lib/features/schedule/presentation/pages/event_detail_page.dart` |
+| Màn 13 | Chi tiết sự kiện | `3093:3028` | `/account/schedule/event/:id` | `lib/features/schedule/presentation/pages/event_detail_page.dart` |
 | Màn 14 | Bản đồ | TBD | `/account/schedule/map` | `lib/features/schedule/presentation/pages/venue_map_page.dart` |
 | Màn 15 | Chi tiết địa điểm | TBD | `/account/schedule/venue/:id` | `lib/features/schedule/presentation/pages/venue_detail_page.dart` |
 | Màn 20 | Lịch trình cá nhân | TBD | `/account/schedule/my` | `lib/features/schedule/presentation/pages/my_itinerary_page.dart` |
