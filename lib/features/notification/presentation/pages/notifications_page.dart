@@ -41,35 +41,34 @@ class _NotificationsView extends StatelessWidget {
             NotificationListInitial() || NotificationListLoading() =>
               const Center(child: CircularProgressIndicator()),
             NotificationListEmpty() => Padding(
-                padding: const EdgeInsets.all(FuvekonSpacing.page),
-                child: EmptyState(
-                  title: l10n.navNotifications,
-                  subtitle: l10n.authHomeNotificationsEmpty,
-                  icon: Icons.notifications_outlined,
-                ),
+              padding: const EdgeInsets.all(FuvekonSpacing.page),
+              child: EmptyState(
+                title: l10n.navNotifications,
+                subtitle: l10n.authHomeNotificationsEmpty,
+                icon: Icons.notifications_outlined,
               ),
+            ),
             NotificationListLoaded(:final items) => RefreshIndicator(
-                onRefresh: () => context.read<NotificationListCubit>().refresh(),
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(FuvekonSpacing.page),
-                  itemCount: items.length,
-                  separatorBuilder: (_, __) =>
-                      const SizedBox(height: FuvekonSpacing.stackGapMd),
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    return NotificationListCard(
-                      item: item,
-                      onTap: () => context.push(
-                        Routes.accountNotificationDetail(item.id),
-                      ),
-                    );
-                  },
-                ),
+              onRefresh: () => context.read<NotificationListCubit>().refresh(),
+              child: ListView.separated(
+                padding: const EdgeInsets.all(FuvekonSpacing.page),
+                itemCount: items.length,
+                separatorBuilder: (_, _) =>
+                    const SizedBox(height: FuvekonSpacing.stackGapMd),
+                itemBuilder: (context, index) {
+                  final item = items[index];
+                  return NotificationListCard(
+                    item: item,
+                    onTap: () =>
+                        context.push(Routes.accountNotificationDetail(item.id)),
+                  );
+                },
               ),
+            ),
             NotificationListFailure(:final message) => _NotificationsError(
-                message: message,
-                onRetry: () => context.read<NotificationListCubit>().load(),
-              ),
+              message: message,
+              onRetry: () => context.read<NotificationListCubit>().load(),
+            ),
           };
         },
       ),
@@ -78,10 +77,7 @@ class _NotificationsView extends StatelessWidget {
 }
 
 class _NotificationsError extends StatelessWidget {
-  const _NotificationsError({
-    required this.message,
-    required this.onRetry,
-  });
+  const _NotificationsError({required this.message, required this.onRetry});
 
   final String message;
   final VoidCallback onRetry;

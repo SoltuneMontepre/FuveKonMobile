@@ -23,7 +23,9 @@ class AccountPanelPage extends StatelessWidget {
   static Future<List<Map<String, dynamic>>> _loadPanels() async {
     final service = sl<AccountSubmissionsService>();
     final items = await service.getPanels();
-    return items.map((e) => {'id': e.id, 'title': e.title, 'status': e.status}).toList();
+    return items
+        .map((e) => {'id': e.id, 'title': e.title, 'status': e.status})
+        .toList();
   }
 }
 
@@ -65,7 +67,9 @@ class AccountTalentPage extends StatelessWidget {
   static Future<List<Map<String, dynamic>>> _loadTalents() async {
     final service = sl<AccountSubmissionsService>();
     final items = await service.getTalents();
-    return items.map((e) => {'id': e.id, 'title': e.title, 'status': e.status}).toList();
+    return items
+        .map((e) => {'id': e.id, 'title': e.title, 'status': e.status})
+        .toList();
   }
 }
 
@@ -107,7 +111,9 @@ class AccountConbookPage extends StatelessWidget {
   static Future<List<Map<String, dynamic>>> _loadConbooks() async {
     final service = sl<AccountSubmissionsService>();
     final items = await service.getConbooks();
-    return items.map((e) => {'id': e.id, 'title': e.title, 'status': e.status}).toList();
+    return items
+        .map((e) => {'id': e.id, 'title': e.title, 'status': e.status})
+        .toList();
   }
 }
 
@@ -149,7 +155,7 @@ class _SubmissionListPage extends StatefulWidget {
 }
 
 class _SubmissionListPageState extends State<_SubmissionListPage> {
-  late Future<List<Map<String, dynamic>>> _future = widget.load();
+  late final Future<List<Map<String, dynamic>>> _future = widget.load();
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +180,8 @@ class _SubmissionListPageState extends State<_SubmissionListPage> {
           return ListView.separated(
             padding: const EdgeInsets.all(FuvekonSpacing.page),
             itemCount: items.length,
-            separatorBuilder: (_, __) => const SizedBox(height: FuvekonSpacing.stackGapMd),
+            separatorBuilder: (_, _) =>
+                const SizedBox(height: FuvekonSpacing.stackGapMd),
             itemBuilder: (context, index) {
               final item = items[index];
               final status = item['status'] as String? ?? 'pending';

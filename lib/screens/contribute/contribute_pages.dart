@@ -61,9 +61,9 @@ class _TalentRegistrationPageState extends State<TalentRegistrationPage> {
       });
       if (!mounted) return;
       if (response.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đã gửi hồ sơ talent')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Đã gửi hồ sơ talent')));
         context.go(Routes.accountSubmissions);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -72,9 +72,9 @@ class _TalentRegistrationPageState extends State<TalentRegistrationPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Không thể gửi: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Không thể gửi: $e')));
       }
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
@@ -85,6 +85,10 @@ class _TalentRegistrationPageState extends State<TalentRegistrationPage> {
   Widget build(BuildContext context) {
     return AppScrollPage(
       title: 'Đăng ký Talent',
+      footer: FuvePillButton(
+        label: _isSubmitting ? 'Đang gửi...' : 'Gửi hồ sơ talent',
+        onPressed: _isSubmitting ? null : _submit,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -101,10 +105,6 @@ class _TalentRegistrationPageState extends State<TalentRegistrationPage> {
             ),
           ],
         ),
-      ),
-      footer: FuvePillButton(
-        label: _isSubmitting ? 'Đang gửi...' : 'Gửi hồ sơ talent',
-        onPressed: _isSubmitting ? null : _submit,
       ),
     );
   }
@@ -160,9 +160,9 @@ class _PanelRegistrationPageState extends State<PanelRegistrationPage> {
       });
       if (!mounted) return;
       if (response.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đã gửi hồ sơ panel')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Đã gửi hồ sơ panel')));
         context.go(Routes.accountSubmissions);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -171,9 +171,9 @@ class _PanelRegistrationPageState extends State<PanelRegistrationPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Không thể gửi: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Không thể gửi: $e')));
       }
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
@@ -184,6 +184,10 @@ class _PanelRegistrationPageState extends State<PanelRegistrationPage> {
   Widget build(BuildContext context) {
     return AppScrollPage(
       title: 'Đăng ký Panel',
+      footer: FuvePillButton(
+        label: _isSubmitting ? 'Đang gửi...' : 'Gửi hồ sơ panel',
+        onPressed: _isSubmitting ? null : _submit,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -200,10 +204,6 @@ class _PanelRegistrationPageState extends State<PanelRegistrationPage> {
             ),
           ],
         ),
-      ),
-      footer: FuvePillButton(
-        label: _isSubmitting ? 'Đang gửi...' : 'Gửi hồ sơ panel',
-        onPressed: _isSubmitting ? null : _submit,
       ),
     );
   }
@@ -244,15 +244,15 @@ class _ArtbookSubmissionPageState extends State<ArtbookSubmissionPage> {
         'image_url': _imageUrlController.text.trim(),
       });
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Đã gửi ảnh conbook')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Đã gửi ảnh conbook')));
       context.go(Routes.accountSubmissions);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Không thể gửi: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Không thể gửi: $e')));
       }
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
@@ -263,6 +263,10 @@ class _ArtbookSubmissionPageState extends State<ArtbookSubmissionPage> {
   Widget build(BuildContext context) {
     return AppScrollPage(
       title: 'Gửi Conbook',
+      footer: FuvePillButton(
+        label: _isSubmitting ? 'Đang gửi...' : 'Gửi conbook',
+        onPressed: _isSubmitting ? null : _submit,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -318,10 +322,6 @@ class _ArtbookSubmissionPageState extends State<ArtbookSubmissionPage> {
           ],
         ),
       ),
-      footer: FuvePillButton(
-        label: _isSubmitting ? 'Đang gửi...' : 'Gửi conbook',
-        onPressed: _isSubmitting ? null : _submit,
-      ),
     );
   }
 }
@@ -359,9 +359,9 @@ class _DealerRegistrationPageState extends State<DealerRegistrationPage> {
       });
       if (!mounted) return;
       if (response.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đã gửi đăng ký dealer')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Đã gửi đăng ký dealer')));
         context.go(Routes.accountDealer);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -370,9 +370,9 @@ class _DealerRegistrationPageState extends State<DealerRegistrationPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Không thể gửi: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Không thể gửi: $e')));
       }
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
@@ -383,6 +383,10 @@ class _DealerRegistrationPageState extends State<DealerRegistrationPage> {
   Widget build(BuildContext context) {
     return AppScrollPage(
       title: 'Đăng ký Dealer',
+      footer: FuvePillButton(
+        label: _isSubmitting ? 'Đang gửi...' : 'Gửi đăng ký',
+        onPressed: _isSubmitting ? null : _submit,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -394,8 +398,9 @@ class _DealerRegistrationPageState extends State<DealerRegistrationPage> {
               field: TextFormField(
                 controller: _nameController,
                 enabled: !_isSubmitting,
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Nhập tên gian hàng' : null,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? 'Nhập tên gian hàng'
+                    : null,
               ),
             ),
             const SizedBox(height: FuvekonSpacing.field),
@@ -427,10 +432,6 @@ class _DealerRegistrationPageState extends State<DealerRegistrationPage> {
             ),
           ],
         ),
-      ),
-      footer: FuvePillButton(
-        label: _isSubmitting ? 'Đang gửi...' : 'Gửi đăng ký',
-        onPressed: _isSubmitting ? null : _submit,
       ),
     );
   }

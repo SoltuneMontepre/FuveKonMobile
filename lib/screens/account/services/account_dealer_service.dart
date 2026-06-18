@@ -52,9 +52,9 @@ class DealerBoothInfo {
           : const [],
       staff: staffs is List
           ? staffs
-              .whereType<Map<String, dynamic>>()
-              .map(DealerStaffMember.fromJson)
-              .toList()
+                .whereType<Map<String, dynamic>>()
+                .map(DealerStaffMember.fromJson)
+                .toList()
           : const [],
     );
   }
@@ -131,7 +131,7 @@ class AccountDealerService {
     description: 'Original prints, badges, and commissions.',
     boothNumber: 'A-12',
     isVerified: true,
-    priceSheets: const [],
+    priceSheets: [],
     staff: [
       DealerStaffMember(
         id: 'staff-1',

@@ -179,7 +179,8 @@ class MockScheduleRepository implements ScheduleRepository {
         id: 'act-talent-final',
         scheduleEventId: scheduleEventId,
         title: 'Talent Show — Chung kết',
-        description: 'Chung kết Talent Show ngày 2 với ban giám khảo chuyên môn và trao giải.',
+        description:
+            'Chung kết Talent Show ngày 2 với ban giám khảo chuyên môn và trao giải.',
         kind: ScheduleActivityKind.talent,
         startAt: DateTime(day2.year, day2.month, day2.day, 14, 0),
         endAt: DateTime(day2.year, day2.month, day2.day, 16, 30),
@@ -192,7 +193,8 @@ class MockScheduleRepository implements ScheduleRepository {
         id: 'act-closing',
         scheduleEventId: scheduleEventId,
         title: 'Lễ bế mạc',
-        description: 'Tổng kết sự kiện, cảm ơn nhà tài trợ và hẹn gặp lại FUVEKON 2027.',
+        description:
+            'Tổng kết sự kiện, cảm ơn nhà tài trợ và hẹn gặp lại FUVEKON 2027.',
         kind: ScheduleActivityKind.ceremony,
         startAt: DateTime(day2.year, day2.month, day2.day, 17, 0),
         endAt: DateTime(day2.year, day2.month, day2.day, 17, 45),
@@ -336,9 +338,7 @@ class MockScheduleRepository implements ScheduleRepository {
     }
 
     if (conflict != null && !replaceConflict) {
-      return Error(
-        ValidationFailure('Conflicts with "${conflict.title}"'),
-      );
+      return Error(ValidationFailure('Conflicts with "${conflict.title}"'));
     }
 
     if (conflict != null && replaceConflict) {
@@ -346,7 +346,7 @@ class MockScheduleRepository implements ScheduleRepository {
     }
 
     final item = ItineraryItem(
-      id: 'it-${activityId}-${DateTime.now().millisecondsSinceEpoch}',
+      id: 'it-$activityId-${DateTime.now().millisecondsSinceEpoch}',
       activityId: activityId,
       activity: activity,
       addedAt: DateTime.now(),

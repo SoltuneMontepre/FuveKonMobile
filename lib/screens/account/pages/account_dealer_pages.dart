@@ -125,14 +125,21 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
                     children: [
                       ListTile(
                         contentPadding: EdgeInsets.zero,
-                        leading: Icon(Icons.people_outline, color: context.fuvekonTheme.contentOnCard),
+                        leading: Icon(
+                          Icons.people_outline,
+                          color: context.fuvekonTheme.contentOnCard,
+                        ),
                         title: Text(
                           'Nhân viên gian hàng',
-                          style: TextStyle(color: context.fuvekonTheme.contentOnCard),
+                          style: TextStyle(
+                            color: context.fuvekonTheme.contentOnCard,
+                          ),
                         ),
                         subtitle: Text(
                           '${booth.staff.length} thành viên',
-                          style: TextStyle(color: context.fuvekonTheme.contentOnCardMuted),
+                          style: TextStyle(
+                            color: context.fuvekonTheme.contentOnCardMuted,
+                          ),
                         ),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () => context.push(
@@ -167,7 +174,10 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
           maxLength: 6,
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Hủy')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Hủy'),
+          ),
           FilledButton(
             onPressed: () async {
               try {
@@ -175,9 +185,9 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
                 if (context.mounted) Navigator.pop(context, true);
               } catch (e) {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('$e')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('$e')));
                 }
               }
             },
@@ -207,7 +217,11 @@ class _BoothNumberBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.storefront, size: 16, color: context.fuvekonTheme.contentOnCard),
+          Icon(
+            Icons.storefront,
+            size: 16,
+            color: context.fuvekonTheme.contentOnCard,
+          ),
           const SizedBox(width: 6),
           Text(
             'Mã gian: $number',
@@ -234,7 +248,7 @@ class AccountDealerStaffPage extends StatefulWidget {
 
 class _AccountDealerStaffPageState extends State<AccountDealerStaffPage> {
   final _service = sl<AccountDealerService>();
-  late List<DealerStaffMember> _staff = List.of(widget.booth.staff);
+  late final List<DealerStaffMember> _staff = List.of(widget.booth.staff);
 
   Future<void> _removeStaff(DealerStaffMember member) async {
     if (member.isOwner) return;
@@ -244,8 +258,14 @@ class _AccountDealerStaffPageState extends State<AccountDealerStaffPage> {
         title: const Text('Xóa nhân viên?'),
         content: Text('Gỡ ${member.userName} khỏi gian hàng?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Hủy')),
-          FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('Xóa')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Hủy'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Xóa'),
+          ),
         ],
       ),
     );
@@ -255,15 +275,15 @@ class _AccountDealerStaffPageState extends State<AccountDealerStaffPage> {
       await _service.removeStaff(userId: member.userId);
       setState(() => _staff.removeWhere((s) => s.id == member.id));
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đã xóa nhân viên')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Đã xóa nhân viên')));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('$e')));
       }
     }
   }
@@ -307,8 +327,9 @@ class _AccountDealerStaffPageState extends State<AccountDealerStaffPage> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundColor:
-                          FuvekonColors.premiumPrimary.withValues(alpha: 0.25),
+                      backgroundColor: FuvekonColors.premiumPrimary.withValues(
+                        alpha: 0.25,
+                      ),
                       child: Text(
                         member.userName.isNotEmpty
                             ? member.userName[0].toUpperCase()
@@ -330,16 +351,25 @@ class _AccountDealerStaffPageState extends State<AccountDealerStaffPage> {
                           ),
                           Text(
                             member.userEmail,
-                            style: TextStyle(color: ext.contentOnCardMuted, fontSize: 12),
+                            style: TextStyle(
+                              color: ext.contentOnCardMuted,
+                              fontSize: 12,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     if (member.isOwner)
-                      const FuveStatusBadge(label: 'Owner', variant: FuveStatusBadgeVariant.success)
+                      const FuveStatusBadge(
+                        label: 'Owner',
+                        variant: FuveStatusBadgeVariant.success,
+                      )
                     else
                       IconButton(
-                        icon: Icon(Icons.person_remove_outlined, color: ext.contentOnCardMuted),
+                        icon: Icon(
+                          Icons.person_remove_outlined,
+                          color: ext.contentOnCardMuted,
+                        ),
                         onPressed: () => _removeStaff(member),
                       ),
                   ],
@@ -388,15 +418,15 @@ class _AccountDealerRegisterPageState extends State<AccountDealerRegisterPage> {
         priceSheets: [_priceSheetController.text.trim()],
       );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Đã gửi đăng ký gian hàng')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Đã gửi đăng ký gian hàng')));
       context.go(Routes.accountDealer);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('$e')));
       }
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
@@ -407,6 +437,11 @@ class _AccountDealerRegisterPageState extends State<AccountDealerRegisterPage> {
   Widget build(BuildContext context) {
     return AppScrollPage(
       title: 'Đăng ký gian hàng',
+      footer: FuvePillButton(
+        label: _isSubmitting ? 'Đang gửi...' : 'Gửi đăng ký',
+        icon: Icons.send_outlined,
+        onPressed: _isSubmitting ? null : _submit,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -418,9 +453,12 @@ class _AccountDealerRegisterPageState extends State<AccountDealerRegisterPage> {
               field: TextFormField(
                 controller: _nameController,
                 enabled: !_isSubmitting,
-                decoration: const InputDecoration(hintText: 'VD: Furry Art Corner'),
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Nhập tên gian hàng' : null,
+                decoration: const InputDecoration(
+                  hintText: 'VD: Furry Art Corner',
+                ),
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? 'Nhập tên gian hàng'
+                    : null,
               ),
             ),
             const SizedBox(height: FuvekonSpacing.field),
@@ -431,7 +469,9 @@ class _AccountDealerRegisterPageState extends State<AccountDealerRegisterPage> {
                 controller: _descController,
                 enabled: !_isSubmitting,
                 maxLines: 3,
-                decoration: const InputDecoration(hintText: 'Sản phẩm / dịch vụ'),
+                decoration: const InputDecoration(
+                  hintText: 'Sản phẩm / dịch vụ',
+                ),
                 validator: (v) =>
                     (v == null || v.trim().isEmpty) ? 'Nhập mô tả' : null,
               ),
@@ -454,11 +494,6 @@ class _AccountDealerRegisterPageState extends State<AccountDealerRegisterPage> {
             ),
           ],
         ),
-      ),
-      footer: FuvePillButton(
-        label: _isSubmitting ? 'Đang gửi...' : 'Gửi đăng ký',
-        icon: Icons.send_outlined,
-        onPressed: _isSubmitting ? null : _submit,
       ),
     );
   }
