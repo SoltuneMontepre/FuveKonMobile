@@ -47,7 +47,7 @@ AppException _mapBadResponse(DioException error) {
     return UnauthorizedException(apiMessage ?? 'Session expired.');
   }
   if (statusCode == 403) {
-    return AuthException(apiMessage ?? 'Access denied.');
+    return AuthException(_forbiddenErrorLabel(apiMessage));
   }
   if (statusCode == 429) {
     return AuthException(apiMessage ?? 'Too many attempts. Try again later.');
@@ -65,5 +65,14 @@ String _loginErrorLabel(String? errorMessage) {
     'userNotVerified' => 'Please verify your email before signing in.',
     'accountBanned' => 'This account has been banned.',
     _ => errorMessage ?? 'Invalid email or password.',
+  };
+}
+
+String _forbiddenErrorLabel(String? errorMessage) {
+  return switch (errorMessage) {
+    'userNotVerified' =>
+      'Session is no longer valid. Please sign in again.',
+    'accountBanned' => 'This account has been banned.',
+    _ => errorMessage ?? 'Access denied.',
   };
 }

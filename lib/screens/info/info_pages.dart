@@ -33,19 +33,6 @@ class TosPage extends StatelessWidget {
   }
 }
 
-class SchedulePage extends StatelessWidget {
-  const SchedulePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'Schedule',
-      subtitle: 'Event schedule and programming.',
-      icon: Icons.calendar_month_outlined,
-    );
-  }
-}
-
 class RecapPage extends StatelessWidget {
   const RecapPage({super.key});
 

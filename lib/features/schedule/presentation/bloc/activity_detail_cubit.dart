@@ -35,14 +35,38 @@ class ActivityDetailCubit extends Cubit<ActivityDetailState> {
     }
   }
 
+  void clearBookmarkError() {
+    final current = state;
+    if (current is ActivityDetailLoaded && current.bookmarkError != null) {
+      emit(current.copyWith(clearBookmarkError: true));
+    }
+  }
+
   Future<void> toggleBookmark() async {
     final current = state;
     if (current is! ActivityDetailLoaded || current.isBookmarking) return;
 
     if (current.isBookmarked) {
-      emit(current.copyWith(isBookmarking: true));
-      await _repository.removeFromItinerary(current.activity.id);
-      emit(current.copyWith(isBookmarked: false, isBookmarking: false));
+      emit(current.copyWith(isBookmarking: true, clearBookmarkError: true));
+      final result =
+          await _repository.removeFromItinerary(current.activity.id);
+      switch (result) {
+        case Error(:final failure):
+          emit(
+            current.copyWith(
+              isBookmarking: false,
+              bookmarkError: failure.message,
+            ),
+          );
+        case Success():
+          emit(
+            current.copyWith(
+              isBookmarked: false,
+              isBookmarking: false,
+              clearBookmarkError: true,
+            ),
+          );
+      }
       return;
     }
 
@@ -85,13 +109,19 @@ class ActivityDetailCubit extends Cubit<ActivityDetailState> {
 
     switch (result) {
       case Error(:final failure):
-        emit(ActivityDetailFailure(failure.message));
+        emit(
+          current.copyWith(
+            isBookmarking: false,
+            bookmarkError: failure.message,
+          ),
+        );
       case Success():
         emit(
           current.copyWith(
             isBookmarked: true,
             isBookmarking: false,
             clearConflict: true,
+            clearBookmarkError: true,
           ),
         );
     }

@@ -18,12 +18,14 @@ final class ActivityDetailLoaded extends ActivityDetailState {
     required this.isBookmarked,
     this.isBookmarking = false,
     this.conflictWith,
+    this.bookmarkError,
   });
 
   final ScheduleActivity activity;
   final bool isBookmarked;
   final bool isBookmarking;
   final ScheduleActivity? conflictWith;
+  final String? bookmarkError;
 
   ActivityDetailLoaded copyWith({
     ScheduleActivity? activity,
@@ -31,6 +33,8 @@ final class ActivityDetailLoaded extends ActivityDetailState {
     bool? isBookmarking,
     ScheduleActivity? conflictWith,
     bool clearConflict = false,
+    String? bookmarkError,
+    bool clearBookmarkError = false,
   }) {
     return ActivityDetailLoaded(
       activity: activity ?? this.activity,
@@ -38,6 +42,9 @@ final class ActivityDetailLoaded extends ActivityDetailState {
       isBookmarking: isBookmarking ?? this.isBookmarking,
       conflictWith:
           clearConflict ? null : (conflictWith ?? this.conflictWith),
+      bookmarkError: clearBookmarkError
+          ? null
+          : (bookmarkError ?? this.bookmarkError),
     );
   }
 }

@@ -95,9 +95,13 @@ class _FuvekonDrawerBody extends StatelessWidget {
                         isAuthenticated: isAuthenticated,
                       ),
                       onTap: () {
+                        final router = GoRouter.of(context);
+                        final target = item.route;
                         Navigator.of(context).pop();
-                        if (location != item.route) {
-                          context.go(item.route);
+                        if (location != target) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            router.go(target);
+                          });
                         }
                       },
                     ),
@@ -107,9 +111,12 @@ class _FuvekonDrawerBody extends StatelessWidget {
                       label: l10n.navAccount,
                       selected: location.startsWith(Routes.accountProfile),
                       onTap: () {
+                        final router = GoRouter.of(context);
                         Navigator.of(context).pop();
                         if (location != Routes.accountProfile) {
-                          context.go(Routes.accountProfile);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            router.go(Routes.accountProfile);
+                          });
                         }
                       },
                     )
@@ -119,9 +126,12 @@ class _FuvekonDrawerBody extends StatelessWidget {
                       label: l10n.navLogin,
                       selected: FuvekonTopNavBar.isAuthRoute(location),
                       onTap: () {
+                        final router = GoRouter.of(context);
                         Navigator.of(context).pop();
                         if (!FuvekonTopNavBar.isAuthRoute(location)) {
-                          context.go(Routes.login);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            router.go(Routes.login);
+                          });
                         }
                       },
                     ),
@@ -131,8 +141,11 @@ class _FuvekonDrawerBody extends StatelessWidget {
                     label: l10n.languageTitle,
                     selected: location == Routes.language,
                     onTap: () {
+                      final router = GoRouter.of(context);
                       Navigator.of(context).pop();
-                      context.go(Routes.language);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        router.go(Routes.language);
+                      });
                     },
                   ),
                   ListTile(

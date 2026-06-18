@@ -7,6 +7,12 @@ import 'package:fuvekonmobile/features/ticket/presentation/pages/explore_tickets
 import 'package:fuvekonmobile/features/ticket/presentation/pages/ticket_tier_detail_page.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/pages/ticket_purchase_page.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/pages/tickets_page.dart';
+import 'package:fuvekonmobile/features/schedule/presentation/pages/activity_detail_page.dart';
+import 'package:fuvekonmobile/features/schedule/presentation/pages/event_detail_page.dart';
+import 'package:fuvekonmobile/features/schedule/presentation/pages/my_itinerary_page.dart';
+import 'package:fuvekonmobile/features/schedule/presentation/pages/schedule_page.dart';
+import 'package:fuvekonmobile/features/schedule/presentation/pages/venue_detail_page.dart';
+import 'package:fuvekonmobile/features/schedule/presentation/pages/venue_map_page.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class PublicRoutes {
@@ -92,6 +98,42 @@ abstract final class PublicRoutes {
         GoRoute(
           path: Routes.schedule,
           builder: (context, state) => const SchedulePage(),
+          routes: [
+            GoRoute(
+              path: 'activity/:id',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) {
+                final id = state.pathParameters['id']!;
+                return ActivityDetailPage(activityId: id);
+              },
+            ),
+            GoRoute(
+              path: 'event/:id',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) {
+                final id = state.pathParameters['id']!;
+                return EventDetailPage(eventId: id);
+              },
+            ),
+            GoRoute(
+              path: 'map',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) => const VenueMapPage(),
+            ),
+            GoRoute(
+              path: 'venue/:id',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) {
+                final id = state.pathParameters['id']!;
+                return VenueDetailPage(venueId: id);
+              },
+            ),
+            GoRoute(
+              path: 'my',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) => const MyItineraryPage(),
+            ),
+          ],
         ),
         GoRoute(
           path: Routes.lostFound,

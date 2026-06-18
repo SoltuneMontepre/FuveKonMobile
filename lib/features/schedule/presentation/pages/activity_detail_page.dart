@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
-import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/router/schedule_route_context.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/schedule_activity.dart';
@@ -43,9 +43,25 @@ class _ActivityDetailViewState extends State<_ActivityDetailView> {
     final l10n = context.l10n;
 
     return BlocConsumer<ActivityDetailCubit, ActivityDetailState>(
-      listenWhen: (prev, next) =>
-          next is ActivityDetailLoaded && next.conflictWith != null,
+      listenWhen: (prev, next) {
+        if (next is ActivityDetailLoaded && next.bookmarkError != null) {
+          return prev is! ActivityDetailLoaded ||
+              prev.bookmarkError != next.bookmarkError;
+        }
+        if (next is ActivityDetailLoaded && next.conflictWith != null) {
+          return prev is! ActivityDetailLoaded ||
+              prev.conflictWith != next.conflictWith;
+        }
+        return false;
+      },
       listener: (context, state) {
+        if (state is ActivityDetailLoaded && state.bookmarkError != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.bookmarkError!)),
+          );
+          context.read<ActivityDetailCubit>().clearBookmarkError();
+          return;
+        }
         if (state is! ActivityDetailLoaded || state.conflictWith == null) {
           return;
         }
@@ -125,7 +141,10 @@ class _ActivityDetailViewState extends State<_ActivityDetailView> {
                           label: l10n.scheduleLocation,
                           value: '${activity.venueName} · ${activity.locationName}',
                           onTap: () => context.push(
-                            Routes.accountScheduleVenue(activity.venueId),
+                            ScheduleRouteContext.venue(
+                              context,
+                              activity.venueId,
+                            ),
                           ),
                         ),
                         if (activity.speakers.isNotEmpty) ...[

@@ -2,9 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
-import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
-import 'package:go_router/go_router.dart';
 
 class UserBottomNavBar extends StatelessWidget {
   const UserBottomNavBar({
@@ -15,14 +13,6 @@ class UserBottomNavBar extends StatelessWidget {
 
   final int currentBranchIndex;
   final ValueChanged<int> onTap;
-
-  static const _routes = [
-    Routes.account,
-    Routes.accountSchedule,
-    Routes.accountTicket,
-    Routes.accountNotifications,
-    Routes.accountProfile,
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +49,6 @@ class UserBottomNavBar extends StatelessWidget {
                       onTap: () {
                         if (selected) return;
                         onTap(index);
-                        context.go(_routes[index]);
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Padding(

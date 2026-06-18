@@ -3,6 +3,7 @@ import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/router/schedule_route_context.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/schedule_event.dart';
 import 'package:fuvekonmobile/features/schedule/domain/repositories/schedule_repository.dart';
@@ -390,12 +391,12 @@ class _QuickActionsBar extends StatelessWidget {
             const SizedBox(width: 16),
             _IconActionButton(
               icon: Icons.calendar_month_outlined,
-              onTap: () => context.push(Routes.accountSchedule),
+              onTap: () => context.push(ScheduleRouteContext.list(context)),
             ),
             const SizedBox(width: 8),
             _IconActionButton(
               icon: Icons.map_outlined,
-              onTap: () => context.push(Routes.accountScheduleMap),
+              onTap: () => context.push(ScheduleRouteContext.map(context)),
             ),
           ],
       ),

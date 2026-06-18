@@ -58,6 +58,7 @@ Future<void> configureDependencies() async {
         notifier: sl(),
         getMeUseCase: sl(),
         accountApi: sl(),
+        sessionController: sl(),
       ),
     )
     ..registerLazySingleton(() => AppRouter(authSessionNotifier: sl()));

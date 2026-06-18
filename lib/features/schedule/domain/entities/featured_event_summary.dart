@@ -33,8 +33,8 @@ final kHomeFeaturedEvent = FeaturedEventSummary(
       'Khám phá không gian triển lãm nghệ thuật đỉnh cao, gặp gỡ các khách mời '
       'quốc tế và đắm chìm trong không khí lễ hội sôi động.',
   locationLabel: 'Trung tâm Hội chợ và Triển lãm Sài Gòn (SECC)',
-  startAt: DateTime(2024, 10, 20),
-  endAt: DateTime(2024, 10, 22, 23, 59, 59),
+  startAt: DateTime(2026, 8, 15),
+  endAt: DateTime(2026, 8, 16, 23, 59, 59),
   imageAsset: 'assets/images/event.png',
   tags: ['TRIỂN LÃM', 'POP CULTURE'],
 );

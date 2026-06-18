@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
-import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/router/schedule_route_context.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
@@ -87,7 +87,10 @@ class _VenueMapPageState extends State<VenueMapPage> {
                                     (venue) => _VenuePin(
                                       venue: venue,
                                       onTap: () => context.push(
-                                        Routes.accountScheduleVenue(venue.id),
+                                        ScheduleRouteContext.venue(
+                                          context,
+                                          venue.id,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -101,7 +104,7 @@ class _VenueMapPageState extends State<VenueMapPage> {
                           padding: const EdgeInsets.only(bottom: 10),
                           child: FuveMintCard(
                             onTap: () => context.push(
-                              Routes.accountScheduleVenue(venue.id),
+                              ScheduleRouteContext.venue(context, venue.id),
                             ),
                             child: Text(
                               venue.name,

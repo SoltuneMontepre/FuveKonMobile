@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
-import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/router/schedule_route_context.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/schedule_activity.dart';
@@ -42,12 +42,12 @@ class _ScheduleView extends StatelessWidget {
           IconButton(
             tooltip: l10n.scheduleViewMap,
             icon: const Icon(Icons.map_outlined),
-            onPressed: () => context.push(Routes.accountScheduleMap),
+            onPressed: () => context.push(ScheduleRouteContext.map(context)),
           ),
           IconButton(
             tooltip: l10n.scheduleMyItinerary,
             icon: const Icon(Icons.bookmark_outline),
-            onPressed: () => context.push(Routes.accountScheduleMy),
+            onPressed: () => context.push(ScheduleRouteContext.my(context)),
           ),
         ],
       ),
@@ -67,7 +67,7 @@ class _ScheduleView extends StatelessWidget {
                   children: [
                     FuveMintCard(
                       onTap: () => context.push(
-                        Routes.accountScheduleEvent(state.event.id),
+                        ScheduleRouteContext.event(context, state.event.id),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,7 +187,8 @@ class _ActivityCard extends StatelessWidget {
     final timeFormat = DateFormat('HH:mm', locale);
 
     return FuveMintCard(
-      onTap: () => context.push(Routes.accountScheduleActivity(activity.id)),
+      onTap: () =>
+          context.push(ScheduleRouteContext.activity(context, activity.id)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

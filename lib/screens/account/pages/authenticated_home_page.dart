@@ -262,7 +262,15 @@ class _ShortcutRow extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: InkWell(
-              onTap: () => context.push(item.route),
+              onTap: () {
+                switch (item.route) {
+                  case Routes.accountSchedule:
+                  case Routes.accountTicket:
+                    context.go(item.route);
+                  default:
+                    context.push(item.route);
+                }
+              },
               borderRadius: BorderRadius.circular(16),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 14),
@@ -466,65 +474,67 @@ class _FeaturedEventCard extends StatelessWidget {
 
     return FuveMintCard(
       padding: EdgeInsets.zero,
-      onTap: () => _openEventDetail(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(FuvekonRadii.card),
-            ),
-            child: Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Image.asset(
-                    event.imageAsset,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => ColoredBox(
-                      color: FuvekonColors.surfaceContainer,
-                      child: Icon(
-                        Icons.image_outlined,
-                        color: Colors.white.withValues(alpha: 0.3),
-                        size: 48,
+          InkWell(
+            onTap: () => _openEventDetail(context),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(FuvekonRadii.card),
+              ),
+              child: Stack(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Image.asset(
+                      event.imageAsset,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => ColoredBox(
+                        color: FuvekonColors.surfaceContainer,
+                        child: Icon(
+                          Icons.image_outlined,
+                          color: Colors.white.withValues(alpha: 0.3),
+                          size: 48,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 12,
-                  left: 12,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
-                    ),
-                    decoration: BoxDecoration(
-                      color: FuvekonColors.sageGreen,
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.star,
-                          size: 12,
-                          color: FuvekonColors.onSageGreen,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          l10n.authHomeHotBadge,
-                          style: const TextStyle(
+                  Positioned(
+                    top: 12,
+                    left: 12,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: FuvekonColors.sageGreen,
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            size: 12,
                             color: FuvekonColors.onSageGreen,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 4),
+                          Text(
+                            l10n.authHomeHotBadge,
+                            style: const TextStyle(
+                              color: FuvekonColors.onSageGreen,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Padding(
@@ -532,23 +542,31 @@ class _FeaturedEventCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  event.title,
-                  style: const TextStyle(
-                    color: FuvekonColors.onSageGreen,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
+                InkWell(
+                  onTap: () => _openEventDetail(context),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        event.title,
+                        style: const TextStyle(
+                          color: FuvekonColors.onSageGreen,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      _MetaRow(
+                        icon: Icons.calendar_today_outlined,
+                        label: dateLabel,
+                      ),
+                      const SizedBox(height: 6),
+                      _MetaRow(
+                        icon: Icons.location_on_outlined,
+                        label: event.locationLabel,
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 10),
-                _MetaRow(
-                  icon: Icons.calendar_today_outlined,
-                  label: dateLabel,
-                ),
-                const SizedBox(height: 6),
-                _MetaRow(
-                  icon: Icons.location_on_outlined,
-                  label: event.locationLabel,
                 ),
                 const SizedBox(height: 16),
                 FuvePillButton(

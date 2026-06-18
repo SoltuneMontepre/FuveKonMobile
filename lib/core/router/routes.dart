@@ -91,6 +91,11 @@ abstract final class Routes {
   static const tos = '/tos';
   static String get tosOnboarding => '$tos?onboarding=1';
   static const schedule = '/schedule';
+  static String scheduleActivity(String id) => '/schedule/activity/$id';
+  static String scheduleEvent(String id) => '/schedule/event/$id';
+  static const scheduleMap = '/schedule/map';
+  static String scheduleVenue(String id) => '/schedule/venue/$id';
+  static const scheduleMy = '/schedule/my';
   static const lostFound = '/lost-found';
   static const lostFoundReport = '/lost-found/report';
   static String lostFoundDetail(String id) => '/lost-found/$id';
@@ -144,6 +149,7 @@ abstract final class Routes {
 
   static bool isPublicRoute(String location) {
     if (publicRoutes.contains(location)) return true;
+    if (location.startsWith('$schedule/')) return true;
     if (location.startsWith('$ticketPurchase/')) return true;
     if (location.startsWith('$artbook/')) return true;
     if (location == lostFoundReport) return true;
