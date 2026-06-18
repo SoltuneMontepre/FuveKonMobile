@@ -3,7 +3,7 @@ package handlers
 import (
 	role "general-service/internal/common/constants"
 	"general-service/internal/common/utils"
-	rbacreq "general-service/internal/dto/rbac/requests"
+	"general-service/internal/dto/rbac/requests"
 	"general-service/internal/services"
 
 	"github.com/gin-gonic/gin"
@@ -42,7 +42,7 @@ func (h *RBACHandler) GetConfig(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			role	path	string	true	"Role name (User, Dealer, Staff, Admin)"
-//	@Param			body	body	rbacreq.UpdateRolePermissionsRequest	true	"Permission codes"
+//	@Param			body	body	requests.UpdateRolePermissionsRequest	true	"Permission codes"
 //	@Success		200	{object}	map[string]interface{}
 //	@Router			/admin/rbac/roles/{role}/permissions [put]
 func (h *RBACHandler) UpdateRolePermissions(c *gin.Context) {
@@ -53,7 +53,7 @@ func (h *RBACHandler) UpdateRolePermissions(c *gin.Context) {
 		return
 	}
 
-	var req rbacreq.UpdateRolePermissionsRequest
+	var req requests.UpdateRolePermissionsRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		utils.RespondBadRequest(c, err.Error())
 		return

@@ -41,6 +41,8 @@ func main() {
 		err = runCheck()
 	case "ensure-tools":
 		err = runEnsureTools()
+	case "swagger-init":
+		err = runSwaggerInit()
 	case "ensure-env":
 		err = runEnsureEnv()
 	case "wait":
@@ -62,7 +64,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: devctl <check|ensure-tools|ensure-env|wait|run-air>")
+	fmt.Fprintln(os.Stderr, "usage: devctl <check|ensure-tools|swagger-init|ensure-env|wait|run-air>")
 }
 
 func runCheck() error {
@@ -84,7 +86,7 @@ func runCheck() error {
 			return err
 		}
 	}
-	for _, port := range []int{5432, 6379, 4566} {
+	for _, port := range []int{5433, 6379, 4566} {
 		if err := assertInfraPortAvailable(port); err != nil {
 			return err
 		}
@@ -164,6 +166,37 @@ func runEnsureTools() error {
 		return err
 	}
 	fmt.Println("Go dev tools are ready.")
+	return nil
+}
+
+func runSwaggerInit() error {
+	if err := requireCommand("go"); err != nil {
+		return err
+	}
+	if err := addGoBinToPath(); err != nil {
+		return err
+	}
+	if err := ensureGoTool("swag", "github.com/swaggo/swag/cmd/swag@latest"); err != nil {
+		return err
+	}
+
+	serviceDir, err := filepath.Abs(filepath.FromSlash("services/general-service"))
+	if err != nil {
+		return err
+	}
+	if info, err := os.Stat(serviceDir); err != nil || !info.IsDir() {
+		return fmt.Errorf("general-service directory not found at %s (run devctl from Fuvekonse/)", serviceDir)
+	}
+
+	fmt.Println("Generating Swagger docs for general-service...")
+	cmd := exec.Command("swag", "init", "-g", "cmd/main.go", "-o", "./docs")
+	cmd.Dir = serviceDir
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("swag init failed: %w", err)
+	}
+	fmt.Println("Swagger docs ready.")
 	return nil
 }
 
