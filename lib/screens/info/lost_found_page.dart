@@ -5,6 +5,7 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/info/lost_found_models.dart';
 import 'package:fuvekonmobile/screens/info/lost_found_service.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_section_header.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
@@ -156,30 +157,32 @@ class _LostFoundPageState extends State<LostFoundPage> {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(FuvekonSpacing.page),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                needsTicket
-                    ? 'Bạn cần đăng nhập và có vé đã duyệt để xem danh sách đồ thất lạc.'
-                    : _error!,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
+          child: FuvekonIllustratedContentPanel(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  needsTicket
+                      ? 'Bạn cần đăng nhập và có vé đã duyệt để xem danh sách đồ thất lạc.'
+                      : _error!,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: FuvekonColors.darkTextSecondary,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              if (needsTicket)
-                FilledButton(
-                  onPressed: () => context.go(Routes.login),
-                  child: const Text('Đăng nhập'),
-                )
-              else
-                FilledButton(
-                  onPressed: () => _load(refresh: true),
-                  child: const Text('Thử lại'),
-                ),
-            ],
+                const SizedBox(height: 16),
+                if (needsTicket)
+                  FilledButton(
+                    onPressed: () => context.go(Routes.login),
+                    child: const Text('Đăng nhập'),
+                  )
+                else
+                  FilledButton(
+                    onPressed: () => _load(refresh: true),
+                    child: const Text('Thử lại'),
+                  ),
+              ],
+            ),
           ),
         ),
       );

@@ -61,6 +61,7 @@ class _LostFoundRequestPageState extends State<LostFoundRequestPage> {
   Widget build(BuildContext context) {
     return AppPageScaffold(
       title: 'Theo dõi yêu cầu',
+      illustratedBackground: true,
       padding: const EdgeInsets.all(FuvekonSpacing.page),
       body: _buildBody(context),
     );

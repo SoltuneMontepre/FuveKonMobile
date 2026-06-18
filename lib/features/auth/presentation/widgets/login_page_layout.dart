@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 
 abstract final class _LoginColors {
-  static const cardBg = FuvekonColors.mintCard;
-  static const textDark = FuvekonColors.darkButtonText;
   static const titleAccent = FuvekonColors.darkPrimary;
 }
 
@@ -32,33 +31,30 @@ class LoginPageLayout extends StatelessWidget {
             children: [
               const _LoginBrandHeader(),
               const SizedBox(height: 28),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: _LoginColors.cardBg,
-                  borderRadius: BorderRadius.circular(FuvekonRadii.card),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        l10n.loginTitle,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: _LoginColors.textDark,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 22,
-                        ),
+              FuvekonIllustratedContentPanel(
+                padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      l10n.loginTitle,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: _LoginColors.titleAccent,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
                       ),
-                      const SizedBox(height: 24),
-                      form,
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 24),
+                    form,
+                  ],
                 ),
               ),
               const SizedBox(height: 24),
-              footer,
+              FuvekonIllustratedContentPanel(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                child: footer,
+              ),
             ],
           ),
         ),

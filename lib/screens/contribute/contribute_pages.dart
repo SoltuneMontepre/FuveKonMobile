@@ -87,6 +87,7 @@ class _TalentRegistrationPageState extends State<TalentRegistrationPage> {
   Widget build(BuildContext context) {
     return AppScrollPage(
       title: 'Đăng ký Talent',
+      illustratedBackground: true,
       footer: FuvePillButton(
         label: _isSubmitting ? 'Đang gửi...' : 'Gửi hồ sơ talent',
         onPressed: _isSubmitting ? null : _submit,
@@ -186,6 +187,7 @@ class _PanelRegistrationPageState extends State<PanelRegistrationPage> {
   Widget build(BuildContext context) {
     return AppScrollPage(
       title: 'Đăng ký Panel',
+      illustratedBackground: true,
       footer: FuvePillButton(
         label: _isSubmitting ? 'Đang gửi...' : 'Gửi hồ sơ panel',
         onPressed: _isSubmitting ? null : _submit,
@@ -268,6 +270,7 @@ class _DealerRegistrationPageState extends State<DealerRegistrationPage> {
   Widget build(BuildContext context) {
     return AppScrollPage(
       title: 'Đăng ký Dealer',
+      illustratedBackground: true,
       footer: FuvePillButton(
         label: _isSubmitting ? 'Đang gửi...' : 'Gửi đăng ký',
         onPressed: _isSubmitting ? null : _submit,
@@ -329,6 +332,7 @@ class VolunteerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppPageScaffold(
       title: 'Tình nguyện viên',
+      illustratedBackground: true,
       body: AppInfoSection(
         title: 'Đăng ký tình nguyện viên',
         items: const [

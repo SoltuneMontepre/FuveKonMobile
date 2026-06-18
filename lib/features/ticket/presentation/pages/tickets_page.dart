@@ -34,6 +34,7 @@ class _TicketsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppPageScaffold(
       title: 'Mua vé',
+      illustratedBackground: true,
       padding: EdgeInsets.zero,
       body: BlocConsumer<TicketsBloc, TicketsState>(
         listener: (context, state) async {

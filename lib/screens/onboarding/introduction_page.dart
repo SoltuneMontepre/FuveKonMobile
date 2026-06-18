@@ -5,6 +5,7 @@ import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/shared/services/app_preferences.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -65,16 +66,24 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   const SizedBox(height: 16),
                   _AudienceCard(l10n: l10n),
                   const SizedBox(height: 20),
-                  _OutlineActionButton(
-                    icon: Icons.description_outlined,
-                    label: l10n.introViewRules,
-                    onTap: () => context.go(Routes.tos),
-                  ),
-                  const SizedBox(height: 12),
-                  _OutlineActionButton(
-                    icon: Icons.help_outline,
-                    label: l10n.introViewFaq,
-                    onTap: () => context.go(Routes.faq),
+                  FuvekonIllustratedContentPanel(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _OutlineActionButton(
+                          icon: Icons.description_outlined,
+                          label: l10n.introViewRules,
+                          onTap: () => context.go(Routes.tos),
+                        ),
+                        const SizedBox(height: 12),
+                        _OutlineActionButton(
+                          icon: Icons.help_outline,
+                          label: l10n.introViewFaq,
+                          onTap: () => context.go(Routes.faq),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 28),
                   _Footer(version: _version, l10n: l10n),
@@ -84,19 +93,22 @@ class _IntroductionPageState extends State<IntroductionPage> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-            child: FilledButton(
-              onPressed: _continue,
-              style: FilledButton.styleFrom(
-                backgroundColor: _IntroColors.accentGreen,
-                foregroundColor: Colors.white,
-                minimumSize: const Size.fromHeight(52),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(999),
+            child: FuvekonIllustratedContentPanel(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+              child: FilledButton(
+                onPressed: _continue,
+                style: FilledButton.styleFrom(
+                  backgroundColor: _IntroColors.accentGreen,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size.fromHeight(52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(999),
+                  ),
                 ),
-              ),
-              child: Text(
-                l10n.continueButton,
-                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                child: Text(
+                  l10n.continueButton,
+                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                ),
               ),
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/info/faq_content.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 
 class FaqPage extends StatefulWidget {
@@ -91,35 +92,38 @@ class _FaqPageState extends State<FaqPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                TextField(
-                  controller: _searchController,
-                  onChanged: (_) => setState(() {}),
-                  style: const TextStyle(color: Colors.white, fontSize: 15),
-                  decoration: InputDecoration(
-                    hintText: l10n.faqSearchHint,
-                    hintStyle: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.4),
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Colors.white.withValues(alpha: 0.5),
-                    ),
-                    filled: true,
-                    fillColor: const Color(0xFF1A1A1A),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.2),
+                FuvekonIllustratedContentPanel(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (_) => setState(() {}),
+                    style: const TextStyle(color: Colors.white, fontSize: 15),
+                    decoration: InputDecoration(
+                      hintText: l10n.faqSearchHint,
+                      hintStyle: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.4),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide(
-                        color: _FaqColors.categoryBg.withValues(alpha: 0.6),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.white.withValues(alpha: 0.5),
+                      ),
+                      filled: true,
+                      fillColor: const Color(0xFF1A1A1A),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(
+                          color: Colors.white.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(
+                          color: _FaqColors.categoryBg.withValues(alpha: 0.6),
+                        ),
                       ),
                     ),
                   ),
@@ -164,26 +168,29 @@ class _FaqPageState extends State<FaqPage> {
           Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
-            child: GestureDetector(
-              onTap: () {},
-              child: Text.rich(
-                TextSpan(
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.75),
-                    fontSize: 14,
-                  ),
-                  children: [
-                    TextSpan(text: l10n.faqNeedHelp),
-                    TextSpan(
-                      text: l10n.faqContactUs,
-                      style: TextStyle(
-                        color: _FaqColors.titleAccent,
-                        fontWeight: FontWeight.w600,
-                      ),
+            child: FuvekonIllustratedContentPanel(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: GestureDetector(
+                onTap: () {},
+                child: Text.rich(
+                  TextSpan(
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.75),
+                      fontSize: 14,
                     ),
-                  ],
+                    children: [
+                      TextSpan(text: l10n.faqNeedHelp),
+                      TextSpan(
+                        text: l10n.faqContactUs,
+                        style: TextStyle(
+                          color: _FaqColors.titleAccent,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
           ),

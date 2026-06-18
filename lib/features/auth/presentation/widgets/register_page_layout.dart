@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 
 abstract final class _RegisterColors {
-  static const cardBg = FuvekonColors.mintCard;
-  static const textDark = FuvekonColors.darkButtonText;
+  static const titleAccent = FuvekonColors.darkPrimary;
   static const starGold = FuvekonColors.lightGold;
 }
 
@@ -26,23 +26,17 @@ class RegisterPageLayout extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: _RegisterColors.cardBg,
-              borderRadius: BorderRadius.circular(FuvekonRadii.card),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _RegisterHeader(l10n: context.l10n),
-                  const SizedBox(height: 24),
-                  form,
-                  const SizedBox(height: 20),
-                  footer,
-                ],
-              ),
+          child: FuvekonIllustratedContentPanel(
+            padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _RegisterHeader(l10n: context.l10n),
+                const SizedBox(height: 24),
+                form,
+                const SizedBox(height: 20),
+                footer,
+              ],
             ),
           ),
         ),
@@ -66,7 +60,7 @@ class _RegisterHeader extends StatelessWidget {
             Text(
               l10n.registerTitle,
               style: TextStyle(
-                color: _RegisterColors.textDark,
+                color: _RegisterColors.titleAccent,
                 fontWeight: FontWeight.w800,
                 fontSize: 22,
               ),
@@ -84,7 +78,7 @@ class _RegisterHeader extends StatelessWidget {
           l10n.registerSubtitle,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: _RegisterColors.textDark.withValues(alpha: 0.72),
+            color: Colors.white.withValues(alpha: 0.72),
             fontSize: 13.5,
             height: 1.45,
           ),

@@ -22,6 +22,7 @@ class PlaceholderPage extends StatelessWidget {
     return AppScrollPage(
       title: title,
       wrapInCard: true,
+      illustratedBackground: true,
       child: Column(
         children: [
           Icon(icon, size: 64, color: theme.colorScheme.primary),

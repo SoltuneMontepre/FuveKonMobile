@@ -112,6 +112,7 @@ class _LostFoundReportPageState extends State<LostFoundReportPage> {
   Widget build(BuildContext context) {
     return AppScrollPage(
       title: 'Báo mất đồ',
+      illustratedBackground: true,
       wrapInCard: true,
       footer: FuvePillButton(
         label: _submitting ? 'Đang gửi...' : 'Gửi báo mất',

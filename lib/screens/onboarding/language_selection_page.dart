@@ -5,6 +5,7 @@ import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/shared/services/app_preferences.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:go_router/go_router.dart';
 
 class LanguageSelectionPage extends StatefulWidget {
@@ -48,53 +49,63 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
 
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(FuvekonSpacing.page),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 24),
-              Text(
-                l10n.languageTitle,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                l10n.languageSubtitle,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
-              ),
-              const SizedBox(height: 40),
-              _LanguageOption(
-                label: l10n.languageVietnamese,
-                selected: _selected == 'vi',
-                onTap: () => _selectLanguage('vi'),
-              ),
-              const SizedBox(height: 16),
-              _LanguageOption(
-                label: l10n.languageEnglish,
-                selected: _selected == 'en',
-                onTap: () => _selectLanguage('en'),
-              ),
-              const Spacer(),
-              FilledButton(
-                onPressed: _continue,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(l10n.continueButton),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.arrow_forward, size: 18),
-                  ],
+      body: FuvekonIllustratedPageStack(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(FuvekonSpacing.page),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 24),
+                Text(
+                  l10n.languageTitle,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                      ),
                 ),
-              ),
-              const SizedBox(height: 8),
-            ],
+                const SizedBox(height: 8),
+                Text(
+                  l10n.languageSubtitle,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.65),
+                      ),
+                ),
+                const Spacer(),
+                FuvekonIllustratedContentPanel(
+                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _LanguageOption(
+                        label: l10n.languageVietnamese,
+                        selected: _selected == 'vi',
+                        onTap: () => _selectLanguage('vi'),
+                      ),
+                      const SizedBox(height: 16),
+                      _LanguageOption(
+                        label: l10n.languageEnglish,
+                        selected: _selected == 'en',
+                        onTap: () => _selectLanguage('en'),
+                      ),
+                      const SizedBox(height: 24),
+                      FilledButton(
+                        onPressed: _continue,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(l10n.continueButton),
+                            const SizedBox(width: 8),
+                            const Icon(Icons.arrow_forward, size: 18),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
           ),
         ),
       ),

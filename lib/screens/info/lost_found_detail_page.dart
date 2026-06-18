@@ -121,6 +121,7 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
   Widget build(BuildContext context) {
     return AppPageScaffold(
       title: 'Chi tiết vật phẩm',
+      illustratedBackground: true,
       padding: const EdgeInsets.all(FuvekonSpacing.page),
       body: _buildBody(context),
     );

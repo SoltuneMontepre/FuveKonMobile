@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:go_router/go_router.dart';
 
 class GuestLandingPage extends StatelessWidget {
   const GuestLandingPage({super.key});
-
-  static const backgroundAsset =
-      'assets/images/un-auth-user-landing-section.png';
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +19,7 @@ class GuestLandingPage extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: _LandingBackground(),
-          ),
+          const Positioned.fill(child: FuvekonIllustratedBackground()),
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -47,80 +42,88 @@ class GuestLandingPage extends StatelessWidget {
                               SizedBox(height: topInset),
                               _EventBadge(label: l10n.landingBadge),
                               const SizedBox(height: 20),
-                              Text(
-                                l10n.landingHeroTitle,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: _LandingColors.heroTitle,
-                                  fontSize: 34,
-                                  fontWeight: FontWeight.w800,
-                                  height: 1.15,
-                                  letterSpacing: -0.5,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                l10n.landingHeroBody,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: FuvekonColors.darkText.withValues(
-                                    alpha: 0.88,
-                                  ),
-                                  fontSize: 15,
-                                  height: 1.55,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              const SizedBox(height: 28),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: _PrimaryPillButton(
-                                      label: l10n.landingRegister,
-                                      backgroundColor:
-                                          _LandingColors.mintButton,
-                                      foregroundColor:
-                                          _LandingColors.mintButtonText,
-                                      onTap: () => context.go(Routes.register),
+                              FuvekonIllustratedContentPanel(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      l10n.landingHeroTitle,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: _LandingColors.heroTitle,
+                                        fontSize: 34,
+                                        fontWeight: FontWeight.w800,
+                                        height: 1.15,
+                                        letterSpacing: -0.5,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: _PrimaryPillButton(
-                                      label: l10n.landingViewTickets,
-                                      backgroundColor:
-                                          _LandingColors.pinkButton,
-                                      foregroundColor:
-                                          _LandingColors.pinkButtonText,
-                                      onTap: () => context.go(Routes.ticket),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      l10n.landingHeroBody,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: FuvekonColors.darkText
+                                            .withValues(alpha: 0.88),
+                                        fontSize: 15,
+                                        height: 1.55,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              _OutlinePillButton(
-                                label: l10n.loginTitle,
-                                onTap: () => context.go(Routes.login),
-                              ),
-                              const SizedBox(height: 48),
-                              Text(
-                                l10n.landingExperienceTitle,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: _LandingColors.heroTitle,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                l10n.landingExperienceBody,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: FuvekonColors.darkTextSecondary
-                                      .withValues(alpha: 0.9),
-                                  fontSize: 14,
-                                  height: 1.5,
+                                    const SizedBox(height: 28),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: _PrimaryPillButton(
+                                            label: l10n.landingRegister,
+                                            backgroundColor:
+                                                _LandingColors.mintButton,
+                                            foregroundColor:
+                                                _LandingColors.mintButtonText,
+                                            onTap: () =>
+                                                context.go(Routes.register),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: _PrimaryPillButton(
+                                            label: l10n.landingViewTickets,
+                                            backgroundColor:
+                                                _LandingColors.pinkButton,
+                                            foregroundColor:
+                                                _LandingColors.pinkButtonText,
+                                            onTap: () =>
+                                                context.go(Routes.ticket),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                    _OutlinePillButton(
+                                      label: l10n.loginTitle,
+                                      onTap: () => context.go(Routes.login),
+                                    ),
+                                    const SizedBox(height: 48),
+                                    Text(
+                                      l10n.landingExperienceTitle,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: _LandingColors.heroTitle,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      l10n.landingExperienceBody,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: FuvekonColors.darkTextSecondary
+                                            .withValues(alpha: 0.9),
+                                        fontSize: 14,
+                                        height: 1.5,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -146,21 +149,6 @@ abstract final class _LandingColors {
   static const pinkButton = FuvekonColors.dustyRose;
   static const pinkButtonText = FuvekonColors.onDustyRose;
   static const badgeDot = FuvekonColors.lightGold;
-}
-
-class _LandingBackground extends StatelessWidget {
-  const _LandingBackground();
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      GuestLandingPage.backgroundAsset,
-      fit: BoxFit.fitWidth,
-      alignment: Alignment.bottomCenter,
-      width: MediaQuery.sizeOf(context).width,
-      errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
-    );
-  }
 }
 
 class _EventBadge extends StatelessWidget {

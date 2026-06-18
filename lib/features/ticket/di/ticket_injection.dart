@@ -55,7 +55,6 @@ void registerTicketModule(GetIt sl) {
         namecardRenderer: sl(),
       ),
     )
-    ..registerLazySingleton(() => UpgradeTicketUseCase(sl()))
     ..registerFactory(
       () => MyTicketBloc(
         getMyTicketUseCase: sl(),
