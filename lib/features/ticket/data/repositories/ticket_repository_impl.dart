@@ -26,6 +26,18 @@ class TicketRepositoryImpl implements TicketRepository {
   }
 
   @override
+  Future<Result<TicketTier>> getTierById(String tierId) async {
+    try {
+      final tier = await _remoteDataSource.getTierById(tierId);
+      return Success(tier);
+    } on AppException catch (error) {
+      return Error(mapExceptionToFailure(error));
+    } catch (error) {
+      return Error(mapExceptionToFailure(error));
+    }
+  }
+
+  @override
   Future<Result<UserTicket?>> getMyTicket() async {
     try {
       final ticket = await _remoteDataSource.getMyTicket();
@@ -67,6 +79,18 @@ class TicketRepositoryImpl implements TicketRepository {
   ) async {
     try {
       final ticket = await _remoteDataSource.updateBadgeDetails(input);
+      return Success(ticket);
+    } on AppException catch (error) {
+      return Error(mapExceptionToFailure(error));
+    } catch (error) {
+      return Error(mapExceptionToFailure(error));
+    }
+  }
+
+  @override
+  Future<Result<UserTicket>> upgradeTicket(String newTierId) async {
+    try {
+      final ticket = await _remoteDataSource.upgradeTicket(newTierId);
       return Success(ticket);
     } on AppException catch (error) {
       return Error(mapExceptionToFailure(error));

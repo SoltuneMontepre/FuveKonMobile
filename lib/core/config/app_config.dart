@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Runtime config loaded from `.env` (see `.env.example`).
@@ -34,6 +35,18 @@ abstract final class AppConfig {
   /// Optional LocalStack/S3 origin hint for docs/tooling (presigned URLs must be
   /// generated with a device-reachable host on the backend — see `.env.example`).
   static String get s3UploadEndpoint => _read('S3_UPLOAD_ENDPOINT');
+
+  /// When true, ticket tiers/purchase/my-ticket use in-memory mock data (no API).
+  /// Defaults to on in debug builds; set `MOCK_TICKET_MODE=false` to use real API.
+  static bool get mockTicketMode {
+    final raw = _read('MOCK_TICKET_MODE');
+    if (raw.isNotEmpty) {
+      final v = raw.toLowerCase();
+      if (v == '0' || v == 'false' || v == 'no') return false;
+      return v == '1' || v == 'true' || v == 'yes';
+    }
+    return kDebugMode;
+  }
 
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 15);

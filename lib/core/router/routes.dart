@@ -34,24 +34,28 @@ abstract final class Routes {
 
   // —— Tickets ——
   static const ticket = '/ticket';
+  static String ticketDetail(String id) => '/ticket/$id';
   static const ticketPurchase = '/ticket/purchase';
   static String ticketPurchaseStep(String id) => '/ticket/purchase/$id';
 
   // —— Account (authenticated user dashboard) ——
   static const account = '/account';
-  static const accountChangePassword = '/account/change-password';
+  static const accountSchedule = '/account/schedule';
   static const accountTicket = '/account/ticket';
-  static const accountConbook = '/account/conbook';
-  static const accountTalent = '/account/talent';
-  static const accountPanel = '/account/panel';
-  static const accountDealer = '/account/dealer';
-  static const accountDealerRegister = '/account/dealer/register';
-
-  /// Profile edit (not listed in web routes; kept for existing flow).
-  static const accountEdit = '/account/edit';
+  static String accountTicketDetail(String id) => '/account/ticket/$id';
+  static const accountTicketUpgrade = '/account/ticket/upgrade';
+  static const accountNotifications = '/account/notifications';
+  static const accountProfile = '/account/profile';
+  static const accountChangePassword = '/account/profile/change-password';
+  static const accountConbook = '/account/profile/conbook';
+  static const accountTalent = '/account/profile/talent';
+  static const accountPanel = '/account/profile/panel';
+  static const accountDealer = '/account/profile/dealer';
+  static const accountDealerRegister = '/account/profile/dealer/register';
+  static const accountEdit = '/account/profile/edit';
 
   static const unverifiedAccountRoutes = {
-    account,
+    accountProfile,
     accountChangePassword,
   };
 
@@ -59,6 +63,7 @@ abstract final class Routes {
   static const talent = '/talent';
   static const panel = '/panel';
   static const artbook = '/artbook';
+  static const artbookSubmit = '/artbook/submit';
   static const dealer = '/dealer';
   static const volunteer = '/volunteer';
 
@@ -66,6 +71,7 @@ abstract final class Routes {
   static const about = '/about';
   static const faq = '/faq';
   static const tos = '/tos';
+  static String get tosOnboarding => '$tos?onboarding=1';
   static const schedule = '/schedule';
   static const lostFound = '/lost-found';
   static const recap = '/recap';
@@ -98,6 +104,7 @@ abstract final class Routes {
     talent,
     panel,
     artbook,
+    artbookSubmit,
     dealer,
     volunteer,
     about,

@@ -11,6 +11,7 @@ class TicketTier extends Equatable {
     this.priceUsd,
     required this.isSoldOut,
     required this.isActive,
+    required this.isVisible,
   });
 
   final String id;
@@ -22,6 +23,7 @@ class TicketTier extends Equatable {
   final double? priceUsd;
   final bool isSoldOut;
   final bool isActive;
+  final bool isVisible;
 
   @override
   List<Object?> get props => [
@@ -34,5 +36,6 @@ class TicketTier extends Equatable {
         priceUsd,
         isSoldOut,
         isActive,
+        isVisible,
       ];
 }

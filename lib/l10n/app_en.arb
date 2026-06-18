@@ -25,6 +25,18 @@
   "loginSubmit": "Sign in",
   "loginOrDivider": "OR",
   "loginGoogle": "Sign in with Google",
+  "authGoogleNotConfigured":
+      "Google Sign-In is not configured. Add GOOGLE_CLIENT_ID to .env and restart the app.",
+  "authGoogleUnsupportedPlatform":
+      "Google Sign-In is not supported on Linux/Windows. Run the app on Android, iOS, Web (Chrome), or macOS.",
+  "authGoogleLoginFailed":
+      "Google sign-in failed. Please try again or use email and password.",
+  "authGoogleDeveloperError":
+      "Google OAuth is misconfigured on Android. In Google Cloud Console, create an Android OAuth client for package com.example.fuvekonmobile and add your debug keystore SHA-1 (Android Studio → Gradle → signingReport).",
+  "authGoogleIdTokenMissing":
+      "Google did not return an ID token. Check GOOGLE_CLIENT_ID (Web client) in .env and the Android OAuth client in Google Cloud.",
+  "authGoogleRegistrationDetailsRequired":
+      "Please complete registration with your profile details.",
   "loginNoAccount": "Don't have an account?",
   "loginRegisterLink": "Register",
 
@@ -89,9 +101,112 @@
   "introViewFaq": "View FAQ",
 
   "navIntroduction": "Introduction",
+  "navArtbook": "Conbook",
   "navFaq": "FAQ",
   "navRules": "Rules",
   "navLogin": "Sign in",
+  "navLogout": "Sign out",
+  "navHome": "Home",
+
+  "navSchedule": "Schedule",
+  "navMyTickets": "My tickets",
+  "navNotifications": "Notifications",
+  "navAccount": "Account",
+
+  "myTicketsFilterActive": "Active",
+  "myTicketsFilterUsed": "Used",
+  "myTicketsFilterAll": "All",
+  "myTicketsStatusActive": "Active",
+  "myTicketsStatusUsed": "Used",
+  "myTicketsViewTicket": "View ticket →",
+  "myTicketsEventDateRange": "Oct 20–22, 2024",
+  "myTicketsEmptyTitle": "You don't have a ticket",
+  "myTicketsEmptySubtitle": "Buy a ticket to attend the event.",
+  "myTicketsEmptyFilter": "No tickets in this tab",
+  "myTicketsBrowse": "Browse ticket tiers",
+
+  "eTicketEventLabel": "EVENT",
+  "eTicketValid": "Valid",
+  "eTicketOwner": "Owner",
+  "eTicketTier": "Tier",
+  "eTicketDay": "Date",
+  "eTicketScanHint": "Scan the QR code at the entrance",
+  "eTicketCodeLabel": "Ticket code",
+  "eTicketBenefitsTitle": "{tier} ticket benefits",
+  "@eTicketBenefitsTitle": {
+    "placeholders": {
+      "tier": {"type": "String"}
+    }
+  },
+  "eTicketUpgrade": "Upgrade ticket",
+  "eTicketSaveWallet": "Save to Apple/Google Wallet",
+  "eTicketWalletSoon": "Wallet save coming soon.",
+
+  "ticketUpgradeTitle": "Upgrade ticket tier",
+  "ticketUpgradeCurrentLabel": "YOUR CURRENT TICKET",
+  "ticketUpgradeOptionsLabel": "Upgrade options",
+  "ticketUpgradeExtraBenefits": "ADDITIONAL BENEFITS",
+  "ticketUpgradeTotalLabel": "TOTAL ADDITIONAL PAYMENT",
+  "ticketUpgradeContinue": "Continue upgrade",
+  "ticketUpgradeInfoNote": "Upgrading your ticket will be processed and confirmed within 24 business hours.",
+  "ticketUpgradeNoTicket": "You don't have a ticket to upgrade.",
+  "ticketUpgradeMaxTier": "You are already on the highest tier ({tier}).",
+  "@ticketUpgradeMaxTier": {
+    "placeholders": {
+      "tier": {"type": "String"}
+    }
+  },
+
+  "authHomeUpcomingBadge": "Upcoming events",
+  "authHomeHeroTitle": "Anime Culture Exchange Festival",
+  "authHomeHeroSubtitle": "Discover art spaces and unique experiences.",
+  "authHomeSearchHint": "Search events, artists...",
+  "authHomeFeaturedTitle": "Featured events",
+  "authHomeSeeAll": "See all",
+  "authHomeHotBadge": "Hot",
+  "authHomeFeaturedEventTitle": "Contemporary Art Exhibition",
+  "authHomeFeaturedEventDate": "October 20, 2023",
+  "authHomeFeaturedEventLocation": "SECC Center",
+  "authHomeBuyTicket": "Buy tickets",
+  "authHomeNotificationsEmpty": "No new notifications yet.",
+
+  "landingBadge": "TOP EVENT",
+  "landingHeroTitle": "Anime Event",
+  "landingHeroBody": "Experience a unique cultural space with smart ticket management and scheduling. Join now so you don't miss the most wonderful moments.",
+  "landingRegister": "Register",
+  "landingViewTickets": "View tickets",
+
+  "exploreTicketsTitle": "Explore ticket types",
+  "exploreTicketsSubtitle": "Choose the experience that suits you best at the exhibition.",
+  "exploreTicketsFooterInfo": "You can browse ticket details first. To purchase, please register or sign in.",
+  "exploreTicketsRegisterCta": "Register to buy tickets",
+  "exploreTicketsBuyCta": "Buy tickets now",
+  "exploreTicketsLoginPrompt": "Already have an account?",
+  "exploreTicketsLoginLink": "Sign in now",
+  "exploreTicketsPopularBadge": "Most popular",
+  "exploreTicketsSoldOut": "Sold out",
+  "exploreTicketsEmpty": "No ticket tiers are available yet.",
+  "exploreTicketsRetry": "Retry",
+  "ticketDetailBenefitsTitle": "Included benefits",
+  "ticketDetailCompareTitle": "Compare with {standardTier}",
+  "@ticketDetailCompareTitle": {
+    "placeholders": {
+      "standardTier": {
+        "type": "String"
+      }
+    }
+  },
+  "ticketDetailTotal": "Total",
+  "ticketDetailCompareAccess": "Access",
+  "ticketDetailCompareCheckIn": "Check-in",
+  "ticketDetailComparePriority": "Priority",
+  "ticketDetailCompareShared": "Shared",
+  "ticketDetailCompareBadge": "Badge",
+  "ticketDetailCompareCustom": "Custom",
+  "ticketDetailCompareNormal": "Standard",
+  "ticketDetailCompareGifts": "Extra gifts",
+  "landingExperienceTitle": "Perfect Experience",
+  "landingExperienceBody": "Manage your journey at the event with ease.",
 
   "rulesTitle": "Event rules",
   "rulesIntro": "Please read the following rules carefully to ensure a safe, professional, and memorable convention for everyone.",
@@ -197,5 +312,48 @@
   "faqLostFoundQ3": "How do I claim a lost item?",
   "faqLostFoundA3": "Bring ID to the support desk, describe the item and when it was lost. Staff will verify and return it if it matches.",
   "faqLostFoundQ4": "How long until a lost item is processed?",
-  "faqLostFoundA4": "Staff update status (Lost / Found / Claimed) in the system. Track progress in the app or contact the desk."
+  "faqLostFoundA4": "Staff update status (Lost / Found / Claimed) in the system. Track progress in the app or contact the desk.",
+
+  "artbookTitle": "FUVEKON Conbook",
+  "artbookSubtitle": "Artistic Journey — 2024",
+  "artbookDescription": "A collection of over 50 artworks from the FUVEKON creative community, printed on premium art paper.",
+  "artbookPageCount": "120 Pages",
+  "artbookPaperType": "150gsm Couche paper",
+  "artbookSubmitCta": "Submit artwork for Conbook",
+  "artbookSubmitBack": "GO BACK",
+  "artbookSubmitTitle": "Submit Conbook",
+  "artbookSubmitIntro": "A place to celebrate outstanding works. Send your masterpiece for the organizing committee to review for the FUVEKON Conbook.",
+  "artbookFormSectionTitle": "Artwork information",
+  "artbookFieldTitle": "Artwork title",
+  "artbookFieldTitleHint": "e.g. Autumn daydream",
+  "artbookFieldAuthor": "Author / Pen name",
+  "artbookFieldAuthorHint": "Enter your pen name",
+  "artbookFieldGenre": "Genre",
+  "artbookFieldGenreHint": "Select a genre",
+  "artbookFieldDescription": "Idea description (optional)",
+  "artbookFieldDescriptionHint": "Share the story behind your artwork...",
+  "artbookFieldPortfolio": "Portfolio link",
+  "artbookFieldPortfolioHint": "https://",
+  "artbookFieldPreview": "Artwork preview",
+  "artbookFieldRequired": "This field is required",
+  "artbookUploadLabel": "Drag and drop or click to upload",
+  "artbookUploadHint": "Supports JPG, PNG, PDF. Max 20MB.",
+  "artbookPreviewRequired": "Please upload an artwork preview",
+  "artbookSubmitButton": "Submit artwork for Conbook",
+  "artbookRulesTitle": "Submission rules",
+  "artbookRuleSizeTitle": "SIZE",
+  "artbookRuleSizeBody": "A4 (210 x 297mm) with a 5mm safety margin.",
+  "artbookRuleFormatTitle": "FORMAT",
+  "artbookRuleFormatBody": "CMYK color mode, minimum 300dpi.",
+  "artbookRuleCopyrightTitle": "COPYRIGHT",
+  "artbookRuleCopyrightBody": "Must be original work that has never been commercially published.",
+  "artbookDeadline": "Submission deadline: November 20, 2023",
+  "artbookLoginRequired": "Please sign in to submit your Conbook artwork",
+  "artbookSubmitSuccess": "Artwork submitted successfully!",
+  "artbookSubmitFailed": "Could not submit artwork. Please try again.",
+  "artbookGenreIllustration": "Illustration",
+  "artbookGenreComic": "Comic",
+  "artbookGenrePhoto": "Photography",
+  "artbookGenreDigital": "Digital art",
+  "artbookGenreOther": "Other"
 }

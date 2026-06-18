@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/screens/contribute/artbook_page.dart';
 import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';
+
+export 'artbook_page.dart';
+export 'artbook_submit_page.dart';
 
 class TalentRegistrationPage extends StatelessWidget {
   const TalentRegistrationPage({super.key});
@@ -27,18 +31,7 @@ class PanelRegistrationPage extends StatelessWidget {
   }
 }
 
-class ArtbookSubmissionPage extends StatelessWidget {
-  const ArtbookSubmissionPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'Artbook Submission',
-      subtitle: 'Conbook rules and submission card.',
-      icon: Icons.menu_book_outlined,
-    );
-  }
-}
+typedef ArtbookSubmissionPage = ArtbookPage;
 
 class DealerRegistrationPage extends StatelessWidget {
   const DealerRegistrationPage({super.key});

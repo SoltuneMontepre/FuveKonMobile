@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
+import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/shared/services/app_preferences.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:go_router/go_router.dart';
 
 class EventRulesPage extends StatefulWidget {
-  const EventRulesPage({super.key});
+  const EventRulesPage({super.key, this.onboarding = false});
+
+  final bool onboarding;
 
   @override
   State<EventRulesPage> createState() => _EventRulesPageState();
@@ -19,15 +23,58 @@ class _EventRulesPageState extends State<EventRulesPage> {
   Future<void> _confirm() async {
     await sl<AppPreferences>().setEventRulesAccepted(true);
     if (!mounted) return;
-    context.pop();
+
+    if (widget.onboarding) {
+      final introDone = await sl<AppPreferences>().introductionCompleted;
+      if (!mounted) return;
+      context.go(introDone ? Routes.home : Routes.introduction);
+      return;
+    }
+
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go(Routes.home);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final body = _RulesBody(
+      l10n: l10n,
+      agreed: _agreed,
+      onAgreedChanged: (value) => setState(() => _agreed = value),
+      onConfirm: _agreed ? _confirm : null,
+    );
 
-    return FuvekonNavScaffold(
-      body: Column(
+    if (widget.onboarding) {
+      return Scaffold(
+        backgroundColor: FuvekonColors.darkBg,
+        body: SafeArea(child: body),
+      );
+    }
+
+    return FuvekonNavScaffold(body: body);
+  }
+}
+
+class _RulesBody extends StatelessWidget {
+  const _RulesBody({
+    required this.l10n,
+    required this.agreed,
+    required this.onAgreedChanged,
+    required this.onConfirm,
+  });
+
+  final AppLocalizations l10n;
+  final bool agreed;
+  final ValueChanged<bool> onAgreedChanged;
+  final VoidCallback? onConfirm;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
@@ -66,7 +113,7 @@ class _EventRulesPageState extends State<EventRulesPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 InkWell(
-                  onTap: () => setState(() => _agreed = !_agreed),
+                  onTap: () => onAgreedChanged(!agreed),
                   borderRadius: BorderRadius.circular(8),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -77,9 +124,9 @@ class _EventRulesPageState extends State<EventRulesPage> {
                           width: 22,
                           height: 22,
                           child: Checkbox(
-                            value: _agreed,
+                            value: agreed,
                             onChanged: (value) =>
-                                setState(() => _agreed = value ?? false),
+                                onAgreedChanged(value ?? false),
                             activeColor: _RulesColors.accentGreen,
                             side: BorderSide(
                               color: Colors.white.withValues(alpha: 0.45),
@@ -105,7 +152,7 @@ class _EventRulesPageState extends State<EventRulesPage> {
                 ),
                 const SizedBox(height: 16),
                 FilledButton(
-                  onPressed: _agreed ? _confirm : null,
+                  onPressed: onConfirm,
                   style: FilledButton.styleFrom(
                     backgroundColor: _RulesColors.accentGreen,
                     disabledBackgroundColor: const Color(0xFF3A3A3A),
@@ -128,7 +175,6 @@ class _EventRulesPageState extends State<EventRulesPage> {
             ),
           ),
         ],
-      ),
     );
   }
 
@@ -175,11 +221,11 @@ class _EventRulesPageState extends State<EventRulesPage> {
 }
 
 abstract final class _RulesColors {
-  static const title = Color(0xFFD1EAD8);
-  static const cardBg = Color(0xFFF0F2F0);
-  static const textDark = Color(0xFF0A2E1F);
-  static const textMuted = Color(0xFF48715B);
-  static const accentGreen = Color(0xFF4A7C59);
+  static const title = FuvekonColors.darkPrimary;
+  static const cardBg = FuvekonColors.mintCard;
+  static const textDark = FuvekonColors.darkButtonText;
+  static const textMuted = FuvekonColors.textSecondary;
+  static const accentGreen = FuvekonColors.sageGreenContainer;
 }
 
 class _RuleCard extends StatelessWidget {

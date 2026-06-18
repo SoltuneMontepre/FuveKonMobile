@@ -131,6 +131,14 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
     sl<LocaleNotifier>().update(Locale(languageCode));
 
+    final rulesAccepted = await prefs.eventRulesAccepted;
+    if (!mounted) return;
+
+    if (!rulesAccepted) {
+      context.go(Routes.tosOnboarding);
+      return;
+    }
+
     final introDone = await prefs.introductionCompleted;
     if (!mounted) return;
 
@@ -139,7 +147,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       return;
     }
 
-    context.go(Routes.login);
+    context.go(Routes.home);
   }
 
   @override

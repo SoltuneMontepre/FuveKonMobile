@@ -11,6 +11,7 @@ import 'package:fuvekonmobile/core/theme/theme_mode_notifier.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_state.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/demo_ticket_overlay.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 
 class FuvekonApp extends StatelessWidget {
@@ -40,6 +41,11 @@ class FuvekonApp extends StatelessWidget {
                   localizationsDelegates:
                       AppLocalizations.localizationsDelegates,
                   routerConfig: sl<AppRouter>().router,
+                  builder: (context, child) {
+                    return DemoTicketOverlay(
+                      child: child ?? const SizedBox.shrink(),
+                    );
+                  },
                 );
               },
             ),

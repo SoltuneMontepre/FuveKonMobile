@@ -54,7 +54,11 @@ class AuthSessionNotifier extends ChangeNotifier {
   bool get isAuthenticated =>
       _state is AuthAuthenticated || _state is AuthSessionRestored;
 
-  String get homeRoute => _role?.homeRoute ?? Routes.home;
+  String get homeRoute {
+    final roleHome = _role?.homeRoute;
+    if (roleHome != null) return roleHome;
+    return isAuthenticated ? Routes.account : Routes.home;
+  }
 
   bool get isAdmin => _role == UserRole.admin;
   bool get isStaff => _role == UserRole.staff;

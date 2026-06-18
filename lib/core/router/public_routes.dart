@@ -3,7 +3,8 @@ import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/screens/contribute/contribute_pages.dart';
 import 'package:fuvekonmobile/screens/info/info_pages.dart';
 import 'package:fuvekonmobile/screens/public/public_pages.dart';
-import 'package:fuvekonmobile/screens/ticket/ticket_pages.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/pages/explore_tickets_page.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/pages/ticket_tier_detail_page.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/pages/ticket_purchase_page.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/pages/tickets_page.dart';
 import 'package:go_router/go_router.dart';
@@ -15,11 +16,11 @@ abstract final class PublicRoutes {
       [
         GoRoute(
           path: Routes.home,
-          builder: (context, state) => const HomePage(),
+          builder: (context, state) => const GuestLandingPage(),
         ),
         GoRoute(
           path: Routes.ticket,
-          builder: (context, state) => const TicketInfoPage(),
+          builder: (context, state) => const ExploreTicketsPage(),
           routes: [
             GoRoute(
               path: 'purchase',
@@ -39,6 +40,12 @@ abstract final class PublicRoutes {
                 ),
               ],
             ),
+            GoRoute(
+              path: ':id',
+              builder: (context, state) => TicketTierDetailPage(
+                tierId: state.pathParameters['id']!,
+              ),
+            ),
           ],
         ),
         GoRoute(
@@ -51,7 +58,14 @@ abstract final class PublicRoutes {
         ),
         GoRoute(
           path: Routes.artbook,
-          builder: (context, state) => const ArtbookSubmissionPage(),
+          builder: (context, state) => const ArtbookPage(),
+          routes: [
+            GoRoute(
+              path: 'submit',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) => const ArtbookSubmitPage(),
+            ),
+          ],
         ),
         GoRoute(
           path: Routes.dealer,
@@ -71,7 +85,9 @@ abstract final class PublicRoutes {
         ),
         GoRoute(
           path: Routes.tos,
-          builder: (context, state) => const TosPage(),
+          builder: (context, state) => TosPage(
+            onboarding: state.uri.queryParameters['onboarding'] == '1',
+          ),
         ),
         GoRoute(
           path: Routes.schedule,

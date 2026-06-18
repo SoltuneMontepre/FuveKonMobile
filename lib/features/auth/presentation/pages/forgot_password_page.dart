@@ -3,6 +3,7 @@ import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/utils/auth_messages.dart';
 import 'package:fuvekonmobile/features/auth/domain/usecases/forgot_password_usecase.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/forgot_password_form.dart';
@@ -65,7 +66,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       footer: TextButton(
         onPressed: () => context.go(Routes.login),
         style: TextButton.styleFrom(
-          foregroundColor: const Color(0xFF0A2E1F),
+          foregroundColor: FuvekonColors.darkButtonText,
           padding: EdgeInsets.zero,
           minimumSize: Size.zero,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,

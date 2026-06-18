@@ -39,7 +39,7 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
     await sl<AppPreferences>().setLanguageCode(_selected);
     sl<LocaleNotifier>().update(Locale(_selected));
     if (!mounted) return;
-    context.go(Routes.introduction);
+    context.go(Routes.tosOnboarding);
   }
 
   @override

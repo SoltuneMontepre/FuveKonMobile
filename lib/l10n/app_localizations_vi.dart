@@ -68,6 +68,30 @@ class AppLocalizationsVi extends AppLocalizations {
   String get loginGoogle => 'Đăng nhập với Google';
 
   @override
+  String get authGoogleNotConfigured =>
+      'Chưa cấu hình Google Sign-In. Thêm GOOGLE_CLIENT_ID vào file .env rồi khởi động lại app.';
+
+  @override
+  String get authGoogleUnsupportedPlatform =>
+      'Google Sign-In chưa hỗ trợ trên Linux/Windows. Hãy chạy app trên Android, iOS, Web (Chrome) hoặc macOS.';
+
+  @override
+  String get authGoogleLoginFailed =>
+      'Đăng nhập Google thất bại. Vui lòng thử lại hoặc dùng email/mật khẩu.';
+
+  @override
+  String get authGoogleDeveloperError =>
+      'Lỗi cấu hình Google OAuth trên Android. Trong Google Cloud Console, tạo OAuth client Android với package com.example.fuvekonmobile và thêm SHA-1 của debug keystore (Android Studio → Gradle → signingReport).';
+
+  @override
+  String get authGoogleIdTokenMissing =>
+      'Google không trả về ID token. Kiểm tra GOOGLE_CLIENT_ID (Web client) trong .env và OAuth client Android trên Google Cloud.';
+
+  @override
+  String get authGoogleRegistrationDetailsRequired =>
+      'Vui lòng hoàn tất đăng ký với thông tin cá nhân.';
+
+  @override
   String get loginNoAccount => 'Chưa có tài khoản?';
 
   @override
@@ -254,6 +278,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get navIntroduction => 'Giới thiệu';
 
   @override
+  String get navArtbook => 'Conbook';
+
+  @override
   String get navFaq => 'FAQ';
 
   @override
@@ -261,6 +288,252 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get navLogin => 'Đăng nhập';
+
+  @override
+  String get navLogout => 'Đăng xuất';
+
+  @override
+  String get navHome => 'Trang chủ';
+
+  @override
+  String get navSchedule => 'Lịch trình';
+
+  @override
+  String get navMyTickets => 'Vé của tôi';
+
+  @override
+  String get navNotifications => 'Thông báo';
+
+  @override
+  String get navAccount => 'Tài khoản';
+
+  @override
+  String get myTicketsFilterActive => 'Đang hiệu lực';
+
+  @override
+  String get myTicketsFilterUsed => 'Đã dùng';
+
+  @override
+  String get myTicketsFilterAll => 'Tất cả';
+
+  @override
+  String get myTicketsStatusActive => 'Đang hiệu lực';
+
+  @override
+  String get myTicketsStatusUsed => 'Đã dùng';
+
+  @override
+  String get myTicketsViewTicket => 'Xem vé →';
+
+  @override
+  String get myTicketsEventDateRange => '20-22/10/2024';
+
+  @override
+  String get myTicketsEmptyTitle => 'Bạn chưa có vé';
+
+  @override
+  String get myTicketsEmptySubtitle => 'Mua vé để tham gia sự kiện.';
+
+  @override
+  String get myTicketsEmptyFilter => 'Không có vé trong mục này';
+
+  @override
+  String get myTicketsBrowse => 'Xem các hạng vé';
+
+  @override
+  String get eTicketEventLabel => 'SỰ KIỆN';
+
+  @override
+  String get eTicketValid => 'Hợp lệ';
+
+  @override
+  String get eTicketOwner => 'Người sở hữu';
+
+  @override
+  String get eTicketTier => 'Hạng vé';
+
+  @override
+  String get eTicketDay => 'Ngày';
+
+  @override
+  String get eTicketScanHint => 'Quét mã QR tại cổng kiểm soát';
+
+  @override
+  String get eTicketCodeLabel => 'Mã vé';
+
+  @override
+  String eTicketBenefitsTitle(String tier) {
+    return 'Quyền lợi vé $tier';
+  }
+
+  @override
+  String get eTicketUpgrade => 'Nâng cấp vé';
+
+  @override
+  String get eTicketSaveWallet => 'Lưu vào ví Apple/Google';
+
+  @override
+  String get eTicketWalletSoon => 'Tính năng lưu ví sẽ có sau.';
+
+  @override
+  String get ticketUpgradeTitle => 'Nâng cấp hạng vé';
+
+  @override
+  String get ticketUpgradeCurrentLabel => 'VÉ HIỆN TẠI CỦA BẠN';
+
+  @override
+  String get ticketUpgradeOptionsLabel => 'Lựa chọn nâng cấp';
+
+  @override
+  String get ticketUpgradeExtraBenefits => 'QUYỀN LỢI BỔ SUNG';
+
+  @override
+  String get ticketUpgradeTotalLabel => 'TỔNG THANH TOÁN THÊM';
+
+  @override
+  String get ticketUpgradeContinue => 'Tiếp tục nâng cấp';
+
+  @override
+  String get ticketUpgradeInfoNote =>
+      'Việc nâng cấp vé VIP lên Super VIP sẽ được hệ thống xử lý và xác nhận trong vòng 24h làm việc.';
+
+  @override
+  String get ticketUpgradeNoTicket => 'Bạn chưa có vé để nâng cấp.';
+
+  @override
+  String ticketUpgradeMaxTier(String tier) {
+    return 'Bạn đang ở hạng vé cao nhất ($tier).';
+  }
+
+  @override
+  String get authHomeUpcomingBadge => 'Sự kiện sắp diễn ra';
+
+  @override
+  String get authHomeHeroTitle => 'Lễ Hội Giao Lưu Văn Hóa Anime';
+
+  @override
+  String get authHomeHeroSubtitle =>
+      'Khám phá không gian nghệ thuật và trải nghiệm độc đáo.';
+
+  @override
+  String get authHomeSearchHint => 'Tìm kiếm sự kiện, nghệ sĩ...';
+
+  @override
+  String get authHomeFeaturedTitle => 'Sự kiện nổi bật';
+
+  @override
+  String get authHomeSeeAll => 'Xem tất cả';
+
+  @override
+  String get authHomeHotBadge => 'Hot';
+
+  @override
+  String get authHomeFeaturedEventTitle => 'Triển Lãm Nghệ Thuật Đương Đại';
+
+  @override
+  String get authHomeFeaturedEventDate => '20 Tháng 10, 2023';
+
+  @override
+  String get authHomeFeaturedEventLocation => 'Trung Tâm SECC';
+
+  @override
+  String get authHomeBuyTicket => 'Mua vé';
+
+  @override
+  String get authHomeNotificationsEmpty => 'Chưa có thông báo mới.';
+
+  @override
+  String get landingBadge => 'SỰ KIỆN HÀNG ĐẦU';
+
+  @override
+  String get landingHeroTitle => 'Sự kiện Anime';
+
+  @override
+  String get landingHeroBody =>
+      'Trải nghiệm không gian văn hóa độc bản với hệ thống quản lý vé và lịch trình thông minh. Tham gia ngay để không bỏ lỡ những khoảnh khắc tuyệt vời nhất.';
+
+  @override
+  String get landingRegister => 'Đăng ký';
+
+  @override
+  String get landingViewTickets => 'Xem vé';
+
+  @override
+  String get exploreTicketsTitle => 'Khám phá các loại vé';
+
+  @override
+  String get exploreTicketsSubtitle =>
+      'Lựa chọn trải nghiệm phù hợp nhất với bạn tại triển lãm.';
+
+  @override
+  String get exploreTicketsFooterInfo =>
+      'Bạn có thể xem thông tin vé trước. Để mua vé, vui lòng đăng ký hoặc đăng nhập.';
+
+  @override
+  String get exploreTicketsRegisterCta => 'Đăng ký để mua vé';
+
+  @override
+  String get exploreTicketsBuyCta => 'Mua vé ngay';
+
+  @override
+  String get exploreTicketsLoginPrompt => 'Đã có tài khoản?';
+
+  @override
+  String get exploreTicketsLoginLink => 'Đăng nhập ngay';
+
+  @override
+  String get exploreTicketsPopularBadge => 'Phổ biến nhất';
+
+  @override
+  String get exploreTicketsSoldOut => 'Hết vé';
+
+  @override
+  String get exploreTicketsEmpty => 'Hiện chưa có hạng vé nào.';
+
+  @override
+  String get exploreTicketsRetry => 'Thử lại';
+
+  @override
+  String get ticketDetailBenefitsTitle => 'Quyền lợi đi kèm';
+
+  @override
+  String ticketDetailCompareTitle(String standardTier) {
+    return 'So sánh với $standardTier';
+  }
+
+  @override
+  String get ticketDetailTotal => 'Tổng cộng';
+
+  @override
+  String get ticketDetailCompareAccess => 'Quyền truy cập';
+
+  @override
+  String get ticketDetailCompareCheckIn => 'Check-in';
+
+  @override
+  String get ticketDetailComparePriority => 'Ưu tiên';
+
+  @override
+  String get ticketDetailCompareShared => 'Thông thường';
+
+  @override
+  String get ticketDetailCompareBadge => 'Badge';
+
+  @override
+  String get ticketDetailCompareCustom => 'Tùy chỉnh';
+
+  @override
+  String get ticketDetailCompareNormal => 'Tiêu chuẩn';
+
+  @override
+  String get ticketDetailCompareGifts => 'Quà tặng thêm';
+
+  @override
+  String get landingExperienceTitle => 'Trải Nghiệm Hoàn Hảo';
+
+  @override
+  String get landingExperienceBody =>
+      'Quản lý hành trình của bạn tại sự kiện một cách dễ dàng.';
 
   @override
   String get rulesTitle => 'Nội quy sự kiện';
@@ -587,4 +860,135 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get faqLostFoundA4 =>
       'Staff cập nhật trạng thái (Lost / Found / Claimed) trên hệ thống. Bạn theo dõi tiến trình trong app hoặc liên hệ quầy.';
+
+  @override
+  String get artbookTitle => 'Conbook FUVEKON';
+
+  @override
+  String get artbookSubtitle => 'Hành trình Nghệ thuật - 2024';
+
+  @override
+  String get artbookDescription =>
+      'Cuốn sách tổng hợp hơn 50 tác phẩm nghệ thuật từ cộng đồng sáng tạo FUVEKON, được in trên giấy mỹ thuật cao cấp.';
+
+  @override
+  String get artbookPageCount => '120 Trang';
+
+  @override
+  String get artbookPaperType => 'Giấy Couche 150gsm';
+
+  @override
+  String get artbookSubmitCta => 'Gửi tác phẩm cho Conbook';
+
+  @override
+  String get artbookSubmitBack => 'QUAY LẠI';
+
+  @override
+  String get artbookSubmitTitle => 'Gửi Conbook';
+
+  @override
+  String get artbookSubmitIntro =>
+      'Nơi tôn vinh những tác phẩm xuất sắc. Hãy gửi kiệt tác của bạn để được BTC xem xét đưa vào cuốn Conbook FUVEKON.';
+
+  @override
+  String get artbookFormSectionTitle => 'Thông tin tác phẩm';
+
+  @override
+  String get artbookFieldTitle => 'Tên tác phẩm';
+
+  @override
+  String get artbookFieldTitleHint => 'Ví dụ: Giấc mơ chiều thu';
+
+  @override
+  String get artbookFieldAuthor => 'Tác giả / Bút danh';
+
+  @override
+  String get artbookFieldAuthorHint => 'Nhập bút danh của bạn';
+
+  @override
+  String get artbookFieldGenre => 'Thể loại';
+
+  @override
+  String get artbookFieldGenreHint => 'Chọn thể loại';
+
+  @override
+  String get artbookFieldDescription => 'Mô tả ý tưởng (Không bắt buộc)';
+
+  @override
+  String get artbookFieldDescriptionHint =>
+      'Chia sẻ câu chuyện đằng sau tác phẩm của bạn...';
+
+  @override
+  String get artbookFieldPortfolio => 'Link Portfolio';
+
+  @override
+  String get artbookFieldPortfolioHint => 'https://';
+
+  @override
+  String get artbookFieldPreview => 'Preview Tác phẩm';
+
+  @override
+  String get artbookFieldRequired => 'Vui lòng điền thông tin này';
+
+  @override
+  String get artbookUploadLabel => 'Kéo thả file hoặc Click để tải lên';
+
+  @override
+  String get artbookUploadHint => 'Hỗ trợ JPG, PNG, PDF. Tối đa 20MB.';
+
+  @override
+  String get artbookPreviewRequired => 'Vui lòng tải lên preview tác phẩm';
+
+  @override
+  String get artbookSubmitButton => 'Gửi tác phẩm cho Conbook';
+
+  @override
+  String get artbookRulesTitle => 'Quy định nộp bài';
+
+  @override
+  String get artbookRuleSizeTitle => 'KÍCH THƯỚC';
+
+  @override
+  String get artbookRuleSizeBody => 'A4 (210 x 297mm), lề an toàn 5mm.';
+
+  @override
+  String get artbookRuleFormatTitle => 'ĐỊNH DẠNG';
+
+  @override
+  String get artbookRuleFormatBody => 'Chế độ màu CMYK, tối thiểu 300dpi.';
+
+  @override
+  String get artbookRuleCopyrightTitle => 'BẢN QUYỀN';
+
+  @override
+  String get artbookRuleCopyrightBody =>
+      'Tác phẩm phải là nguyên bản, chưa từng xuất bản thương mại.';
+
+  @override
+  String get artbookDeadline => 'Hạn chót nộp tác phẩm: 20 Tháng 11, 2023';
+
+  @override
+  String get artbookLoginRequired =>
+      'Vui lòng đăng nhập để gửi tác phẩm Conbook';
+
+  @override
+  String get artbookSubmitSuccess => 'Đã gửi tác phẩm thành công!';
+
+  @override
+  String get artbookSubmitFailed => 'Không thể gửi tác phẩm. Vui lòng thử lại.';
+
+  @override
+  String get artbookGenreIllustration => 'Minh họa';
+
+  @override
+  String get artbookGenreComic => 'Truyện tranh';
+
+  @override
+  String get artbookGenrePhoto => 'Nhiếp ảnh';
+
+  @override
+  String get artbookGenreDigital => 'Digital Art';
+
+  @override
+  String get artbookGenreOther => 'Khác';
 }

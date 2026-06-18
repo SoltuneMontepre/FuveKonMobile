@@ -3,8 +3,8 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 
 abstract final class _ForgotColors {
-  static const cardBg = Color(0xFFD1EAD8);
-  static const decorGold = Color(0xFFE8D5A8);
+  static const cardBg = FuvekonColors.mintCard;
+  static const decorGold = FuvekonColors.lightGold;
 }
 
 class ForgotPasswordPageLayout extends StatelessWidget {

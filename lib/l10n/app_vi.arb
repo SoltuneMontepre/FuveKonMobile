@@ -30,6 +30,18 @@
   "loginSubmit": "Đăng nhập",
   "loginOrDivider": "HOẶC",
   "loginGoogle": "Đăng nhập với Google",
+  "authGoogleNotConfigured":
+      "Chưa cấu hình Google Sign-In. Thêm GOOGLE_CLIENT_ID vào file .env rồi khởi động lại app.",
+  "authGoogleUnsupportedPlatform":
+      "Google Sign-In chưa hỗ trợ trên Linux/Windows. Hãy chạy app trên Android, iOS, Web (Chrome) hoặc macOS.",
+  "authGoogleLoginFailed":
+      "Đăng nhập Google thất bại. Vui lòng thử lại hoặc dùng email/mật khẩu.",
+  "authGoogleDeveloperError":
+      "Lỗi cấu hình Google OAuth trên Android. Trong Google Cloud Console, tạo OAuth client Android với package com.example.fuvekonmobile và thêm SHA-1 của debug keystore (Android Studio → Gradle → signingReport).",
+  "authGoogleIdTokenMissing":
+      "Google không trả về ID token. Kiểm tra GOOGLE_CLIENT_ID (Web client) trong .env và OAuth client Android trên Google Cloud.",
+  "authGoogleRegistrationDetailsRequired":
+      "Vui lòng hoàn tất đăng ký với thông tin cá nhân.",
   "loginNoAccount": "Chưa có tài khoản?",
   "loginRegisterLink": "Đăng ký",
 
@@ -94,9 +106,112 @@
   "introViewFaq": "Xem FAQ",
 
   "navIntroduction": "Giới thiệu",
+  "navArtbook": "Conbook",
   "navFaq": "FAQ",
   "navRules": "Nội quy",
   "navLogin": "Đăng nhập",
+  "navLogout": "Đăng xuất",
+  "navHome": "Trang chủ",
+
+  "navSchedule": "Lịch trình",
+  "navMyTickets": "Vé của tôi",
+  "navNotifications": "Thông báo",
+  "navAccount": "Tài khoản",
+
+  "myTicketsFilterActive": "Đang hiệu lực",
+  "myTicketsFilterUsed": "Đã dùng",
+  "myTicketsFilterAll": "Tất cả",
+  "myTicketsStatusActive": "Đang hiệu lực",
+  "myTicketsStatusUsed": "Đã dùng",
+  "myTicketsViewTicket": "Xem vé →",
+  "myTicketsEventDateRange": "20-22/10/2024",
+  "myTicketsEmptyTitle": "Bạn chưa có vé",
+  "myTicketsEmptySubtitle": "Mua vé để tham gia sự kiện.",
+  "myTicketsEmptyFilter": "Không có vé trong mục này",
+  "myTicketsBrowse": "Xem các hạng vé",
+
+  "eTicketEventLabel": "SỰ KIỆN",
+  "eTicketValid": "Hợp lệ",
+  "eTicketOwner": "Người sở hữu",
+  "eTicketTier": "Hạng vé",
+  "eTicketDay": "Ngày",
+  "eTicketScanHint": "Quét mã QR tại cổng kiểm soát",
+  "eTicketCodeLabel": "Mã vé",
+  "eTicketBenefitsTitle": "Quyền lợi vé {tier}",
+  "@eTicketBenefitsTitle": {
+    "placeholders": {
+      "tier": {"type": "String"}
+    }
+  },
+  "eTicketUpgrade": "Nâng cấp vé",
+  "eTicketSaveWallet": "Lưu vào ví Apple/Google",
+  "eTicketWalletSoon": "Tính năng lưu ví sẽ có sau.",
+
+  "ticketUpgradeTitle": "Nâng cấp hạng vé",
+  "ticketUpgradeCurrentLabel": "VÉ HIỆN TẠI CỦA BẠN",
+  "ticketUpgradeOptionsLabel": "Lựa chọn nâng cấp",
+  "ticketUpgradeExtraBenefits": "QUYỀN LỢI BỔ SUNG",
+  "ticketUpgradeTotalLabel": "TỔNG THANH TOÁN THÊM",
+  "ticketUpgradeContinue": "Tiếp tục nâng cấp",
+  "ticketUpgradeInfoNote": "Việc nâng cấp vé VIP lên Super VIP sẽ được hệ thống xử lý và xác nhận trong vòng 24h làm việc.",
+  "ticketUpgradeNoTicket": "Bạn chưa có vé để nâng cấp.",
+  "ticketUpgradeMaxTier": "Bạn đang ở hạng vé cao nhất ({tier}).",
+  "@ticketUpgradeMaxTier": {
+    "placeholders": {
+      "tier": {"type": "String"}
+    }
+  },
+
+  "authHomeUpcomingBadge": "Sự kiện sắp diễn ra",
+  "authHomeHeroTitle": "Lễ Hội Giao Lưu Văn Hóa Anime",
+  "authHomeHeroSubtitle": "Khám phá không gian nghệ thuật và trải nghiệm độc đáo.",
+  "authHomeSearchHint": "Tìm kiếm sự kiện, nghệ sĩ...",
+  "authHomeFeaturedTitle": "Sự kiện nổi bật",
+  "authHomeSeeAll": "Xem tất cả",
+  "authHomeHotBadge": "Hot",
+  "authHomeFeaturedEventTitle": "Triển Lãm Nghệ Thuật Đương Đại",
+  "authHomeFeaturedEventDate": "20 Tháng 10, 2023",
+  "authHomeFeaturedEventLocation": "Trung Tâm SECC",
+  "authHomeBuyTicket": "Mua vé",
+  "authHomeNotificationsEmpty": "Chưa có thông báo mới.",
+
+  "landingBadge": "SỰ KIỆN HÀNG ĐẦU",
+  "landingHeroTitle": "Sự kiện Anime",
+  "landingHeroBody": "Trải nghiệm không gian văn hóa độc bản với hệ thống quản lý vé và lịch trình thông minh. Tham gia ngay để không bỏ lỡ những khoảnh khắc tuyệt vời nhất.",
+  "landingRegister": "Đăng ký",
+  "landingViewTickets": "Xem vé",
+
+  "exploreTicketsTitle": "Khám phá các loại vé",
+  "exploreTicketsSubtitle": "Lựa chọn trải nghiệm phù hợp nhất với bạn tại triển lãm.",
+  "exploreTicketsFooterInfo": "Bạn có thể xem thông tin vé trước. Để mua vé, vui lòng đăng ký hoặc đăng nhập.",
+  "exploreTicketsRegisterCta": "Đăng ký để mua vé",
+  "exploreTicketsBuyCta": "Mua vé ngay",
+  "exploreTicketsLoginPrompt": "Đã có tài khoản?",
+  "exploreTicketsLoginLink": "Đăng nhập ngay",
+  "exploreTicketsPopularBadge": "Phổ biến nhất",
+  "exploreTicketsSoldOut": "Hết vé",
+  "exploreTicketsEmpty": "Hiện chưa có hạng vé nào.",
+  "exploreTicketsRetry": "Thử lại",
+  "ticketDetailBenefitsTitle": "Quyền lợi đi kèm",
+  "ticketDetailCompareTitle": "So sánh với {standardTier}",
+  "@ticketDetailCompareTitle": {
+    "placeholders": {
+      "standardTier": {
+        "type": "String"
+      }
+    }
+  },
+  "ticketDetailTotal": "Tổng cộng",
+  "ticketDetailCompareAccess": "Quyền truy cập",
+  "ticketDetailCompareCheckIn": "Check-in",
+  "ticketDetailComparePriority": "Ưu tiên",
+  "ticketDetailCompareShared": "Thông thường",
+  "ticketDetailCompareBadge": "Badge",
+  "ticketDetailCompareCustom": "Tùy chỉnh",
+  "ticketDetailCompareNormal": "Tiêu chuẩn",
+  "ticketDetailCompareGifts": "Quà tặng thêm",
+  "landingExperienceTitle": "Trải Nghiệm Hoàn Hảo",
+  "landingExperienceBody": "Quản lý hành trình của bạn tại sự kiện một cách dễ dàng.",
 
   "rulesTitle": "Nội quy sự kiện",
   "rulesIntro": "Vui lòng đọc kỹ các quy định dưới đây để đảm bảo một kỳ triển lãm an toàn, chuyên nghiệp và đáng nhớ cho tất cả mọi người.",
@@ -202,5 +317,48 @@
   "faqLostFoundQ3": "Nhận lại đồ bị mất thế nào?",
   "faqLostFoundA3": "Mang giấy tờ tùy thân đến quầy hỗ trợ, mô tả vật dụng và thời gian mất. Staff sẽ đối chiếu và bàn giao nếu khớp.",
   "faqLostFoundQ4": "Đồ mất bao lâu thì được xử lý?",
-  "faqLostFoundA4": "Staff cập nhật trạng thái (Lost / Found / Claimed) trên hệ thống. Bạn theo dõi tiến trình trong app hoặc liên hệ quầy."
+  "faqLostFoundA4": "Staff cập nhật trạng thái (Lost / Found / Claimed) trên hệ thống. Bạn theo dõi tiến trình trong app hoặc liên hệ quầy.",
+
+  "artbookTitle": "Conbook FUVEKON",
+  "artbookSubtitle": "Hành trình Nghệ thuật - 2024",
+  "artbookDescription": "Cuốn sách tổng hợp hơn 50 tác phẩm nghệ thuật từ cộng đồng sáng tạo FUVEKON, được in trên giấy mỹ thuật cao cấp.",
+  "artbookPageCount": "120 Trang",
+  "artbookPaperType": "Giấy Couche 150gsm",
+  "artbookSubmitCta": "Gửi tác phẩm cho Conbook",
+  "artbookSubmitBack": "QUAY LẠI",
+  "artbookSubmitTitle": "Gửi Conbook",
+  "artbookSubmitIntro": "Nơi tôn vinh những tác phẩm xuất sắc. Hãy gửi kiệt tác của bạn để được BTC xem xét đưa vào cuốn Conbook FUVEKON.",
+  "artbookFormSectionTitle": "Thông tin tác phẩm",
+  "artbookFieldTitle": "Tên tác phẩm",
+  "artbookFieldTitleHint": "Ví dụ: Giấc mơ chiều thu",
+  "artbookFieldAuthor": "Tác giả / Bút danh",
+  "artbookFieldAuthorHint": "Nhập bút danh của bạn",
+  "artbookFieldGenre": "Thể loại",
+  "artbookFieldGenreHint": "Chọn thể loại",
+  "artbookFieldDescription": "Mô tả ý tưởng (Không bắt buộc)",
+  "artbookFieldDescriptionHint": "Chia sẻ câu chuyện đằng sau tác phẩm của bạn...",
+  "artbookFieldPortfolio": "Link Portfolio",
+  "artbookFieldPortfolioHint": "https://",
+  "artbookFieldPreview": "Preview Tác phẩm",
+  "artbookFieldRequired": "Vui lòng điền thông tin này",
+  "artbookUploadLabel": "Kéo thả file hoặc Click để tải lên",
+  "artbookUploadHint": "Hỗ trợ JPG, PNG, PDF. Tối đa 20MB.",
+  "artbookPreviewRequired": "Vui lòng tải lên preview tác phẩm",
+  "artbookSubmitButton": "Gửi tác phẩm cho Conbook",
+  "artbookRulesTitle": "Quy định nộp bài",
+  "artbookRuleSizeTitle": "KÍCH THƯỚC",
+  "artbookRuleSizeBody": "A4 (210 x 297mm), lề an toàn 5mm.",
+  "artbookRuleFormatTitle": "ĐỊNH DẠNG",
+  "artbookRuleFormatBody": "Chế độ màu CMYK, tối thiểu 300dpi.",
+  "artbookRuleCopyrightTitle": "BẢN QUYỀN",
+  "artbookRuleCopyrightBody": "Tác phẩm phải là nguyên bản, chưa từng xuất bản thương mại.",
+  "artbookDeadline": "Hạn chót nộp tác phẩm: 20 Tháng 11, 2023",
+  "artbookLoginRequired": "Vui lòng đăng nhập để gửi tác phẩm Conbook",
+  "artbookSubmitSuccess": "Đã gửi tác phẩm thành công!",
+  "artbookSubmitFailed": "Không thể gửi tác phẩm. Vui lòng thử lại.",
+  "artbookGenreIllustration": "Minh họa",
+  "artbookGenreComic": "Truyện tranh",
+  "artbookGenrePhoto": "Nhiếp ảnh",
+  "artbookGenreDigital": "Digital Art",
+  "artbookGenreOther": "Khác"
 }

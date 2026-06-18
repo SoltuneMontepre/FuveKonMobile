@@ -212,6 +212,42 @@ abstract class AppLocalizations {
   /// **'Đăng nhập với Google'**
   String get loginGoogle;
 
+  /// No description provided for @authGoogleNotConfigured.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa cấu hình Google Sign-In. Thêm GOOGLE_CLIENT_ID vào file .env rồi khởi động lại app.'**
+  String get authGoogleNotConfigured;
+
+  /// No description provided for @authGoogleUnsupportedPlatform.
+  ///
+  /// In vi, this message translates to:
+  /// **'Google Sign-In chưa hỗ trợ trên Linux/Windows. Hãy chạy app trên Android, iOS, Web (Chrome) hoặc macOS.'**
+  String get authGoogleUnsupportedPlatform;
+
+  /// No description provided for @authGoogleLoginFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập Google thất bại. Vui lòng thử lại hoặc dùng email/mật khẩu.'**
+  String get authGoogleLoginFailed;
+
+  /// No description provided for @authGoogleDeveloperError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lỗi cấu hình Google OAuth trên Android. Trong Google Cloud Console, tạo OAuth client Android với package com.example.fuvekonmobile và thêm SHA-1 của debug keystore (Android Studio → Gradle → signingReport).'**
+  String get authGoogleDeveloperError;
+
+  /// No description provided for @authGoogleIdTokenMissing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Google không trả về ID token. Kiểm tra GOOGLE_CLIENT_ID (Web client) trong .env và OAuth client Android trên Google Cloud.'**
+  String get authGoogleIdTokenMissing;
+
+  /// No description provided for @authGoogleRegistrationDetailsRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng hoàn tất đăng ký với thông tin cá nhân.'**
+  String get authGoogleRegistrationDetailsRequired;
+
   /// No description provided for @loginNoAccount.
   ///
   /// In vi, this message translates to:
@@ -566,6 +602,12 @@ abstract class AppLocalizations {
   /// **'Giới thiệu'**
   String get navIntroduction;
 
+  /// No description provided for @navArtbook.
+  ///
+  /// In vi, this message translates to:
+  /// **'Conbook'**
+  String get navArtbook;
+
   /// No description provided for @navFaq.
   ///
   /// In vi, this message translates to:
@@ -583,6 +625,474 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đăng nhập'**
   String get navLogin;
+
+  /// No description provided for @navLogout.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng xuất'**
+  String get navLogout;
+
+  /// No description provided for @navHome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trang chủ'**
+  String get navHome;
+
+  /// No description provided for @navSchedule.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lịch trình'**
+  String get navSchedule;
+
+  /// No description provided for @navMyTickets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vé của tôi'**
+  String get navMyTickets;
+
+  /// No description provided for @navNotifications.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông báo'**
+  String get navNotifications;
+
+  /// No description provided for @navAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản'**
+  String get navAccount;
+
+  /// No description provided for @myTicketsFilterActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang hiệu lực'**
+  String get myTicketsFilterActive;
+
+  /// No description provided for @myTicketsFilterUsed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã dùng'**
+  String get myTicketsFilterUsed;
+
+  /// No description provided for @myTicketsFilterAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả'**
+  String get myTicketsFilterAll;
+
+  /// No description provided for @myTicketsStatusActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang hiệu lực'**
+  String get myTicketsStatusActive;
+
+  /// No description provided for @myTicketsStatusUsed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã dùng'**
+  String get myTicketsStatusUsed;
+
+  /// No description provided for @myTicketsViewTicket.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem vé →'**
+  String get myTicketsViewTicket;
+
+  /// No description provided for @myTicketsEventDateRange.
+  ///
+  /// In vi, this message translates to:
+  /// **'20-22/10/2024'**
+  String get myTicketsEventDateRange;
+
+  /// No description provided for @myTicketsEmptyTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có vé'**
+  String get myTicketsEmptyTitle;
+
+  /// No description provided for @myTicketsEmptySubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua vé để tham gia sự kiện.'**
+  String get myTicketsEmptySubtitle;
+
+  /// No description provided for @myTicketsEmptyFilter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có vé trong mục này'**
+  String get myTicketsEmptyFilter;
+
+  /// No description provided for @myTicketsBrowse.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem các hạng vé'**
+  String get myTicketsBrowse;
+
+  /// No description provided for @eTicketEventLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'SỰ KIỆN'**
+  String get eTicketEventLabel;
+
+  /// No description provided for @eTicketValid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hợp lệ'**
+  String get eTicketValid;
+
+  /// No description provided for @eTicketOwner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người sở hữu'**
+  String get eTicketOwner;
+
+  /// No description provided for @eTicketTier.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạng vé'**
+  String get eTicketTier;
+
+  /// No description provided for @eTicketDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày'**
+  String get eTicketDay;
+
+  /// No description provided for @eTicketScanHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét mã QR tại cổng kiểm soát'**
+  String get eTicketScanHint;
+
+  /// No description provided for @eTicketCodeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã vé'**
+  String get eTicketCodeLabel;
+
+  /// No description provided for @eTicketBenefitsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền lợi vé {tier}'**
+  String eTicketBenefitsTitle(String tier);
+
+  /// No description provided for @eTicketUpgrade.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng cấp vé'**
+  String get eTicketUpgrade;
+
+  /// No description provided for @eTicketSaveWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu vào ví Apple/Google'**
+  String get eTicketSaveWallet;
+
+  /// No description provided for @eTicketWalletSoon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tính năng lưu ví sẽ có sau.'**
+  String get eTicketWalletSoon;
+
+  /// No description provided for @ticketUpgradeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng cấp hạng vé'**
+  String get ticketUpgradeTitle;
+
+  /// No description provided for @ticketUpgradeCurrentLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'VÉ HIỆN TẠI CỦA BẠN'**
+  String get ticketUpgradeCurrentLabel;
+
+  /// No description provided for @ticketUpgradeOptionsLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lựa chọn nâng cấp'**
+  String get ticketUpgradeOptionsLabel;
+
+  /// No description provided for @ticketUpgradeExtraBenefits.
+  ///
+  /// In vi, this message translates to:
+  /// **'QUYỀN LỢI BỔ SUNG'**
+  String get ticketUpgradeExtraBenefits;
+
+  /// No description provided for @ticketUpgradeTotalLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'TỔNG THANH TOÁN THÊM'**
+  String get ticketUpgradeTotalLabel;
+
+  /// No description provided for @ticketUpgradeContinue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục nâng cấp'**
+  String get ticketUpgradeContinue;
+
+  /// No description provided for @ticketUpgradeInfoNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Việc nâng cấp vé VIP lên Super VIP sẽ được hệ thống xử lý và xác nhận trong vòng 24h làm việc.'**
+  String get ticketUpgradeInfoNote;
+
+  /// No description provided for @ticketUpgradeNoTicket.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có vé để nâng cấp.'**
+  String get ticketUpgradeNoTicket;
+
+  /// No description provided for @ticketUpgradeMaxTier.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang ở hạng vé cao nhất ({tier}).'**
+  String ticketUpgradeMaxTier(String tier);
+
+  /// No description provided for @authHomeUpcomingBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện sắp diễn ra'**
+  String get authHomeUpcomingBadge;
+
+  /// No description provided for @authHomeHeroTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lễ Hội Giao Lưu Văn Hóa Anime'**
+  String get authHomeHeroTitle;
+
+  /// No description provided for @authHomeHeroSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khám phá không gian nghệ thuật và trải nghiệm độc đáo.'**
+  String get authHomeHeroSubtitle;
+
+  /// No description provided for @authHomeSearchHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm kiếm sự kiện, nghệ sĩ...'**
+  String get authHomeSearchHint;
+
+  /// No description provided for @authHomeFeaturedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện nổi bật'**
+  String get authHomeFeaturedTitle;
+
+  /// No description provided for @authHomeSeeAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem tất cả'**
+  String get authHomeSeeAll;
+
+  /// No description provided for @authHomeHotBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hot'**
+  String get authHomeHotBadge;
+
+  /// No description provided for @authHomeFeaturedEventTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Triển Lãm Nghệ Thuật Đương Đại'**
+  String get authHomeFeaturedEventTitle;
+
+  /// No description provided for @authHomeFeaturedEventDate.
+  ///
+  /// In vi, this message translates to:
+  /// **'20 Tháng 10, 2023'**
+  String get authHomeFeaturedEventDate;
+
+  /// No description provided for @authHomeFeaturedEventLocation.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trung Tâm SECC'**
+  String get authHomeFeaturedEventLocation;
+
+  /// No description provided for @authHomeBuyTicket.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua vé'**
+  String get authHomeBuyTicket;
+
+  /// No description provided for @authHomeNotificationsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có thông báo mới.'**
+  String get authHomeNotificationsEmpty;
+
+  /// No description provided for @landingBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'SỰ KIỆN HÀNG ĐẦU'**
+  String get landingBadge;
+
+  /// No description provided for @landingHeroTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện Anime'**
+  String get landingHeroTitle;
+
+  /// No description provided for @landingHeroBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trải nghiệm không gian văn hóa độc bản với hệ thống quản lý vé và lịch trình thông minh. Tham gia ngay để không bỏ lỡ những khoảnh khắc tuyệt vời nhất.'**
+  String get landingHeroBody;
+
+  /// No description provided for @landingRegister.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký'**
+  String get landingRegister;
+
+  /// No description provided for @landingViewTickets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem vé'**
+  String get landingViewTickets;
+
+  /// No description provided for @exploreTicketsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khám phá các loại vé'**
+  String get exploreTicketsTitle;
+
+  /// No description provided for @exploreTicketsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lựa chọn trải nghiệm phù hợp nhất với bạn tại triển lãm.'**
+  String get exploreTicketsSubtitle;
+
+  /// No description provided for @exploreTicketsFooterInfo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có thể xem thông tin vé trước. Để mua vé, vui lòng đăng ký hoặc đăng nhập.'**
+  String get exploreTicketsFooterInfo;
+
+  /// No description provided for @exploreTicketsRegisterCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng ký để mua vé'**
+  String get exploreTicketsRegisterCta;
+
+  /// No description provided for @exploreTicketsBuyCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua vé ngay'**
+  String get exploreTicketsBuyCta;
+
+  /// No description provided for @exploreTicketsLoginPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có tài khoản?'**
+  String get exploreTicketsLoginPrompt;
+
+  /// No description provided for @exploreTicketsLoginLink.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập ngay'**
+  String get exploreTicketsLoginLink;
+
+  /// No description provided for @exploreTicketsPopularBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phổ biến nhất'**
+  String get exploreTicketsPopularBadge;
+
+  /// No description provided for @exploreTicketsSoldOut.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hết vé'**
+  String get exploreTicketsSoldOut;
+
+  /// No description provided for @exploreTicketsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiện chưa có hạng vé nào.'**
+  String get exploreTicketsEmpty;
+
+  /// No description provided for @exploreTicketsRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get exploreTicketsRetry;
+
+  /// No description provided for @ticketDetailBenefitsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền lợi đi kèm'**
+  String get ticketDetailBenefitsTitle;
+
+  /// No description provided for @ticketDetailCompareTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'So sánh với {standardTier}'**
+  String ticketDetailCompareTitle(String standardTier);
+
+  /// No description provided for @ticketDetailTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng cộng'**
+  String get ticketDetailTotal;
+
+  /// No description provided for @ticketDetailCompareAccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền truy cập'**
+  String get ticketDetailCompareAccess;
+
+  /// No description provided for @ticketDetailCompareCheckIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Check-in'**
+  String get ticketDetailCompareCheckIn;
+
+  /// No description provided for @ticketDetailComparePriority.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ưu tiên'**
+  String get ticketDetailComparePriority;
+
+  /// No description provided for @ticketDetailCompareShared.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông thường'**
+  String get ticketDetailCompareShared;
+
+  /// No description provided for @ticketDetailCompareBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Badge'**
+  String get ticketDetailCompareBadge;
+
+  /// No description provided for @ticketDetailCompareCustom.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tùy chỉnh'**
+  String get ticketDetailCompareCustom;
+
+  /// No description provided for @ticketDetailCompareNormal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiêu chuẩn'**
+  String get ticketDetailCompareNormal;
+
+  /// No description provided for @ticketDetailCompareGifts.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quà tặng thêm'**
+  String get ticketDetailCompareGifts;
+
+  /// No description provided for @landingExperienceTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trải Nghiệm Hoàn Hảo'**
+  String get landingExperienceTitle;
+
+  /// No description provided for @landingExperienceBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý hành trình của bạn tại sự kiện một cách dễ dàng.'**
+  String get landingExperienceBody;
 
   /// No description provided for @rulesTitle.
   ///
@@ -1165,6 +1675,258 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Staff cập nhật trạng thái (Lost / Found / Claimed) trên hệ thống. Bạn theo dõi tiến trình trong app hoặc liên hệ quầy.'**
   String get faqLostFoundA4;
+
+  /// No description provided for @artbookTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Conbook FUVEKON'**
+  String get artbookTitle;
+
+  /// No description provided for @artbookSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hành trình Nghệ thuật - 2024'**
+  String get artbookSubtitle;
+
+  /// No description provided for @artbookDescription.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuốn sách tổng hợp hơn 50 tác phẩm nghệ thuật từ cộng đồng sáng tạo FUVEKON, được in trên giấy mỹ thuật cao cấp.'**
+  String get artbookDescription;
+
+  /// No description provided for @artbookPageCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'120 Trang'**
+  String get artbookPageCount;
+
+  /// No description provided for @artbookPaperType.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giấy Couche 150gsm'**
+  String get artbookPaperType;
+
+  /// No description provided for @artbookSubmitCta.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi tác phẩm cho Conbook'**
+  String get artbookSubmitCta;
+
+  /// No description provided for @artbookSubmitBack.
+  ///
+  /// In vi, this message translates to:
+  /// **'QUAY LẠI'**
+  String get artbookSubmitBack;
+
+  /// No description provided for @artbookSubmitTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi Conbook'**
+  String get artbookSubmitTitle;
+
+  /// No description provided for @artbookSubmitIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nơi tôn vinh những tác phẩm xuất sắc. Hãy gửi kiệt tác của bạn để được BTC xem xét đưa vào cuốn Conbook FUVEKON.'**
+  String get artbookSubmitIntro;
+
+  /// No description provided for @artbookFormSectionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tin tác phẩm'**
+  String get artbookFormSectionTitle;
+
+  /// No description provided for @artbookFieldTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên tác phẩm'**
+  String get artbookFieldTitle;
+
+  /// No description provided for @artbookFieldTitleHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví dụ: Giấc mơ chiều thu'**
+  String get artbookFieldTitleHint;
+
+  /// No description provided for @artbookFieldAuthor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tác giả / Bút danh'**
+  String get artbookFieldAuthor;
+
+  /// No description provided for @artbookFieldAuthorHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập bút danh của bạn'**
+  String get artbookFieldAuthorHint;
+
+  /// No description provided for @artbookFieldGenre.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thể loại'**
+  String get artbookFieldGenre;
+
+  /// No description provided for @artbookFieldGenreHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn thể loại'**
+  String get artbookFieldGenreHint;
+
+  /// No description provided for @artbookFieldDescription.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô tả ý tưởng (Không bắt buộc)'**
+  String get artbookFieldDescription;
+
+  /// No description provided for @artbookFieldDescriptionHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ câu chuyện đằng sau tác phẩm của bạn...'**
+  String get artbookFieldDescriptionHint;
+
+  /// No description provided for @artbookFieldPortfolio.
+  ///
+  /// In vi, this message translates to:
+  /// **'Link Portfolio'**
+  String get artbookFieldPortfolio;
+
+  /// No description provided for @artbookFieldPortfolioHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'https://'**
+  String get artbookFieldPortfolioHint;
+
+  /// No description provided for @artbookFieldPreview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Preview Tác phẩm'**
+  String get artbookFieldPreview;
+
+  /// No description provided for @artbookFieldRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng điền thông tin này'**
+  String get artbookFieldRequired;
+
+  /// No description provided for @artbookUploadLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kéo thả file hoặc Click để tải lên'**
+  String get artbookUploadLabel;
+
+  /// No description provided for @artbookUploadHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hỗ trợ JPG, PNG, PDF. Tối đa 20MB.'**
+  String get artbookUploadHint;
+
+  /// No description provided for @artbookPreviewRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng tải lên preview tác phẩm'**
+  String get artbookPreviewRequired;
+
+  /// No description provided for @artbookSubmitButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi tác phẩm cho Conbook'**
+  String get artbookSubmitButton;
+
+  /// No description provided for @artbookRulesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quy định nộp bài'**
+  String get artbookRulesTitle;
+
+  /// No description provided for @artbookRuleSizeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'KÍCH THƯỚC'**
+  String get artbookRuleSizeTitle;
+
+  /// No description provided for @artbookRuleSizeBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'A4 (210 x 297mm), lề an toàn 5mm.'**
+  String get artbookRuleSizeBody;
+
+  /// No description provided for @artbookRuleFormatTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'ĐỊNH DẠNG'**
+  String get artbookRuleFormatTitle;
+
+  /// No description provided for @artbookRuleFormatBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chế độ màu CMYK, tối thiểu 300dpi.'**
+  String get artbookRuleFormatBody;
+
+  /// No description provided for @artbookRuleCopyrightTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'BẢN QUYỀN'**
+  String get artbookRuleCopyrightTitle;
+
+  /// No description provided for @artbookRuleCopyrightBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tác phẩm phải là nguyên bản, chưa từng xuất bản thương mại.'**
+  String get artbookRuleCopyrightBody;
+
+  /// No description provided for @artbookDeadline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn chót nộp tác phẩm: 20 Tháng 11, 2023'**
+  String get artbookDeadline;
+
+  /// No description provided for @artbookLoginRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng đăng nhập để gửi tác phẩm Conbook'**
+  String get artbookLoginRequired;
+
+  /// No description provided for @artbookSubmitSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi tác phẩm thành công!'**
+  String get artbookSubmitSuccess;
+
+  /// No description provided for @artbookSubmitFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể gửi tác phẩm. Vui lòng thử lại.'**
+  String get artbookSubmitFailed;
+
+  /// No description provided for @artbookGenreIllustration.
+  ///
+  /// In vi, this message translates to:
+  /// **'Minh họa'**
+  String get artbookGenreIllustration;
+
+  /// No description provided for @artbookGenreComic.
+  ///
+  /// In vi, this message translates to:
+  /// **'Truyện tranh'**
+  String get artbookGenreComic;
+
+  /// No description provided for @artbookGenrePhoto.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiếp ảnh'**
+  String get artbookGenrePhoto;
+
+  /// No description provided for @artbookGenreDigital.
+  ///
+  /// In vi, this message translates to:
+  /// **'Digital Art'**
+  String get artbookGenreDigital;
+
+  /// No description provided for @artbookGenreOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get artbookGenreOther;
 }
 
 class _AppLocalizationsDelegate

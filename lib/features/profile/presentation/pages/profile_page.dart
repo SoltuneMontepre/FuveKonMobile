@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
@@ -13,15 +14,15 @@ import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key, this.title = 'Profile'});
+  const ProfilePage({super.key, this.title});
 
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<ProfileBloc>()..add(const ProfileEvent.started()),
-      child: _ProfileView(title: title),
+      child: _ProfileView(title: title ?? context.l10n.navAccount),
     );
   }
 }

@@ -206,7 +206,7 @@ class _StatTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (trailing != null) trailing!,
+                trailing ?? const SizedBox.shrink(),
               ],
             ),
             const SizedBox(height: 6),

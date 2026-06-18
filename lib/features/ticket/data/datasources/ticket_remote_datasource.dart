@@ -9,6 +9,8 @@ import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 abstract interface class TicketRemoteDataSource {
   Future<List<TicketTier>> getTiers();
 
+  Future<TicketTier> getTierById(String tierId);
+
   Future<UserTicket?> getMyTicket();
 
   Future<PurchaseTicketResult> purchaseTicket(String tierId);
@@ -16,6 +18,8 @@ abstract interface class TicketRemoteDataSource {
   Future<UserTicket> confirmPayment();
 
   Future<UserTicket> updateBadgeDetails(UpdateBadgeDetailsInput input);
+
+  Future<UserTicket> upgradeTicket(String newTierId);
 }
 
 class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
@@ -32,6 +36,16 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
         .whereType<Map>()
         .map((e) => _mapTier(Map<String, dynamic>.from(e)))
         .toList();
+  }
+
+  @override
+  Future<TicketTier> getTierById(String tierId) async {
+    final response = await _ticketApi.getTierById(tierId);
+    final data = response.data;
+    if (data == null) {
+      throw const ServerException('Failed to load ticket tier.');
+    }
+    return _mapTier(data);
   }
 
   @override
@@ -73,6 +87,16 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
     return _mapUserTicket(data);
   }
 
+  @override
+  Future<UserTicket> upgradeTicket(String newTierId) async {
+    final response = await _ticketApi.upgradeTicket(newTierId: newTierId);
+    final data = response.data;
+    if (data == null) {
+      throw const ServerException('Failed to upgrade ticket.');
+    }
+    return _mapUserTicket(data);
+  }
+
   TicketTier _mapTier(Map<String, dynamic> json) {
     final benefitsRaw = json['benefits'];
     final benefits = benefitsRaw is List
@@ -89,6 +113,7 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
       priceUsd: _parseOptionalDecimal(json['price_usd']),
       isSoldOut: json['is_sold_out'] as bool? ?? false,
       isActive: json['is_active'] as bool? ?? false,
+      isVisible: json['is_visible'] as bool? ?? true,
     );
   }
 

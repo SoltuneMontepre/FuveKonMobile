@@ -68,6 +68,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginGoogle => 'Sign in with Google';
 
   @override
+  String get authGoogleNotConfigured =>
+      'Google Sign-In is not configured. Add GOOGLE_CLIENT_ID to .env and restart the app.';
+
+  @override
+  String get authGoogleUnsupportedPlatform =>
+      'Google Sign-In is not supported on Linux/Windows. Run the app on Android, iOS, Web (Chrome), or macOS.';
+
+  @override
+  String get authGoogleLoginFailed =>
+      'Google sign-in failed. Please try again or use email and password.';
+
+  @override
+  String get authGoogleDeveloperError =>
+      'Google OAuth is misconfigured on Android. In Google Cloud Console, create an Android OAuth client for package com.example.fuvekonmobile and add your debug keystore SHA-1 (Android Studio → Gradle → signingReport).';
+
+  @override
+  String get authGoogleIdTokenMissing =>
+      'Google did not return an ID token. Check GOOGLE_CLIENT_ID (Web client) in .env and the Android OAuth client in Google Cloud.';
+
+  @override
+  String get authGoogleRegistrationDetailsRequired =>
+      'Please complete registration with your profile details.';
+
+  @override
   String get loginNoAccount => 'Don\'t have an account?';
 
   @override
@@ -254,6 +278,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navIntroduction => 'Introduction';
 
   @override
+  String get navArtbook => 'Conbook';
+
+  @override
   String get navFaq => 'FAQ';
 
   @override
@@ -261,6 +288,252 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navLogin => 'Sign in';
+
+  @override
+  String get navLogout => 'Sign out';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navSchedule => 'Schedule';
+
+  @override
+  String get navMyTickets => 'My tickets';
+
+  @override
+  String get navNotifications => 'Notifications';
+
+  @override
+  String get navAccount => 'Account';
+
+  @override
+  String get myTicketsFilterActive => 'Active';
+
+  @override
+  String get myTicketsFilterUsed => 'Used';
+
+  @override
+  String get myTicketsFilterAll => 'All';
+
+  @override
+  String get myTicketsStatusActive => 'Active';
+
+  @override
+  String get myTicketsStatusUsed => 'Used';
+
+  @override
+  String get myTicketsViewTicket => 'View ticket →';
+
+  @override
+  String get myTicketsEventDateRange => 'Oct 20–22, 2024';
+
+  @override
+  String get myTicketsEmptyTitle => 'You don\'t have a ticket';
+
+  @override
+  String get myTicketsEmptySubtitle => 'Buy a ticket to attend the event.';
+
+  @override
+  String get myTicketsEmptyFilter => 'No tickets in this tab';
+
+  @override
+  String get myTicketsBrowse => 'Browse ticket tiers';
+
+  @override
+  String get eTicketEventLabel => 'EVENT';
+
+  @override
+  String get eTicketValid => 'Valid';
+
+  @override
+  String get eTicketOwner => 'Owner';
+
+  @override
+  String get eTicketTier => 'Tier';
+
+  @override
+  String get eTicketDay => 'Date';
+
+  @override
+  String get eTicketScanHint => 'Scan the QR code at the entrance';
+
+  @override
+  String get eTicketCodeLabel => 'Ticket code';
+
+  @override
+  String eTicketBenefitsTitle(String tier) {
+    return '$tier ticket benefits';
+  }
+
+  @override
+  String get eTicketUpgrade => 'Upgrade ticket';
+
+  @override
+  String get eTicketSaveWallet => 'Save to Apple/Google Wallet';
+
+  @override
+  String get eTicketWalletSoon => 'Wallet save coming soon.';
+
+  @override
+  String get ticketUpgradeTitle => 'Upgrade ticket tier';
+
+  @override
+  String get ticketUpgradeCurrentLabel => 'YOUR CURRENT TICKET';
+
+  @override
+  String get ticketUpgradeOptionsLabel => 'Upgrade options';
+
+  @override
+  String get ticketUpgradeExtraBenefits => 'ADDITIONAL BENEFITS';
+
+  @override
+  String get ticketUpgradeTotalLabel => 'TOTAL ADDITIONAL PAYMENT';
+
+  @override
+  String get ticketUpgradeContinue => 'Continue upgrade';
+
+  @override
+  String get ticketUpgradeInfoNote =>
+      'Upgrading your ticket will be processed and confirmed within 24 business hours.';
+
+  @override
+  String get ticketUpgradeNoTicket => 'You don\'t have a ticket to upgrade.';
+
+  @override
+  String ticketUpgradeMaxTier(String tier) {
+    return 'You are already on the highest tier ($tier).';
+  }
+
+  @override
+  String get authHomeUpcomingBadge => 'Upcoming events';
+
+  @override
+  String get authHomeHeroTitle => 'Anime Culture Exchange Festival';
+
+  @override
+  String get authHomeHeroSubtitle =>
+      'Discover art spaces and unique experiences.';
+
+  @override
+  String get authHomeSearchHint => 'Search events, artists...';
+
+  @override
+  String get authHomeFeaturedTitle => 'Featured events';
+
+  @override
+  String get authHomeSeeAll => 'See all';
+
+  @override
+  String get authHomeHotBadge => 'Hot';
+
+  @override
+  String get authHomeFeaturedEventTitle => 'Contemporary Art Exhibition';
+
+  @override
+  String get authHomeFeaturedEventDate => 'October 20, 2023';
+
+  @override
+  String get authHomeFeaturedEventLocation => 'SECC Center';
+
+  @override
+  String get authHomeBuyTicket => 'Buy tickets';
+
+  @override
+  String get authHomeNotificationsEmpty => 'No new notifications yet.';
+
+  @override
+  String get landingBadge => 'TOP EVENT';
+
+  @override
+  String get landingHeroTitle => 'Anime Event';
+
+  @override
+  String get landingHeroBody =>
+      'Experience a unique cultural space with smart ticket management and scheduling. Join now so you don\'t miss the most wonderful moments.';
+
+  @override
+  String get landingRegister => 'Register';
+
+  @override
+  String get landingViewTickets => 'View tickets';
+
+  @override
+  String get exploreTicketsTitle => 'Explore ticket types';
+
+  @override
+  String get exploreTicketsSubtitle =>
+      'Choose the experience that suits you best at the exhibition.';
+
+  @override
+  String get exploreTicketsFooterInfo =>
+      'You can browse ticket details first. To purchase, please register or sign in.';
+
+  @override
+  String get exploreTicketsRegisterCta => 'Register to buy tickets';
+
+  @override
+  String get exploreTicketsBuyCta => 'Buy tickets now';
+
+  @override
+  String get exploreTicketsLoginPrompt => 'Already have an account?';
+
+  @override
+  String get exploreTicketsLoginLink => 'Sign in now';
+
+  @override
+  String get exploreTicketsPopularBadge => 'Most popular';
+
+  @override
+  String get exploreTicketsSoldOut => 'Sold out';
+
+  @override
+  String get exploreTicketsEmpty => 'No ticket tiers are available yet.';
+
+  @override
+  String get exploreTicketsRetry => 'Retry';
+
+  @override
+  String get ticketDetailBenefitsTitle => 'Included benefits';
+
+  @override
+  String ticketDetailCompareTitle(String standardTier) {
+    return 'Compare with $standardTier';
+  }
+
+  @override
+  String get ticketDetailTotal => 'Total';
+
+  @override
+  String get ticketDetailCompareAccess => 'Access';
+
+  @override
+  String get ticketDetailCompareCheckIn => 'Check-in';
+
+  @override
+  String get ticketDetailComparePriority => 'Priority';
+
+  @override
+  String get ticketDetailCompareShared => 'Shared';
+
+  @override
+  String get ticketDetailCompareBadge => 'Badge';
+
+  @override
+  String get ticketDetailCompareCustom => 'Custom';
+
+  @override
+  String get ticketDetailCompareNormal => 'Standard';
+
+  @override
+  String get ticketDetailCompareGifts => 'Extra gifts';
+
+  @override
+  String get landingExperienceTitle => 'Perfect Experience';
+
+  @override
+  String get landingExperienceBody =>
+      'Manage your journey at the event with ease.';
 
   @override
   String get rulesTitle => 'Event rules';
@@ -586,4 +859,137 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get faqLostFoundA4 =>
       'Staff update status (Lost / Found / Claimed) in the system. Track progress in the app or contact the desk.';
+
+  @override
+  String get artbookTitle => 'FUVEKON Conbook';
+
+  @override
+  String get artbookSubtitle => 'Artistic Journey — 2024';
+
+  @override
+  String get artbookDescription =>
+      'A collection of over 50 artworks from the FUVEKON creative community, printed on premium art paper.';
+
+  @override
+  String get artbookPageCount => '120 Pages';
+
+  @override
+  String get artbookPaperType => '150gsm Couche paper';
+
+  @override
+  String get artbookSubmitCta => 'Submit artwork for Conbook';
+
+  @override
+  String get artbookSubmitBack => 'GO BACK';
+
+  @override
+  String get artbookSubmitTitle => 'Submit Conbook';
+
+  @override
+  String get artbookSubmitIntro =>
+      'A place to celebrate outstanding works. Send your masterpiece for the organizing committee to review for the FUVEKON Conbook.';
+
+  @override
+  String get artbookFormSectionTitle => 'Artwork information';
+
+  @override
+  String get artbookFieldTitle => 'Artwork title';
+
+  @override
+  String get artbookFieldTitleHint => 'e.g. Autumn daydream';
+
+  @override
+  String get artbookFieldAuthor => 'Author / Pen name';
+
+  @override
+  String get artbookFieldAuthorHint => 'Enter your pen name';
+
+  @override
+  String get artbookFieldGenre => 'Genre';
+
+  @override
+  String get artbookFieldGenreHint => 'Select a genre';
+
+  @override
+  String get artbookFieldDescription => 'Idea description (optional)';
+
+  @override
+  String get artbookFieldDescriptionHint =>
+      'Share the story behind your artwork...';
+
+  @override
+  String get artbookFieldPortfolio => 'Portfolio link';
+
+  @override
+  String get artbookFieldPortfolioHint => 'https://';
+
+  @override
+  String get artbookFieldPreview => 'Artwork preview';
+
+  @override
+  String get artbookFieldRequired => 'This field is required';
+
+  @override
+  String get artbookUploadLabel => 'Drag and drop or click to upload';
+
+  @override
+  String get artbookUploadHint => 'Supports JPG, PNG, PDF. Max 20MB.';
+
+  @override
+  String get artbookPreviewRequired => 'Please upload an artwork preview';
+
+  @override
+  String get artbookSubmitButton => 'Submit artwork for Conbook';
+
+  @override
+  String get artbookRulesTitle => 'Submission rules';
+
+  @override
+  String get artbookRuleSizeTitle => 'SIZE';
+
+  @override
+  String get artbookRuleSizeBody =>
+      'A4 (210 x 297mm) with a 5mm safety margin.';
+
+  @override
+  String get artbookRuleFormatTitle => 'FORMAT';
+
+  @override
+  String get artbookRuleFormatBody => 'CMYK color mode, minimum 300dpi.';
+
+  @override
+  String get artbookRuleCopyrightTitle => 'COPYRIGHT';
+
+  @override
+  String get artbookRuleCopyrightBody =>
+      'Must be original work that has never been commercially published.';
+
+  @override
+  String get artbookDeadline => 'Submission deadline: November 20, 2023';
+
+  @override
+  String get artbookLoginRequired =>
+      'Please sign in to submit your Conbook artwork';
+
+  @override
+  String get artbookSubmitSuccess => 'Artwork submitted successfully!';
+
+  @override
+  String get artbookSubmitFailed =>
+      'Could not submit artwork. Please try again.';
+
+  @override
+  String get artbookGenreIllustration => 'Illustration';
+
+  @override
+  String get artbookGenreComic => 'Comic';
+
+  @override
+  String get artbookGenrePhoto => 'Photography';
+
+  @override
+  String get artbookGenreDigital => 'Digital art';
+
+  @override
+  String get artbookGenreOther => 'Other';
 }

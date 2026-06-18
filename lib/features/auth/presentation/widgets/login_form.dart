@@ -4,14 +4,15 @@ import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/google_sign_in_button.dart';
+import 'package:fuvekonmobile/shared/services/google_sign_in_service.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class _LoginFormColors {
-  static const textDark = Color(0xFF0A2E1F);
-  static const inputFill = Color(0xFF2A332E);
-  static const inputHint = Color(0xFF8FA898);
-  static const accentGreen = Color(0xFF4A7C59);
-  static const forgotGold = FuvekonColors.tier3;
+  static const textDark = FuvekonColors.darkButtonText;
+  static const inputFill = FuvekonColors.surfaceContainerHigh;
+  static const inputHint = FuvekonColors.darkTextSecondary;
+  static const accentGreen = FuvekonColors.sageGreenContainer;
+  static const forgotGold = FuvekonColors.lightGold;
 }
 
 class LoginForm extends StatefulWidget {
@@ -88,6 +89,8 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final googleConfigured = AppConfig.hasGoogleSignIn;
+    final googleSupported = GoogleSignInService.isPlatformSupported;
 
     return Form(
       key: _formKey,
@@ -211,7 +214,7 @@ class _LoginFormState extends State<LoginForm> {
                     ],
                   ),
           ),
-          if (AppConfig.hasGoogleSignIn && widget.onGoogleSignIn != null) ...[
+          if (widget.onGoogleSignIn != null) ...[
             const SizedBox(height: 24),
             Row(
               children: [
@@ -246,6 +249,18 @@ class _LoginFormState extends State<LoginForm> {
               label: l10n.loginGoogle,
               lightStyle: true,
             ),
+            if (googleConfigured && !googleSupported) ...[
+              const SizedBox(height: 10),
+              Text(
+                l10n.authGoogleUnsupportedPlatform,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: _LoginFormColors.textDark.withValues(alpha: 0.65),
+                  fontSize: 12,
+                  height: 1.4,
+                ),
+              ),
+            ],
           ],
         ],
       ),
