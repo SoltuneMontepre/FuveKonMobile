@@ -11,9 +11,10 @@ import (
 )
 
 var (
-	ErrScheduleNotFound = errors.New("schedule not found")
-	ErrVenueNotFound    = errors.New("venue not found")
-	ErrEventNotFound    = errors.New("event not found")
+	ErrScheduleNotFound     = errors.New("schedule not found")
+	ErrVenueNotFound        = errors.New("venue not found")
+	ErrEventNotFound        = errors.New("event not found")
+	ErrTimelineItemNotFound = ErrEventNotFound
 )
 
 type ScheduleRepository struct {
@@ -419,4 +420,79 @@ func (r *ScheduleRepository) DeleteEvent(ctx context.Context, id uuid.UUID) erro
 			"deleted_at":  now,
 			"modified_at": now,
 		}).Error
+}
+
+// FindOrCreateVenueByName returns a schedule-scoped venue, creating it when missing.
+func (r *ScheduleRepository) FindOrCreateVenueByName(
+	ctx context.Context,
+	scheduleID uuid.UUID,
+	name string,
+) (*models.ScheduleVenue, error) {
+	var venue models.ScheduleVenue
+	err := r.db.WithContext(ctx).
+		Where("schedule_id = ? AND name = ? AND is_deleted = ?", scheduleID, name, false).
+		First(&venue).Error
+	if err == nil {
+		return &venue, nil
+	}
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, err
+	}
+
+	created, err := r.CreateVenue(ctx, scheduleID, &models.ScheduleVenue{Name: name})
+	if err != nil {
+		return nil, err
+	}
+	return created, nil
+}
+
+// FindOrCreateLocationByName returns a location under a venue, creating it when missing.
+func (r *ScheduleRepository) FindOrCreateLocationByName(
+	ctx context.Context,
+	scheduleID uuid.UUID,
+	venueID uuid.UUID,
+	name string,
+) (*models.ScheduleLocation, error) {
+	var location models.ScheduleLocation
+	err := r.db.WithContext(ctx).
+		Where("schedule_id = ? AND venue_id = ? AND name = ? AND is_deleted = ?", scheduleID, venueID, name, false).
+		First(&location).Error
+	if err == nil {
+		return &location, nil
+	}
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, err
+	}
+
+	created, err := r.CreateLocation(ctx, scheduleID, venueID, &models.ScheduleLocation{Name: name})
+	if err != nil {
+		return nil, err
+	}
+	return created, nil
+}
+
+// GetTimelineItemContext loads a timeline item with its venue and location names.
+func (r *ScheduleRepository) GetTimelineItemContext(
+	ctx context.Context,
+	id uuid.UUID,
+) (*models.ScheduleEvent, string, string, error) {
+	event, err := r.GetEventByID(ctx, id)
+	if err != nil {
+		return nil, "", "", err
+	}
+	if event.LocationId == nil {
+		return event, "", "", nil
+	}
+
+	location, err := r.GetLocationByID(ctx, *event.LocationId)
+	if err != nil {
+		return event, "", "", nil
+	}
+
+	venue, err := r.GetVenueByID(ctx, location.VenueId)
+	if err != nil {
+		return event, "", location.Name, nil
+	}
+
+	return event, venue.Name, location.Name, nil
 }

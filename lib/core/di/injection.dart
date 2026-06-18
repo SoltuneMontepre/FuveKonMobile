@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fuvekonmobile/core/auth/auth_session_controller.dart';
+import 'package:fuvekonmobile/core/auth/session_hydration_service.dart';
 import 'package:fuvekonmobile/core/network/api_client.dart';
 import 'package:fuvekonmobile/core/network/dio_factory.dart';
 import 'package:fuvekonmobile/core/router/app_router.dart';
@@ -52,6 +53,13 @@ Future<void> configureDependencies() async {
     )
     ..registerLazySingleton(() => ApiClient(sl()))
     ..registerLazySingleton(AuthSessionNotifier.new)
+    ..registerLazySingleton(
+      () => SessionHydrationService(
+        notifier: sl(),
+        getMeUseCase: sl(),
+        accountApi: sl(),
+      ),
+    )
     ..registerLazySingleton(() => AppRouter(authSessionNotifier: sl()));
 
   registerApiModule(sl);

@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// Schedule represents a day's schedule containing venues and events.
+// Schedule represents a date-bounded program with timeline items grouped by day.
 type Schedule struct {
 	Id         uuid.UUID       `gorm:"type:uuid;primaryKey"`
 	Name       string          `gorm:"type:varchar(255)"`
@@ -19,7 +19,7 @@ type Schedule struct {
 	Venues     []ScheduleVenue `gorm:"foreignKey:ScheduleId"`
 }
 
-// ScheduleVenue is one venue/track within a schedule and can contain many events.
+// ScheduleVenue is one category/track within a schedule.
 type ScheduleVenue struct {
 	Id         uuid.UUID `gorm:"type:uuid;primaryKey"`
 	ScheduleId uuid.UUID `gorm:"type:uuid;index"`
@@ -35,7 +35,7 @@ type ScheduleVenue struct {
 	Locations   []ScheduleLocation `gorm:"foreignKey:VenueId"`
 }
 
-// ScheduleEvent is a scheduled item that may belong to a specific venue.
+// ScheduleEvent is a timeline item that may belong to a specific location.
 type ScheduleEvent struct {
 	Id          uuid.UUID  `gorm:"type:uuid;primaryKey"`
 	ScheduleId  uuid.UUID  `gorm:"type:uuid;index"`

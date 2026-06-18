@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 import 'package:intl/intl.dart';
 
+String formatTicketPriceVndCompact(double price) {
+  return '${NumberFormat.decimalPattern('vi-VN').format(price)}đ';
+}
+
 String formatTicketPriceVnd(double price) {
   return '${NumberFormat.decimalPattern('vi-VN').format(price)} VNĐ';
+}
+
+String formatTierPriceDiff(double diff) {
+  return '+ ${formatTicketPriceVndCompact(diff)} chênh lệch';
 }
 
 String formatTicketPriceUsd(double price) {

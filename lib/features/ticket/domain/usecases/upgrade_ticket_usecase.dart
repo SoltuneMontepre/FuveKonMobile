@@ -3,7 +3,7 @@ import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 import 'package:fuvekonmobile/features/ticket/domain/repositories/ticket_repository.dart';
 
 class UpgradeTicketUseCase {
-  UpgradeTicketUseCase(this._repository);
+  const UpgradeTicketUseCase(this._repository);
 
   final TicketRepository _repository;
 

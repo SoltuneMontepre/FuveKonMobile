@@ -333,39 +333,32 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 				adminSchedules.POST("", h.Schedule.CreateSchedule)
 				adminSchedules.PUT(":id", h.Schedule.UpdateSchedule)
 				adminSchedules.DELETE(":id", h.Schedule.DeleteSchedule)
-
-				// Global venue management (admin/staff)
-				adminVenues := admin.Group("/venues")
-				adminVenues.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
-				{
-					adminVenues.POST("", h.Venue.CreateVenue)
-					adminVenues.GET("", h.Venue.ListVenues)
-					adminVenues.GET(":vid", h.Venue.GetVenueByID)
-					adminVenues.GET(":vid/locations", h.Venue.ListLocationsByVenue)
-					adminVenues.POST(":vid/locations", h.Venue.CreateLocation)
-				}
-				// Venue management (admin/staff)
-				adminSchedules.POST("/:id/venues", h.Schedule.CreateVenue)
-				adminSchedules.PUT("/:id/venues/:vid", h.Schedule.UpdateVenue)
-				adminSchedules.DELETE("/:id/venues/:vid", h.Schedule.DeleteVenue)
-
-				// Event management under a venue (admin/staff)
-				adminSchedules.POST("/:id/venues/:vid/events", h.Schedule.CreateEvent)
-				// Locations within a venue
-				adminSchedules.POST("/:id/venues/:vid/locations", h.Schedule.CreateLocation)
-				adminSchedules.POST("/:id/venues/:vid/locations/attach", h.Schedule.AttachLocation)
-				adminSchedules.POST("/:id/venues/:vid/locations/:lid/events", h.Schedule.CreateEvent)
-				adminSchedules.PUT("/:id/venues/:vid/events/:eid", h.Schedule.UpdateEvent)
-				adminSchedules.DELETE("/:id/venues/:vid/events/:eid", h.Schedule.DeleteEvent)
+				adminSchedules.POST("/:id/timeline", h.Schedule.CreateTimelineItem)
+				adminSchedules.PUT("/:id/timeline/:tid", h.Schedule.UpdateTimelineItem)
+				adminSchedules.DELETE("/:id/timeline/:tid", h.Schedule.DeleteTimelineItem)
 			}
 
-			// Backwards-compatible alias: support /admin/schedules as well as /admin/admin-schedules
+			// Global venue catalog (separate from schedule timeline)
+			adminVenues := admin.Group("/venues")
+			adminVenues.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
+			{
+				adminVenues.POST("", h.Venue.CreateVenue)
+				adminVenues.GET("", h.Venue.ListVenues)
+				adminVenues.GET(":vid", h.Venue.GetVenueByID)
+				adminVenues.GET(":vid/locations", h.Venue.ListLocationsByVenue)
+				adminVenues.POST(":vid/locations", h.Venue.CreateLocation)
+			}
+
+			// Alias: /admin/schedules
 			adminSchedulesAlias := admin.Group("/schedules")
 			adminSchedulesAlias.Use(middlewares.RequirePermission(repos.RBAC, role.PermApproveProfiles))
 			{
 				adminSchedulesAlias.POST("", h.Schedule.CreateSchedule)
 				adminSchedulesAlias.PUT(":id", h.Schedule.UpdateSchedule)
 				adminSchedulesAlias.DELETE(":id", h.Schedule.DeleteSchedule)
+				adminSchedulesAlias.POST("/:id/timeline", h.Schedule.CreateTimelineItem)
+				adminSchedulesAlias.PUT("/:id/timeline/:tid", h.Schedule.UpdateTimelineItem)
+				adminSchedulesAlias.DELETE("/:id/timeline/:tid", h.Schedule.DeleteTimelineItem)
 			}
 
 			adminTalents := admin.Group("/talents")

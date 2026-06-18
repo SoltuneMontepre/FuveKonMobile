@@ -173,7 +173,7 @@ class _PaymentBody extends StatelessWidget {
     final rawPrice = tier?.price ?? 0;
     final fee = 0.0;
     final total = formatTicketPriceVnd(rawPrice + fee);
-    final buyerName = state.account.displayName ?? state.account.email;
+    final buyerName = state.account.ticketHolderName;
     final buyerContact = _maskedContact(state.account.email);
     final needsIdCard = (state.account.idCard?.trim().isEmpty ?? true);
 
@@ -400,7 +400,7 @@ class _ConfirmOrderBody extends StatelessWidget {
     final amount = tier != null
         ? formatTierPrice(tier, locale: Localizations.localeOf(context))
         : '—';
-    final buyerName = state.account.displayName ?? state.account.email;
+    final buyerName = state.account.ticketHolderName;
 
     return Stack(
       children: [

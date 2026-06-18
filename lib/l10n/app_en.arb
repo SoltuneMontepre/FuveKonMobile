@@ -26,6 +26,12 @@
   "@themeSwitchToDark": {},
   "splashTagline": "Where event communities and art connect",
   "@splashTagline": {},
+  "startupHydrationFailedTitle": "Could not connect to the server",
+  "startupHydrationFailedBody": "Check your internet connection or API settings, then try again.",
+  "startupRetry": "Try again",
+  "@startupHydrationFailedTitle": {},
+  "@startupHydrationFailedBody": {},
+  "@startupRetry": {},
   "brandTagline": "Professional event information portal",
   "@brandTagline": {},
   "loginTitle": "Sign in",
@@ -258,6 +264,51 @@
   "@navNotifications": {},
   "navAccount": "Account",
   "@navAccount": {},
+
+  "myTicketsFilterActive": "Active",
+  "myTicketsFilterUsed": "Used",
+  "myTicketsFilterAll": "All",
+  "myTicketsStatusActive": "Active",
+  "myTicketsStatusUsed": "Used",
+  "myTicketsViewTicket": "View ticket →",
+  "myTicketsEventDateRange": "Oct 20–22, 2024",
+  "myTicketsEmptyTitle": "You don't have a ticket",
+  "myTicketsEmptySubtitle": "Buy a ticket to attend the event.",
+  "myTicketsEmptyFilter": "No tickets in this tab",
+  "myTicketsBrowse": "Browse ticket tiers",
+
+  "eTicketEventLabel": "EVENT",
+  "eTicketValid": "Valid",
+  "eTicketOwner": "Owner",
+  "eTicketTier": "Tier",
+  "eTicketDay": "Date",
+  "eTicketScanHint": "Scan the QR code at the entrance",
+  "eTicketCodeLabel": "Ticket code",
+  "eTicketBenefitsTitle": "{tier} ticket benefits",
+  "@eTicketBenefitsTitle": {
+    "placeholders": {
+      "tier": {"type": "String"}
+    }
+  },
+  "eTicketUpgrade": "Upgrade ticket",
+  "eTicketSaveWallet": "Save to Apple/Google Wallet",
+  "eTicketWalletSoon": "Wallet save coming soon.",
+
+  "ticketUpgradeTitle": "Upgrade ticket tier",
+  "ticketUpgradeCurrentLabel": "YOUR CURRENT TICKET",
+  "ticketUpgradeOptionsLabel": "Upgrade options",
+  "ticketUpgradeExtraBenefits": "ADDITIONAL BENEFITS",
+  "ticketUpgradeTotalLabel": "TOTAL ADDITIONAL PAYMENT",
+  "ticketUpgradeContinue": "Continue upgrade",
+  "ticketUpgradeInfoNote": "Upgrading your ticket will be processed and confirmed within 24 business hours.",
+  "ticketUpgradeNoTicket": "You don't have a ticket to upgrade.",
+  "ticketUpgradeMaxTier": "You are already on the highest tier ({tier}).",
+  "@ticketUpgradeMaxTier": {
+    "placeholders": {
+      "tier": {"type": "String"}
+    }
+  },
+
   "authHomeUpcomingBadge": "Upcoming events",
   "@authHomeUpcomingBadge": {},
   "authHomeHeroTitle": "Anime Culture Exchange Festival",

@@ -50,6 +50,7 @@ abstract final class Routes {
       '/account/schedule/venue/$id';
   static const accountScheduleMy = '/account/schedule/my';
   static const accountTicket = '/account/ticket';
+  static String accountTicketDetail(String id) => '/account/ticket/$id';
   static const accountTicketUpgrade = '/account/ticket/upgrade';
   static const accountNotifications = '/account/notifications';
   static String accountNotificationDetail(String id) =>

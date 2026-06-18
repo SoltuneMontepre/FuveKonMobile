@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:fuvekonmobile/core/auth/user_role.dart';
+import 'package:fuvekonmobile/core/auth/session_hydration_service.dart';
 
 import 'package:fuvekonmobile/core/di/injection.dart';
-
-import 'package:fuvekonmobile/core/errors/result.dart';
 
 import 'package:fuvekonmobile/core/router/account_routes.dart';
 
@@ -19,8 +17,7 @@ import 'package:fuvekonmobile/core/router/public_routes.dart';
 
 import 'package:fuvekonmobile/core/router/routes.dart';
 
-import 'package:fuvekonmobile/core/api/auth_api.dart';
-import 'package:fuvekonmobile/features/profile/domain/usecases/get_me_usecase.dart';
+import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_state.dart';
 
 import 'package:get_it/get_it.dart';
 
@@ -32,11 +29,15 @@ class AppRouter {
 
   AppRouter({required AuthSessionNotifier authSessionNotifier})
 
-      : _authSessionNotifier = authSessionNotifier;
+      : _authSessionNotifier = authSessionNotifier,
+
+        _routerRefresh = RouterRefreshNotifier(authSessionNotifier);
 
 
 
   final AuthSessionNotifier _authSessionNotifier;
+
+  final RouterRefreshNotifier _routerRefresh;
 
 
 
@@ -50,7 +51,7 @@ class AppRouter {
 
     initialLocation: Routes.splash,
 
-    refreshListenable: _authSessionNotifier,
+    refreshListenable: _routerRefresh,
 
     redirect: _redirect,
 
@@ -126,6 +127,12 @@ class AppRouter {
 
     if (Routes.isAdminRoute(location)) {
       final role = _authSessionNotifier.role;
+      final hydration = _authSessionNotifier.hydrationStatus;
+      if (role == null &&
+          (hydration == SessionHydrationStatus.idle ||
+              hydration == SessionHydrationStatus.loading)) {
+        return null;
+      }
       if (role == null || !role.isPrivileged) {
         return _authSessionNotifier.homeRoute;
       }
@@ -185,9 +192,9 @@ class _RoleSessionSyncState extends State<RoleSessionSync> {
 
   final _notifier = sl<AuthSessionNotifier>();
 
-  final _getMeUseCase = sl<GetMeUseCase>();
+  final _hydrationService = sl<SessionHydrationService>();
 
-  final _accountApi = sl<AccountApi>();
+  late AuthState _lastAuthState;
 
 
 
@@ -197,9 +204,11 @@ class _RoleSessionSyncState extends State<RoleSessionSync> {
 
     super.initState();
 
+    _lastAuthState = _notifier.state;
+
     _notifier.addListener(_onSessionChanged);
 
-    _syncRole();
+    _hydrateIfNeeded();
 
   }
 
@@ -217,57 +226,21 @@ class _RoleSessionSyncState extends State<RoleSessionSync> {
 
 
 
-  void _onSessionChanged() => _syncRole();
+  void _onSessionChanged() {
 
+    final current = _notifier.state;
 
+    if (current == _lastAuthState) return;
 
-  Future<void> _syncRole() async {
+    _lastAuthState = current;
 
-    if (!_notifier.isAuthenticated) {
-
-      _notifier.updateRole(null);
-
-      _notifier.updateVerified(null);
-
-      _notifier.updatePermissions(const []);
-
-      return;
-
-    }
-
-
-
-    final result = await _getMeUseCase();
-
-    final permsResult = await _accountApi.getMyPermissions(throwOnFailure: false);
-
-    switch (result) {
-
-      case Success(:final data):
-
-        _notifier.updateRole(UserRole.tryParse(data.role));
-
-        _notifier.updateVerified(data.isVerified);
-
-      case Error():
-
-        _notifier.updateRole(null);
-
-        _notifier.updateVerified(null);
-
-    }
-
-    if (permsResult.isSuccess && permsResult.data != null) {
-
-      _notifier.updatePermissions(permsResult.data!);
-
-    } else {
-
-      _notifier.updatePermissions(const []);
-
-    }
+    _hydrateIfNeeded();
 
   }
+
+
+
+  Future<void> _hydrateIfNeeded() => _hydrationService.hydrate();
 
 
 

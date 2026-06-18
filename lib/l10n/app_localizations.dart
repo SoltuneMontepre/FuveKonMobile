@@ -158,6 +158,24 @@ abstract class AppLocalizations {
   /// **'Where event communities and art connect'**
   String get splashTagline;
 
+  /// No description provided for @startupHydrationFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect to the server'**
+  String get startupHydrationFailedTitle;
+
+  /// No description provided for @startupHydrationFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your internet connection or API settings, then try again.'**
+  String get startupHydrationFailedBody;
+
+  /// No description provided for @startupRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get startupRetry;
+
   /// No description provided for @brandTagline.
   ///
   /// In en, this message translates to:
@@ -835,6 +853,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account'**
   String get navAccount;
+
+  /// No description provided for @myTicketsFilterActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get myTicketsFilterActive;
+
+  /// No description provided for @myTicketsFilterUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get myTicketsFilterUsed;
+
+  /// No description provided for @myTicketsFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get myTicketsFilterAll;
+
+  /// No description provided for @myTicketsStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get myTicketsStatusActive;
+
+  /// No description provided for @myTicketsStatusUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get myTicketsStatusUsed;
+
+  /// No description provided for @myTicketsViewTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'View ticket →'**
+  String get myTicketsViewTicket;
+
+  /// No description provided for @myTicketsEventDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Oct 20–22, 2024'**
+  String get myTicketsEventDateRange;
+
+  /// No description provided for @myTicketsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have a ticket'**
+  String get myTicketsEmptyTitle;
+
+  /// No description provided for @myTicketsEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy a ticket to attend the event.'**
+  String get myTicketsEmptySubtitle;
+
+  /// No description provided for @myTicketsEmptyFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'No tickets in this tab'**
+  String get myTicketsEmptyFilter;
+
+  /// No description provided for @myTicketsBrowse.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse ticket tiers'**
+  String get myTicketsBrowse;
+
+  /// No description provided for @eTicketEventLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'EVENT'**
+  String get eTicketEventLabel;
+
+  /// No description provided for @eTicketValid.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid'**
+  String get eTicketValid;
+
+  /// No description provided for @eTicketOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get eTicketOwner;
+
+  /// No description provided for @eTicketTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier'**
+  String get eTicketTier;
+
+  /// No description provided for @eTicketDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get eTicketDay;
+
+  /// No description provided for @eTicketScanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the QR code at the entrance'**
+  String get eTicketScanHint;
+
+  /// No description provided for @eTicketCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket code'**
+  String get eTicketCodeLabel;
+
+  /// No description provided for @eTicketBenefitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{tier} ticket benefits'**
+  String eTicketBenefitsTitle(String tier);
+
+  /// No description provided for @eTicketUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade ticket'**
+  String get eTicketUpgrade;
+
+  /// No description provided for @eTicketSaveWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to Apple/Google Wallet'**
+  String get eTicketSaveWallet;
+
+  /// No description provided for @eTicketWalletSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet save coming soon.'**
+  String get eTicketWalletSoon;
+
+  /// No description provided for @ticketUpgradeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade ticket tier'**
+  String get ticketUpgradeTitle;
+
+  /// No description provided for @ticketUpgradeCurrentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'YOUR CURRENT TICKET'**
+  String get ticketUpgradeCurrentLabel;
+
+  /// No description provided for @ticketUpgradeOptionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade options'**
+  String get ticketUpgradeOptionsLabel;
+
+  /// No description provided for @ticketUpgradeExtraBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'ADDITIONAL BENEFITS'**
+  String get ticketUpgradeExtraBenefits;
+
+  /// No description provided for @ticketUpgradeTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'TOTAL ADDITIONAL PAYMENT'**
+  String get ticketUpgradeTotalLabel;
+
+  /// No description provided for @ticketUpgradeContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue upgrade'**
+  String get ticketUpgradeContinue;
+
+  /// No description provided for @ticketUpgradeInfoNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrading your ticket will be processed and confirmed within 24 business hours.'**
+  String get ticketUpgradeInfoNote;
+
+  /// No description provided for @ticketUpgradeNoTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have a ticket to upgrade.'**
+  String get ticketUpgradeNoTicket;
+
+  /// No description provided for @ticketUpgradeMaxTier.
+  ///
+  /// In en, this message translates to:
+  /// **'You are already on the highest tier ({tier}).'**
+  String ticketUpgradeMaxTier(String tier);
 
   /// No description provided for @authHomeUpcomingBadge.
   ///

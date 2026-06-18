@@ -142,26 +142,10 @@ abstract final class ApiConstants {
   static String schedule(String id) => '/schedules/$id';
   static const String adminSchedules = '/admin/schedules';
   static String adminSchedule(String id) => '/admin/schedules/$id';
-  static String adminScheduleAttachLocation(String scheduleId, String venueId) =>
-      '/admin/admin-schedules/$scheduleId/venues/$venueId/locations/attach';
-  static String adminScheduleVenues(String scheduleId) =>
-      '/admin/admin-schedules/$scheduleId/venues';
-  static String adminScheduleVenueLocations(String scheduleId, String venueId) =>
-      '/admin/admin-schedules/$scheduleId/venues/$venueId/locations';
-  static String adminScheduleVenue(String scheduleId, String venueId) =>
-      '/admin/admin-schedules/$scheduleId/venues/$venueId';
-  static String adminScheduleEvent(
-    String scheduleId,
-    String venueId,
-    String locationId,
-  ) =>
-      '/admin/admin-schedules/$scheduleId/venues/$venueId/locations/$locationId/events';
-  static String adminScheduleEventById(
-    String scheduleId,
-    String venueId,
-    String eventId,
-  ) =>
-      '/admin/admin-schedules/$scheduleId/venues/$venueId/events/$eventId';
+  static String adminScheduleTimeline(String scheduleId) =>
+      '/admin/schedules/$scheduleId/timeline';
+  static String adminScheduleTimelineItem(String scheduleId, String itemId) =>
+      '/admin/schedules/$scheduleId/timeline/$itemId';
 
   // —— Venues (admin, global) ——
   static const String adminVenues = '/admin/venues';

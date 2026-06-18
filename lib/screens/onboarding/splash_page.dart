@@ -1,9 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fuvekonmobile/core/auth/session_hydration_service.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
+import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_state.dart';
 import 'package:fuvekonmobile/shared/services/app_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -20,6 +27,8 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   String _version = '';
+  String? _startupError;
+  bool _retrying = false;
 
   late final AnimationController _entranceController;
   late final AnimationController _pulseController;
@@ -120,6 +129,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     await Future<void>.delayed(SplashPage._splashDuration);
     if (!mounted) return;
 
+    final authBloc = context.read<AuthBloc>();
+    if (authBloc.state is AuthLoading) {
+      await authBloc.stream.firstWhere((state) => state is! AuthLoading);
+    }
+    if (!mounted) return;
+
     final prefs = sl<AppPreferences>();
     final languageCode = await prefs.languageCode;
     if (!mounted) return;
@@ -147,7 +162,58 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       return;
     }
 
-    context.go(Routes.home);
+    await _enterApp();
+  }
+
+  Future<void> _enterApp({bool retry = false}) async {
+    final session = sl<AuthSessionNotifier>();
+
+    if (session.isAuthenticated) {
+      if (retry ||
+          session.hydrationStatus == SessionHydrationStatus.idle ||
+          session.hydrationStatus == SessionHydrationStatus.failure) {
+        setState(() {
+          _startupError = null;
+          _retrying = true;
+        });
+        await sl<SessionHydrationService>().hydrate(force: retry);
+        if (!mounted) return;
+        setState(() => _retrying = false);
+      } else if (session.hydrationStatus == SessionHydrationStatus.loading) {
+        await _waitForHydration(session);
+        if (!mounted) return;
+      }
+
+      if (!session.isAuthenticated) {
+        context.go(Routes.home);
+        return;
+      }
+
+      if (session.hydrationStatus == SessionHydrationStatus.failure) {
+        setState(() => _startupError = session.hydrationError);
+        return;
+      }
+    }
+
+    if (!mounted) return;
+    context.go(session.homeRoute);
+  }
+
+  Future<void> _waitForHydration(AuthSessionNotifier session) async {
+    if (session.hydrationStatus != SessionHydrationStatus.loading) return;
+
+    final completer = Completer<void>();
+    void listener() {
+      if (session.hydrationStatus == SessionHydrationStatus.loading) return;
+      session.removeListener(listener);
+      if (!completer.isCompleted) completer.complete();
+    }
+
+    session.addListener(listener);
+    await completer.future.timeout(
+      const Duration(seconds: 30),
+      onTimeout: () => session.removeListener(listener),
+    );
   }
 
   @override
@@ -208,31 +274,97 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                 ),
               ),
               const Spacer(flex: 4),
-              FadeTransition(
-                opacity: _footerFade,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const _LoadingDots(),
-                    if (_version.isNotEmpty) ...[
-                      const SizedBox(height: 16),
-                      Text(
-                        _version,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: FuvekonColors.darkTextSecondary.withValues(
-                                alpha: 0.6,
+              if (_startupError != null)
+                FadeTransition(
+                  opacity: _footerFade,
+                  child: _StartupErrorPanel(
+                    message: _startupError!,
+                    retrying: _retrying,
+                    onRetry: () => _enterApp(retry: true),
+                  ),
+                )
+              else
+                FadeTransition(
+                  opacity: _footerFade,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const _LoadingDots(),
+                      if (_version.isNotEmpty) ...[
+                        const SizedBox(height: 16),
+                        Text(
+                          _version,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: FuvekonColors.darkTextSecondary.withValues(
+                                  alpha: 0.6,
+                                ),
                               ),
-                            ),
-                      ),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ),
               const SizedBox(height: 24),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _StartupErrorPanel extends StatelessWidget {
+  const _StartupErrorPanel({
+    required this.message,
+    required this.retrying,
+    required this.onRetry,
+  });
+
+  final String message;
+  final bool retrying;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.cloud_off_outlined,
+          size: 40,
+          color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.85),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          l10n.startupHydrationFailedTitle,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: FuvekonColors.darkText,
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          message.isEmpty ? l10n.startupHydrationFailedBody : message,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.9),
+              ),
+        ),
+        const SizedBox(height: 16),
+        FilledButton(
+          onPressed: retrying ? null : onRetry,
+          child: retrying
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(l10n.startupRetry),
+        ),
+      ],
     );
   }
 }

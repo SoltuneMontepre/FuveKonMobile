@@ -8,8 +8,9 @@ import 'package:fuvekonmobile/features/profile/presentation/pages/edit_profile_p
 
 import 'package:fuvekonmobile/features/profile/presentation/pages/profile_page.dart';
 
+import 'package:fuvekonmobile/features/ticket/presentation/models/my_ticket_list_item.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/pages/e_ticket_detail_page.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/pages/my_ticket_page.dart';
-
 import 'package:fuvekonmobile/features/ticket/presentation/pages/ticket_upgrade_page.dart';
 
 import 'package:fuvekonmobile/screens/account/account_pages.dart';
@@ -181,6 +182,22 @@ abstract final class AccountRoutes {
                   parentNavigatorKey: rootNavigatorKey,
 
                   builder: (context, state) => const TicketUpgradePage(),
+
+                ),
+
+                GoRoute(
+
+                  path: ':id',
+
+                  parentNavigatorKey: rootNavigatorKey,
+
+                  builder: (context, state) {
+
+                    final args = state.extra as ETicketDetailArgs;
+
+                    return ETicketDetailPage(args: args);
+
+                  },
 
                 ),
 
@@ -443,5 +460,4 @@ abstract final class AccountRoutes {
   }
 
 }
-
 

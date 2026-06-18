@@ -41,6 +41,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get splashTagline => 'Nơi kết nối cộng đồng sự kiện và nghệ thuật';
 
   @override
+  String get startupHydrationFailedTitle => 'Không thể kết nối máy chủ';
+
+  @override
+  String get startupHydrationFailedBody =>
+      'Kiểm tra kết nối mạng hoặc cấu hình API, rồi thử lại.';
+
+  @override
+  String get startupRetry => 'Thử lại';
+
+  @override
   String get brandTagline => 'Cổng thông tin sự kiện chuyên nghiệp';
 
   @override
@@ -396,6 +406,104 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get navAccount => 'Tài khoản';
+
+  @override
+  String get myTicketsFilterActive => 'Đang hiệu lực';
+
+  @override
+  String get myTicketsFilterUsed => 'Đã dùng';
+
+  @override
+  String get myTicketsFilterAll => 'Tất cả';
+
+  @override
+  String get myTicketsStatusActive => 'Đang hiệu lực';
+
+  @override
+  String get myTicketsStatusUsed => 'Đã dùng';
+
+  @override
+  String get myTicketsViewTicket => 'Xem vé →';
+
+  @override
+  String get myTicketsEventDateRange => '20-22/10/2024';
+
+  @override
+  String get myTicketsEmptyTitle => 'Bạn chưa có vé';
+
+  @override
+  String get myTicketsEmptySubtitle => 'Mua vé để tham gia sự kiện.';
+
+  @override
+  String get myTicketsEmptyFilter => 'Không có vé trong mục này';
+
+  @override
+  String get myTicketsBrowse => 'Xem các hạng vé';
+
+  @override
+  String get eTicketEventLabel => 'SỰ KIỆN';
+
+  @override
+  String get eTicketValid => 'Hợp lệ';
+
+  @override
+  String get eTicketOwner => 'Người sở hữu';
+
+  @override
+  String get eTicketTier => 'Hạng vé';
+
+  @override
+  String get eTicketDay => 'Ngày';
+
+  @override
+  String get eTicketScanHint => 'Quét mã QR tại cổng kiểm soát';
+
+  @override
+  String get eTicketCodeLabel => 'Mã vé';
+
+  @override
+  String eTicketBenefitsTitle(String tier) {
+    return 'Quyền lợi vé $tier';
+  }
+
+  @override
+  String get eTicketUpgrade => 'Nâng cấp vé';
+
+  @override
+  String get eTicketSaveWallet => 'Lưu vào ví Apple/Google';
+
+  @override
+  String get eTicketWalletSoon => 'Tính năng lưu ví sẽ có sau.';
+
+  @override
+  String get ticketUpgradeTitle => 'Nâng cấp hạng vé';
+
+  @override
+  String get ticketUpgradeCurrentLabel => 'VÉ HIỆN TẠI CỦA BẠN';
+
+  @override
+  String get ticketUpgradeOptionsLabel => 'Lựa chọn nâng cấp';
+
+  @override
+  String get ticketUpgradeExtraBenefits => 'QUYỀN LỢI BỔ SUNG';
+
+  @override
+  String get ticketUpgradeTotalLabel => 'TỔNG THANH TOÁN THÊM';
+
+  @override
+  String get ticketUpgradeContinue => 'Tiếp tục nâng cấp';
+
+  @override
+  String get ticketUpgradeInfoNote =>
+      'Việc nâng cấp vé VIP lên Super VIP sẽ được hệ thống xử lý và xác nhận trong vòng 24h làm việc.';
+
+  @override
+  String get ticketUpgradeNoTicket => 'Bạn chưa có vé để nâng cấp.';
+
+  @override
+  String ticketUpgradeMaxTier(String tier) {
+    return 'Bạn đang ở hạng vé cao nhất ($tier).';
+  }
 
   @override
   String get authHomeUpcomingBadge => 'Sự kiện sắp diễn ra';

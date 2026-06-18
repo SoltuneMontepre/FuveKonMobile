@@ -35,11 +35,27 @@ class Account extends Equatable {
 
   String? get displayName {
     if (fursonaName != null && fursonaName!.isNotEmpty) return fursonaName;
-    final parts = [firstName, lastName].whereType<String>().where(
-          (s) => s.isNotEmpty,
-        );
+    return legalName;
+  }
+
+  /// Full legal name (first + last) for tickets and checkout.
+  String? get legalName {
+    final parts = [firstName, lastName]
+        .whereType<String>()
+        .map((s) => s.trim())
+        .where((s) => s.isNotEmpty);
     final joined = parts.join(' ').trim();
     return joined.isEmpty ? null : joined;
+  }
+
+  /// Name on e-ticket / order — legal name first, then display name, then email.
+  String get ticketHolderName {
+    final legal = legalName;
+    if (legal != null && legal.isNotEmpty) return legal;
+    final display = displayName;
+    if (display != null && display.isNotEmpty) return display;
+    final local = email.split('@').first.trim();
+    return local.isNotEmpty ? local : email;
   }
 
   String get initials {

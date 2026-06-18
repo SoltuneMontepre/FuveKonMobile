@@ -33,7 +33,7 @@ class EventManagementSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Quản lý sự kiện',
+                    'Quản lý lịch trình',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       color: FuvekonColors.darkAppBarTitle,
                       fontWeight: FontWeight.w700,
@@ -41,7 +41,7 @@ class EventManagementSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Lịch trình, địa điểm và chương trình sự kiện.',
+                    'Lịch trình theo ngày và khung giờ.',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                     ),
@@ -66,7 +66,9 @@ class EventManagementSection extends StatelessWidget {
         else if (schedules.isEmpty)
           _EmptyEventCard(onCreate: onCreate)
         else
-          ...schedules.take(3).map(
+          ...schedules
+              .take(3)
+              .map(
                 (schedule) => Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: _EventScheduleCard(schedule: schedule),
@@ -109,11 +111,11 @@ class _EmptyEventCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'Chưa có lịch trình sự kiện',
+              'Chưa có lịch trình',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: FuvekonColors.darkText,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: FuvekonColors.darkText,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 8),
             FilledButton.icon(
@@ -194,7 +196,7 @@ class _EventScheduleCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${schedule.eventCount} sự kiện · ${schedule.venues.length} địa điểm',
+                    '${schedule.dayCount} ngày · ${schedule.timelineItemCount} mục',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: FuvekonColors.available,
                         fontWeight: FontWeight.w500,

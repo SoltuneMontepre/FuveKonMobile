@@ -21,7 +21,7 @@ class ScheduleApi extends BaseApi {
   }
 }
 
-/// Admin schedule CRUD and nested venue/event management.
+/// Admin schedule CRUD and timeline management.
 class AdminScheduleApi extends BaseApi {
   AdminScheduleApi(super.client);
 
@@ -53,99 +53,41 @@ class AdminScheduleApi extends BaseApi {
     );
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> createVenue(
+  Future<ApiResponse<Map<String, dynamic>>> createTimelineItem(
     String scheduleId,
     Map<String, dynamic> payload,
   ) {
     return post(
-      ApiConstants.adminScheduleVenues(scheduleId),
+      ApiConstants.adminScheduleTimeline(scheduleId),
       data: payload,
       mapData: mapJsonObject,
     );
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> createLocation(
+  Future<ApiResponse<Map<String, dynamic>>> updateTimelineItem(
     String scheduleId,
-    String venueId,
-    Map<String, dynamic> payload,
-  ) {
-    return post(
-      ApiConstants.adminScheduleVenueLocations(scheduleId, venueId),
-      data: payload,
-      mapData: mapJsonObject,
-    );
-  }
-
-  Future<ApiResponse<Map<String, dynamic>>> attachLocation(
-    String scheduleId,
-    String venueId,
-    Map<String, dynamic> payload,
-  ) {
-    return post(
-      ApiConstants.adminScheduleAttachLocation(scheduleId, venueId),
-      data: payload,
-      mapData: mapJsonObject,
-    );
-  }
-
-  Future<ApiResponse<Map<String, dynamic>>> updateVenue(
-    String scheduleId,
-    String venueId,
+    String itemId,
     Map<String, dynamic> payload,
   ) {
     return put(
-      ApiConstants.adminScheduleVenue(scheduleId, venueId),
+      ApiConstants.adminScheduleTimelineItem(scheduleId, itemId),
       data: payload,
       mapData: mapJsonObject,
     );
   }
 
-  Future<ApiResponse<void>> deleteVenue(String scheduleId, String venueId) {
-    return delete(
-      ApiConstants.adminScheduleVenue(scheduleId, venueId),
-      throwOnFailure: true,
-    );
-  }
-
-  Future<ApiResponse<Map<String, dynamic>>> createEvent(
+  Future<ApiResponse<void>> deleteTimelineItem(
     String scheduleId,
-    String venueId,
-    String locationId,
-    Map<String, dynamic> payload,
-  ) {
-    return post(
-      ApiConstants.adminScheduleEvent(scheduleId, venueId, locationId),
-      data: payload,
-      mapData: mapJsonObject,
-    );
-  }
-
-  Future<ApiResponse<Map<String, dynamic>>> updateEvent(
-    String scheduleId,
-    String venueId,
-    String eventId,
-    Map<String, dynamic> payload,
-  ) {
-    return put(
-      ApiConstants.adminScheduleEventById(scheduleId, venueId, eventId),
-      data: payload,
-      mapData: mapJsonObject,
-    );
-  }
-
-  Future<ApiResponse<void>> deleteEvent(
-    String scheduleId,
-    String venueId,
-    String eventId,
+    String itemId,
   ) {
     return delete(
-      ApiConstants.adminScheduleEventById(scheduleId, venueId, eventId),
+      ApiConstants.adminScheduleTimelineItem(scheduleId, itemId),
       throwOnFailure: true,
     );
   }
 }
 
-/// Global venue/location endpoints for schedule assembly.
+/// Global venue/location endpoints.
 class AdminVenueApi extends BaseApi {
   AdminVenueApi(super.client);
 
