@@ -15,12 +15,6 @@ module "iam" {
   s3_bucket_name             = module.s3.bucket_name
 }
 
-module "ses" {
-  source       = "./modules/ses"
-  project_name = var.project_name
-  sender_email = local.ses_sender_email
-}
-
 module "sqs" {
   source       = "./modules/sqs"
   project_name = var.project_name
@@ -31,7 +25,6 @@ module "iam_role" {
   project_name             = var.project_name
   iam_lambda_app_role_name = var.iam_lambda_app_role_name
   s3_bucket_arn            = module.s3.bucket_arn
-  ses_identity_arn         = module.ses.sender_identity_arn
   sqs_queue_arn            = module.sqs.queue_arn
   sqs_dlq_arn              = module.sqs.dead_letter_queue_arn
 }
@@ -60,7 +53,7 @@ module "lambda" {
   frontend_url                    = local.frontend_url
   gin_mode                        = var.gin_mode
   s3_bucket_name                  = module.s3.bucket_name
-  ses_sender_email                = module.ses.sender_email
+  ses_sender_email                = local.ses_sender_email
   sqs_queue_url                   = module.sqs.queue_url
   sqs_queue_arn                   = module.sqs.queue_arn
   cors_allowed_origins            = var.s3_cors_allowed_origins

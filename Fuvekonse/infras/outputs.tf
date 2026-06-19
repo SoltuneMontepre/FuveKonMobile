@@ -26,10 +26,10 @@ output "lambda_app_role_arn" {
   value       = module.iam_role.lambda_app_role_arn
 }
 
-# SES Outputs
+# Mail sender (from-address used by SendGrid)
 output "ses_sender_email" {
-  description = "Verified SES sender email"
-  value       = module.ses.sender_email
+  description = "Mail sender from-address"
+  value       = local.ses_sender_email
   sensitive   = true
 }
 

@@ -13,11 +13,6 @@ variable "s3_bucket_arn" {
   type        = string
 }
 
-variable "ses_identity_arn" {
-  description = "ARN of the SES email identity"
-  type        = string
-}
-
 variable "sqs_queue_arn" {
   description = "ARN of the SQS queue"
   type        = string

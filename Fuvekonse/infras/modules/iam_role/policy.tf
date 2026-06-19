@@ -13,15 +13,6 @@ data "aws_iam_policy_document" "lambda_app_policy" {
   }
 
   statement {
-    sid = "SESAccess"
-    actions = [
-      "ses:SendEmail",
-      "ses:SendRawEmail"
-    ]
-    resources = [var.ses_identity_arn]
-  }
-
-  statement {
     sid = "SQSAccess"
     actions = [ 
       "sqs:SendMessage",
