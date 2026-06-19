@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
 
 class AdminHomeAppBar extends StatelessWidget {
@@ -23,7 +24,8 @@ class AdminHomeAppBar extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            onPressed: onMenuTap,
+            onPressed: onMenuTap ?? FuvekonGuestDrawer.openFromAdminShell,
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             icon: const Icon(Icons.menu_rounded, color: FuvekonColors.darkText),
           ),
           Expanded(

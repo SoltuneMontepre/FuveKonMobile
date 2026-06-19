@@ -115,6 +115,8 @@
   "navMyTickets": "My tickets",
   "navNotifications": "Notifications",
   "navAccount": "Account",
+  "navSwitchToAdmin": "Admin mode",
+  "navSwitchToUser": "User mode",
 
   "myTicketsFilterActive": "Active",
   "myTicketsFilterUsed": "Used",

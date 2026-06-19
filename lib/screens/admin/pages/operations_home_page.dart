@@ -15,6 +15,7 @@ import 'package:fuvekonmobile/screens/admin/pages/admin_schedules_page.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_schedule_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_home_app_bar.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/event_management_section.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:fuvekonmobile/shared/widgets/home/fuvekon_home_layout.dart';
 import 'package:go_router/go_router.dart';
 
@@ -291,6 +292,7 @@ class _StaffHomeContent extends StatelessWidget {
           FuvekonHomeAppBar(
             avatarUrl: account.avatar,
             initials: account.initials,
+            onMenuTap: FuvekonGuestDrawer.openFromAdminShell,
             onProfileTap: () => context.push(Routes.accountProfile),
           ),
           const SizedBox(height: 8),

@@ -318,6 +318,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navAccount => 'Account';
 
   @override
+  String get navSwitchToAdmin => 'Admin mode';
+
+  @override
+  String get navSwitchToUser => 'User mode';
+
+  @override
   String get myTicketsFilterActive => 'Active';
 
   @override

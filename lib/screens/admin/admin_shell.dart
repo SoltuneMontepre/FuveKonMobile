@@ -4,6 +4,7 @@ import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_bottom_nav_bar.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:go_router/go_router.dart';
 
 /// Navigation shell for admin and staff on-site operations.
@@ -18,16 +19,21 @@ class AdminShell extends StatefulWidget {
 
 class _AdminShellState extends State<AdminShell> {
   final _auth = sl<AuthSessionNotifier>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    FuvekonGuestDrawer.adminScaffoldKey = _scaffoldKey;
     _auth.addListener(_guardCurrentBranch);
     WidgetsBinding.instance.addPostFrameCallback((_) => _guardCurrentBranch());
   }
 
   @override
   void dispose() {
+    if (FuvekonGuestDrawer.adminScaffoldKey == _scaffoldKey) {
+      FuvekonGuestDrawer.adminScaffoldKey = null;
+    }
     _auth.removeListener(_guardCurrentBranch);
     super.dispose();
   }
@@ -71,7 +77,9 @@ class _AdminShellState extends State<AdminShell> {
         );
 
         return Scaffold(
+          key: _scaffoldKey,
           backgroundColor: FuvekonColors.darkBg,
+          drawer: const FuvekonGuestDrawer(),
           body: canViewBranch
               ? widget.navigationShell
               : const _AdminBranchDenied(),

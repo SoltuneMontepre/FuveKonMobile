@@ -680,6 +680,18 @@ abstract class AppLocalizations {
   /// **'Tài khoản'**
   String get navAccount;
 
+  /// No description provided for @navSwitchToAdmin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chế độ quản trị'**
+  String get navSwitchToAdmin;
+
+  /// No description provided for @navSwitchToUser.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chế độ người dùng'**
+  String get navSwitchToUser;
+
   /// No description provided for @myTicketsFilterActive.
   ///
   /// In vi, this message translates to:
