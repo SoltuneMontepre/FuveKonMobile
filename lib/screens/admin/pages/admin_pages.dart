@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/screens/admin/pages/admin_conbook_page.dart';
 import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';export 'admin_conbook_page.dart';
+export 'admin_lost_found_detail_page.dart';
 export 'admin_lost_found_page.dart';
 export 'admin_lost_found_return_page.dart';
 export 'admin_dashboard_page.dart';
+export 'admin_dealer_detail_page.dart';
 export 'admin_dealers_page.dart';
 export 'admin_panels_page.dart';
 export 'admin_scan_history_page.dart';

@@ -25,18 +25,57 @@ class TicketQrScannerPage extends StatefulWidget {
   State<TicketQrScannerPage> createState() => _TicketQrScannerPageState();
 }
 
-class _TicketQrScannerPageState extends State<TicketQrScannerPage> {
+class _TicketQrScannerPageState extends State<TicketQrScannerPage>
+    with WidgetsBindingObserver {
   final _controller = MobileScannerController(
     detectionSpeed: DetectionSpeed.noDuplicates,
     facing: CameraFacing.back,
   );
 
   bool _isProcessing = false;
+  bool _appInForeground = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _appInForeground = state == AppLifecycleState.resumed;
+    _syncScannerVisibility();
+  }
+
+  /// Inactive admin tabs stay mounted inside [Offstage] (indexed shell stack).
+  bool _isPageVisible(BuildContext context) {
+    if (!widget.embeddedInTab) return true;
+    final offstage = context.findAncestorWidgetOfExactType<Offstage>();
+    return offstage == null || !offstage.offstage;
+  }
+
+  bool _shouldScannerRun(BuildContext context) {
+    return _appInForeground && _isPageVisible(context) && !_isProcessing;
+  }
+
+  Future<void> _syncScannerVisibility() async {
+    if (!mounted) return;
+
+    final shouldRun = _shouldScannerRun(context);
+    final running = _controller.value.isRunning;
+
+    if (shouldRun && !running) {
+      await _safeStart();
+    } else if (!shouldRun && running) {
+      await _safeStop();
+    }
   }
 
   Future<void> _safeStop() async {
@@ -85,7 +124,9 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage> {
     }
 
     if (!mounted) return;
-    await _safeStart();
+    if (_shouldScannerRun(context)) {
+      await _safeStart();
+    }
   }
 
   Future<void> _showManualEntry() async {
@@ -219,6 +260,10 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _syncScannerVisibility();
+    });
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(

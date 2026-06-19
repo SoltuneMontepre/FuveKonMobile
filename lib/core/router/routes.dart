@@ -110,6 +110,7 @@ abstract final class Routes {
   static const adminScanTicket = '/admin/scan-ticket';
   static const adminHistory = '/admin/history';
   static const adminLostFound = '/admin/lost-found';
+  static String adminLostFoundDetail(String id) => '/admin/lost-found/$id';
   static String adminLostFoundReturn(String id) => '/admin/lost-found/$id/return';
   static const adminSystem = '/admin/system';
   static const adminAccount = '/admin/account';
@@ -117,6 +118,7 @@ abstract final class Routes {
   static const adminPanels = '/admin/panels';
   static const adminTalents = '/admin/talents';
   static const adminDealers = '/admin/dealers';
+  static String adminDealerDetail(String id) => '/admin/dealers/$id';
   static const adminSchedules = '/admin/schedules';
   static String adminScheduleDetail(String id) => '/admin/schedules/$id';
   static const adminUsers = '/admin/users';

@@ -34,6 +34,35 @@ String formatAdminDate(DateTime? date) {
       '${date.year}';
 }
 
+class AdminDealerStaffMember {
+  const AdminDealerStaffMember({
+    required this.id,
+    required this.userId,
+    required this.userEmail,
+    required this.userName,
+    required this.isOwner,
+    this.createdAt,
+  });
+
+  factory AdminDealerStaffMember.fromJson(Map<String, dynamic> json) {
+    return AdminDealerStaffMember(
+      id: json['id']?.toString() ?? '',
+      userId: json['user_id']?.toString() ?? '',
+      userEmail: json['user_email'] as String? ?? '',
+      userName: json['user_name'] as String? ?? '',
+      isOwner: json['is_owner'] as bool? ?? false,
+      createdAt: parseAdminDate(json['created_at']),
+    );
+  }
+
+  final String id;
+  final String userId;
+  final String userEmail;
+  final String userName;
+  final bool isOwner;
+  final DateTime? createdAt;
+}
+
 class AdminDealerItem implements AdminListItem {
   const AdminDealerItem({
     required this.id,
@@ -42,11 +71,14 @@ class AdminDealerItem implements AdminListItem {
     this.boothNumber,
     required this.isVerified,
     this.priceSheets = const [],
+    this.staff = const [],
     this.createdAt,
+    this.modifiedAt,
   });
 
   factory AdminDealerItem.fromJson(Map<String, dynamic> json) {
     final sheets = json['price_sheets'];
+    final staffs = json['staffs'];
     return AdminDealerItem(
       id: json['id']?.toString() ?? '',
       boothName: json['booth_name'] as String? ?? 'Gian hàng',
@@ -56,7 +88,14 @@ class AdminDealerItem implements AdminListItem {
       priceSheets: sheets is List
           ? sheets.whereType<String>().where((s) => s.isNotEmpty).toList()
           : const [],
+      staff: staffs is List
+          ? staffs
+                .whereType<Map<String, dynamic>>()
+                .map(AdminDealerStaffMember.fromJson)
+                .toList()
+          : const [],
       createdAt: parseAdminDate(json['created_at']),
+      modifiedAt: parseAdminDate(json['modified_at']),
     );
   }
 
@@ -67,7 +106,9 @@ class AdminDealerItem implements AdminListItem {
   final String? boothNumber;
   final bool isVerified;
   final List<String> priceSheets;
+  final List<AdminDealerStaffMember> staff;
   final DateTime? createdAt;
+  final DateTime? modifiedAt;
 
   @override
   String get title => boothName;
@@ -101,6 +142,11 @@ class AdminDealerItem implements AdminListItem {
           label: 'Ngày đăng ký',
           value: formatAdminDate(createdAt),
         ),
+        if (modifiedAt != null)
+          AdminDetailField(
+            label: 'Cập nhật lần cuối',
+            value: formatAdminDate(modifiedAt),
+          ),
       ];
 }
 

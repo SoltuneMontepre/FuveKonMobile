@@ -44,6 +44,16 @@ abstract final class AdminRoutes {
                   path: 'dealers',
                   parentNavigatorKey: rootNavigatorKey,
                   builder: (context, state) => const AdminDealersPage(),
+                  routes: [
+                    GoRoute(
+                      path: ':id',
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) {
+                        final dealerId = state.pathParameters['id']!;
+                        return AdminDealerDetailPage(dealerId: dealerId);
+                      },
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: 'schedules',
@@ -127,12 +137,22 @@ abstract final class AdminRoutes {
               builder: (context, state) => const AdminLostFoundPage(),
               routes: [
                 GoRoute(
-                  path: ':id/return',
+                  path: ':id',
                   parentNavigatorKey: rootNavigatorKey,
                   builder: (context, state) {
                     final itemId = state.pathParameters['id']!;
-                    return AdminLostFoundReturnPage(itemId: itemId);
+                    return AdminLostFoundDetailPage(itemId: itemId);
                   },
+                  routes: [
+                    GoRoute(
+                      path: 'return',
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) {
+                        final itemId = state.pathParameters['id']!;
+                        return AdminLostFoundReturnPage(itemId: itemId);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

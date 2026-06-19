@@ -28,6 +28,7 @@ class AdminApprovalPage extends StatefulWidget {
     this.approveLabel = 'Duyệt',
     this.denyLabel = 'Từ chối',
     this.markPendingLabel = 'Chờ duyệt lại',
+    this.onItemTap,
   });
 
   final String title;
@@ -42,6 +43,7 @@ class AdminApprovalPage extends StatefulWidget {
   final String approveLabel;
   final String denyLabel;
   final String markPendingLabel;
+  final Future<void> Function(AdminListItem item)? onItemTap;
 
   @override
   State<AdminApprovalPage> createState() => _AdminApprovalPageState();
@@ -130,6 +132,15 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
     } finally {
       if (mounted) setState(() => _actionInProgress = null);
     }
+  }
+
+  Future<void> _openDetail(AdminListItem item) async {
+    if (widget.onItemTap != null) {
+      await widget.onItemTap!(item);
+      if (mounted) await _refresh();
+      return;
+    }
+    _showDetail(item);
   }
 
   void _showDetail(AdminListItem item) {
@@ -334,7 +345,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
           final item = items[i];
           return _SubmissionTile(
             item: item,
-            onTap: () => _showDetail(item),
+            onTap: () => _openDetail(item),
           );
         },
       ),

@@ -5,7 +5,6 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
-import 'package:fuvekonmobile/screens/admin/widgets/admin_user_ticket_widgets.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +20,6 @@ class AdminUserDetailPage extends StatefulWidget {
 
 class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
   late final AdminUserService _service;
-  final _ticketSectionKey = GlobalKey();
   AdminUserItem? _user;
   String? _error;
   bool _loading = true;
@@ -158,17 +156,6 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     if (updated == true) await _load();
   }
 
-  void _scrollToTickets() {
-    final ticketContext = _ticketSectionKey.currentContext;
-    if (ticketContext == null) return;
-    Scrollable.ensureVisible(
-      ticketContext,
-      duration: const Duration(milliseconds: 350),
-      curve: Curves.easeOutCubic,
-      alignment: 0.1,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final canEdit = _user != null && !_user!.isDeleted;
@@ -253,7 +240,6 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
             isVerified: user.isVerified,
             isBlacklisted: user.isBlacklisted,
             onEdit: _openEdit,
-            onViewTickets: _scrollToTickets,
             onVerify: () => _runAction(() => _service.verifyUser(user.id)),
             onBlacklist: _blacklistUser,
             onUnblacklist: () =>
@@ -268,16 +254,6 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
           user: user,
           permissionsSummary: formatAdminPermissionsSummary(effectivePermissions),
         ),
-        const SizedBox(height: FuvekonSpacing.section),
-        KeyedSubtree(
-          key: _ticketSectionKey,
-          child: AdminUserTicketSection(
-            userId: user.id,
-            userEmail: user.email,
-            isDeleted: user.isDeleted,
-            onTicketChanged: _load,
-          ),
-        ),
       ],
     );
   }
@@ -289,7 +265,6 @@ class _QuickActionsSection extends StatelessWidget {
     required this.isVerified,
     required this.isBlacklisted,
     required this.onEdit,
-    required this.onViewTickets,
     required this.onVerify,
     required this.onBlacklist,
     required this.onUnblacklist,
@@ -300,7 +275,6 @@ class _QuickActionsSection extends StatelessWidget {
   final bool isVerified;
   final bool isBlacklisted;
   final VoidCallback onEdit;
-  final VoidCallback onViewTickets;
   final VoidCallback onVerify;
   final VoidCallback onBlacklist;
   final VoidCallback onUnblacklist;
@@ -321,12 +295,6 @@ class _QuickActionsSection extends StatelessWidget {
           crossAxisSpacing: 10,
           childAspectRatio: 1.55,
           children: [
-            _QuickActionCard(
-              icon: Icons.confirmation_number_outlined,
-              label: 'Xem vé',
-              variant: _QuickActionVariant.primary,
-              onTap: loading ? null : onViewTickets,
-            ),
             if (!isVerified)
               _QuickActionCard(
                 icon: Icons.verified_outlined,

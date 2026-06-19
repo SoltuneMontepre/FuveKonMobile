@@ -6,11 +6,10 @@ import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.dart';
-import 'package:fuvekonmobile/screens/info/lost_found_models.dart';
+import 'package:fuvekonmobile/screens/admin/widgets/admin_lost_found_form_sheet.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/staff_tab_scaffold.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
-import 'package:fuvekonmobile/shared/widgets/s3_image_upload_field.dart';
 import 'package:go_router/go_router.dart';
 
 class AdminLostFoundPage extends StatefulWidget {
@@ -33,7 +32,6 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
   String _statusFilter = '';
   String _typeFilter = '';
   String _search = '';
-  String? _actionInProgress;
 
   @override
   void initState() {
@@ -118,29 +116,6 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
     _load(refresh: true);
   }
 
-  Future<void> _runAction(Future<void> Function() action) async {
-    try {
-      await action();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cập nhật thành công.')),
-      );
-      Navigator.of(context).maybePop();
-      await _load(refresh: true);
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
-      );
-    } finally {
-      if (mounted) setState(() => _actionInProgress = null);
-    }
-  }
-
   void _openForm({AdminLostFoundItem? item}) {
     showModalBottomSheet<void>(
       context: context,
@@ -149,7 +124,7 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => _LostFoundFormSheet(
+      builder: (context) => AdminLostFoundFormSheet(
         item: item,
         onSubmit: (input) async {
           if (item == null) {
@@ -175,40 +150,13 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
     });
   }
 
-  void _showDetail(AdminLostFoundItem item) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: FuvekonColors.darkSurfaceElevated,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return _LostFoundDetailSheet(
-          itemId: item.id,
-          service: _service,
-          actionInProgress: _actionInProgress,
-          onActionStarted: (id) => setState(() => _actionInProgress = id),
-          onActionFinished: () => setState(() => _actionInProgress = null),
-          onRunAction: _runAction,
-          onOpenReturn: (id) async {
-            Navigator.of(context).pop();
-            final confirmed = await context.push<bool>(
-              Routes.adminLostFoundReturn(id),
-            );
-            if (confirmed == true && mounted) {
-              await _load(refresh: true);
-            }
-          },
-          onEdit: (detailItem) {
-            Navigator.of(context).pop();
-            _openForm(item: detailItem);
-          },
-        );
-      },
-    ).then((_) {
-      if (mounted) _load(refresh: true);
-    });
+  Future<void> _openDetail(AdminLostFoundItem item) async {
+    final changed = await context.push<bool>(
+      Routes.adminLostFoundDetail(item.id),
+    );
+    if (changed == true && mounted) {
+      await _load(refresh: true);
+    }
   }
 
   @override
@@ -385,7 +333,7 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
                 final item = _items[index];
                 return _LostFoundTile(
                   item: item,
-                  onTap: () => _showDetail(item),
+                  onTap: () => _openDetail(item),
                 );
               },
             ),
@@ -406,318 +354,6 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
         foregroundColor: FuvekonColors.darkButtonText,
         child: const Icon(Icons.add_rounded),
       ),
-    );
-  }
-}
-
-class _LostFoundDetailSheet extends StatefulWidget {
-  const _LostFoundDetailSheet({
-    required this.itemId,
-    required this.service,
-    required this.actionInProgress,
-    required this.onActionStarted,
-    required this.onActionFinished,
-    required this.onRunAction,
-    required this.onOpenReturn,
-    required this.onEdit,
-  });
-
-  final String itemId;
-  final AdminLostFoundService service;
-  final String? actionInProgress;
-  final ValueChanged<String> onActionStarted;
-  final VoidCallback onActionFinished;
-  final Future<void> Function(Future<void> Function() action) onRunAction;
-  final ValueChanged<String> onOpenReturn;
-  final ValueChanged<AdminLostFoundItem> onEdit;
-
-  @override
-  State<_LostFoundDetailSheet> createState() => _LostFoundDetailSheetState();
-}
-
-class _LostFoundDetailSheetState extends State<_LostFoundDetailSheet> {
-  AdminLostFoundItem? _item;
-  bool _loading = true;
-  String? _error;
-
-  @override
-  void initState() {
-    super.initState();
-    _load();
-  }
-
-  Future<void> _load() async {
-    try {
-      final item = await widget.service.getById(widget.itemId);
-      if (!mounted) return;
-      setState(() {
-        _item = item;
-        _loading = false;
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
-        _loading = false;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_loading) {
-      return const SizedBox(
-        height: 240,
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    if (_error != null || _item == null) {
-      return Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(_error ?? 'Không tải được chi tiết.'),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Đóng'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final item = _item!;
-    final claim = item.activeClaim;
-    final claimer = claim?.claimedBy;
-
-    return DraggableScrollableSheet(
-      expand: false,
-      initialChildSize: 0.65,
-      minChildSize: 0.35,
-      maxChildSize: 0.92,
-      builder: (context, scrollController) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(
-            20,
-            12,
-            20,
-            24 + MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: FuvekonColors.darkBorder,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      item.title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: FuvekonColors.darkText,
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ),
-                  _StatusChip(status: item.status),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Expanded(
-                child: ListView(
-                  controller: scrollController,
-                  children: [
-                    if (claim != null && claimer != null) ...[
-                      Text(
-                        'Người nhận (đã claim)',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: FuvekonColors.darkAppBarTitle,
-                              fontWeight: FontWeight.w700,
-                            ),
-                      ),
-                      const SizedBox(height: 8),
-                      DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: FuvekonColors.darkCard,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                claimer.displayName,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(
-                                      color: FuvekonColors.darkCardText,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'CCCD: ${AdminLostFoundClaimUser.maskSensitive(claimer.idCard)}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: FuvekonColors.textSecondary,
-                                    ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Email: ${AdminLostFoundClaimUser.maskSensitive(claimer.email)}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: FuvekonColors.textSecondary,
-                                    ),
-                              ),
-                              if (claim.message.isNotEmpty) ...[
-                                const SizedBox(height: 8),
-                                Text(
-                                  claim.message,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: FuvekonColors.darkCardText,
-                                      ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                    ] else if (item.itemType == 'found' &&
-                        item.status == 'open') ...[
-                      Text(
-                        'Chưa có người dùng nào claim vật phẩm này.',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: FuvekonColors.darkTextSecondary,
-                            ),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                    for (final field in item.details)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              field.label,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium
-                                  ?.copyWith(
-                                    color: FuvekonColors.darkTextSecondary,
-                                  ),
-                            ),
-                            const SizedBox(height: 4),
-                            if (field.imageUrl != null)
-                              S3Image(
-                                imageUrl: field.imageUrl,
-                                height: 200,
-                                width: double.infinity,
-                                fit: BoxFit.contain,
-                                borderRadius: BorderRadius.circular(12),
-                                onTap: () => showS3ImagePreview(
-                                  context,
-                                  field.imageUrl!,
-                                ),
-                              )
-                            else if (field.value.isNotEmpty)
-                              Text(
-                                field.value,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: FuvekonColors.darkText,
-                                    ),
-                              ),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              if (item.canConfirmReturn)
-                _ActionButton(
-                  label: 'Xác nhận hoàn trả',
-                  color: FuvekonColors.available,
-                  loading: widget.actionInProgress == item.id,
-                  onPressed: () => widget.onOpenReturn(item.id),
-                )
-              else if (item.itemType == 'lost' && item.status != 'resolved')
-                _ActionButton(
-                  label: 'Đánh dấu đã xử lý',
-                  color: FuvekonColors.available,
-                  loading: widget.actionInProgress == item.id,
-                  onPressed: () {
-                    widget.onActionStarted(item.id);
-                    widget.onRunAction(
-                      () => widget.service.updateStatus(item.id, 'resolved'),
-                    ).whenComplete(widget.onActionFinished);
-                  },
-                ),
-              _ActionButton(
-                label: 'Chỉnh sửa',
-                color: FuvekonColors.darkPrimary,
-                onPressed: () => widget.onEdit(item),
-              ),
-              _ActionButton(
-                label: 'Xóa',
-                color: const Color(0xFFF0A0A8),
-                loading: widget.actionInProgress == item.id,
-                onPressed: () async {
-                  final confirmed = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Xóa mục thất lạc?'),
-                      content: const Text(
-                        'Hành động này không thể hoàn tác.',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text('Hủy'),
-                        ),
-                        FilledButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: const Text('Xóa'),
-                        ),
-                      ],
-                    ),
-                  );
-                  if (confirmed != true || !context.mounted) return;
-                  widget.onActionStarted(item.id);
-                  widget.onRunAction(
-                    () => widget.service.delete(item.id),
-                  ).whenComplete(widget.onActionFinished);
-                },
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
@@ -755,31 +391,6 @@ class _FilterChip extends StatelessWidget {
               : FuvekonColors.darkBorder,
         ),
         backgroundColor: FuvekonColors.darkSurfaceElevated,
-      ),
-    );
-  }
-}
-
-class _StatusChip extends StatelessWidget {
-  const _StatusChip({required this.status});
-
-  final String status;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = AdminLostFoundItem.statusColor(status);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        AdminLostFoundItem.statusLabel(status),
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w600,
-            ),
       ),
     );
   }
@@ -839,232 +450,6 @@ class _LostFoundTile extends StatelessWidget {
         trailing: const Icon(
           Icons.chevron_right_rounded,
           color: FuvekonColors.darkTextSecondary,
-        ),
-      ),
-    );
-  }
-}
-
-class _ActionButton extends StatelessWidget {
-  const _ActionButton({
-    required this.label,
-    required this.color,
-    required this.onPressed,
-    this.loading = false,
-  });
-
-  final String label;
-  final Color color;
-  final VoidCallback onPressed;
-  final bool loading;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: SizedBox(
-        width: double.infinity,
-        child: FilledButton(
-          onPressed: loading ? null : onPressed,
-          style: FilledButton.styleFrom(
-            backgroundColor: color,
-            foregroundColor: FuvekonColors.darkCardText,
-          ),
-          child: loading
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(label),
-        ),
-      ),
-    );
-  }
-}
-
-class _LostFoundFormSheet extends StatefulWidget {
-  const _LostFoundFormSheet({
-    this.item,
-    required this.onSubmit,
-  });
-
-  final AdminLostFoundItem? item;
-  final Future<void> Function(CreateLostFoundInput input) onSubmit;
-
-  @override
-  State<_LostFoundFormSheet> createState() => _LostFoundFormSheetState();
-}
-
-class _LostFoundFormSheetState extends State<_LostFoundFormSheet> {
-  final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _titleController;
-  late final TextEditingController _descriptionController;
-  late final TextEditingController _locationController;
-  late final TextEditingController _contactController;
-  late final TextEditingController _staffNotesController;
-  late String _itemType;
-  String? _imageUrl;
-  bool _submitting = false;
-
-  bool get _isEditing => widget.item != null;
-
-  @override
-  void initState() {
-    super.initState();
-    final item = widget.item;
-    _itemType = item?.itemType ?? 'found';
-    _titleController = TextEditingController(text: item?.title ?? '');
-    _descriptionController =
-        TextEditingController(text: item?.description ?? '');
-    _locationController = TextEditingController(text: item?.location ?? '');
-    _contactController = TextEditingController(text: item?.contactInfo ?? '');
-    _staffNotesController =
-        TextEditingController(text: item?.staffNotes ?? '');
-    _imageUrl = item?.imageUrl.isNotEmpty == true ? item!.imageUrl : null;
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    _locationController.dispose();
-    _contactController.dispose();
-    _staffNotesController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
-    setState(() => _submitting = true);
-    try {
-      await widget.onSubmit(
-        CreateLostFoundInput(
-          itemType: _itemType,
-          title: _titleController.text.trim(),
-          description: _descriptionController.text.trim(),
-          location: _locationController.text.trim(),
-          imageUrl: _imageUrl ?? '',
-          contactInfo: _contactController.text.trim(),
-          staffNotes: _staffNotesController.text.trim(),
-        ),
-      );
-      if (!mounted) return;
-      Navigator.of(context).pop();
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
-      );
-    } finally {
-      if (mounted) setState(() => _submitting = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: FuvekonColors.darkBorder,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                _isEditing ? 'Chỉnh sửa mục thất lạc' : 'Thêm mục thất lạc',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: FuvekonColors.darkText,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                initialValue: _itemType,
-                decoration: const InputDecoration(labelText: 'Loại'),
-                dropdownColor: FuvekonColors.darkSurfaceElevated,
-                items: const [
-                  DropdownMenuItem(value: 'found', child: Text('Nhặt được')),
-                  DropdownMenuItem(value: 'lost', child: Text('Thất lạc')),
-                ],
-                onChanged: (value) {
-                  if (value != null) _itemType = value;
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Tiêu đề *'),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Vui lòng nhập tiêu đề';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(labelText: 'Mô tả'),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _locationController,
-                decoration: const InputDecoration(labelText: 'Vị trí'),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _contactController,
-                decoration: const InputDecoration(labelText: 'Liên hệ'),
-              ),
-              const SizedBox(height: 12),
-              S3ImageUploadField(
-                imageUrl: _imageUrl,
-                folder: 'lost-found',
-                enabled: !_submitting,
-                onChanged: (url) => setState(() => _imageUrl = url),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _staffNotesController,
-                decoration: const InputDecoration(
-                  labelText: 'Ghi chú nhân viên',
-                ),
-                maxLines: 2,
-              ),
-              const SizedBox(height: 20),
-              FilledButton(
-                onPressed: _submitting ? null : _submit,
-                child: _submitting
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(_isEditing ? 'Lưu thay đổi' : 'Thêm mục'),
-              ),
-            ],
-          ),
         ),
       ),
     );

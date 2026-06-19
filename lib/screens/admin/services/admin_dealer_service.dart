@@ -10,6 +10,20 @@ class AdminDealerService {
 
   final AdminDealerApi _api;
 
+  Future<AdminDealerItem> getDealerById(String id) async {
+    try {
+      final response = await _api.getDealerById(id);
+      if (!response.isSuccess || response.data == null) {
+        throw ServerException(response.errorMessage ?? response.message);
+      }
+      return AdminDealerItem.fromJson(response.data!);
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException('Không thể tải thông tin gian hàng.');
+    }
+  }
+
   Future<List<AdminDealerItem>> getDealers(AdminDealerTab tab) async {
     final filter = AdminDealerFilter(
       isVerified: switch (tab) {

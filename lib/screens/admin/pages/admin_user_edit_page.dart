@@ -4,6 +4,7 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
+import 'package:fuvekonmobile/shared/widgets/s3_image_upload_field.dart';
 import 'package:go_router/go_router.dart';
 
 class AdminUserEditPage extends StatefulWidget {
@@ -24,9 +25,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
   late final TextEditingController _lastNameController;
   late final TextEditingController _countryController;
   late final TextEditingController _idCardController;
-  late final TextEditingController _avatarController;
 
   AdminUserItem? _user;
+  String? _avatarUrl;
   String? _error;
   bool _loading = true;
   bool _saving = false;
@@ -43,7 +44,6 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
     _lastNameController = TextEditingController();
     _countryController = TextEditingController();
     _idCardController = TextEditingController();
-    _avatarController = TextEditingController();
     _role = 'User';
     _isVerified = false;
     _permissions = const [];
@@ -57,7 +57,6 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
     _lastNameController.dispose();
     _countryController.dispose();
     _idCardController.dispose();
-    _avatarController.dispose();
     super.dispose();
   }
 
@@ -75,9 +74,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
       _lastNameController.text = user.lastName ?? '';
       _countryController.text = user.country ?? '';
       _idCardController.text = user.idCard ?? '';
-      _avatarController.text = user.avatar ?? '';
       setState(() {
         _user = user;
+        _avatarUrl = user.avatar;
         _role = adminRoleOptions.contains(user.role) ? user.role : 'User';
         _isVerified = user.isVerified;
         _permissions = isAdminRole(_role)
@@ -112,8 +111,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
       next.add(code);
     }
     setState(() {
-      _permissions =
-          adminPermissionCodes.where((item) => next.contains(item)).toList();
+      _permissions = adminPermissionCodes
+          .where((item) => next.contains(item))
+          .toList();
     });
   }
 
@@ -130,16 +130,16 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
           lastName: _lastNameController.text.trim(),
           country: _countryController.text.trim(),
           idCard: _idCardController.text.trim(),
-          avatar: _avatarController.text.trim(),
+          avatar: _avatarUrl?.trim() ?? '',
           role: _role,
           isVerified: _isVerified,
           permissions: isAdminRole(_role) ? null : _permissions,
         ),
       );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cập nhật thành công.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Cập nhật thành công.')));
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
@@ -194,14 +194,11 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                 _error!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
               const SizedBox(height: 16),
-              FilledButton(
-                onPressed: _load,
-                child: const Text('Thử lại'),
-              ),
+              FilledButton(onPressed: _load, child: const Text('Thử lại')),
             ],
           ),
         ),
@@ -212,6 +209,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
     final effectivePermissions = isAdminRole(_role)
         ? adminPermissionCodes
         : _permissions;
+    final inputTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: Colors.white,
+        );
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(FuvekonSpacing.page),
@@ -223,7 +223,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
             AdminUserProfileHeader(
               displayName: user.displayName,
               email: user.email,
-              avatarUrl: user.avatar,
+              avatarUrl: _avatarUrl ?? user.avatar,
               initials: user.initials,
               role: _role,
             ),
@@ -236,6 +236,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                   TextFormField(
                     initialValue: user.email,
                     readOnly: true,
+                    style: inputTextStyle,
                     decoration: const InputDecoration(
                       labelText: 'Email',
                       prefixIcon: Icon(Icons.email_outlined),
@@ -245,6 +246,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                   TextFormField(
                     controller: _fursonaController,
                     enabled: !_saving,
+                    style: inputTextStyle,
                     textCapitalization: TextCapitalization.words,
                     decoration: const InputDecoration(
                       labelText: 'Fursona',
@@ -258,6 +260,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                         child: TextFormField(
                           controller: _firstNameController,
                           enabled: !_saving,
+                          style: inputTextStyle,
                           textCapitalization: TextCapitalization.words,
                           decoration: const InputDecoration(
                             labelText: 'Họ',
@@ -270,6 +273,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                         child: TextFormField(
                           controller: _lastNameController,
                           enabled: !_saving,
+                          style: inputTextStyle,
                           textCapitalization: TextCapitalization.words,
                           decoration: const InputDecoration(
                             labelText: 'Tên',
@@ -283,6 +287,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                   TextFormField(
                     controller: _countryController,
                     enabled: !_saving,
+                    style: inputTextStyle,
                     textCapitalization: TextCapitalization.words,
                     decoration: const InputDecoration(
                       labelText: 'Quốc gia',
@@ -293,28 +298,19 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                   TextFormField(
                     controller: _idCardController,
                     enabled: !_saving,
+                    style: inputTextStyle,
                     decoration: const InputDecoration(
                       labelText: 'CCCD/CMND',
                       prefixIcon: Icon(Icons.credit_card_outlined),
                     ),
                   ),
                   const SizedBox(height: 14),
-                  TextFormField(
-                    controller: _avatarController,
+                  S3ImageUploadField(
+                    imageUrl: _avatarUrl,
+                    folder: 'avatars',
+                    label: 'Ảnh đại diện',
                     enabled: !_saving,
-                    decoration: const InputDecoration(
-                      labelText: 'Ảnh đại diện (URL)',
-                      prefixIcon: Icon(Icons.image_outlined),
-                    ),
-                    validator: (value) {
-                      final trimmed = value?.trim() ?? '';
-                      if (trimmed.isEmpty) return null;
-                      final uri = Uri.tryParse(trimmed);
-                      if (uri == null || !uri.hasScheme) {
-                        return 'URL không hợp lệ';
-                      }
-                      return null;
-                    },
+                    onChanged: (url) => setState(() => _avatarUrl = url),
                   ),
                 ],
               ),
@@ -353,8 +349,8 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
               Text(
                 'Quản trị viên có toàn bộ quyền.',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
             ],
             const SizedBox(height: FuvekonSpacing.section),
