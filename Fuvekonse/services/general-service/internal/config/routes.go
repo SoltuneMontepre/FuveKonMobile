@@ -49,8 +49,8 @@ func SetupAuthRoutes(router *gin.RouterGroup, h *handlers.Handlers) {
 
 func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos *repositories.Repositories, redisSetFunc func(ctx context.Context, key string, value interface{}, expiration time.Duration) error) {
 	// Internal job endpoint (called by SQS worker) - no /v1 prefix for clarity
-	// INTERNAL_API_KEY is enforced at router level in main.go for all APIs
-	internal := router.Group("/internal")
+
+	internal := router.Group("/internal", middlewares.InternalAPIKeyMiddleware())
 	{
 		internal.POST("/jobs/ticket", h.Ticket.ProcessTicketJob)
 	}
