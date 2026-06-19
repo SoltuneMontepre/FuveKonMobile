@@ -3,18 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
-import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/tickets_bloc.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/tickets_event.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/tickets_state.dart';
-import 'package:fuvekonmobile/features/ticket/presentation/widgets/ticket_tier_card.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
-import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
-import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:go_router/go_router.dart';
 
-/// Màn 22 — purchase ticket tiers on mint cards.
+/// Màn 22 — purchase ticket tiers (Explore tickets visual language).
 class TicketsPage extends StatelessWidget {
   const TicketsPage({super.key});
 
@@ -105,6 +102,7 @@ class _TicketsLoadedBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = exploreTicketTextColors(ExploreTierStyle.standard);
 
     return Stack(
       children: [
@@ -121,7 +119,7 @@ class _TicketsLoadedBody extends StatelessWidget {
               Text(
                 'Chọn loại vé',
                 style: theme.textTheme.headlineSmall?.copyWith(
-                  color: FuvekonColors.premiumPrimary,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
@@ -130,19 +128,20 @@ class _TicketsLoadedBody extends StatelessWidget {
               Text(
                 'Mỗi tài khoản chỉ mua được một vé',
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+                  color: FuvekonColors.darkTextSecondary,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: FuvekonSpacing.stackGapLg),
               if (_hasActiveTicket) ...[
-                FuveMintCard(
+                TicketExploreSurface(
                   onTap: () => context.go(Routes.accountTicket),
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
                       Icon(
                         Icons.confirmation_number,
-                        color: FuvekonColors.premiumOnMintCardMuted,
+                        color: colors.body,
                       ),
                       const SizedBox(width: 16),
                       Expanded(
@@ -152,23 +151,20 @@ class _TicketsLoadedBody extends StatelessWidget {
                             Text(
                               'Bạn đã có vé',
                               style: theme.textTheme.titleSmall?.copyWith(
-                                color: context.fuvekonTheme.contentOnCard,
+                                color: colors.title,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             Text(
                               'Xem vé của tôi',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: context.fuvekonTheme.contentOnCardMuted,
+                                color: colors.muted,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Icon(
-                        Icons.chevron_right,
-                        color: context.fuvekonTheme.contentOnCardMuted,
-                      ),
+                      Icon(Icons.chevron_right, color: colors.muted),
                     ],
                   ),
                 ),
@@ -178,7 +174,8 @@ class _TicketsLoadedBody extends StatelessWidget {
                   state.account?.role?.toLowerCase() != 'admin')
                 Padding(
                   padding: const EdgeInsets.only(bottom: FuvekonSpacing.stackGapMd),
-                  child: FuveMintCard(
+                  child: TicketExploreSurface(
+                    padding: const EdgeInsets.all(16),
                     child: Text(
                       'Tài khoản của bạn bị hạn chế mua vé.',
                       style: theme.textTheme.bodyMedium?.copyWith(
@@ -196,8 +193,9 @@ class _TicketsLoadedBody extends StatelessWidget {
                   icon: Icons.confirmation_number_outlined,
                 )
               else
-                ...state.tiers.map((tier) {
-                  final rank = tierPriceRank(tier, state.tiers);
+                ...state.tiers.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final tier = entry.value;
                   final soldOut = tier.isSoldOut;
                   final closed = !tier.isActive;
                   final unavailable = soldOut || closed;
@@ -205,18 +203,17 @@ class _TicketsLoadedBody extends StatelessWidget {
 
                   return Padding(
                     padding: const EdgeInsets.only(bottom: FuvekonSpacing.stackGapMd),
-                    child: TicketTierCard(
-                      tier: tier,
-                      rank: rank,
-                      soldOut: soldOut,
-                      closed: closed,
-                      disabled: disabled,
-                      isPurchasing: state.isPurchasing,
-                      onPurchase: disabled
-                          ? null
-                          : () => context.read<TicketsBloc>().add(
-                                TicketsEvent.purchaseRequested(tier.id),
-                              ),
+                    child: Opacity(
+                      opacity: disabled ? 0.72 : 1,
+                      child: ExploreTicketTierCard(
+                        tier: tier,
+                        style: exploreTierStyleFor(index, state.tiers.length),
+                        onTap: disabled || state.isPurchasing
+                            ? null
+                            : () => context.read<TicketsBloc>().add(
+                                  TicketsEvent.purchaseRequested(tier.id),
+                                ),
+                      ),
                     ),
                   );
                 }),
@@ -274,10 +271,16 @@ class _TicketsError extends StatelessWidget {
           children: [
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: FuvekonSpacing.field),
-            FuvePillButton(
-              label: 'Thử lại',
-              expanded: false,
+            FilledButton(
               onPressed: onRetry,
+              style: FilledButton.styleFrom(
+                backgroundColor: FuvekonColors.darkButton,
+                foregroundColor: FuvekonColors.darkButtonText,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(999),
+                ),
+              ),
+              child: const Text('Thử lại'),
             ),
           ],
         ),

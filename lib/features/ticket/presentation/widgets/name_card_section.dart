@@ -3,11 +3,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/utils/s3_url.dart';
-import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/my_ticket_bloc.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/my_ticket_event.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/my_ticket_state.dart';
-import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_status_badge.dart';
 
 class NameCardSection extends StatefulWidget {
@@ -49,11 +49,12 @@ class _NameCardSectionState extends State<NameCardSection> {
     final bloc = context.read<MyTicketBloc>();
     final previewBytes = bloc.previewPngBytes;
     final storedUrl = state.ticket.namecardUrl;
-
-    final ext = context.fuvekonTheme;
+    final colors = exploreTicketTextColors(ExploreTierStyle.standard);
     final theme = Theme.of(context);
 
-    return FuveMintCard(
+    return TicketExploreSurface(
+      style: ExploreTierStyle.standard,
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -66,7 +67,7 @@ class _NameCardSectionState extends State<NameCardSection> {
                     Text(
                       'Name card',
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: ext.contentOnCard,
+                        color: colors.title,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -74,7 +75,7 @@ class _NameCardSectionState extends State<NameCardSection> {
                     Text(
                       'Chỉnh sửa thông tin badge và xem trước name card.',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: ext.contentOnCardMuted,
+                        color: colors.muted,
                       ),
                     ),
                   ],
@@ -87,75 +88,80 @@ class _NameCardSectionState extends State<NameCardSection> {
                 ),
             ],
           ),
-            const SizedBox(height: 16),
-            if (state.canEditNameCard) ...[
-              TextField(
-                controller: _badgeNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Badge name',
-                  border: OutlineInputBorder(),
-                ),
-                maxLength: 255,
-                enabled: state.canSaveNameCard && !state.isSavingNameCard,
-                onChanged: (value) => context.read<MyTicketBloc>().add(
-                      MyTicketEvent.badgeNameChanged(value),
-                    ),
+          const SizedBox(height: 16),
+          if (state.canEditNameCard) ...[
+            TextField(
+              controller: _badgeNameController,
+              decoration: const InputDecoration(
+                labelText: 'Badge name',
+                border: OutlineInputBorder(),
               ),
-              CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('I am a fursuiter'),
-                value: state.isFursuiter,
-                onChanged: state.canSaveNameCard && !state.isSavingNameCard
-                    ? (v) => context.read<MyTicketBloc>().add(
-                          MyTicketEvent.fursuiterChanged(v ?? false),
-                        )
-                    : null,
-              ),
-              CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Fursuit staff'),
-                value: state.isFursuitStaff,
-                onChanged: state.canSaveNameCard && !state.isSavingNameCard
-                    ? (v) => context.read<MyTicketBloc>().add(
-                          MyTicketEvent.fursuitStaffChanged(v ?? false),
-                        )
-                    : null,
-              ),
-              const SizedBox(height: 8),
-              FilledButton(
-                onPressed: state.canSaveNameCard && !state.isSavingNameCard
-                    ? () => context.read<MyTicketBloc>().add(
-                          const MyTicketEvent.saveNameCardRequested(),
-                        )
-                    : null,
-                child: Text(
-                  state.isSavingNameCard ? 'Saving…' : 'Save name card',
-                ),
-              ),
-            ] else
-              Text(
-                'Name card editing is available on higher tiers after approval.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-            const SizedBox(height: 20),
-            Text(
-              'Preview',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
+              maxLength: 255,
+              enabled: state.canSaveNameCard && !state.isSavingNameCard,
+              onChanged: (value) => context.read<MyTicketBloc>().add(
+                    MyTicketEvent.badgeNameChanged(value),
                   ),
             ),
+            CheckboxListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('I am a fursuiter'),
+              value: state.isFursuiter,
+              onChanged: state.canSaveNameCard && !state.isSavingNameCard
+                  ? (v) => context.read<MyTicketBloc>().add(
+                        MyTicketEvent.fursuiterChanged(v ?? false),
+                      )
+                  : null,
+            ),
+            CheckboxListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Fursuit staff'),
+              value: state.isFursuitStaff,
+              onChanged: state.canSaveNameCard && !state.isSavingNameCard
+                  ? (v) => context.read<MyTicketBloc>().add(
+                        MyTicketEvent.fursuitStaffChanged(v ?? false),
+                      )
+                  : null,
+            ),
             const SizedBox(height: 8),
-            Center(
-              child: _NameCardPreviewImage(
-                previewBytes: previewBytes,
-                storedUrl: storedUrl,
-                isLoading: state.isGeneratingPreview,
+            FilledButton(
+              onPressed: state.canSaveNameCard && !state.isSavingNameCard
+                  ? () => context.read<MyTicketBloc>().add(
+                        const MyTicketEvent.saveNameCardRequested(),
+                      )
+                  : null,
+              style: FilledButton.styleFrom(
+                backgroundColor: FuvekonColors.darkButton,
+                foregroundColor: FuvekonColors.darkButtonText,
+              ),
+              child: Text(
+                state.isSavingNameCard ? 'Saving…' : 'Save name card',
               ),
             ),
-          ],
-        ),
+          ] else
+            Text(
+              'Name card editing is available on higher tiers after approval.',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colors.muted,
+              ),
+            ),
+          const SizedBox(height: 20),
+          Text(
+            'Preview',
+            style: theme.textTheme.titleSmall?.copyWith(
+              color: colors.title,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Center(
+            child: _NameCardPreviewImage(
+              previewBytes: previewBytes,
+              storedUrl: storedUrl,
+              isLoading: state.isGeneratingPreview,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -220,12 +226,14 @@ class _PreviewPlaceholder extends StatelessWidget {
       height: 200,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        color: FuvekonColors.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         'Preview will appear here',
-        style: Theme.of(context).textTheme.bodySmall,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: FuvekonColors.darkTextSecondary,
+            ),
       ),
     );
   }

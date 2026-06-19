@@ -12,6 +12,96 @@ ExploreTierStyle exploreTierStyleFor(int index, int total) {
   return ExploreTierStyle.standard;
 }
 
+const _exploreGold = FuvekonColors.lightGold;
+const _exploreGoldLight = Color(0xFFFFE088);
+
+BoxDecoration exploreTicketSurfaceDecoration(
+  ExploreTierStyle style, {
+  bool highlighted = false,
+}) {
+  final isPremium = style == ExploreTierStyle.premium;
+  return BoxDecoration(
+    color: isPremium ? FuvekonColors.surfaceContainerLow : FuvekonColors.darkCard,
+    borderRadius: BorderRadius.circular(FuvekonRadii.card),
+    border: isPremium || highlighted
+        ? Border.all(
+            color: _exploreGold.withValues(alpha: highlighted ? 0.85 : 0.65),
+            width: highlighted ? 1.5 : 1.5,
+          )
+        : null,
+  );
+}
+
+({Color title, Color body, Color muted}) exploreTicketTextColors(
+  ExploreTierStyle style,
+) {
+  final isPremium = style == ExploreTierStyle.premium;
+  return (
+    title: isPremium ? _exploreGoldLight : FuvekonColors.darkCardText,
+    body: isPremium ? FuvekonColors.darkTextSecondary : FuvekonColors.textSecondary,
+    muted: isPremium
+        ? FuvekonColors.darkTextSecondary
+        : FuvekonColors.textSecondary.withValues(alpha: 0.85),
+  );
+}
+
+/// Shared dark/premium ticket card shell (Explore tickets visual language).
+class TicketExploreSurface extends StatelessWidget {
+  const TicketExploreSurface({
+    super.key,
+    required this.child,
+    this.style = ExploreTierStyle.standard,
+    this.onTap,
+    this.padding,
+    this.highlighted = false,
+  });
+
+  final Widget child;
+  final ExploreTierStyle style;
+  final VoidCallback? onTap;
+  final EdgeInsetsGeometry? padding;
+  final bool highlighted;
+
+  @override
+  Widget build(BuildContext context) {
+    final radius = BorderRadius.circular(FuvekonRadii.card);
+    final decoration = exploreTicketSurfaceDecoration(
+      style,
+      highlighted: highlighted,
+    );
+    final content = Padding(
+      padding: padding ?? const EdgeInsets.fromLTRB(20, 20, 20, 22),
+      child: child,
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final fillHeight =
+            constraints.hasBoundedHeight && constraints.maxHeight.isFinite;
+        final surface = DecoratedBox(
+          decoration: decoration,
+          child: fillHeight
+              ? SizedBox(
+                  width: double.infinity,
+                  height: constraints.maxHeight,
+                  child: content,
+                )
+              : content,
+        );
+
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: radius,
+            child: surface,
+          ),
+        );
+      },
+    );
+  }
+}
+
 class ExploreTicketTierCard extends StatelessWidget {
   const ExploreTicketTierCard({
     super.key,
@@ -24,8 +114,6 @@ class ExploreTicketTierCard extends StatelessWidget {
   final ExploreTierStyle style;
   final VoidCallback? onTap;
 
-  static const _gold = FuvekonColors.lightGold;
-  static const _goldLight = Color(0xFFFFE088);
   static const _popularBadge = FuvekonColors.sageGreenContainer;
 
   @override
@@ -36,27 +124,16 @@ class ExploreTicketTierCard extends StatelessWidget {
     final isPremium = style == ExploreTierStyle.premium;
     final isPopular = style == ExploreTierStyle.popular;
 
-    final bgColor = isPremium
-        ? FuvekonColors.surfaceContainerLow
-        : FuvekonColors.darkCard;
-    final titleColor = isPremium ? _goldLight : FuvekonColors.darkCardText;
-    final priceColor = isPremium ? Colors.white : FuvekonColors.darkCardText;
-    final benefitColor =
-        isPremium ? FuvekonColors.darkTextSecondary : FuvekonColors.textSecondary;
-    final checkColor = isPremium ? _gold : FuvekonColors.sageGreenContainer;
+    final colors = exploreTicketTextColors(style);
+    final checkColor = isPremium ? _exploreGold : FuvekonColors.sageGreenContainer;
 
     return GestureDetector(
       onTap: onTap,
       child: Opacity(
         opacity: tier.isSoldOut ? 0.72 : 1,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.circular(FuvekonRadii.card),
-            border: isPremium
-                ? Border.all(color: _gold.withValues(alpha: 0.65), width: 1.5)
-                : null,
-          ),
+        child: TicketExploreSurface(
+          style: style,
+          padding: EdgeInsets.zero,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 22),
             child: Column(
@@ -72,7 +149,7 @@ class ExploreTicketTierCard extends StatelessWidget {
                         Text(
                           tier.ticketName,
                           style: TextStyle(
-                            color: titleColor,
+                            color: colors.title,
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
                           ),
@@ -81,7 +158,7 @@ class ExploreTicketTierCard extends StatelessWidget {
                         Text(
                           price,
                           style: TextStyle(
-                            color: priceColor,
+                            color: isPremium ? Colors.white : colors.title,
                             fontSize: 22,
                             fontWeight: FontWeight.w800,
                             letterSpacing: -0.3,
@@ -93,7 +170,7 @@ class ExploreTicketTierCard extends StatelessWidget {
                   if (isPopular)
                     _PopularBadge(label: l10n.exploreTicketsPopularBadge)
                   else if (isPremium)
-                    Icon(Icons.diamond_outlined, color: _gold, size: 22)
+                    Icon(Icons.diamond_outlined, color: _exploreGold, size: 22)
                   else if (tier.isSoldOut)
                     _SoldOutBadge(label: l10n.exploreTicketsSoldOut),
                 ],
@@ -103,7 +180,7 @@ class ExploreTicketTierCard extends StatelessWidget {
                 Text(
                   tier.description,
                   style: TextStyle(
-                    color: benefitColor,
+                    color: colors.body,
                     fontSize: 13,
                     height: 1.4,
                   ),
@@ -123,7 +200,7 @@ class ExploreTicketTierCard extends StatelessWidget {
                           child: Text(
                             benefit,
                             style: TextStyle(
-                              color: benefitColor,
+                              color: colors.body,
                               fontSize: 14,
                               height: 1.45,
                             ),

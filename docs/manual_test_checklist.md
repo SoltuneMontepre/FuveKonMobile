@@ -16,26 +16,29 @@ Use after pulling the customer UI implementation branch. Test on a **regular use
 - [ ] “Mua vé” opens `/ticket/purchase`; back restores home tab
 - [ ] Featured event card visible
 
-## Lịch trình (mock)
+## Lịch trình (API + hybrid mock)
 
-- [ ] Schedule list loads mock data at `/account/schedule`
-- [ ] Activity detail opens full-screen from list
-- [ ] Bookmark → conflict dialog (Màn 19) when overlapping
+- [ ] Schedule list loads from `GET /schedules` at `/account/schedule` (backend running)
+- [ ] Activity detail opens full-screen from list (timeline from schedule detail)
+- [ ] Bookmark → conflict dialog (Màn 19) when overlapping (local itinerary store)
 - [ ] Personal itinerary at `/account/schedule/my`
-- [ ] Event detail, venue map, venue detail routes work
+- [ ] Event detail loads from `GET /schedules/:id`
+- [ ] Venue map/detail still use mock delegate until public venue API
 
-## Vé
+## Vé (KietPham dark card style)
 
+- [ ] Explore `/ticket`, detail, purchase, my ticket, e-ticket use consistent dark tier cards
 - [ ] My ticket shows status badge at `/account/ticket`
 - [ ] QR displays when ticket approved/admin-granted
 - [ ] Upgrade flow at `/account/ticket/upgrade` (if eligible)
-- [ ] Purchase/payment at `/ticket/purchase` unchanged
+- [ ] Purchase/payment at `/ticket/purchase` — order/summary cards dark style
+- [ ] With `MOCK_TICKET_MODE=false`: tiers/purchase hit real API
 
-## Thông báo
+## Thông báo (API)
 
-- [ ] List with mint cards at `/account/notifications`
+- [ ] List loads from `GET /notifications` at `/account/notifications`
 - [ ] Tap item → detail at `/account/notifications/:id`
-- [ ] Unread items marked read on detail open
+- [ ] Unread items marked read on detail open (`PUT` mark_read)
 
 ## Profile & submissions
 
@@ -55,7 +58,7 @@ Use after pulling the customer UI implementation branch. Test on a **regular use
 
 ## Theme & i18n
 
-- [ ] Dark theme: canvas `#131313`, primary `#a9cfb8`, mint cards `#E4EEE3`
+- [ ] Dark theme: canvas `#131313`, explore ticket cards dark/premium gold accents
 - [ ] Bottom nav blur + `#07131A` background
 - [ ] Be Vietnam Pro typography
 - [ ] VI/EN labels on nav and new screens

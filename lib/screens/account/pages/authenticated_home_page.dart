@@ -3,6 +3,7 @@ import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/featured_event_summary.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
@@ -99,82 +100,56 @@ class _BentoGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: FuveMintCard(
-                onTap: () => context.go(Routes.accountTicket),
-                showGoldAccent: true,
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.confirmation_number_outlined,
-                      color: FuvekonColors.onSageGreen,
-                      size: 28,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      l10n.authHomeMyTicketTitle,
-                      style: const TextStyle(
-                        color: FuvekonColors.onSageGreen,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: TicketExploreSurface(
+                  style: ExploreTierStyle.premium,
+                  highlighted: true,
+                  onTap: () => context.go(Routes.accountTicket),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.confirmation_number_outlined,
+                        color: exploreTicketTextColors(ExploreTierStyle.premium).title,
+                        size: 28,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.authHomeMyTicketSubtitle,
-                      style: const TextStyle(
-                        color: FuvekonColors.premiumOnMintCardMuted,
-                        fontSize: 12,
+                      const SizedBox(height: 12),
+                      Text(
+                        l10n.authHomeMyTicketTitle,
+                        style: TextStyle(
+                          color: exploreTicketTextColors(ExploreTierStyle.premium).title,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Text(
+                        l10n.authHomeMyTicketSubtitle,
+                        style: TextStyle(
+                          color: exploreTicketTextColors(ExploreTierStyle.premium).muted,
+                          fontSize: 12,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: FuveMintCard(
-                onTap: () => context.go(Routes.accountSchedule),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.calendar_today_outlined,
-                      color: FuvekonColors.onSageGreen,
-                      size: 28,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      l10n.authHomeTodayScheduleTitle,
-                      style: const TextStyle(
-                        color: FuvekonColors.onSageGreen,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.authHomeTodaySchedulePreview,
-                      style: const TextStyle(
-                        color: FuvekonColors.premiumOnMintCardMuted,
-                        fontSize: 12,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _ScheduleOverviewCard(l10n: l10n),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 12),
-        FuveMintCard(
+        TicketExploreSurface(
           onTap: () => context.push(Routes.ticketPurchase),
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -183,12 +158,12 @@ class _BentoGrid extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: FuvekonColors.sageGreen.withValues(alpha: 0.25),
+                  color: FuvekonColors.surfaceContainerLow,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.local_activity_outlined,
-                  color: FuvekonColors.onSageGreen,
+                  color: exploreTicketTextColors(ExploreTierStyle.standard).title,
                 ),
               ),
               const SizedBox(width: 14),
@@ -198,30 +173,107 @@ class _BentoGrid extends StatelessWidget {
                   children: [
                     Text(
                       l10n.authHomeBuyTicketBanner,
-                      style: const TextStyle(
-                        color: FuvekonColors.onSageGreen,
+                      style: TextStyle(
+                        color: exploreTicketTextColors(ExploreTierStyle.standard).title,
                         fontWeight: FontWeight.w800,
                         fontSize: 15,
                       ),
                     ),
                     Text(
                       l10n.authHomeBuyTicketBannerSubtitle,
-                      style: const TextStyle(
-                        color: FuvekonColors.premiumOnMintCardMuted,
+                      style: TextStyle(
+                        color: exploreTicketTextColors(ExploreTierStyle.standard).muted,
                         fontSize: 12,
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.chevron_right,
-                color: FuvekonColors.premiumOnMintCardMuted,
+                color: exploreTicketTextColors(ExploreTierStyle.standard).muted,
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class _ScheduleOverviewCard extends StatelessWidget {
+  const _ScheduleOverviewCard({required this.l10n});
+
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final fillHeight =
+            constraints.hasBoundedHeight && constraints.maxHeight.isFinite;
+
+        final card = DecoratedBox(
+          decoration: BoxDecoration(
+            color: FuvekonColors.mintCard,
+            borderRadius: BorderRadius.circular(FuvekonRadii.card),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.18),
+                blurRadius: 24,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.calendar_today_outlined,
+                  color: FuvekonColors.onSageGreen,
+                  size: 28,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  l10n.authHomeTodayScheduleTitle,
+                  style: const TextStyle(
+                    color: FuvekonColors.onSageGreen,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.authHomeTodaySchedulePreview,
+                  style: const TextStyle(
+                    color: FuvekonColors.premiumOnMintCardMuted,
+                    fontSize: 12,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        );
+
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => context.go(Routes.accountSchedule),
+            borderRadius: BorderRadius.circular(FuvekonRadii.card),
+            child: fillHeight
+                ? SizedBox(
+                    width: double.infinity,
+                    height: constraints.maxHeight,
+                    child: card,
+                  )
+                : card,
+          ),
+        );
+      },
     );
   }
 }

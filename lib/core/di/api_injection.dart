@@ -37,6 +37,7 @@ void registerApiModule(GetIt sl) {
     ..registerLazySingleton(() => sl<FuvekonApis>().conbook)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminLostFound)
     ..registerLazySingleton(() => sl<FuvekonApis>().lostFound)
+    ..registerLazySingleton(() => sl<FuvekonApis>().notification)
     ..registerLazySingleton(() => sl<FuvekonApis>().schedule)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminSchedule)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminVenue)

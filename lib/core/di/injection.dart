@@ -68,5 +68,5 @@ Future<void> configureDependencies() async {
   registerProfileModule(sl);
   registerTicketModule(sl);
   registerNotificationModule(sl);
-  registerScheduleModule(sl, useMock: true);
+  registerScheduleModule(sl, useMock: false);
 }

@@ -9,6 +9,7 @@ import 'package:fuvekonmobile/core/api/dealer_api.dart';
 import 'package:fuvekonmobile/core/api/lost_found_api.dart';
 import 'package:fuvekonmobile/core/api/panel_api.dart';
 import 'package:fuvekonmobile/core/api/talent_api.dart';
+import 'package:fuvekonmobile/core/api/notification_api.dart';
 import 'package:fuvekonmobile/core/api/schedule_api.dart';
 import 'package:fuvekonmobile/core/api/ticket_api.dart';
 import 'package:fuvekonmobile/core/network/api_client.dart';
@@ -30,6 +31,7 @@ class FuvekonApis {
         conbook = ConbookApi(client),
         adminLostFound = AdminLostFoundApi(client),
         lostFound = LostFoundApi(client),
+        notification = NotificationApi(client),
         schedule = ScheduleApi(client),
         adminSchedule = AdminScheduleApi(client),
         adminVenue = AdminVenueApi(client),
@@ -51,6 +53,7 @@ class FuvekonApis {
   final ConbookApi conbook;
   final AdminLostFoundApi adminLostFound;
   final LostFoundApi lostFound;
+  final NotificationApi notification;
   final ScheduleApi schedule;
   final AdminScheduleApi adminSchedule;
   final AdminVenueApi adminVenue;

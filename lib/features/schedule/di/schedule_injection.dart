@@ -6,12 +6,15 @@ import 'package:fuvekonmobile/features/schedule/presentation/bloc/itinerary_cubi
 import 'package:fuvekonmobile/features/schedule/presentation/bloc/schedule_list_cubit.dart';
 import 'package:get_it/get_it.dart';
 
-void registerScheduleModule(GetIt sl, {bool useMock = true}) {
+void registerScheduleModule(GetIt sl, {bool useMock = false}) {
   if (useMock) {
     sl.registerLazySingleton<ScheduleRepository>(MockScheduleRepository.new);
   } else {
     sl.registerLazySingleton<ScheduleRepository>(
-      () => ScheduleRepositoryImpl(scheduleApi: sl()),
+      () => ScheduleRepositoryImpl(
+        scheduleApi: sl(),
+        venueDelegate: MockScheduleRepository(),
+      ),
     );
   }
 

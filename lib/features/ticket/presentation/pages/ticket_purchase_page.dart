@@ -7,6 +7,7 @@ import 'package:fuvekonmobile/core/utils/ticket_price.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_purchase_bloc.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_purchase_event.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_purchase_state.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:go_router/go_router.dart';
 
@@ -584,24 +585,22 @@ class _ConfirmOrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: FuvekonColors.mintCard,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Chi tiết đơn hàng',
-              style: TextStyle(
-                color: FuvekonColors.darkCardText,
-                fontSize: 16,
-                fontWeight: FontWeight.w800,
-              ),
+    final colors = exploreTicketTextColors(ExploreTierStyle.standard);
+
+    return TicketExploreSurface(
+      style: ExploreTierStyle.standard,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Chi tiết đơn hàng',
+            style: TextStyle(
+              color: colors.title,
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
             ),
+          ),
             const SizedBox(height: 18),
             _ConfirmRow(label: 'Loại vé:', value: '✦ Vé $ticketName'),
             const SizedBox(height: 10),
@@ -633,7 +632,6 @@ class _ConfirmOrderCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
@@ -767,30 +765,28 @@ class _TicketSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: FuvekonColors.mintCard,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: const BoxDecoration(
-                    color: FuvekonColors.surface,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.confirmation_number_rounded,
-                    size: 16,
-                    color: FuvekonColors.darkPrimary,
-                  ),
+    final colors = exploreTicketTextColors(ExploreTierStyle.standard);
+
+    return TicketExploreSurface(
+      style: ExploreTierStyle.standard,
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: FuvekonColors.surfaceContainerLow,
+                  shape: BoxShape.circle,
                 ),
+                child: Icon(
+                  Icons.confirmation_number_rounded,
+                  size: 16,
+                  color: colors.title,
+                ),
+              ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -844,7 +840,6 @@ class _TicketSummaryCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
@@ -1162,7 +1157,7 @@ class _PaymentSuccessBody extends StatelessWidget {
                 ),
                 child: const Icon(
                   Icons.check_rounded,
-                  color: FuvekonColors.mintCard,
+                  color: Colors.white,
                   size: 42,
                 ),
               ),
@@ -1236,37 +1231,36 @@ class _SuccessTicketCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: FuvekonColors.mintCard,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                const Text(
-                  'MÃ ĐƠN HÀNG',
-                  style: TextStyle(
-                    color: FuvekonColors.textSecondary,
-                    fontSize: 10,
-                    letterSpacing: 1.1,
-                    fontWeight: FontWeight.w800,
-                  ),
+    final colors = exploreTicketTextColors(ExploreTierStyle.premium);
+
+    return TicketExploreSurface(
+      style: ExploreTierStyle.premium,
+      highlighted: true,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                'MÃ ĐƠN HÀNG',
+                style: TextStyle(
+                  color: colors.muted,
+                  fontSize: 10,
+                  letterSpacing: 1.1,
+                  fontWeight: FontWeight.w800,
                 ),
-                const Spacer(),
-                Text(
-                  referenceCode.isNotEmpty ? '#$referenceCode' : '#FVK',
-                  style: const TextStyle(
-                    color: FuvekonColors.darkCardText,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w900,
-                  ),
+              ),
+              const Spacer(),
+              Text(
+                referenceCode.isNotEmpty ? '#$referenceCode' : '#FVK',
+                style: TextStyle(
+                  color: colors.title,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900,
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
             const SizedBox(height: 18),
             Row(
               children: [
@@ -1359,7 +1353,6 @@ class _SuccessTicketCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
