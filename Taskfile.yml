@@ -55,6 +55,23 @@ tasks:
     cmds:
       - docker compose -f {{.COMPOSE_BASE}} -f {{.COMPOSE_OVERRIDE}} down
 
+  android:google-signin-info:
+    desc: Print Android package + debug SHA-1 for Google Cloud Console OAuth setup.
+    cmds:
+      - echo ""
+      - echo "=== Google Sign-In Android ==="
+      - echo "Package name   com.example.fuvekonmobile"
+      - echo "Web client ID  from .env GOOGLE_CLIENT_ID (Web application type)"
+      - echo ""
+      - echo "Debug SHA-1 (add this to Android OAuth client in Google Cloud Console):"
+      - cmd: powershell -Command "cd android; .\gradlew.bat :app:signingReport 2>&1 | Select-String 'SHA1:' | Select-Object -First 1; exit 0"
+        platforms: [windows]
+      - cmd: cd android && ./gradlew :app:signingReport 2>&1 | grep SHA1 | head -1
+        platforms: [linux, darwin]
+      - echo ""
+      - echo "Docs  docs/GOOGLE_SIGN_IN_ANDROID.md"
+      - echo ""
+
   backend:_check:
     internal: true
     dir: "{{.BACKEND_DIR}}"

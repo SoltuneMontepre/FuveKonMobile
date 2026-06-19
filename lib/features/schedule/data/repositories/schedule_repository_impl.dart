@@ -1,7 +1,9 @@
 import 'package:fuvekonmobile/core/api/schedule_api.dart';
+import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/core/errors/failures.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
 import 'package:fuvekonmobile/features/schedule/data/mappers/schedule_mapper.dart';
+import 'package:fuvekonmobile/features/schedule/domain/entities/featured_event_summary.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/itinerary_item.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/schedule_activity.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/schedule_event.dart';
@@ -27,25 +29,31 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<Result<List<ScheduleEvent>>> listScheduleEvents() async {
-    final response = await _scheduleApi.listSchedules();
-    if (!response.isSuccess) {
-      return Error(ServerFailure(response.message));
-    }
+    try {
+      final response = await _scheduleApi.listSchedules();
+      if (!response.isSuccess) {
+        return Error(ServerFailure(response.message));
+      }
 
-    final raw = response.data ?? const [];
-    final events = <ScheduleEvent>[];
-    for (final entry in raw.whereType<Map<String, dynamic>>()) {
-      final adminItem = adminScheduleItemFromListEntry(entry);
-      if (adminItem.id.isEmpty) continue;
-      events.add(scheduleEventFromAdminItem(adminItem));
-      _primaryScheduleId ??= adminItem.id;
-    }
+      final raw = response.data ?? const [];
+      final events = <ScheduleEvent>[];
+      for (final entry in raw.whereType<Map<String, dynamic>>()) {
+        final adminItem = adminScheduleItemFromListEntry(entry);
+        if (adminItem.id.isEmpty) continue;
+        events.add(scheduleEventFromAdminItem(adminItem));
+        _primaryScheduleId ??= adminItem.id;
+      }
 
-    if (events.isEmpty) {
-      return const Error(ServerFailure('No schedule available'));
-    }
+      if (events.isEmpty) {
+        return const Error(ServerFailure('No schedule available'));
+      }
 
-    return Success(events);
+      return Success(events);
+    } on AppException catch (error) {
+      return Error(mapExceptionToFailure(error));
+    } catch (error) {
+      return Error(mapExceptionToFailure(error));
+    }
   }
 
   @override
@@ -55,14 +63,30 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       return Success(cached.event);
     }
 
-    final response = await _scheduleApi.getSchedule(id);
-    if (!response.isSuccess || response.data == null) {
-      return Error(ServerFailure(response.message));
-    }
+    try {
+      final response = await _scheduleApi.getSchedule(id);
+      if (!response.isSuccess || response.data == null) {
+        return _resolveScheduleEventFailure(
+          id,
+          ServerFailure(response.message),
+        );
+      }
 
-    final adminItem = adminScheduleItemFromJson(response.data!);
-    _storeScheduleDetail(adminItem);
-    return Success(scheduleEventFromAdminItem(adminItem));
+      final adminItem = adminScheduleItemFromJson(response.data!);
+      _storeScheduleDetail(adminItem);
+      return Success(scheduleEventFromAdminItem(adminItem));
+    } on AppException catch (error) {
+      return _resolveScheduleEventFailure(id, mapExceptionToFailure(error));
+    } catch (error) {
+      return _resolveScheduleEventFailure(id, mapExceptionToFailure(error));
+    }
+  }
+
+  Result<ScheduleEvent> _resolveScheduleEventFailure(String id, Failure failure) {
+    if (id == kHomeFeaturedEvent.id) {
+      return Success(scheduleEventFromFeaturedSummary(kHomeFeaturedEvent));
+    }
+    return Error(failure);
   }
 
   @override

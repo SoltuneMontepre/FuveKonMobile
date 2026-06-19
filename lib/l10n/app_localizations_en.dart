@@ -136,6 +136,48 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not send reset email. Please try again.';
 
   @override
+  String get resetPasswordTitle => 'Reset password';
+
+  @override
+  String get resetPasswordSubtitle => 'Enter a new password for your account.';
+
+  @override
+  String get resetPasswordNewLabel => 'New password';
+
+  @override
+  String get resetPasswordNewHint => 'At least 8 characters';
+
+  @override
+  String get resetPasswordConfirmLabel => 'Confirm password';
+
+  @override
+  String get resetPasswordConfirmHint => 'Re-enter new password';
+
+  @override
+  String get resetPasswordSubmit => 'Reset password';
+
+  @override
+  String get resetPasswordBackToLogin => 'Back to sign in';
+
+  @override
+  String get resetPasswordSuccessMessage =>
+      'Password reset successfully. You can sign in now.';
+
+  @override
+  String get resetPasswordFailureMessage =>
+      'Could not reset password. The link may have expired.';
+
+  @override
+  String get resetPasswordInvalidLink =>
+      'This reset link is invalid or expired. Please request a new one.';
+
+  @override
+  String get resetPasswordMinLength => 'Password must be at least 8 characters';
+
+  @override
+  String get resetPasswordMismatch => 'Passwords do not match';
+
+  @override
   String get registerTitle => 'Create account';
 
   @override

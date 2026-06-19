@@ -74,30 +74,16 @@ class TicketExploreSurface extends StatelessWidget {
       child: child,
     );
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final fillHeight =
-            constraints.hasBoundedHeight && constraints.maxHeight.isFinite;
-        final surface = DecoratedBox(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: radius,
+        child: DecoratedBox(
           decoration: decoration,
-          child: fillHeight
-              ? SizedBox(
-                  width: double.infinity,
-                  height: constraints.maxHeight,
-                  child: content,
-                )
-              : content,
-        );
-
-        return Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: radius,
-            child: surface,
-          ),
-        );
-      },
+          child: content,
+        ),
+      ),
     );
   }
 }

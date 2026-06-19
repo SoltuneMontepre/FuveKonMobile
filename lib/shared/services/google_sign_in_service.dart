@@ -56,19 +56,15 @@ class GoogleSignInService {
     if (!isAvailable) return null;
 
     await _ensureInitialized();
-    await _googleSignIn.signOut();
     final GoogleSignInAccount account;
     try {
       account = await _googleSignIn.authenticate(scopeHint: const ['email', 'profile']);
     } on GoogleSignInException catch (e) {
-      if (e.code == GoogleSignInExceptionCode.canceled ||
-          e.code == GoogleSignInExceptionCode.interrupted) {
+      final mapped = _mapGoogleSignInException(e);
+      if (mapped == null) {
         return null;
       }
-      throw PlatformException(
-        code: e.code.name,
-        message: e.description,
-      );
+      throw mapped;
     }
 
     final auth = account.authentication;
@@ -82,6 +78,40 @@ class GoogleSignInService {
       );
     }
     return idToken;
+  }
+
+  /// Maps native [GoogleSignInException] to [PlatformException], or `null` if the
+  /// user explicitly cancelled on platforms where that is reliable.
+  static PlatformException? _mapGoogleSignInException(GoogleSignInException e) {
+    if (e.code == GoogleSignInExceptionCode.canceled ||
+        e.code == GoogleSignInExceptionCode.interrupted) {
+      // Credential Manager often reports OAuth misconfiguration as "canceled"
+      // (see google_sign_in_android troubleshooting). Treat as config error on Android.
+      if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+        return PlatformException(
+          code: GoogleSignInExceptionCode.clientConfigurationError.name,
+          message: e.description ??
+              'Android Credential Manager sign-in failed. Verify GOOGLE_CLIENT_ID '
+              '(Web client) and Android OAuth client (package + SHA-1).',
+        );
+      }
+      return null;
+    }
+
+    if (!kIsWeb &&
+        defaultTargetPlatform == TargetPlatform.android &&
+        (e.code == GoogleSignInExceptionCode.unknownError ||
+            e.code == GoogleSignInExceptionCode.providerConfigurationError)) {
+      return PlatformException(
+        code: GoogleSignInExceptionCode.clientConfigurationError.name,
+        message: e.description,
+      );
+    }
+
+    return PlatformException(
+      code: e.code.name,
+      message: e.description,
+    );
   }
 
   /// Maps [PlatformException] from Google Sign-In to app error keys.

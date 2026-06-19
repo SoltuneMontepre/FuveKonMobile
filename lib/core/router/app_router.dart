@@ -75,6 +75,15 @@ class AppRouter {
 
   String? _redirect(BuildContext context, GoRouterState state) {
 
+    final uri = state.uri;
+    if (uri.scheme == 'fuvekon' && uri.host == 'reset-password') {
+      final token = uri.queryParameters['token'];
+      if (token != null && token.isNotEmpty) {
+        return '${Routes.resetPassword}?token=${Uri.encodeComponent(token)}';
+      }
+      return Routes.resetPassword;
+    }
+
     final isAuthenticated = _authSessionNotifier.isAuthenticated;
 
     final location = state.matchedLocation;
@@ -106,9 +115,8 @@ class AppRouter {
 
 
     if (isGuestRoute) {
-
+      if (location == Routes.resetPassword) return null;
       return _authSessionNotifier.homeRoute;
-
     }
 
 

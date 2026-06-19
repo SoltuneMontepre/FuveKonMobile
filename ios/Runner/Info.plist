@@ -70,5 +70,18 @@
 	<string>Ứng dụng cần quyền camera để quét mã QR vé check-in.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Ứng dụng cần quyền thư viện ảnh để tải ảnh lên.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>vn.fuve.fuvekon</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fuvekon</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

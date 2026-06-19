@@ -1,6 +1,20 @@
+import 'package:fuvekonmobile/features/schedule/domain/entities/featured_event_summary.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/schedule_activity.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/schedule_event.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_schedule_models.dart';
+
+ScheduleEvent scheduleEventFromFeaturedSummary(FeaturedEventSummary summary) {
+  return ScheduleEvent(
+    id: summary.id,
+    name: summary.title,
+    description: summary.description,
+    startAt: summary.startAt,
+    endAt: summary.endAt,
+    locationLabel: summary.locationLabel,
+    tags: summary.tags,
+    heroImageAsset: summary.imageAsset,
+  );
+}
 
 ScheduleEvent scheduleEventFromAdminItem(AdminScheduleItem item) {
   final startAt = item.startAt ?? DateTime.now();
