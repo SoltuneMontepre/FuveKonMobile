@@ -52,6 +52,11 @@ func RegisterUserPIIEncryption(db *gorm.DB) error {
 	db.Callback().Create().Before("gorm:create").Register("user_pii_encrypt_create", encryptDest)
 	db.Callback().Update().Before("gorm:update").Register("user_pii_encrypt_update", encryptDest)
 
+	// Restore plaintext in memory after writes so callers can map API responses
+	// without returning ciphertext (encrypt runs in-place on Statement.Dest).
+	db.Callback().Create().After("gorm:create").Register("user_pii_decrypt_create_mem", decryptDest)
+	db.Callback().Update().After("gorm:update").Register("user_pii_decrypt_update_mem", decryptDest)
+
 	// Query: decrypt after scanning into destination.
 	db.Callback().Query().After("gorm:query").Register("user_pii_decrypt_query", decryptDest)
 
