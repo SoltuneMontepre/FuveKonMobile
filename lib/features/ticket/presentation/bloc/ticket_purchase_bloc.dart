@@ -5,6 +5,7 @@ import 'package:fuvekonmobile/features/profile/domain/entities/update_profile_in
 import 'package:fuvekonmobile/features/profile/domain/usecases/get_me_usecase.dart';
 import 'package:fuvekonmobile/features/profile/domain/usecases/update_me_usecase.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 import 'package:fuvekonmobile/features/ticket/domain/usecases/confirm_ticket_payment_usecase.dart';
 import 'package:fuvekonmobile/features/ticket/domain/usecases/get_my_ticket_usecase.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_purchase_event.dart';
@@ -33,6 +34,9 @@ class TicketPurchaseBloc
     on<TicketPurchaseConfirmPaymentRequested>(_onConfirm);
   }
 
+  static const queuePollMaxAttempts = 10;
+  static const queuePollDelay = Duration(milliseconds: 800);
+
   final ConfirmTicketPaymentUseCase _confirmTicketPaymentUseCase;
   final GetMyTicketUseCase _getMyTicketUseCase;
   final GetMeUseCase _getMeUseCase;
@@ -53,9 +57,7 @@ class TicketPurchaseBloc
 
     emit(const TicketPurchaseState.loading());
 
-    final ticketResult = await _getMyTicketUseCase();
     final accountResult = await _getMeUseCase();
-
     if (accountResult case Error(:final failure)) {
       emit(TicketPurchaseState.failure(failure.message));
       return;
@@ -63,38 +65,80 @@ class TicketPurchaseBloc
 
     final account = (accountResult as Success<Account>).data;
 
-    switch (ticketResult) {
-      case Success(:final data):
-        if (data == null) {
-          emit(TicketPurchaseState.notFound(queued: _queued));
-          return;
-        }
-        if (data.status == TicketStatus.denied) {
+    if (_queued) {
+      for (var attempt = 1; attempt <= queuePollMaxAttempts; attempt++) {
+        if (attempt > 1) {
           emit(
-            TicketPurchaseState.denied(
-              ticket: data,
-              denialReason: data.denialReason ?? '',
+            TicketPurchaseState.polling(
+              attempt: attempt,
+              maxAttempts: queuePollMaxAttempts,
             ),
           );
+          await Future<void>.delayed(queuePollDelay);
+          if (isClosed) return;
+        }
+
+        final ticketResult = await _getMyTicketUseCase();
+        final resolved = _resolveTicketState(
+          ticketResult,
+          account,
+          allowRetry: true,
+        );
+
+        if (resolved != null) {
+          emit(resolved);
           return;
+        }
+      }
+
+      emit(const TicketPurchaseState.queueTimedOut());
+      return;
+    }
+
+    final ticketResult = await _getMyTicketUseCase();
+    final resolved = _resolveTicketState(
+      ticketResult,
+      account,
+      allowRetry: false,
+    );
+    emit(
+      resolved ??
+          TicketPurchaseState.notFound(queued: _queued),
+    );
+  }
+
+  TicketPurchaseState? _resolveTicketState(
+    Result<UserTicket?> ticketResult,
+    Account account, {
+    required bool allowRetry,
+  }) {
+    switch (ticketResult) {
+      case Error(:final failure):
+        return TicketPurchaseState.failure(failure.message);
+      case Success(:final data):
+        if (data == null) {
+          return allowRetry ? null : TicketPurchaseState.notFound(queued: _queued);
+        }
+        if (data.status == TicketStatus.denied) {
+          return TicketPurchaseState.denied(
+            ticket: data,
+            denialReason: data.denialReason ?? '',
+          );
         }
         if (_queued &&
             _tierId != null &&
             data.tier?.id != _tierId &&
             data.status == TicketStatus.pending) {
-          emit(TicketPurchaseState.notFound(queued: true));
-          return;
+          return allowRetry
+              ? null
+              : TicketPurchaseState.notFound(queued: true);
         }
-        emit(
-          TicketPurchaseState.loaded(
-            ticket: data,
-            account: account,
-            tierId: _tierId ?? data.tier?.id ?? '',
-            queued: _queued,
-          ),
+        return TicketPurchaseState.loaded(
+          ticket: data,
+          account: account,
+          tierId: _tierId ?? data.tier?.id ?? '',
+          queued: _queued,
         );
-      case Error(:final failure):
-        emit(TicketPurchaseState.failure(failure.message));
     }
   }
 
@@ -139,10 +183,31 @@ class TicketPurchaseBloc
 
     switch (result) {
       case Success(:final data):
-        emit(TicketPurchaseState.confirmed(data));
+        final ticket = data.ticket ?? _asSelfConfirmed(current.ticket);
+        emit(TicketPurchaseState.confirmed(ticket));
       case Error(:final failure):
         lastActionError = failure.message;
         emit(current.copyWith(isConfirming: false));
     }
+  }
+
+  UserTicket _asSelfConfirmed(UserTicket ticket) {
+    return UserTicket(
+      id: ticket.id,
+      referenceCode: ticket.referenceCode,
+      status: TicketStatus.selfConfirmed,
+      ticketNumber: ticket.ticketNumber,
+      conBadgeName: ticket.conBadgeName,
+      badgeImage: ticket.badgeImage,
+      namecardUrl: ticket.namecardUrl,
+      isFursuiter: ticket.isFursuiter,
+      isFursuitStaff: ticket.isFursuitStaff,
+      isCheckedIn: ticket.isCheckedIn,
+      tshirtSize: ticket.tshirtSize,
+      denialReason: ticket.denialReason,
+      createdAt: ticket.createdAt,
+      previousReferenceCode: ticket.previousReferenceCode,
+      tier: ticket.tier,
+    );
   }
 }

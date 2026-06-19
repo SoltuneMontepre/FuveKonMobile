@@ -67,8 +67,10 @@ class _ExploreTicketsView extends StatelessWidget {
               ),
               BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, authState) {
-                  final isAuth = _isAuthenticated(authState);
-                  return _ExploreTicketsFooter(isAuthenticated: isAuth);
+                  if (_isAuthenticated(authState)) {
+                    return const SizedBox.shrink();
+                  }
+                  return const _ExploreTicketsGuestFooter();
                 },
               ),
             ],
@@ -161,7 +163,7 @@ class _LoadedBody extends StatelessWidget {
           ExploreTicketTierCard(
             tier: tiers[i],
             style: exploreTierStyleFor(i, tiers.length),
-            onTap: () => context.go(Routes.ticketDetail(tiers[i].id)),
+            onTap: () => context.push(Routes.ticketDetail(tiers[i].id)),
           ),
           if (i < tiers.length - 1) const SizedBox(height: 16),
         ],
@@ -170,13 +172,8 @@ class _LoadedBody extends StatelessWidget {
   }
 }
 
-class _ExploreTicketsFooter extends StatelessWidget {
-  const _ExploreTicketsFooter({required this.isAuthenticated});
-
-  final bool isAuthenticated;
-
-  static const _ctaColor = FuvekonColors.darkButton;
-  static const _ctaTextColor = FuvekonColors.darkButtonText;
+class _ExploreTicketsGuestFooter extends StatelessWidget {
+  const _ExploreTicketsGuestFooter();
 
   @override
   Widget build(BuildContext context) {
@@ -189,47 +186,41 @@ class _ExploreTicketsFooter extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (!isAuthenticated)
-              Text(
-                l10n.exploreTicketsFooterInfo,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: FuvekonColors.darkTextSecondary,
-                  fontSize: 13,
-                  height: 1.45,
-                ),
+            Text(
+              l10n.exploreTicketsFooterInfo,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: FuvekonColors.darkTextSecondary,
+                fontSize: 13,
+                height: 1.45,
               ),
-            if (!isAuthenticated) const SizedBox(height: 16),
+            ),
+            const SizedBox(height: 16),
             FilledButton(
-            onPressed: () => context.go(
-              isAuthenticated ? Routes.ticketPurchase : Routes.register,
-            ),
-            style: FilledButton.styleFrom(
-              backgroundColor: _ctaColor,
-              foregroundColor: _ctaTextColor,
-              minimumSize: const Size.fromHeight(52),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(FuvekonRadii.button),
+              onPressed: () => context.go(Routes.register),
+              style: FilledButton.styleFrom(
+                backgroundColor: FuvekonColors.darkButton,
+                foregroundColor: FuvekonColors.darkButtonText,
+                minimumSize: const Size.fromHeight(52),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(FuvekonRadii.button),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    l10n.exploreTicketsRegisterCta,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.arrow_forward_rounded, size: 20),
+                ],
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  isAuthenticated
-                      ? l10n.exploreTicketsBuyCta
-                      : l10n.exploreTicketsRegisterCta,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward_rounded, size: 20),
-              ],
-            ),
-          ),
-          if (!isAuthenticated) ...[
             const SizedBox(height: 14),
             Wrap(
               alignment: WrapAlignment.center,
@@ -261,9 +252,8 @@ class _ExploreTicketsFooter extends StatelessWidget {
               ],
             ),
           ],
-        ],
+        ),
       ),
-    ),
     );
   }
 }

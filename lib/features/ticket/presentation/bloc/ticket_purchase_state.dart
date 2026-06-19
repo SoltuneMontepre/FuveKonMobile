@@ -8,6 +8,10 @@ part 'ticket_purchase_state.freezed.dart';
 sealed class TicketPurchaseState with _$TicketPurchaseState {
   const factory TicketPurchaseState.initial() = TicketPurchaseInitial;
   const factory TicketPurchaseState.loading() = TicketPurchaseLoading;
+  const factory TicketPurchaseState.polling({
+    required int attempt,
+    required int maxAttempts,
+  }) = TicketPurchasePolling;
   const factory TicketPurchaseState.loaded({
     required UserTicket ticket,
     required Account account,
@@ -19,6 +23,7 @@ sealed class TicketPurchaseState with _$TicketPurchaseState {
   const factory TicketPurchaseState.notFound({
     @Default(false) bool queued,
   }) = TicketPurchaseNotFound;
+  const factory TicketPurchaseState.queueTimedOut() = TicketPurchaseQueueTimedOut;
   const factory TicketPurchaseState.denied({
     required UserTicket ticket,
     required String denialReason,

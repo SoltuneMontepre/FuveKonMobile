@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
@@ -163,7 +164,7 @@ class _TicketPassCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'FUVEKON 2024',
+                          AppConfig.appName.toUpperCase(),
                           style: TextStyle(
                             color: colors.title,
                             fontSize: 24,

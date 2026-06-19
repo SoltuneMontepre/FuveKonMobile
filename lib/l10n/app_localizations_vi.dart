@@ -475,6 +475,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get myTicketsViewTicket => 'Xem vé →';
 
   @override
+  String get myTicketsPayNow => 'Thanh toán ngay →';
+
+  @override
   String get myTicketsEventDateRange => '20-22/10/2024';
 
   @override

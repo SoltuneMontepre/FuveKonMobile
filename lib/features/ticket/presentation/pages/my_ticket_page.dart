@@ -1,6 +1,5 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
@@ -37,19 +36,13 @@ class _MyTicketViewState extends State<_MyTicketView> {
 
   List<MyTicketListItem> _buildItems(MyTicketLoaded state) {
     final l10n = context.l10n;
-    final items = <MyTicketListItem>[
+    return [
       MyTicketListItem.fromTicket(
         ticket: state.ticket,
         account: state.account,
         eventDateLabel: l10n.myTicketsEventDateRange,
       ),
     ];
-
-    if (AppConfig.mockTicketMode) {
-      items.add(MyTicketListItem.demoWorkshop(account: state.account));
-    }
-
-    return items;
   }
 
   void _onViewTicket(MyTicketListItem item) {

@@ -980,6 +980,12 @@ abstract class AppLocalizations {
   /// **'View ticket →'**
   String get myTicketsViewTicket;
 
+  /// No description provided for @myTicketsPayNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay now →'**
+  String get myTicketsPayNow;
+
   /// No description provided for @myTicketsEventDateRange.
   ///
   /// In en, this message translates to:

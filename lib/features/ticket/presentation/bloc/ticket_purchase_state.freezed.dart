@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'ticket_purchase_state.dart';
@@ -9,6 +9,7 @@ part of 'ticket_purchase_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -55,14 +56,16 @@ extension TicketPurchaseStatePatterns on TicketPurchaseState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( TicketPurchaseInitial value)?  initial,TResult Function( TicketPurchaseLoading value)?  loading,TResult Function( TicketPurchaseLoaded value)?  loaded,TResult Function( TicketPurchaseNotFound value)?  notFound,TResult Function( TicketPurchaseDenied value)?  denied,TResult Function( TicketPurchaseFailure value)?  failure,TResult Function( TicketPurchaseConfirmed value)?  confirmed,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( TicketPurchaseInitial value)?  initial,TResult Function( TicketPurchaseLoading value)?  loading,TResult Function( TicketPurchasePolling value)?  polling,TResult Function( TicketPurchaseLoaded value)?  loaded,TResult Function( TicketPurchaseNotFound value)?  notFound,TResult Function( TicketPurchaseQueueTimedOut value)?  queueTimedOut,TResult Function( TicketPurchaseDenied value)?  denied,TResult Function( TicketPurchaseFailure value)?  failure,TResult Function( TicketPurchaseConfirmed value)?  confirmed,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case TicketPurchaseInitial() when initial != null:
 return initial(_that);case TicketPurchaseLoading() when loading != null:
-return loading(_that);case TicketPurchaseLoaded() when loaded != null:
+return loading(_that);case TicketPurchasePolling() when polling != null:
+return polling(_that);case TicketPurchaseLoaded() when loaded != null:
 return loaded(_that);case TicketPurchaseNotFound() when notFound != null:
-return notFound(_that);case TicketPurchaseDenied() when denied != null:
+return notFound(_that);case TicketPurchaseQueueTimedOut() when queueTimedOut != null:
+return queueTimedOut(_that);case TicketPurchaseDenied() when denied != null:
 return denied(_that);case TicketPurchaseFailure() when failure != null:
 return failure(_that);case TicketPurchaseConfirmed() when confirmed != null:
 return confirmed(_that);case _:
@@ -83,14 +86,16 @@ return confirmed(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( TicketPurchaseInitial value)  initial,required TResult Function( TicketPurchaseLoading value)  loading,required TResult Function( TicketPurchaseLoaded value)  loaded,required TResult Function( TicketPurchaseNotFound value)  notFound,required TResult Function( TicketPurchaseDenied value)  denied,required TResult Function( TicketPurchaseFailure value)  failure,required TResult Function( TicketPurchaseConfirmed value)  confirmed,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( TicketPurchaseInitial value)  initial,required TResult Function( TicketPurchaseLoading value)  loading,required TResult Function( TicketPurchasePolling value)  polling,required TResult Function( TicketPurchaseLoaded value)  loaded,required TResult Function( TicketPurchaseNotFound value)  notFound,required TResult Function( TicketPurchaseQueueTimedOut value)  queueTimedOut,required TResult Function( TicketPurchaseDenied value)  denied,required TResult Function( TicketPurchaseFailure value)  failure,required TResult Function( TicketPurchaseConfirmed value)  confirmed,}){
 final _that = this;
 switch (_that) {
 case TicketPurchaseInitial():
 return initial(_that);case TicketPurchaseLoading():
-return loading(_that);case TicketPurchaseLoaded():
+return loading(_that);case TicketPurchasePolling():
+return polling(_that);case TicketPurchaseLoaded():
 return loaded(_that);case TicketPurchaseNotFound():
-return notFound(_that);case TicketPurchaseDenied():
+return notFound(_that);case TicketPurchaseQueueTimedOut():
+return queueTimedOut(_that);case TicketPurchaseDenied():
 return denied(_that);case TicketPurchaseFailure():
 return failure(_that);case TicketPurchaseConfirmed():
 return confirmed(_that);}
@@ -107,14 +112,16 @@ return confirmed(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( TicketPurchaseInitial value)?  initial,TResult? Function( TicketPurchaseLoading value)?  loading,TResult? Function( TicketPurchaseLoaded value)?  loaded,TResult? Function( TicketPurchaseNotFound value)?  notFound,TResult? Function( TicketPurchaseDenied value)?  denied,TResult? Function( TicketPurchaseFailure value)?  failure,TResult? Function( TicketPurchaseConfirmed value)?  confirmed,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( TicketPurchaseInitial value)?  initial,TResult? Function( TicketPurchaseLoading value)?  loading,TResult? Function( TicketPurchasePolling value)?  polling,TResult? Function( TicketPurchaseLoaded value)?  loaded,TResult? Function( TicketPurchaseNotFound value)?  notFound,TResult? Function( TicketPurchaseQueueTimedOut value)?  queueTimedOut,TResult? Function( TicketPurchaseDenied value)?  denied,TResult? Function( TicketPurchaseFailure value)?  failure,TResult? Function( TicketPurchaseConfirmed value)?  confirmed,}){
 final _that = this;
 switch (_that) {
 case TicketPurchaseInitial() when initial != null:
 return initial(_that);case TicketPurchaseLoading() when loading != null:
-return loading(_that);case TicketPurchaseLoaded() when loaded != null:
+return loading(_that);case TicketPurchasePolling() when polling != null:
+return polling(_that);case TicketPurchaseLoaded() when loaded != null:
 return loaded(_that);case TicketPurchaseNotFound() when notFound != null:
-return notFound(_that);case TicketPurchaseDenied() when denied != null:
+return notFound(_that);case TicketPurchaseQueueTimedOut() when queueTimedOut != null:
+return queueTimedOut(_that);case TicketPurchaseDenied() when denied != null:
 return denied(_that);case TicketPurchaseFailure() when failure != null:
 return failure(_that);case TicketPurchaseConfirmed() when confirmed != null:
 return confirmed(_that);case _:
@@ -134,13 +141,15 @@ return confirmed(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( UserTicket ticket,  Account account,  String tierId,  bool queued,  bool isConfirming,  bool isSavingIdCard)?  loaded,TResult Function( bool queued)?  notFound,TResult Function( UserTicket ticket,  String denialReason)?  denied,TResult Function( String message)?  failure,TResult Function( UserTicket ticket)?  confirmed,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( int attempt,  int maxAttempts)?  polling,TResult Function( UserTicket ticket,  Account account,  String tierId,  bool queued,  bool isConfirming,  bool isSavingIdCard)?  loaded,TResult Function( bool queued)?  notFound,TResult Function()?  queueTimedOut,TResult Function( UserTicket ticket,  String denialReason)?  denied,TResult Function( String message)?  failure,TResult Function( UserTicket ticket)?  confirmed,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case TicketPurchaseInitial() when initial != null:
 return initial();case TicketPurchaseLoading() when loading != null:
-return loading();case TicketPurchaseLoaded() when loaded != null:
+return loading();case TicketPurchasePolling() when polling != null:
+return polling(_that.attempt,_that.maxAttempts);case TicketPurchaseLoaded() when loaded != null:
 return loaded(_that.ticket,_that.account,_that.tierId,_that.queued,_that.isConfirming,_that.isSavingIdCard);case TicketPurchaseNotFound() when notFound != null:
-return notFound(_that.queued);case TicketPurchaseDenied() when denied != null:
+return notFound(_that.queued);case TicketPurchaseQueueTimedOut() when queueTimedOut != null:
+return queueTimedOut();case TicketPurchaseDenied() when denied != null:
 return denied(_that.ticket,_that.denialReason);case TicketPurchaseFailure() when failure != null:
 return failure(_that.message);case TicketPurchaseConfirmed() when confirmed != null:
 return confirmed(_that.ticket);case _:
@@ -161,13 +170,15 @@ return confirmed(_that.ticket);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( UserTicket ticket,  Account account,  String tierId,  bool queued,  bool isConfirming,  bool isSavingIdCard)  loaded,required TResult Function( bool queued)  notFound,required TResult Function( UserTicket ticket,  String denialReason)  denied,required TResult Function( String message)  failure,required TResult Function( UserTicket ticket)  confirmed,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( int attempt,  int maxAttempts)  polling,required TResult Function( UserTicket ticket,  Account account,  String tierId,  bool queued,  bool isConfirming,  bool isSavingIdCard)  loaded,required TResult Function( bool queued)  notFound,required TResult Function()  queueTimedOut,required TResult Function( UserTicket ticket,  String denialReason)  denied,required TResult Function( String message)  failure,required TResult Function( UserTicket ticket)  confirmed,}) {final _that = this;
 switch (_that) {
 case TicketPurchaseInitial():
 return initial();case TicketPurchaseLoading():
-return loading();case TicketPurchaseLoaded():
+return loading();case TicketPurchasePolling():
+return polling(_that.attempt,_that.maxAttempts);case TicketPurchaseLoaded():
 return loaded(_that.ticket,_that.account,_that.tierId,_that.queued,_that.isConfirming,_that.isSavingIdCard);case TicketPurchaseNotFound():
-return notFound(_that.queued);case TicketPurchaseDenied():
+return notFound(_that.queued);case TicketPurchaseQueueTimedOut():
+return queueTimedOut();case TicketPurchaseDenied():
 return denied(_that.ticket,_that.denialReason);case TicketPurchaseFailure():
 return failure(_that.message);case TicketPurchaseConfirmed():
 return confirmed(_that.ticket);}
@@ -184,13 +195,15 @@ return confirmed(_that.ticket);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( UserTicket ticket,  Account account,  String tierId,  bool queued,  bool isConfirming,  bool isSavingIdCard)?  loaded,TResult? Function( bool queued)?  notFound,TResult? Function( UserTicket ticket,  String denialReason)?  denied,TResult? Function( String message)?  failure,TResult? Function( UserTicket ticket)?  confirmed,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( int attempt,  int maxAttempts)?  polling,TResult? Function( UserTicket ticket,  Account account,  String tierId,  bool queued,  bool isConfirming,  bool isSavingIdCard)?  loaded,TResult? Function( bool queued)?  notFound,TResult? Function()?  queueTimedOut,TResult? Function( UserTicket ticket,  String denialReason)?  denied,TResult? Function( String message)?  failure,TResult? Function( UserTicket ticket)?  confirmed,}) {final _that = this;
 switch (_that) {
 case TicketPurchaseInitial() when initial != null:
 return initial();case TicketPurchaseLoading() when loading != null:
-return loading();case TicketPurchaseLoaded() when loaded != null:
+return loading();case TicketPurchasePolling() when polling != null:
+return polling(_that.attempt,_that.maxAttempts);case TicketPurchaseLoaded() when loaded != null:
 return loaded(_that.ticket,_that.account,_that.tierId,_that.queued,_that.isConfirming,_that.isSavingIdCard);case TicketPurchaseNotFound() when notFound != null:
-return notFound(_that.queued);case TicketPurchaseDenied() when denied != null:
+return notFound(_that.queued);case TicketPurchaseQueueTimedOut() when queueTimedOut != null:
+return queueTimedOut();case TicketPurchaseDenied() when denied != null:
 return denied(_that.ticket,_that.denialReason);case TicketPurchaseFailure() when failure != null:
 return failure(_that.message);case TicketPurchaseConfirmed() when confirmed != null:
 return confirmed(_that.ticket);case _:
@@ -264,6 +277,74 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class TicketPurchasePolling implements TicketPurchaseState {
+  const TicketPurchasePolling({required this.attempt, required this.maxAttempts});
+  
+
+ final  int attempt;
+ final  int maxAttempts;
+
+/// Create a copy of TicketPurchaseState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$TicketPurchasePollingCopyWith<TicketPurchasePolling> get copyWith => _$TicketPurchasePollingCopyWithImpl<TicketPurchasePolling>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketPurchasePolling&&(identical(other.attempt, attempt) || other.attempt == attempt)&&(identical(other.maxAttempts, maxAttempts) || other.maxAttempts == maxAttempts));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,attempt,maxAttempts);
+
+@override
+String toString() {
+  return 'TicketPurchaseState.polling(attempt: $attempt, maxAttempts: $maxAttempts)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $TicketPurchasePollingCopyWith<$Res> implements $TicketPurchaseStateCopyWith<$Res> {
+  factory $TicketPurchasePollingCopyWith(TicketPurchasePolling value, $Res Function(TicketPurchasePolling) _then) = _$TicketPurchasePollingCopyWithImpl;
+@useResult
+$Res call({
+ int attempt, int maxAttempts
+});
+
+
+
+
+}
+/// @nodoc
+class _$TicketPurchasePollingCopyWithImpl<$Res>
+    implements $TicketPurchasePollingCopyWith<$Res> {
+  _$TicketPurchasePollingCopyWithImpl(this._self, this._then);
+
+  final TicketPurchasePolling _self;
+  final $Res Function(TicketPurchasePolling) _then;
+
+/// Create a copy of TicketPurchaseState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? attempt = null,Object? maxAttempts = null,}) {
+  return _then(TicketPurchasePolling(
+attempt: null == attempt ? _self.attempt : attempt // ignore: cast_nullable_to_non_nullable
+as int,maxAttempts: null == maxAttempts ? _self.maxAttempts : maxAttempts // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
@@ -406,6 +487,38 @@ as bool,
 
 
 }
+
+/// @nodoc
+
+
+class TicketPurchaseQueueTimedOut implements TicketPurchaseState {
+  const TicketPurchaseQueueTimedOut();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketPurchaseQueueTimedOut);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TicketPurchaseState.queueTimedOut()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 

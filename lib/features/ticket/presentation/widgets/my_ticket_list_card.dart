@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/models/my_ticket_list_item.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/ticket_status_label.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 class MyTicketListCard extends StatelessWidget {
@@ -20,13 +24,15 @@ class MyTicketListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = exploreTicketTextColors(ExploreTierStyle.standard);
-    final statusLabel = item.isCheckedIn
-        ? l10n.myTicketsStatusUsed
-        : l10n.myTicketsStatusActive;
+    final ticket = item.userTicket;
+    final ctaLabel = _ctaLabel(l10n, ticket);
+    final canOpen = ticket == null ||
+        ticket.status != TicketStatus.denied ||
+        ticket.needsPayment;
 
     return TicketExploreSurface(
       style: ExploreTierStyle.standard,
-      onTap: onViewTicket,
+      onTap: canOpen ? onViewTicket : null,
       padding: const EdgeInsets.all(14),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,11 +70,15 @@ class MyTicketListCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                _StatusChip(
-                  label: statusLabel,
-                  active: !item.isCheckedIn,
-                  colors: colors,
-                ),
+                if (item.isCheckedIn)
+                  _UsedStatusChip(label: l10n.myTicketsStatusUsed, colors: colors)
+                else if (ticket != null)
+                  TicketStatusLabel(status: ticket.status)
+                else
+                  _UsedStatusChip(
+                    label: l10n.myTicketsStatusActive,
+                    colors: colors,
+                  ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -91,10 +101,12 @@ class MyTicketListCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: OutlinedButton(
-                    onPressed: onViewTicket,
+                    onPressed: canOpen ? onViewTicket : null,
                     style: OutlinedButton.styleFrom(
                       foregroundColor: colors.title,
-                      side: BorderSide(color: colors.muted.withValues(alpha: 0.45)),
+                      side: BorderSide(
+                        color: colors.muted.withValues(alpha: 0.45),
+                      ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,
                         vertical: 8,
@@ -105,7 +117,7 @@ class MyTicketListCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(999),
                       ),
                     ),
-                    child: Text(l10n.myTicketsViewTicket),
+                    child: Text(ctaLabel),
                   ),
                 ),
               ],
@@ -115,17 +127,19 @@ class MyTicketListCard extends StatelessWidget {
       ),
     );
   }
+
+  String _ctaLabel(AppLocalizations l10n, UserTicket? ticket) {
+    if (ticket != null && ticket.needsPayment) {
+      return l10n.myTicketsPayNow;
+    }
+    return l10n.myTicketsViewTicket;
+  }
 }
 
-class _StatusChip extends StatelessWidget {
-  const _StatusChip({
-    required this.label,
-    required this.active,
-    required this.colors,
-  });
+class _UsedStatusChip extends StatelessWidget {
+  const _UsedStatusChip({required this.label, required this.colors});
 
   final String label;
-  final bool active;
   final ({Color title, Color body, Color muted}) colors;
 
   @override
@@ -142,8 +156,8 @@ class _StatusChip extends StatelessWidget {
           Container(
             width: 7,
             height: 7,
-            decoration: BoxDecoration(
-              color: active ? FuvekonColors.available : FuvekonColors.outline,
+            decoration: const BoxDecoration(
+              color: FuvekonColors.outline,
               shape: BoxShape.circle,
             ),
           ),
