@@ -21,6 +21,7 @@ class SessionHydrationService {
   final AuthSessionNotifier _notifier;
   final GetMeUseCase _getMeUseCase;
   final AccountApi _accountApi;
+  final AuthSessionController _sessionController;
   Future<void>? _inFlight;
 
   Future<void> hydrate({bool force = false}) async {
