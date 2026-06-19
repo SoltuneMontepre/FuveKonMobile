@@ -326,6 +326,84 @@ abstract class AppLocalizations {
   /// **'Could not send reset email. Please try again.'**
   String get forgotPasswordFailureMessage;
 
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a new password for your account.'**
+  String get resetPasswordSubtitle;
+
+  /// No description provided for @resetPasswordNewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get resetPasswordNewLabel;
+
+  /// No description provided for @resetPasswordNewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get resetPasswordNewHint;
+
+  /// No description provided for @resetPasswordConfirmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get resetPasswordConfirmLabel;
+
+  /// No description provided for @resetPasswordConfirmHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter new password'**
+  String get resetPasswordConfirmHint;
+
+  /// No description provided for @resetPasswordSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get resetPasswordSubmit;
+
+  /// No description provided for @resetPasswordBackToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to sign in'**
+  String get resetPasswordBackToLogin;
+
+  /// No description provided for @resetPasswordSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset successfully. You can sign in now.'**
+  String get resetPasswordSuccessMessage;
+
+  /// No description provided for @resetPasswordFailureMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not reset password. The link may have expired.'**
+  String get resetPasswordFailureMessage;
+
+  /// No description provided for @resetPasswordInvalidLink.
+  ///
+  /// In en, this message translates to:
+  /// **'This reset link is invalid or expired. Please request a new one.'**
+  String get resetPasswordInvalidLink;
+
+  /// No description provided for @resetPasswordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get resetPasswordMinLength;
+
+  /// No description provided for @resetPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get resetPasswordMismatch;
+
   /// No description provided for @registerTitle.
   ///
   /// In en, this message translates to:

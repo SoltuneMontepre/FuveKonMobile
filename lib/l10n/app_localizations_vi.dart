@@ -136,6 +136,49 @@ class AppLocalizationsVi extends AppLocalizations {
       'Không thể gửi email đặt lại mật khẩu. Vui lòng thử lại.';
 
   @override
+  String get resetPasswordTitle => 'Đặt lại mật khẩu';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Nhập mật khẩu mới cho tài khoản của bạn.';
+
+  @override
+  String get resetPasswordNewLabel => 'Mật khẩu mới';
+
+  @override
+  String get resetPasswordNewHint => 'Tối thiểu 8 ký tự';
+
+  @override
+  String get resetPasswordConfirmLabel => 'Xác nhận mật khẩu';
+
+  @override
+  String get resetPasswordConfirmHint => 'Nhập lại mật khẩu mới';
+
+  @override
+  String get resetPasswordSubmit => 'Đặt lại mật khẩu';
+
+  @override
+  String get resetPasswordBackToLogin => 'Quay lại đăng nhập';
+
+  @override
+  String get resetPasswordSuccessMessage =>
+      'Đặt lại mật khẩu thành công. Bạn có thể đăng nhập ngay.';
+
+  @override
+  String get resetPasswordFailureMessage =>
+      'Không thể đặt lại mật khẩu. Liên kết có thể đã hết hạn.';
+
+  @override
+  String get resetPasswordInvalidLink =>
+      'Liên kết đặt lại mật khẩu không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu liên kết mới.';
+
+  @override
+  String get resetPasswordMinLength => 'Mật khẩu tối thiểu 8 ký tự';
+
+  @override
+  String get resetPasswordMismatch => 'Mật khẩu xác nhận không khớp';
+
+  @override
   String get registerTitle => 'Tạo tài khoản';
 
   @override

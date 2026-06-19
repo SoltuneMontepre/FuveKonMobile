@@ -9,8 +9,11 @@ String authErrorMessage(String? key, {String fallback = 'Something went wrong.'}
     'registerFailed' => 'Registration failed. Please try again.',
     'forgotPasswordFailed' =>
       'Could not send reset email. Please try again.',
+    'resetPasswordConfirmFailed' =>
+      'Could not reset password. The link may have expired.',
     'verifyOtpFailed' => 'Invalid or expired code. Please try again.',
     'emailAlreadyExists' => 'An account with this email already exists.',
+    'userExists' => 'An account with this email already exists.',
     'googleLoginFailed' => 'Google sign-in failed. Please try again.',
     'googleNotConfigured' =>
       'Google sign-in is not available. Please use email and password.',
