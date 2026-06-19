@@ -238,6 +238,7 @@ class AdminPanelItem implements AdminListItem {
 
   static String _statusLabel(String status) => switch (status) {
         'approved' => 'Đã duyệt',
+        'require_changes' => 'Cần chỉnh sửa',
         'denied' => 'Từ chối',
         _ => 'Chờ duyệt',
       };

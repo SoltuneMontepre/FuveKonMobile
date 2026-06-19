@@ -12,6 +12,7 @@ class AdminConbookService {
     final status = switch (tab) {
       AdminApprovalTab.pending => 'pending',
       AdminApprovalTab.approved => 'approved',
+      AdminApprovalTab.requireChanges => 'require-changes',
       AdminApprovalTab.denied => 'denied',
     };
 
@@ -35,6 +36,14 @@ class AdminConbookService {
 
   Future<String> approve(String id) async {
     final response = await _api.approveByAdmin(id);
+    if (!response.isSuccess) {
+      throw ServerException(response.errorMessage ?? response.message);
+    }
+    return response.message;
+  }
+
+  Future<String> requireChanges(String id) async {
+    final response = await _api.requireChangesByAdmin(id);
     if (!response.isSuccess) {
       throw ServerException(response.errorMessage ?? response.message);
     }

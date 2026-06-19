@@ -2,7 +2,7 @@ import 'package:fuvekonmobile/core/api/panel_api.dart';
 import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 
-enum AdminApprovalTab { pending, approved, denied }
+enum AdminApprovalTab { pending, approved, requireChanges, denied }
 
 class AdminPanelService {
   AdminPanelService({required AdminPanelApi adminPanelApi}) : _api = adminPanelApi;
@@ -12,6 +12,7 @@ class AdminPanelService {
   AdminPanelListFilter _filter(AdminApprovalTab tab) => switch (tab) {
         AdminApprovalTab.pending => AdminPanelListFilter.pending,
         AdminApprovalTab.approved => AdminPanelListFilter.approved,
+        AdminApprovalTab.requireChanges => AdminPanelListFilter.requireChanges,
         AdminApprovalTab.denied => AdminPanelListFilter.denied,
       };
 
@@ -34,6 +35,14 @@ class AdminPanelService {
 
   Future<String> approve(String id) async {
     final response = await _api.approve(id);
+    if (!response.isSuccess) {
+      throw ServerException(response.errorMessage ?? response.message);
+    }
+    return response.message;
+  }
+
+  Future<String> requireChanges(String id) async {
+    final response = await _api.requireChanges(id);
     if (!response.isSuccess) {
       throw ServerException(response.errorMessage ?? response.message);
     }

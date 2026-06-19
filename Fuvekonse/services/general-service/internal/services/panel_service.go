@@ -239,6 +239,15 @@ func (s *PanelService) GetApprovedPanels(ctx context.Context) ([]responses.Panel
 	return mappers.MapPanelsToResponse(panels), nil
 }
 
+func (s *PanelService) GetRequireChangesPanels(ctx context.Context) ([]responses.PanelResponse, error) {
+	panels, err := s.repos.Panel.GetRequireChangesPanels(ctx)
+	if err != nil {
+		log.Printf("Error listing require_changes panels: %v", err)
+		return nil, err
+	}
+	return mappers.MapPanelsToResponse(panels), nil
+}
+
 func (s *PanelService) GetDeniedPanels(ctx context.Context) ([]responses.PanelResponse, error) {
 	panels, err := s.repos.Panel.GetDeniedPanels(ctx)
 	if err != nil {
@@ -283,6 +292,10 @@ func (s *PanelService) ApprovePanel(ctx context.Context, panelIDStr string) (*re
 
 func (s *PanelService) DenyPanel(ctx context.Context, panelIDStr string) (*responses.PanelResponse, error) {
 	return s.setPanelStatus(ctx, panelIDStr, models.PanelStatusDenied)
+}
+
+func (s *PanelService) RequestPanelChanges(ctx context.Context, panelIDStr string) (*responses.PanelResponse, error) {
+	return s.setPanelStatus(ctx, panelIDStr, models.PanelStatusRequireChanges)
 }
 
 func (s *PanelService) MarkPanelPending(ctx context.Context, panelIDStr string) (*responses.PanelResponse, error) {

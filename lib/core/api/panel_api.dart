@@ -49,7 +49,7 @@ class PanelApi extends BaseApi {
   }
 }
 
-enum AdminPanelListFilter { pending, approved, denied }
+enum AdminPanelListFilter { pending, approved, requireChanges, denied }
 
 /// Admin panel endpoints from `useAdminPanel.ts`.
 class AdminPanelApi extends BaseApi {
@@ -58,6 +58,8 @@ class AdminPanelApi extends BaseApi {
   static String _listPath(AdminPanelListFilter filter) => switch (filter) {
         AdminPanelListFilter.pending => ApiConstants.adminPanelsPending,
         AdminPanelListFilter.approved => ApiConstants.adminPanelsApproved,
+        AdminPanelListFilter.requireChanges =>
+          ApiConstants.adminPanelsRequireChanges,
         AdminPanelListFilter.denied => ApiConstants.adminPanelsDenied,
       };
 
@@ -71,6 +73,13 @@ class AdminPanelApi extends BaseApi {
   Future<ApiResponse<Map<String, dynamic>>> approve(String panelId) {
     return patch(
       ApiConstants.adminPanelApprove(panelId),
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> requireChanges(String panelId) {
+    return patch(
+      ApiConstants.adminPanelRequireChanges(panelId),
       mapData: mapJsonObject,
     );
   }

@@ -9,9 +9,10 @@ import (
 type ConbookStatus string
 
 const (
-	ConbookStatusPending  ConbookStatus = "pending"
-	ConbookStatusApproved ConbookStatus = "approved"
-	ConbookStatusDenied   ConbookStatus = "denied"
+	ConbookStatusPending        ConbookStatus = "pending"
+	ConbookStatusApproved       ConbookStatus = "approved"
+	ConbookStatusRequireChanges ConbookStatus = "require_changes"
+	ConbookStatusDenied         ConbookStatus = "denied"
 )
 
 type ConBookArt struct {

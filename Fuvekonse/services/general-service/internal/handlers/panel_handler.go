@@ -224,6 +224,16 @@ func (h *PanelHandler) GetApprovedPanels(c *gin.Context) {
 	utils.RespondSuccess(c, &panels, "Successfully retrieved approved panels")
 }
 
+func (h *PanelHandler) GetRequireChangesPanels(c *gin.Context) {
+	ctx := c.Request.Context()
+	panels, err := h.services.Panel.GetRequireChangesPanels(ctx)
+	if err != nil {
+		utils.RespondInternalServerError(c, "Failed to retrieve require_changes panels")
+		return
+	}
+	utils.RespondSuccess(c, &panels, "Successfully retrieved require_changes panels")
+}
+
 func (h *PanelHandler) GetDeniedPanels(c *gin.Context) {
 	ctx := c.Request.Context()
 	panels, err := h.services.Panel.GetDeniedPanels(ctx)
@@ -297,6 +307,31 @@ func (h *PanelHandler) ApprovePanel(c *gin.Context) {
 	}
 
 	utils.RespondSuccess(c, panel, "Panel approved successfully")
+}
+
+func (h *PanelHandler) RequestPanelChanges(c *gin.Context) {
+	ctx := c.Request.Context()
+	panelID := c.Param("id")
+	if panelID == "" {
+		utils.RespondValidationError(c, "Panel ID is required")
+		return
+	}
+
+	panel, err := h.services.Panel.RequestPanelChanges(ctx, panelID)
+	if err != nil {
+		if errors.Is(err, repositories.ErrPanelNotFound) {
+			utils.RespondNotFound(c, "Panel not found")
+			return
+		}
+		if errors.Is(err, services.ErrStatusUnchanged) {
+			utils.RespondError(c, 409, "STATUS_UNCHANGED", "Panel already has require_changes status")
+			return
+		}
+		utils.RespondInternalServerError(c, "Failed to request panel changes")
+		return
+	}
+
+	utils.RespondSuccess(c, panel, "Changes requested successfully")
 }
 
 func (h *PanelHandler) DenyPanel(c *gin.Context) {

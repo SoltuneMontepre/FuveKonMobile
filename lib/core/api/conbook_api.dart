@@ -76,6 +76,13 @@ class ConbookApi extends BaseApi {
     );
   }
 
+  Future<ApiResponse<Map<String, dynamic>>> requireChangesByAdmin(String id) {
+    return patch(
+      ApiConstants.adminConbookRequireChanges(id),
+      mapData: mapJsonObject,
+    );
+  }
+
   Future<ApiResponse<Map<String, dynamic>>> denyByAdmin(String id) {
     return patch(
       ApiConstants.adminConbookDeny(id),

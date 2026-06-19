@@ -122,8 +122,11 @@ abstract final class ApiConstants {
   static String panel(String id) => '/panels/$id';
   static const String adminPanelsPending = '/admin/panels/pending';
   static const String adminPanelsApproved = '/admin/panels/approved';
+  static const String adminPanelsRequireChanges = '/admin/panels/require-changes';
   static const String adminPanelsDenied = '/admin/panels/denied';
   static String adminPanelApprove(String id) => '/admin/panels/$id/approve';
+  static String adminPanelRequireChanges(String id) =>
+      '/admin/panels/$id/require-changes';
   static String adminPanelDeny(String id) => '/admin/panels/$id/deny';
   static String adminPanelPending(String id) => '/admin/panels/$id/pending';
   static String adminPanelSchedule(String id) => '/admin/panels/$id/schedule';
@@ -134,6 +137,8 @@ abstract final class ApiConstants {
   static String conbook(String id) => '/conbooks/$id';
   static String adminConbooks(String status) => '/admin/conbooks/$status';
   static String adminConbookApprove(String id) => '/admin/conbooks/$id/approve';
+  static String adminConbookRequireChanges(String id) =>
+      '/admin/conbooks/$id/require-changes';
   static String adminConbookDeny(String id) => '/admin/conbooks/$id/deny';
   static String adminConbookPending(String id) => '/admin/conbooks/$id/pending';
 

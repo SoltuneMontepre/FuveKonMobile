@@ -273,6 +273,29 @@ func (h *ConbookHandler) GetApprovedConbooks(c *gin.Context) {
 	utils.RespondSuccess(c, &conbooks, "Successfully retrieved approved conbooks")
 }
 
+// GetRequireChangesConbooks godoc
+// @Summary Get conbooks awaiting user revision
+// @Description Retrieve all conbooks in require_changes status (admin/staff only)
+// @Tags admin-conbooks
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 "Successfully retrieved require_changes conbooks"
+// @Failure 401 "Unauthorized"
+// @Failure 403 "Insufficient permissions"
+// @Failure 500 "Internal server error"
+// @Router /admin/conbooks/require-changes [get]
+func (h *ConbookHandler) GetRequireChangesConbooks(c *gin.Context) {
+	ctx := c.Request.Context()
+	conbooks, err := h.services.Conbook.GetRequireChangesConbooks(ctx)
+	if err != nil {
+		utils.RespondInternalServerError(c, "Failed to retrieve require_changes conbooks")
+		return
+	}
+
+	utils.RespondSuccess(c, &conbooks, "Successfully retrieved require_changes conbooks")
+}
+
 // GetDeniedConbooks godoc
 // @Summary Get denied conbooks
 // @Description Retrieve all denied conbooks (admin/staff only)
@@ -335,6 +358,41 @@ func (h *ConbookHandler) ApproveConbook(c *gin.Context) {
 	}
 
 	utils.RespondSuccess(c, conbook, "Conbook approved successfully")
+}
+
+// RequestConbookChanges godoc
+// @Summary Request conbook changes
+// @Description Mark a conbook as require_changes so the owner can revise and resubmit.
+// @Tags admin-conbooks
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "Conbook ID" format(uuid)
+// @Success 200 "Changes requested successfully"
+// @Router /admin/conbooks/{id}/require-changes [patch]
+func (h *ConbookHandler) RequestConbookChanges(c *gin.Context) {
+	ctx := c.Request.Context()
+	conbookID := c.Param("id")
+	if conbookID == "" {
+		utils.RespondValidationError(c, "Conbook ID is required")
+		return
+	}
+
+	conbook, err := h.services.Conbook.RequestConbookChanges(ctx, conbookID)
+	if err != nil {
+		if errors.Is(err, repositories.ErrConbookNotFound) {
+			utils.RespondNotFound(c, "Conbook not found")
+			return
+		}
+		if errors.Is(err, services.ErrStatusUnchanged) {
+			utils.RespondError(c, 409, "STATUS_UNCHANGED", "Conbook already has require_changes status")
+			return
+		}
+		utils.RespondInternalServerError(c, "Failed to request conbook changes")
+		return
+	}
+
+	utils.RespondSuccess(c, conbook, "Changes requested successfully")
 }
 
 // DenyConbook godoc

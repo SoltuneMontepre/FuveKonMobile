@@ -119,8 +119,9 @@ class _NavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color =
-        selected ? FuvekonColors.darkPrimary : FuvekonColors.darkTextSecondary;
+    final color = selected
+        ? FuvekonColors.darkPrimary
+        : FuvekonColors.darkTextSecondary;
 
     return InkWell(
       onTap: onTap,

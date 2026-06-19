@@ -18,5 +18,5 @@ type UpdateConbookRequest struct {
 
 // UpdateConbookStatusRequest is the request body for staff/admin status updates.
 type UpdateConbookStatusRequest struct {
-	Status string `json:"status" binding:"required,oneof=pending approved denied"`
+	Status string `json:"status" binding:"required,oneof=pending approved require_changes denied"`
 }

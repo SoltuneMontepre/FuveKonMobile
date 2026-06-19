@@ -5,7 +5,7 @@ import 'package:fuvekonmobile/screens/admin/widgets/admin_list_scaffold.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
 
-enum AdminApprovalAction { approve, deny, markPending }
+enum AdminApprovalAction { approve, requireChanges, deny, markPending }
 
 class AdminApprovalTabConfig {
   const AdminApprovalTabConfig({required this.label, required this.index});
@@ -21,12 +21,15 @@ class AdminApprovalPage extends StatefulWidget {
     required this.tabs,
     required this.loadItems,
     this.showApprove = true,
+    this.showRequireChanges = false,
     this.showDeny = true,
     this.showMarkPending = false,
     this.onApprove,
+    this.onRequireChanges,
     this.onDeny,
     this.onMarkPending,
     this.approveLabel = 'Duyệt',
+    this.requireChangesLabel = 'Yêu cầu chỉnh sửa',
     this.denyLabel = 'Từ chối',
     this.markPendingLabel = 'Chờ duyệt lại',
     this.onItemTap,
@@ -36,12 +39,15 @@ class AdminApprovalPage extends StatefulWidget {
   final List<AdminApprovalTabConfig> tabs;
   final Future<List<AdminListItem>> Function(int tabIndex) loadItems;
   final bool showApprove;
+  final bool showRequireChanges;
   final bool showDeny;
   final bool showMarkPending;
   final Future<void> Function(AdminListItem item)? onApprove;
+  final Future<void> Function(AdminListItem item)? onRequireChanges;
   final Future<void> Function(AdminListItem item)? onDeny;
   final Future<void> Function(AdminListItem item)? onMarkPending;
   final String approveLabel;
+  final String requireChangesLabel;
   final String denyLabel;
   final String markPendingLabel;
   final Future<void> Function(AdminListItem item)? onItemTap;
@@ -110,6 +116,8 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
       switch (action) {
         case AdminApprovalAction.approve:
           await widget.onApprove?.call(item);
+        case AdminApprovalAction.requireChanges:
+          await widget.onRequireChanges?.call(item);
         case AdminApprovalAction.deny:
           await widget.onDeny?.call(item);
         case AdminApprovalAction.markPending:
@@ -147,6 +155,8 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
   void _showDetail(AdminListItem item) {
     final tabIndex = _tabController.index;
     final showApprove = widget.showApprove && widget.onApprove != null;
+    final showRequireChanges =
+        widget.showRequireChanges && widget.onRequireChanges != null;
     final showDeny = widget.showDeny && widget.onDeny != null;
     final showMarkPending =
         widget.showMarkPending && widget.onMarkPending != null;
@@ -237,7 +247,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                       ],
                     ),
                   ),
-                  if (showApprove || showDeny || showMarkPending) ...[
+                  if (showApprove || showRequireChanges || showDeny || showMarkPending) ...[
                     const SizedBox(height: 8),
                     if (showApprove && tabIndex == 0)
                       _ActionButton(
@@ -246,6 +256,16 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                         loading: _actionInProgress == item.id,
                         onPressed: () =>
                             _runAction(item, AdminApprovalAction.approve),
+                      ),
+                    if (showRequireChanges && tabIndex == 0)
+                      _ActionButton(
+                        label: widget.requireChangesLabel,
+                        color: const Color(0xFFFBBF24),
+                        loading: _actionInProgress == item.id,
+                        onPressed: () => _runAction(
+                          item,
+                          AdminApprovalAction.requireChanges,
+                        ),
                       ),
                     if (showDeny && tabIndex == 0)
                       _ActionButton(

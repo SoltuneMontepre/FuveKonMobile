@@ -101,8 +101,8 @@ func (s *ConbookService) GetConbookByID(ctx context.Context, conbookIDStr string
 	return &response, nil
 }
 
-// EditConbook updates a conbook (only if status is pending).
-// User can only edit their own pending conbooks.
+// EditConbook updates a conbook while pending or after staff requested changes.
+// Resubmitting after changes were requested moves the conbook back to pending for review.
 func (s *ConbookService) EditConbook(ctx context.Context, userIDStr string, conbookIDStr string, req *requests.UpdateConbookRequest) (*responses.ConbookResponse, error) {
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
@@ -207,6 +207,17 @@ func (s *ConbookService) GetApprovedConbooks(ctx context.Context) ([]responses.C
 	return mappers.MapConbooksToResponse(conbooks), nil
 }
 
+// GetRequireChangesConbooks retrieves conbooks awaiting user revision (staff only).
+func (s *ConbookService) GetRequireChangesConbooks(ctx context.Context) ([]responses.ConbookResponse, error) {
+	conbooks, err := s.repos.Conbook.GetRequireChangesConbooks(ctx)
+	if err != nil {
+		log.Printf("Error retrieving require_changes conbooks: %v", err)
+		return nil, err
+	}
+
+	return mappers.MapConbooksToResponse(conbooks), nil
+}
+
 // GetDeniedConbooks retrieves all denied conbooks (staff only).
 func (s *ConbookService) GetDeniedConbooks(ctx context.Context) ([]responses.ConbookResponse, error) {
 	conbooks, err := s.repos.Conbook.GetDeniedConbooks(ctx)
@@ -255,9 +266,14 @@ func (s *ConbookService) ApproveConbook(ctx context.Context, conbookIDStr string
 	return s.setConbookStatus(ctx, conbookIDStr, models.ConbookStatusApproved)
 }
 
-// DenyConbook marks a conbook as denied (staff only).
+// DenyConbook marks a conbook as denied (staff only). Final rejection.
 func (s *ConbookService) DenyConbook(ctx context.Context, conbookIDStr string) (*responses.ConbookResponse, error) {
 	return s.setConbookStatus(ctx, conbookIDStr, models.ConbookStatusDenied)
+}
+
+// RequestConbookChanges asks the submitter to revise their conbook (staff only).
+func (s *ConbookService) RequestConbookChanges(ctx context.Context, conbookIDStr string) (*responses.ConbookResponse, error) {
+	return s.setConbookStatus(ctx, conbookIDStr, models.ConbookStatusRequireChanges)
 }
 
 // MarkConbookPending moves a conbook back to pending (staff only).

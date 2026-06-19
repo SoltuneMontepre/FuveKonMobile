@@ -9,9 +9,10 @@ import (
 type PanelStatus string
 
 const (
-	PanelStatusPending  PanelStatus = "pending"
-	PanelStatusApproved PanelStatus = "approved"
-	PanelStatusDenied   PanelStatus = "denied"
+	PanelStatusPending        PanelStatus = "pending"
+	PanelStatusApproved       PanelStatus = "approved"
+	PanelStatusRequireChanges PanelStatus = "require_changes"
+	PanelStatusDenied         PanelStatus = "denied"
 )
 
 // PerformancePanel stores a performance / panel application (schedule slot proposal).

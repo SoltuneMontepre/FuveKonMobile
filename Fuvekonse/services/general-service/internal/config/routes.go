@@ -309,8 +309,10 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			{
 				adminConbooks.GET("/pending", h.Conbook.GetPendingConbooks)
 				adminConbooks.GET("/approved", h.Conbook.GetApprovedConbooks)
+				adminConbooks.GET("/require-changes", h.Conbook.GetRequireChangesConbooks)
 				adminConbooks.GET("/denied", h.Conbook.GetDeniedConbooks)
 				adminConbooks.PATCH("/:id/approve", h.Conbook.ApproveConbook)
+				adminConbooks.PATCH("/:id/require-changes", h.Conbook.RequestConbookChanges)
 				adminConbooks.PATCH("/:id/deny", h.Conbook.DenyConbook)
 				adminConbooks.PATCH("/:id/pending", h.Conbook.MarkConbookPending)
 			}
@@ -320,9 +322,11 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			{
 				adminPanels.GET("/pending", h.Panel.GetPendingPanels)
 				adminPanels.GET("/approved", h.Panel.GetApprovedPanels)
+				adminPanels.GET("/require-changes", h.Panel.GetRequireChangesPanels)
 				adminPanels.GET("/denied", h.Panel.GetDeniedPanels)
 				adminPanels.PATCH("/:id/schedule", h.Panel.AssignPanelSchedule)
 				adminPanels.PATCH("/:id/approve", h.Panel.ApprovePanel)
+				adminPanels.PATCH("/:id/require-changes", h.Panel.RequestPanelChanges)
 				adminPanels.PATCH("/:id/deny", h.Panel.DenyPanel)
 				adminPanels.PATCH("/:id/pending", h.Panel.MarkPanelPending)
 			}

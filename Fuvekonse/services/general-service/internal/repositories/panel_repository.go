@@ -12,7 +12,7 @@ import (
 
 var (
 	ErrPanelNotFound       = errors.New("panel not found")
-	ErrPanelNotEditable    = errors.New("cannot edit panel unless status is pending")
+	ErrPanelNotEditable    = errors.New("cannot edit panel unless status is pending or require_changes")
 	ErrUnauthorizedPanel   = errors.New("user is not the owner of this panel")
 	ErrPanelNotSchedulable = errors.New("panel must be approved before assigning a schedule")
 )
@@ -64,21 +64,33 @@ func (r *PanelRepository) GetUserPanels(ctx context.Context, userID uuid.UUID) (
 	return panels, nil
 }
 
+func panelUserEditable(status models.PanelStatus) bool {
+	return status == models.PanelStatusPending || status == models.PanelStatusRequireChanges
+}
+
+// UpdatePanel updates a panel while pending or in require_changes.
+// Resubmitting after require_changes moves the panel back to pending for review.
 func (r *PanelRepository) UpdatePanel(ctx context.Context, id uuid.UUID, panel *models.PerformancePanel) (*models.PerformancePanel, error) {
 	existing, err := r.GetPanelByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	if existing.PanelStatus != models.PanelStatusPending {
+	if !panelUserEditable(existing.PanelStatus) {
 		return nil, ErrPanelNotEditable
 	}
 
 	panel.Id = id
 	panel.UserId = existing.UserId
-	panel.PanelStatus = existing.PanelStatus
-	panel.SlotLabel = existing.SlotLabel
-	panel.ScheduledStartAt = existing.ScheduledStartAt
+	if existing.PanelStatus == models.PanelStatusRequireChanges {
+		panel.PanelStatus = models.PanelStatusPending
+		panel.SlotLabel = ""
+		panel.ScheduledStartAt = nil
+	} else {
+		panel.PanelStatus = existing.PanelStatus
+		panel.SlotLabel = existing.SlotLabel
+		panel.ScheduledStartAt = existing.ScheduledStartAt
+	}
 	panel.CreatedAt = existing.CreatedAt
 	panel.ModifiedAt = time.Now()
 
@@ -131,6 +143,10 @@ func (r *PanelRepository) GetApprovedPanels(ctx context.Context) ([]models.Perfo
 	return r.GetPanelsByStatus(ctx, models.PanelStatusApproved)
 }
 
+func (r *PanelRepository) GetRequireChangesPanels(ctx context.Context) ([]models.PerformancePanel, error) {
+	return r.GetPanelsByStatus(ctx, models.PanelStatusRequireChanges)
+}
+
 func (r *PanelRepository) GetDeniedPanels(ctx context.Context) ([]models.PerformancePanel, error) {
 	return r.GetPanelsByStatus(ctx, models.PanelStatusDenied)
 }
@@ -176,7 +192,7 @@ func (r *PanelRepository) CanEditPanel(ctx context.Context, userID uuid.UUID, pa
 		return false, err
 	}
 
-	if panel.UserId != userID || panel.PanelStatus != models.PanelStatusPending {
+	if panel.UserId != userID || !panelUserEditable(panel.PanelStatus) {
 		return false, nil
 	}
 

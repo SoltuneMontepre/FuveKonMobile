@@ -13,7 +13,7 @@ import (
 var (
 	ErrConbookNotFound     = errors.New("conbook not found")
 	ErrConbookLimit        = errors.New("maximum conbook uploads (10) reached")
-	ErrConbookNotEditable  = errors.New("cannot edit conbook unless status is pending")
+	ErrConbookNotEditable  = errors.New("cannot edit conbook unless status is pending or require_changes")
 	ErrUnauthorizedConbook = errors.New("user is not the owner of this conbook")
 )
 
@@ -77,15 +77,19 @@ func (r *ConbookRepository) GetUserConbookCount(ctx context.Context, userID uuid
 	return count, err
 }
 
-// UpdateConbook updates a conbook (only if status is pending)
+func conbookUserEditable(status models.ConbookStatus) bool {
+	return status == models.ConbookStatusPending || status == models.ConbookStatusRequireChanges
+}
+
+// UpdateConbook updates a conbook while pending or in require_changes.
+// Resubmitting after require_changes moves the conbook back to pending for review.
 func (r *ConbookRepository) UpdateConbook(ctx context.Context, id uuid.UUID, conbook *models.ConBookArt) (*models.ConBookArt, error) {
-	// Check if exists and is still editable.
 	existing, err := r.GetConbookByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	if existing.ConBookArtStatus != models.ConbookStatusPending {
+	if !conbookUserEditable(existing.ConBookArtStatus) {
 		return nil, ErrConbookNotEditable
 	}
 
@@ -93,6 +97,11 @@ func (r *ConbookRepository) UpdateConbook(ctx context.Context, id uuid.UUID, con
 	conbook.UserId = existing.UserId
 	conbook.CreatedAt = existing.CreatedAt
 	conbook.ModifiedAt = time.Now()
+	if existing.ConBookArtStatus == models.ConbookStatusRequireChanges {
+		conbook.ConBookArtStatus = models.ConbookStatusPending
+	} else {
+		conbook.ConBookArtStatus = existing.ConBookArtStatus
+	}
 
 	if err := r.db.WithContext(ctx).Model(&models.ConBookArt{}).
 		Where("id = ?", id).
@@ -148,6 +157,11 @@ func (r *ConbookRepository) GetApprovedConbooks(ctx context.Context) ([]models.C
 	return r.GetConbooksByStatus(ctx, models.ConbookStatusApproved)
 }
 
+// GetRequireChangesConbooks retrieves all conbooks awaiting user revision.
+func (r *ConbookRepository) GetRequireChangesConbooks(ctx context.Context) ([]models.ConBookArt, error) {
+	return r.GetConbooksByStatus(ctx, models.ConbookStatusRequireChanges)
+}
+
 // GetDeniedConbooks retrieves all denied conbooks.
 func (r *ConbookRepository) GetDeniedConbooks(ctx context.Context) ([]models.ConBookArt, error) {
 	return r.GetConbooksByStatus(ctx, models.ConbookStatusDenied)
@@ -174,8 +188,7 @@ func (r *ConbookRepository) CanEditConbook(ctx context.Context, userID uuid.UUID
 		return false, err
 	}
 
-	// User must be the owner and conbook must still be pending.
-	if conbook.UserId != userID || conbook.ConBookArtStatus != models.ConbookStatusPending {
+	if conbook.UserId != userID || !conbookUserEditable(conbook.ConBookArtStatus) {
 		return false, nil
 	}
 
