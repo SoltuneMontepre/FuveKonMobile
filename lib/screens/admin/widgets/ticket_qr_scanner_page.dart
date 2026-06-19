@@ -131,16 +131,21 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage> {
 
     return showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       backgroundColor: FuvekonColors.darkSurfaceElevated,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.viewPaddingOf(context).bottom,
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
               Container(
                 width: 40,
                 height: 4,
@@ -205,6 +210,7 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage> {
                 ),
               ),
             ],
+            ),
           ),
         );
       },
@@ -231,9 +237,10 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage> {
               _handleCode(value);
             },
           ),
-          SafeArea(
-            child: Column(
-              children: [
+          Positioned.fill(
+            child: SafeArea(
+              child: Column(
+                children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
@@ -300,6 +307,7 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage> {
                 ),
               ],
             ),
+          ),
           ),
           if (_isProcessing)
             const ColoredBox(

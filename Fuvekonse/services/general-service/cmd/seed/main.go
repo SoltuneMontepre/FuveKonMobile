@@ -108,6 +108,13 @@ func main() {
 
 	log.Println("========================")
 	log.Printf("🎉 Seeding completed! %d/%d users processed", successCount, len(seedUsers))
+
+	if err := seedTicketCatalog(db); err != nil {
+		log.Printf("❌ Failed to seed tickets: %v", err)
+	} else {
+		log.Println("🎉 Ticket catalog and demo tickets seeded")
+	}
+
 	log.Println("=== Seeded Accounts ===")
 	log.Print(`
 ADMIN:    admin@fuve.com
@@ -135,7 +142,7 @@ func createOrUpdateUser(db *gorm.DB, su seedUser) error {
 		LastName:    su.LastName,
 		Country:     su.Country,
 		Role:        su.Role,
-		Avatar:      "https://via.placeholder.com/150",
+		Avatar:      "",
 		IsVerified:  true,
 		CreatedAt:   time.Now(),
 		ModifiedAt:  time.Now(),
