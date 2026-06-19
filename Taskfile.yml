@@ -27,6 +27,7 @@ tasks:
       - task: backend:_pull
       - task: backend:_infra
       - task: backend:_wait
+      - task: backend:_localstack-init
       - task: backend:_migrate
       - task: backend:_seed
       - task: backend:_swagger
@@ -43,6 +44,7 @@ tasks:
       - task: backend:_flutter-env
       - task: backend:_infra
       - task: backend:_wait
+      - task: backend:_localstack-init
       - task: backend:_migrate
       - task: backend:_swagger
       - task: backend:_services
@@ -121,6 +123,15 @@ tasks:
     dir: "{{.BACKEND_DIR}}"
     cmds:
       - go run ./tools/devctl/main.go wait
+
+  backend:_localstack-init:
+    internal: true
+    desc: Create LocalStack SQS queue and S3 bucket (idempotent).
+    cmds:
+      - docker exec fuvekon-cloud awslocal sqs create-queue --queue-name fuvekon-queue --region ap-southeast-1
+      - cmd: docker exec fuvekon-cloud awslocal s3 mb s3://fuvekonse-bucket --region ap-southeast-1
+        ignore_error: true
+      - echo "LocalStack resources ready (fuvekon-queue, fuvekonse-bucket)"
 
   backend:_migrate:
     internal: true
