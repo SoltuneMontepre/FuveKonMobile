@@ -5,6 +5,23 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+fun readDotEnv(key: String): String? {
+    val envFile = rootProject.file("../.env")
+    if (!envFile.exists()) return null
+    return envFile.readLines()
+        .map { it.trim() }
+        .firstOrNull { line ->
+            line.isNotEmpty() &&
+                !line.startsWith("#") &&
+                line.startsWith("$key=")
+        }
+        ?.substringAfter("=", "")
+        ?.trim()
+        ?.takeIf { it.isNotEmpty() }
+}
+
+val googleWebClientId = readDotEnv("GOOGLE_CLIENT_ID")
+
 android {
     namespace = "com.example.fuvekonmobile"
     compileSdk = flutter.compileSdkVersion
@@ -28,6 +45,11 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // google_sign_in_android reads this when serverClientId is unset at the native layer.
+        if (googleWebClientId != null) {
+            resValue("string", "default_web_client_id", googleWebClientId)
+        }
     }
 
     buildTypes {

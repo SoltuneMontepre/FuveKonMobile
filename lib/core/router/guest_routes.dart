@@ -4,7 +4,7 @@ import 'package:fuvekonmobile/features/auth/presentation/pages/google_register_p
 import 'package:fuvekonmobile/features/auth/presentation/pages/login_page.dart';
 import 'package:fuvekonmobile/features/auth/presentation/pages/register_page.dart';
 import 'package:fuvekonmobile/features/auth/presentation/pages/verify_otp_page.dart';
-import 'package:fuvekonmobile/screens/auth/auth_pages.dart';
+import 'package:fuvekonmobile/features/auth/presentation/pages/reset_password_page.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class GuestRoutes {
@@ -45,7 +45,10 @@ abstract final class GuestRoutes {
         ),
         GoRoute(
           path: Routes.resetPassword,
-          builder: (context, state) => const ResetPasswordPage(),
+          builder: (context, state) {
+            final token = state.uri.queryParameters['token'] ?? '';
+            return ResetPasswordPage(token: token);
+          },
         ),
       ];
 }

@@ -208,12 +208,12 @@ class _ScheduleOverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final fillHeight =
-            constraints.hasBoundedHeight && constraints.maxHeight.isFinite;
-
-        final card = DecoratedBox(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => context.go(Routes.accountSchedule),
+        borderRadius: BorderRadius.circular(FuvekonRadii.card),
+        child: DecoratedBox(
           decoration: BoxDecoration(
             color: FuvekonColors.mintCard,
             borderRadius: BorderRadius.circular(FuvekonRadii.card),
@@ -257,23 +257,8 @@ class _ScheduleOverviewCard extends StatelessWidget {
               ],
             ),
           ),
-        );
-
-        return Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () => context.go(Routes.accountSchedule),
-            borderRadius: BorderRadius.circular(FuvekonRadii.card),
-            child: fillHeight
-                ? SizedBox(
-                    width: double.infinity,
-                    height: constraints.maxHeight,
-                    child: card,
-                  )
-                : card,
-          ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

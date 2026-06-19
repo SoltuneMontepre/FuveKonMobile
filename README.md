@@ -68,9 +68,65 @@ go run ./cmd/seed
 |---|---|
 | Web / Windows / iOS Simulator | `http://localhost:8085/v1` |
 | Android Emulator | `http://10.0.2.2:8085/v1` |
-| Thiết bị thật | `http://<IP-máy-tính>:8085/v1` |
+| Thiết bị thật (USB + `adb reverse`) | `http://127.0.0.1:8085/v1` |
+| Thiết bị thật (Wi‑Fi, cùng mạng LAN) | `http://<IP-máy-tính>:8085/v1` |
+
+Sau khi đổi `.env`, **stop và chạy lại** `flutter run` (hot reload không load lại `.env`).
+
+#### Thiết bị Android thật qua USB (`adb reverse`)
+
+Cách này không cần cùng Wi‑Fi và không cần mở firewall cho port 8085. Phone và PC phải bật **USB debugging**.
+
+1. Trong `.env`:
+
+```env
+BASE_URL=http://127.0.0.1:8085/v1
+```
+
+2. Chạy backend (`task backend:dev`), cắm USB, rồi forward port (mỗi lần cắm lại USB thường phải chạy lại):
+
+```powershell
+# Liệt kê thiết bị (lấy serial của Pixel / phone)
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" devices -l
+
+# Forward port 8085 từ phone → PC (thay <serial> bằng serial thật)
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" -s <serial> reverse tcp:8085 tcp:8085
+
+# Kiểm tra rule đã có
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" -s <serial> reverse --list
+```
+
+Ví dụ Pixel 5:
+
+```powershell
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" -s 13201FDD40006H reverse tcp:8085 tcp:8085
+```
+
+3. Chạy app trên phone:
+
+```powershell
+flutter run
+# chọn đúng thiết bị thật (không chọn emulator)
+```
+
+**Lỗi thường gặp**
+
+| Triệu chứng | Nguyên nhân | Cách xử lý |
+|---|---|---|
+| `adb.exe: more than one device/emulator` | Có cả emulator và phone | Thêm `-s <serial>` hoặc tắt emulator / rút một thiết bị |
+| `Connection refused` trên `127.0.0.1:8085` | `adb reverse` bị mất sau rút/cắm USB | Chạy lại lệnh `reverse` ở trên |
+| App vẫn gọi `10.0.2.2` | `.env` chưa đổi hoặc chưa restart app | Dùng `127.0.0.1` trong `.env`, stop + `flutter run` lại |
+
+**Thay thế:** dùng Wi‑Fi — phone và PC cùng mạng, lấy IP PC (`ipconfig` → IPv4, ví dụ `192.168.1.44`), đặt `BASE_URL=http://192.168.1.44:8085/v1`, cho phép port 8085 trên Windows Firewall nếu cần.
 
 **Flutter Web + backend local:** trình duyệt chặn request nếu origin không nằm trong `CORS_ALLOWED_ORIGINS` của general-service (mặc định `http://localhost:3000`, `http://localhost:3001`). Chạy `flutter run -d chrome --web-port=3000` hoặc dùng `-d windows`.
+
+### Google Sign-In (Android)
+
+- Dev: `GOOGLE_CLIENT_ID` trong `.env` (Web client ID), restart app sau khi đổi.
+- Lấy SHA-1 debug: `task android:google-signin-info`
+- **Hand-off cho admin Google Cloud:** [`docs/GOOGLE_SIGN_IN_GCP_HANDOFF.md`](docs/GOOGLE_SIGN_IN_GCP_HANDOFF.md)
+- Dev notes: [`docs/GOOGLE_SIGN_IN_ANDROID.md`](docs/GOOGLE_SIGN_IN_ANDROID.md)
 
 > Task backend được định nghĩa tại [`Taskfile.yml`](Taskfile.yml) (root repo), không nằm trong `Fuvekonse/`.
 
