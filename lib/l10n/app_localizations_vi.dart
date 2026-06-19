@@ -408,6 +408,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get navAccount => 'Tài khoản';
 
   @override
+  String get navSwitchToAdmin => 'Chế độ quản trị';
+
+  @override
+  String get navSwitchToUser => 'Chế độ người dùng';
+
+  @override
   String get myTicketsFilterActive => 'Đang hiệu lực';
 
   @override

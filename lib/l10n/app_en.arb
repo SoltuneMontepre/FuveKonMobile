@@ -264,6 +264,8 @@
   "@navNotifications": {},
   "navAccount": "Account",
   "@navAccount": {},
+  "navSwitchToAdmin": "Admin mode",
+  "navSwitchToUser": "User mode",
 
   "myTicketsFilterActive": "Active",
   "myTicketsFilterUsed": "Used",

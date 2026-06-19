@@ -14,8 +14,14 @@ import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart
 class FuvekonGuestDrawer extends StatelessWidget {
   const FuvekonGuestDrawer({super.key});
 
+  static GlobalKey<ScaffoldState>? adminScaffoldKey;
+
   static void open(BuildContext context) {
     Scaffold.of(context).openDrawer();
+  }
+
+  static void openFromAdminShell() {
+    adminScaffoldKey?.currentState?.openDrawer();
   }
 
   @override
@@ -25,16 +31,23 @@ class FuvekonGuestDrawer extends StatelessWidget {
     return ListenableBuilder(
       listenable: auth,
       builder: (context, _) {
-        return _FuvekonDrawerBody(isAuthenticated: auth.isAuthenticated);
+        return _FuvekonDrawerBody(
+          isAuthenticated: auth.isAuthenticated,
+          canSwitchToAdmin: auth.role?.isPrivileged ?? false,
+        );
       },
     );
   }
 }
 
 class _FuvekonDrawerBody extends StatelessWidget {
-  const _FuvekonDrawerBody({required this.isAuthenticated});
+  const _FuvekonDrawerBody({
+    required this.isAuthenticated,
+    required this.canSwitchToAdmin,
+  });
 
   final bool isAuthenticated;
+  final bool canSwitchToAdmin;
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +146,24 @@ class _FuvekonDrawerBody extends StatelessWidget {
                             router.go(Routes.login);
                           });
                         }
+                      },
+                    ),
+                  if (isAuthenticated && canSwitchToAdmin)
+                    _DrawerNavTile(
+                      icon: Routes.isAdminRoute(location)
+                          ? Icons.person_outline
+                          : Icons.admin_panel_settings_outlined,
+                      label: Routes.isAdminRoute(location)
+                          ? l10n.navSwitchToUser
+                          : l10n.navSwitchToAdmin,
+                      selected: false,
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context.go(
+                          Routes.isAdminRoute(location)
+                              ? Routes.account
+                              : Routes.admin,
+                        );
                       },
                     ),
                   const Divider(height: 24, indent: 16, endIndent: 16),

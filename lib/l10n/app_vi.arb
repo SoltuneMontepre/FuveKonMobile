@@ -145,6 +145,8 @@
   "scheduleKindOther": "Khác",
   "navNotifications": "Thông báo",
   "navAccount": "Tài khoản",
+  "navSwitchToAdmin": "Chế độ quản trị",
+  "navSwitchToUser": "Chế độ người dùng",
 
   "myTicketsFilterActive": "Đang hiệu lực",
   "myTicketsFilterUsed": "Đã dùng",

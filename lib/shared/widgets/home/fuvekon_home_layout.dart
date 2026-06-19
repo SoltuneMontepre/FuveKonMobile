@@ -9,11 +9,13 @@ class FuvekonHomeAppBar extends StatelessWidget {
     this.avatarUrl,
     this.initials = '?',
     this.onProfileTap,
+    this.onMenuTap,
   });
 
   final String? avatarUrl;
   final String initials;
   final VoidCallback? onProfileTap;
+  final VoidCallback? onMenuTap;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,14 @@ class FuvekonHomeAppBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       child: Row(
         children: [
-          const SizedBox(width: 48),
+          if (onMenuTap != null)
+            IconButton(
+              onPressed: onMenuTap,
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              icon: const Icon(Icons.menu_rounded, color: FuvekonColors.darkText),
+            )
+          else
+            const SizedBox(width: 48),
           Expanded(
             child: Text(
               'FUVEKON',
