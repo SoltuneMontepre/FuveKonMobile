@@ -856,14 +856,14 @@ abstract class AppLocalizations {
 
   /// No description provided for @navSwitchToAdmin.
   ///
-  /// In vi, this message translates to:
-  /// **'Chế độ quản trị'**
+  /// In en, this message translates to:
+  /// **'Admin mode'**
   String get navSwitchToAdmin;
 
   /// No description provided for @navSwitchToUser.
   ///
-  /// In vi, this message translates to:
-  /// **'Chế độ người dùng'**
+  /// In en, this message translates to:
+  /// **'User mode'**
   String get navSwitchToUser;
 
   /// No description provided for @myTicketsFilterActive.
