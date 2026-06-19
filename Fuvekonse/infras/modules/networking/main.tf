@@ -2,14 +2,14 @@
 resource "aws_apigatewayv2_api" "main" {
   name                         = "${var.project_name}-api"
   protocol_type                = "HTTP"
-  disable_execute_api_endpoint = true
+  disable_execute_api_endpoint = false
 
   cors_configuration {
     allow_origins     = var.cors_allowed_origins
     allow_methods     = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
     allow_headers     = ["content-type", "authorization", "x-amz-date", "x-api-key", "x-amz-security-token"]
     expose_headers    = ["set-cookie"]
-    allow_credentials = true
+    allow_credentials = !contains(var.cors_allowed_origins, "*")
     max_age           = 300
   }
 
