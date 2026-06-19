@@ -141,7 +141,7 @@ class TicketUpgradeBloc extends Bloc<TicketUpgradeEvent, TicketUpgradeState> {
     if (ticket.status != TicketStatus.approved &&
         ticket.status != TicketStatus.adminGranted) {
       emit(TicketUpgradeFailure(
-        'Chỉ vé đã duyệt mới được nâng cấp. Dùng DEMO vé → BTC duyệt nếu đang test.',
+        'Chỉ vé đã duyệt mới được nâng cấp.',
       ));
       return;
     }

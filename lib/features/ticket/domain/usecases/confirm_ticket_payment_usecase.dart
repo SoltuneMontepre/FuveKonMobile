@@ -1,5 +1,5 @@
 import 'package:fuvekonmobile/core/errors/result.dart';
-import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/confirm_payment_result.dart';
 import 'package:fuvekonmobile/features/ticket/domain/repositories/ticket_repository.dart';
 
 class ConfirmTicketPaymentUseCase {
@@ -7,5 +7,5 @@ class ConfirmTicketPaymentUseCase {
 
   final TicketRepository _repository;
 
-  Future<Result<UserTicket>> call() => _repository.confirmPayment();
+  Future<Result<ConfirmPaymentResult>> call() => _repository.confirmPayment();
 }

@@ -150,7 +150,12 @@ abstract final class Routes {
   static bool isPublicRoute(String location) {
     if (publicRoutes.contains(location)) return true;
     if (location.startsWith('$schedule/')) return true;
-    if (location.startsWith('$ticketPurchase/')) return true;
+    if (location == ticketPurchase || location.startsWith('$ticketPurchase/')) {
+      return true;
+    }
+    if (location.startsWith('$ticket/') && !location.startsWith(ticketPurchase)) {
+      return true;
+    }
     if (location.startsWith('$artbook/')) return true;
     if (location == lostFoundReport) return true;
     if (location.startsWith('$lostFound/')) return true;

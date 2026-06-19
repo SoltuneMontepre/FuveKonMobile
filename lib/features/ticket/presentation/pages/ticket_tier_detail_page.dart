@@ -36,45 +36,75 @@ class _TicketTierDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: FuvekonColors.darkBg,
-      body: FuvekonIllustratedPageStack(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const _DetailHeader(),
-              Expanded(
-                child: BlocBuilder<TicketTierDetailBloc, TicketTierDetailState>(
-                  builder: (context, state) {
-                    return switch (state) {
-                      TicketTierDetailInitial() || TicketTierDetailLoading() =>
-                        const Center(child: CircularProgressIndicator()),
-                      TicketTierDetailLoaded(
-                        :final tier,
-                        :final allTiers,
-                      ) =>
-                        _DetailBody(tier: tier, allTiers: allTiers),
-                      TicketTierDetailFailure(:final message) => _ErrorBody(
-                          message: message,
-                          onRetry: () => context.read<TicketTierDetailBloc>().add(
-                                TicketTierDetailStarted(
-                                  GoRouterState.of(context)
-                                      .pathParameters['id']!,
-                                ),
-                              ),
-                        ),
-                    };
+    return BlocListener<TicketTierDetailBloc, TicketTierDetailState>(
+      listener: (context, state) {
+        final bloc = context.read<TicketTierDetailBloc>();
+        final actionError = bloc.lastActionError;
+        if (actionError != null) {
+          bloc.lastActionError = null;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(actionError)),
+          );
+        }
+
+        final purchase = bloc.lastPurchaseResult;
+        if (purchase == null) return;
+        bloc.lastPurchaseResult = null;
+
+        final loaded = bloc.state;
+        final fallbackTierId =
+            loaded is TicketTierDetailLoaded ? loaded.tier.id : null;
+        final tierId = purchase.ticket?.tier?.id ?? fallbackTierId;
+        if (tierId == null || tierId.isEmpty) return;
+
+        context.push<bool>(
+          Routes.ticketPurchaseStep(tierId),
+          extra: purchase.queued,
+        );
+      },
+      child: Scaffold(
+        backgroundColor: FuvekonColors.darkBg,
+        body: FuvekonIllustratedPageStack(
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const _DetailHeader(),
+                Expanded(
+                  child:
+                      BlocBuilder<TicketTierDetailBloc, TicketTierDetailState>(
+                    builder: (context, state) {
+                      return switch (state) {
+                        TicketTierDetailInitial() ||
+                        TicketTierDetailLoading() =>
+                          const Center(child: CircularProgressIndicator()),
+                        TicketTierDetailLoaded(
+                          :final tier,
+                          :final allTiers,
+                        ) =>
+                          _DetailBody(tier: tier, allTiers: allTiers),
+                        TicketTierDetailFailure(:final message) => _ErrorBody(
+                            message: message,
+                            onRetry: () =>
+                                context.read<TicketTierDetailBloc>().add(
+                                      TicketTierDetailStarted(
+                                        GoRouterState.of(context)
+                                            .pathParameters['id']!,
+                                      ),
+                                    ),
+                          ),
+                      };
+                    },
+                  ),
+                ),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, authState) {
+                    final isAuth = _isAuthenticated(authState);
+                    return _BottomCta(isAuthenticated: isAuth);
                   },
                 ),
-              ),
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  final isAuth = _isAuthenticated(state);
-                  return _BottomCta(isAuthenticated: isAuth);
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -654,73 +684,86 @@ class _BottomCta extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
       child: FuvekonIllustratedContentPanel(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    l10n.ticketDetailTotal,
-                    style: const TextStyle(
-                      color: FuvekonColors.darkTextSecondary,
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  BlocBuilder<TicketTierDetailBloc, TicketTierDetailState>(
-                    builder: (context, state) {
-                      final price = state is TicketTierDetailLoaded
-                          ? formatTierPrice(
-                              state.tier,
-                              locale: Localizations.localeOf(context),
-                            )
-                          : '';
-                      return Text(
-                        price,
+        child: BlocBuilder<TicketTierDetailBloc, TicketTierDetailState>(
+          builder: (context, state) {
+            final isPurchasing =
+                state is TicketTierDetailLoaded && state.isPurchasing;
+
+            return Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        l10n.ticketDetailTotal,
                         style: const TextStyle(
-                          color: FuvekonColors.darkPrimary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w900,
+                          color: FuvekonColors.darkTextSecondary,
+                          fontSize: 12,
                         ),
-                      );
-                    },
+                      ),
+                      const SizedBox(height: 2),
+                      if (state is TicketTierDetailLoaded)
+                        Text(
+                          formatTierPrice(
+                            state.tier,
+                            locale: Localizations.localeOf(context),
+                          ),
+                          style: const TextStyle(
+                            color: FuvekonColors.darkPrimary,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 14),
-            FilledButton(
-              onPressed: () => context.go(
-                isAuthenticated ? Routes.ticketPurchase : Routes.register,
-              ),
-              style: FilledButton.styleFrom(
-                backgroundColor: _ctaColor,
-                foregroundColor: _ctaTextColor,
-                minimumSize: const Size(172, 52),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(FuvekonRadii.button),
                 ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    isAuthenticated
-                        ? l10n.exploreTicketsBuyCta
-                        : l10n.exploreTicketsRegisterCta,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w800,
+                const SizedBox(width: 14),
+                FilledButton(
+                  onPressed: isPurchasing
+                      ? null
+                      : () {
+                          if (isAuthenticated) {
+                            context.read<TicketTierDetailBloc>().add(
+                                  const TicketTierDetailPurchaseRequested(),
+                                );
+                          } else {
+                            context.go(Routes.register);
+                          }
+                        },
+                  style: FilledButton.styleFrom(
+                    backgroundColor: _ctaColor,
+                    foregroundColor: _ctaTextColor,
+                    minimumSize: const Size(172, 52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(FuvekonRadii.button),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.arrow_forward_rounded, size: 18),
-                ],
-              ),
-            ),
-          ],
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        isPurchasing
+                            ? '...'
+                            : isAuthenticated
+                                ? l10n.exploreTicketsBuyCta
+                                : l10n.exploreTicketsRegisterCta,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      if (!isPurchasing) ...[
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_forward_rounded, size: 18),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -781,11 +824,10 @@ class _TierDetailConfig {
 
     if (code == 'T2' || name.contains('VIP')) {
       return _TierDetailConfig(
-        title: '${tier.ticketName} Ticket - FUVEKON 2024',
+        title: tier.ticketName,
         badge: 'PREMIUM',
         shortCode: 'II',
-        description:
-            'Trải nghiệm lễ hội trọn vẹn với các đặc quyền ưu tiên. Đắm chìm trong không gian nghệ thuật cao cấp và tận hưởng dịch vụ hàng đầu.',
+        description: tier.description,
         bannerColors: const [
           FuvekonColors.surfaceContainerLow,
           FuvekonColors.darkCard,
@@ -797,11 +839,10 @@ class _TierDetailConfig {
 
     if (name.contains('SUPER')) {
       return _TierDetailConfig(
-        title: '${tier.ticketName} Ticket - FUVEKON 2024',
+        title: tier.ticketName,
         badge: 'ELITE',
         shortCode: 'IV',
-        description:
-            'Gói trải nghiệm cao nhất với bộ quà tặng giới hạn, quyền lợi ưu tiên và các đặc quyền dành riêng cho người đồng hành đặc biệt.',
+        description: tier.description,
         bannerColors: const [
           FuvekonColors.surfaceContainerLow,
           FuvekonColors.dustyRoseContainer,
@@ -813,11 +854,10 @@ class _TierDetailConfig {
 
     if (name.contains('SPONSOR')) {
       return _TierDetailConfig(
-        title: '${tier.ticketName} Ticket - FUVEKON 2024',
+        title: tier.ticketName,
         badge: 'SPECIAL',
         shortCode: 'III',
-        description:
-            'Nâng cấp hành trình tham dự với nhiều vật phẩm kỷ niệm, check-in ưu tiên và trải nghiệm sự kiện chỉn chu hơn.',
+        description: tier.description,
         bannerColors: const [
           FuvekonColors.surfaceContainerLow,
           FuvekonColors.goldContainer,
@@ -828,11 +868,10 @@ class _TierDetailConfig {
     }
 
     return _TierDetailConfig(
-      title: '${tier.ticketName} Ticket - FUVEKON 2024',
+      title: tier.ticketName,
       badge: 'BASIC',
       shortCode: 'I',
-      description:
-          'Tấm vé tiêu chuẩn để tham gia không gian triển lãm, nhận badge và các vật phẩm cơ bản của sự kiện.',
+      description: tier.description,
       bannerColors: const [
         FuvekonColors.surfaceContainerHigh,
         FuvekonColors.darkCard,

@@ -359,7 +359,7 @@ class _QuickActionsBar extends StatelessWidget {
                     if (event.isPast) {
                       context.push(Routes.accountTicket);
                     } else {
-                      context.push(Routes.ticketPurchase);
+                      context.push(Routes.ticket);
                     }
                   },
                   borderRadius: BorderRadius.circular(8),

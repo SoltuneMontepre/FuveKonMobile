@@ -6,7 +6,6 @@ import 'package:fuvekonmobile/screens/public/public_pages.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/pages/explore_tickets_page.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/pages/ticket_tier_detail_page.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/pages/ticket_purchase_page.dart';
-import 'package:fuvekonmobile/features/ticket/presentation/pages/tickets_page.dart';
 import 'package:fuvekonmobile/features/schedule/presentation/pages/activity_detail_page.dart';
 import 'package:fuvekonmobile/features/schedule/presentation/pages/event_detail_page.dart';
 import 'package:fuvekonmobile/features/schedule/presentation/pages/my_itinerary_page.dart';
@@ -29,25 +28,20 @@ abstract final class PublicRoutes {
           builder: (context, state) => const ExploreTicketsPage(),
           routes: [
             GoRoute(
-              path: 'purchase',
-              builder: (context, state) => const TicketsPage(),
-              routes: [
-                GoRoute(
-                  path: ':id',
-                  parentNavigatorKey: rootNavigatorKey,
-                  builder: (context, state) {
-                    final id = state.pathParameters['id']!;
-                    final queued = state.extra == true;
-                    return TicketPurchasePage(
-                      tierId: id,
-                      queued: queued,
-                    );
-                  },
-                ),
-              ],
+              path: 'purchase/:id',
+              parentNavigatorKey: rootNavigatorKey,
+              builder: (context, state) {
+                final id = state.pathParameters['id']!;
+                final queued = state.extra == true;
+                return TicketPurchasePage(
+                  tierId: id,
+                  queued: queued,
+                );
+              },
             ),
             GoRoute(
               path: ':id',
+              parentNavigatorKey: rootNavigatorKey,
               builder: (context, state) => TicketTierDetailPage(
                 tierId: state.pathParameters['id']!,
               ),

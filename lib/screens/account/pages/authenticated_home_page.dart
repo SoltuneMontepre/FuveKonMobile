@@ -150,7 +150,7 @@ class _BentoGrid extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         TicketExploreSurface(
-          onTap: () => context.push(Routes.ticketPurchase),
+          onTap: () => context.push(Routes.ticket),
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
@@ -612,7 +612,7 @@ class _FeaturedEventCard extends StatelessWidget {
                     if (isPast) {
                       _openEventDetail(context);
                     } else {
-                      context.push(Routes.ticketPurchase);
+                      context.push(Routes.ticket);
                     }
                   },
                 ),

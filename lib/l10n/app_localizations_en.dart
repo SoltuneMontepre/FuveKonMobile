@@ -474,6 +474,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myTicketsViewTicket => 'View ticket →';
 
   @override
+  String get myTicketsPayNow => 'Pay now →';
+
+  @override
   String get myTicketsEventDateRange => 'Oct 20–22, 2024';
 
   @override

@@ -920,26 +920,28 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
     final isEdit = widget.initial != null;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 12, 20, 24 + bottomInset),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: FuvekonColors.darkBorder,
-                  borderRadius: BorderRadius.circular(2),
+      padding: EdgeInsets.only(bottom: bottomInset),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: FuvekonColors.darkBorder,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              isEdit ? 'Chỉnh sửa mục' : 'Thêm mục lịch trình',
+              const SizedBox(height: 16),
+              Text(
+                isEdit ? 'Chỉnh sửa mục' : 'Thêm mục lịch trình',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: FuvekonColors.darkText,
                     fontWeight: FontWeight.w700,
@@ -1010,8 +1012,9 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : Text(isEdit ? 'Lưu' : 'Thêm'),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

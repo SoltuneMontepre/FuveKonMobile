@@ -1,5 +1,6 @@
 import 'package:fuvekonmobile/core/api/ticket_api.dart';
 import 'package:fuvekonmobile/core/errors/exceptions.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/confirm_payment_result.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/purchase_ticket_result.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/update_badge_details_input.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
@@ -15,7 +16,7 @@ abstract interface class TicketRemoteDataSource {
 
   Future<PurchaseTicketResult> purchaseTicket(String tierId);
 
-  Future<UserTicket> confirmPayment();
+  Future<ConfirmPaymentResult> confirmPayment();
 
   Future<UserTicket> updateBadgeDetails(UpdateBadgeDetailsInput input);
 
@@ -68,13 +69,51 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
   }
 
   @override
-  Future<UserTicket> confirmPayment() async {
+  Future<ConfirmPaymentResult> confirmPayment() async {
     final response = await _ticketApi.confirmPayment();
     final data = response.data;
-    if (data == null) {
-      throw const ServerException('Failed to confirm payment.');
+    if (data != null) {
+      return ConfirmPaymentResult(
+        ticket: _mapUserTicket(data),
+        queued: response.statusCode == 202,
+        statusCode: response.statusCode,
+      );
     }
-    return _mapUserTicket(data);
+
+    if (response.isSuccess) {
+      final ticket = await _fetchTicketAfterQueuedConfirm();
+      return ConfirmPaymentResult(
+        ticket: ticket,
+        queued: response.statusCode == 202,
+        statusCode: response.statusCode,
+      );
+    }
+
+    throw const ServerException('Failed to confirm payment.');
+  }
+
+  Future<UserTicket?> _fetchTicketAfterQueuedConfirm() async {
+    const attempts = 4;
+    const delay = Duration(milliseconds: 400);
+
+    for (var attempt = 0; attempt < attempts; attempt++) {
+      if (attempt > 0) {
+        await Future<void>.delayed(delay);
+      }
+
+      final response = await _ticketApi.getMyTicket();
+      final data = response.data;
+      if (data == null) continue;
+
+      final ticket = _mapUserTicket(data);
+      if (ticket.status != TicketStatus.pending) {
+        return ticket;
+      }
+    }
+
+    final response = await _ticketApi.getMyTicket();
+    final data = response.data;
+    return data != null ? _mapUserTicket(data) : null;
   }
 
   @override

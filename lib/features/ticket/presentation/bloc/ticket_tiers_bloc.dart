@@ -58,7 +58,7 @@ class TicketTiersBloc extends Bloc<TicketTiersEvent, TicketTiersState> {
     final result = await _getTicketTiersUseCase();
     switch (result) {
       case Success(:final data):
-        final tiers = data.where((t) => t.isVisible).toList()
+        final tiers = data.where((t) => t.isVisible && t.isActive).toList()
           ..sort((a, b) => a.price.compareTo(b.price));
         emit(TicketTiersLoaded(tiers));
       case Error(:final failure):
