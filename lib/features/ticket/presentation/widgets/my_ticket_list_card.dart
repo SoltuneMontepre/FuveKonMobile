@@ -3,6 +3,7 @@ import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/models/my_ticket_list_item.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:go_router/go_router.dart';
 
 class MyTicketListCard extends StatelessWidget {
@@ -18,115 +19,121 @@ class MyTicketListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final colors = exploreTicketTextColors(ExploreTierStyle.standard);
     final statusLabel = item.isCheckedIn
         ? l10n.myTicketsStatusUsed
         : l10n.myTicketsStatusActive;
 
-    return Material(
-      color: FuvekonColors.mintCard,
-      borderRadius: BorderRadius.circular(20),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onViewTicket,
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  item.imageAsset,
-                  width: 72,
-                  height: 72,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: 72,
-                    height: 72,
-                    color: FuvekonColors.sageGreenContainer,
-                  ),
+    return TicketExploreSurface(
+      style: ExploreTierStyle.standard,
+      onTap: onViewTicket,
+      padding: const EdgeInsets.all(14),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              item.imageAsset,
+              width: 72,
+              height: 72,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                width: 72,
+                height: 72,
+                color: FuvekonColors.surfaceContainerLow,
+                child: Icon(
+                  Icons.confirmation_number_outlined,
+                  color: colors.muted,
                 ),
               ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.title,
+                  style: TextStyle(
+                    color: colors.title,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                _StatusChip(
+                  label: statusLabel,
+                  active: !item.isCheckedIn,
+                  colors: colors,
+                ),
+                const SizedBox(height: 8),
+                Row(
                   children: [
+                    Icon(
+                      Icons.calendar_today_outlined,
+                      size: 14,
+                      color: colors.muted,
+                    ),
+                    const SizedBox(width: 6),
                     Text(
-                      item.title,
-                      style: const TextStyle(
-                        color: FuvekonColors.onSageGreen,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15,
-                        height: 1.3,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    _StatusChip(label: statusLabel, active: !item.isCheckedIn),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_today_outlined,
-                          size: 14,
-                          color: FuvekonColors.onSageGreen.withValues(alpha: 0.55),
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          item.dateLabel,
-                          style: TextStyle(
-                            color: FuvekonColors.onSageGreen.withValues(alpha: 0.75),
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: OutlinedButton(
-                        onPressed: onViewTicket,
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: FuvekonColors.onSageGreen,
-                          side: BorderSide(
-                            color: FuvekonColors.onSageGreen.withValues(alpha: 0.35),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 8,
-                          ),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(999),
-                          ),
-                        ),
-                        child: Text(l10n.myTicketsViewTicket),
+                      item.dateLabel,
+                      style: TextStyle(
+                        color: colors.body,
+                        fontSize: 13,
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: OutlinedButton(
+                    onPressed: onViewTicket,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: colors.title,
+                      side: BorderSide(color: colors.muted.withValues(alpha: 0.45)),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 8,
+                      ),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                    ),
+                    child: Text(l10n.myTicketsViewTicket),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 }
 
 class _StatusChip extends StatelessWidget {
-  const _StatusChip({required this.label, required this.active});
+  const _StatusChip({
+    required this.label,
+    required this.active,
+    required this.colors,
+  });
 
   final String label;
   final bool active;
+  final ({Color title, Color body, Color muted}) colors;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: FuvekonColors.onSageGreen.withValues(alpha: 0.08),
+        color: Colors.white.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
@@ -144,7 +151,7 @@ class _StatusChip extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              color: FuvekonColors.onSageGreen.withValues(alpha: 0.8),
+              color: colors.body,
               fontSize: 11,
               fontWeight: FontWeight.w600,
             ),

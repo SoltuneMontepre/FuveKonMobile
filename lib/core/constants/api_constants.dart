@@ -167,4 +167,8 @@ abstract final class ApiConstants {
   static String lostFoundItem(String id) => '/lost-found/$id';
   static String lostFoundClaim(String id) => '/lost-found/$id/claim';
   static String lostFoundRequest(String id) => '/lost-found/requests/$id';
+
+  // —— Notifications (user) ——
+  static const String notifications = '/notifications';
+  static String notification(String id) => '/notifications/$id';
 }

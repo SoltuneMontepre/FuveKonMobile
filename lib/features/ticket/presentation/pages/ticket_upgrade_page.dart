@@ -7,6 +7,7 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/utils/ticket_price.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_upgrade_bloc.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:go_router/go_router.dart';
 
 class TicketUpgradePage extends StatelessWidget {
@@ -205,63 +206,60 @@ class _CurrentTicketCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: FuvekonColors.mintCard,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-        child: Row(
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: FuvekonColors.onSageGreen,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(
-                Icons.confirmation_number_outlined,
-                color: FuvekonColors.mintCard,
-                size: 22,
-              ),
+    final colors = exploreTicketTextColors(ExploreTierStyle.standard);
+
+    return TicketExploreSurface(
+      style: ExploreTierStyle.standard,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: FuvekonColors.surfaceContainerLow,
+              borderRadius: BorderRadius.circular(10),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${tierName.toUpperCase()} TICKET',
-                    style: const TextStyle(
-                      color: FuvekonColors.onSageGreen,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 14,
-                      letterSpacing: 0.3,
-                    ),
+            child: Icon(
+              Icons.confirmation_number_outlined,
+              color: colors.title,
+              size: 22,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${tierName.toUpperCase()} TICKET',
+                  style: TextStyle(
+                    color: colors.title,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14,
+                    letterSpacing: 0.3,
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    paidLabel,
-                    style: TextStyle(
-                      color: FuvekonColors.onSageGreen.withValues(alpha: 0.65),
-                      fontSize: 12,
-                    ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  paidLabel,
+                  style: TextStyle(
+                    color: colors.muted,
+                    fontSize: 12,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Text(
-              priceLabel,
-              style: const TextStyle(
-                color: FuvekonColors.onSageGreen,
-                fontWeight: FontWeight.w800,
-                fontSize: 15,
-              ),
+          ),
+          Text(
+            priceLabel,
+            style: TextStyle(
+              color: colors.title,
+              fontWeight: FontWeight.w800,
+              fontSize: 15,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

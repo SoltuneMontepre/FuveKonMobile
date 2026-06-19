@@ -25,13 +25,16 @@ abstract final class AppConfig {
       );
 
   /// Maps dev loopback hosts per platform (Android emulator uses `10.0.2.2`).
+  ///
+  /// - `localhost` on Android → `10.0.2.2` (emulator → host PC)
+  /// - `127.0.0.1` is left unchanged (physical device + `adb reverse`)
+  /// - LAN IPs are left unchanged (physical device on Wi‑Fi)
   static String _resolveDevApiHost(String url) {
     final uri = Uri.tryParse(url);
     if (uri == null) return url;
 
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      const loopbackHosts = {'localhost', '127.0.0.1'};
-      if (loopbackHosts.contains(uri.host)) {
+      if (uri.host == 'localhost') {
         return uri.replace(host: '10.0.2.2').toString();
       }
       return url;

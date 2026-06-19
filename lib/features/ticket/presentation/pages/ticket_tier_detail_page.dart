@@ -9,6 +9,7 @@ import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_state.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_tier_detail_bloc.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:go_router/go_router.dart';
 
@@ -190,26 +191,33 @@ class _TicketHeroCard extends StatelessWidget {
 
   final TicketTier tier;
 
-  static const _cardBg = FuvekonColors.mintCard;
-  static const _textDark = FuvekonColors.darkCardText;
-  static const _muted = FuvekonColors.textSecondary;
   static const _badge = FuvekonColors.sageGreenContainer;
+
+  ExploreTierStyle get _style {
+    final code = tier.tierCode.toUpperCase();
+    final name = tier.ticketName.toUpperCase();
+    if (code == 'T2' || name.contains('VIP') || name.contains('SUPER')) {
+      return ExploreTierStyle.premium;
+    }
+    if (name.contains('SPONSOR')) return ExploreTierStyle.popular;
+    return ExploreTierStyle.standard;
+  }
 
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
     final config = _TierDetailConfig.from(tier);
+    final colors = exploreTicketTextColors(_style);
     final description = tier.description.trim().isNotEmpty
         ? tier.description.trim()
         : config.description;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: _cardBg,
-        borderRadius: BorderRadius.circular(26),
-      ),
+    return TicketExploreSurface(
+      style: _style,
+      highlighted: _style == ExploreTierStyle.premium,
+      padding: EdgeInsets.zero,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(26),
+        borderRadius: BorderRadius.circular(FuvekonRadii.card),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -226,8 +234,10 @@ class _TicketHeroCard extends StatelessWidget {
                       const Spacer(),
                       Text(
                         formatTierPrice(tier, locale: locale),
-                        style: const TextStyle(
-                          color: Colors.black,
+                        style: TextStyle(
+                          color: _style == ExploreTierStyle.premium
+                              ? Colors.white
+                              : colors.title,
                           fontSize: 22,
                           fontWeight: FontWeight.w900,
                           letterSpacing: -0.5,
@@ -238,8 +248,8 @@ class _TicketHeroCard extends StatelessWidget {
                   const SizedBox(height: 24),
                   Text(
                     config.title,
-                    style: const TextStyle(
-                      color: _textDark,
+                    style: TextStyle(
+                      color: colors.title,
                       fontSize: 23,
                       height: 1.16,
                       fontWeight: FontWeight.w900,
@@ -248,8 +258,8 @@ class _TicketHeroCard extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     description,
-                    style: const TextStyle(
-                      color: _muted,
+                    style: TextStyle(
+                      color: colors.body,
                       fontSize: 14,
                       height: 1.45,
                       fontWeight: FontWeight.w600,
@@ -257,14 +267,14 @@ class _TicketHeroCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Divider(
-                    color: Colors.black.withValues(alpha: 0.18),
+                    color: colors.muted.withValues(alpha: 0.25),
                     height: 1,
                   ),
                   const SizedBox(height: 20),
                   Text(
                     context.l10n.ticketDetailBenefitsTitle,
-                    style: const TextStyle(
-                      color: _textDark,
+                    style: TextStyle(
+                      color: colors.title,
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                     ),
@@ -273,7 +283,7 @@ class _TicketHeroCard extends StatelessWidget {
                   for (final benefit in tier.benefits)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: _BenefitRow(benefit: benefit),
+                      child: _BenefitRow(benefit: benefit, textColor: colors.body),
                     ),
                 ],
               ),
@@ -384,9 +394,10 @@ class _TierBadge extends StatelessWidget {
 }
 
 class _BenefitRow extends StatelessWidget {
-  const _BenefitRow({required this.benefit});
+  const _BenefitRow({required this.benefit, required this.textColor});
 
   final String benefit;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -399,8 +410,8 @@ class _BenefitRow extends StatelessWidget {
         Expanded(
           child: Text(
             benefit,
-            style: const TextStyle(
-              color: _TicketHeroCard._textDark,
+            style: TextStyle(
+              color: textColor,
               fontSize: 14,
               height: 1.35,
               fontWeight: FontWeight.w700,
@@ -777,7 +788,7 @@ class _TierDetailConfig {
             'Trải nghiệm lễ hội trọn vẹn với các đặc quyền ưu tiên. Đắm chìm trong không gian nghệ thuật cao cấp và tận hưởng dịch vụ hàng đầu.',
         bannerColors: const [
           FuvekonColors.surfaceContainerLow,
-          FuvekonColors.mintCard,
+          FuvekonColors.darkCard,
           FuvekonColors.sageGreenContainer,
         ],
         accent: FuvekonColors.lightGold,
@@ -810,7 +821,7 @@ class _TierDetailConfig {
         bannerColors: const [
           FuvekonColors.surfaceContainerLow,
           FuvekonColors.goldContainer,
-          FuvekonColors.mintCard,
+          FuvekonColors.darkCard,
         ],
         accent: const Color(0xFFFFE088),
       );
@@ -824,7 +835,7 @@ class _TierDetailConfig {
           'Tấm vé tiêu chuẩn để tham gia không gian triển lãm, nhận badge và các vật phẩm cơ bản của sự kiện.',
       bannerColors: const [
         FuvekonColors.surfaceContainerHigh,
-        FuvekonColors.mintCard,
+        FuvekonColors.darkCard,
         FuvekonColors.sageGreen,
       ],
       accent: FuvekonColors.sageGreenContainer,

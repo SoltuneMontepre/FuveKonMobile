@@ -3,6 +3,7 @@ import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/models/my_ticket_list_item.dart';
+import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -130,136 +131,138 @@ class _TicketPassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const style = ExploreTierStyle.premium;
+    final colors = exploreTicketTextColors(style);
+
     return CustomPaint(
       painter: _TicketPerforationPainter(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Material(
-          color: FuvekonColors.mintCard,
-          borderRadius: BorderRadius.circular(18),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 22),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.eTicketEventLabel,
-                            style: TextStyle(
-                              color: FuvekonColors.onSageGreen.withValues(alpha: 0.65),
-                              fontSize: 12,
-                              letterSpacing: 1.1,
-                              fontWeight: FontWeight.w600,
-                            ),
+        child: TicketExploreSurface(
+          style: style,
+          highlighted: true,
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 22),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.eTicketEventLabel,
+                          style: TextStyle(
+                            color: colors.muted,
+                            fontSize: 12,
+                            letterSpacing: 1.1,
+                            fontWeight: FontWeight.w600,
                           ),
-                          const SizedBox(height: 4),
-                          const Text(
-                            'FUVEKON 2024',
-                            style: TextStyle(
-                              color: FuvekonColors.onSageGreen,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w900,
-                              height: 1.1,
-                            ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'FUVEKON 2024',
+                          style: TextStyle(
+                            color: colors.title,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w900,
+                            height: 1.1,
                           ),
-                        ],
-                      ),
-                    ),
-                    if (args.isValid) _ValidBadge(label: l10n.eTicketValid),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                _InfoLine(label: l10n.eTicketOwner, value: args.ownerName),
-                const SizedBox(height: 10),
-                _InfoLine(
-                  label: l10n.eTicketTier,
-                  value: args.tierLabel,
-                  trailing: const Icon(
-                    Icons.star_rounded,
-                    color: FuvekonColors.lightGold,
-                    size: 18,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                _InfoLine(label: l10n.eTicketDay, value: args.eventDayLabel),
-                const SizedBox(height: 18),
-                Divider(
-                  color: FuvekonColors.onSageGreen.withValues(alpha: 0.12),
-                  height: 1,
-                ),
-                const SizedBox(height: 18),
-                Text(
-                  l10n.eTicketScanHint,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: FuvekonColors.onSageGreen.withValues(alpha: 0.7),
-                    fontSize: 13,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Center(
-                  child: Container(
-                    width: 180,
-                    height: 180,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: FuvekonColors.onSageGreen.withValues(alpha: 0.08),
-                      ),
-                    ),
-                    child: QrImageView(
-                      data: args.referenceCode,
-                      version: QrVersions.auto,
-                      backgroundColor: Colors.white,
-                      eyeStyle: const QrEyeStyle(
-                        eyeShape: QrEyeShape.square,
-                        color: Colors.black87,
-                      ),
-                      dataModuleStyle: const QrDataModuleStyle(
-                        dataModuleShape: QrDataModuleShape.square,
-                        color: Colors.black87,
-                      ),
+                        ),
+                      ],
                     ),
                   ),
+                  if (args.isValid) _ValidBadge(label: l10n.eTicketValid),
+                ],
+              ),
+              const SizedBox(height: 20),
+              _InfoLine(label: l10n.eTicketOwner, value: args.ownerName, colors: colors),
+              const SizedBox(height: 10),
+              _InfoLine(
+                label: l10n.eTicketTier,
+                value: args.tierLabel,
+                colors: colors,
+                trailing: const Icon(
+                  Icons.star_rounded,
+                  color: FuvekonColors.lightGold,
+                  size: 18,
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  l10n.eTicketCodeLabel,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: FuvekonColors.onSageGreen.withValues(alpha: 0.65),
-                    fontSize: 12,
-                  ),
+              ),
+              const SizedBox(height: 10),
+              _InfoLine(label: l10n.eTicketDay, value: args.eventDayLabel, colors: colors),
+              const SizedBox(height: 18),
+              Divider(
+                color: colors.muted.withValues(alpha: 0.25),
+                height: 1,
+              ),
+              const SizedBox(height: 18),
+              Text(
+                l10n.eTicketScanHint,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colors.muted,
+                  fontSize: 13,
                 ),
-                const SizedBox(height: 8),
-                Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: FuvekonColors.onSageGreen.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(10),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: FuvekonColors.lightGold.withValues(alpha: 0.25),
                     ),
-                    child: Text(
-                      args.referenceCode,
-                      style: const TextStyle(
-                        color: FuvekonColors.onSageGreen,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                        letterSpacing: 0.5,
-                      ),
+                  ),
+                  child: QrImageView(
+                    data: args.referenceCode,
+                    version: QrVersions.auto,
+                    backgroundColor: Colors.white,
+                    eyeStyle: const QrEyeStyle(
+                      eyeShape: QrEyeShape.square,
+                      color: Colors.black87,
+                    ),
+                    dataModuleStyle: const QrDataModuleStyle(
+                      dataModuleShape: QrDataModuleShape.square,
+                      color: Colors.black87,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                l10n.eTicketCodeLabel,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: colors.muted,
+                  fontSize: 12,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.06),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    args.referenceCode,
+                    style: TextStyle(
+                      color: colors.title,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -303,11 +306,13 @@ class _InfoLine extends StatelessWidget {
   const _InfoLine({
     required this.label,
     required this.value,
+    required this.colors,
     this.trailing,
   });
 
   final String label;
   final String value;
+  final ({Color title, Color body, Color muted}) colors;
   final Widget? trailing;
 
   @override
@@ -320,7 +325,7 @@ class _InfoLine extends StatelessWidget {
           child: Text(
             label,
             style: TextStyle(
-              color: FuvekonColors.onSageGreen.withValues(alpha: 0.55),
+              color: colors.muted,
               fontSize: 13,
             ),
           ),
@@ -328,8 +333,8 @@ class _InfoLine extends StatelessWidget {
         Expanded(
           child: Text(
             value,
-            style: const TextStyle(
-              color: FuvekonColors.onSageGreen,
+            style: TextStyle(
+              color: colors.title,
               fontSize: 15,
               fontWeight: FontWeight.w700,
             ),
