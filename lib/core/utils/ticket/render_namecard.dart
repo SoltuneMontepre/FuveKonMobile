@@ -185,18 +185,22 @@ class NamecardRenderer {
     return frame.image;
   }
 
-  Future<ui.Image> _loadNetworkImage(String url) async {
-    final response = await _dio.get<List<int>>(
-      url,
-      options: Options(responseType: ResponseType.bytes),
-    );
-    final bytes = response.data;
-    if (bytes == null || bytes.isEmpty) {
-      throw StateError('Failed to load image: $url');
+  Future<ui.Image?> _loadNetworkImage(String url) async {
+    try {
+      final response = await _dio.get<List<int>>(
+        url,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      final bytes = response.data;
+      if (bytes == null || bytes.isEmpty) {
+        return null;
+      }
+      final codec = await ui.instantiateImageCodec(Uint8List.fromList(bytes));
+      final frame = await codec.getNextFrame();
+      return frame.image;
+    } on Object {
+      return null;
     }
-    final codec = await ui.instantiateImageCodec(Uint8List.fromList(bytes));
-    final frame = await codec.getNextFrame();
-    return frame.image;
   }
 
   void _drawCoverImage(
@@ -259,6 +263,7 @@ class NamecardRenderer {
 
 int tierCodeFromTierCodeString(String? tierCode) {
   if (tierCode == null) return 0;
+  if (tierCode.toUpperCase() == 'WS') return 1;
   final match = RegExp(r'^T(\d+)$', caseSensitive: false).firstMatch(tierCode);
   return match != null ? int.tryParse(match.group(1)!) ?? 0 : 0;
 }
