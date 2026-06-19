@@ -96,8 +96,6 @@ class LoginNavLinks extends StatelessWidget {
 class RegisterNavLinks extends StatelessWidget {
   const RegisterNavLinks({super.key});
 
-  static const _textDark = FuvekonColors.darkButtonText;
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -109,21 +107,21 @@ class RegisterNavLinks extends StatelessWidget {
         Text(
           l10n.registerHasAccount,
           style: TextStyle(
-            color: _textDark.withValues(alpha: 0.65),
+            color: Colors.white.withValues(alpha: 0.65),
             fontSize: 14,
           ),
         ),
         TextButton(
           onPressed: () => context.go(Routes.login),
           style: TextButton.styleFrom(
-            foregroundColor: _textDark,
+            foregroundColor: FuvekonColors.darkPrimary,
             padding: const EdgeInsets.symmetric(horizontal: 4),
             minimumSize: Size.zero,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: Text(
             l10n.registerLoginLink,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w800,
               fontSize: 14.5,
             ),

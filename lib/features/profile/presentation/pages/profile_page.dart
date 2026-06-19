@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
@@ -11,8 +13,14 @@ import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_bloc.da
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_event.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_state.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_section_header.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_settings_row.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_status_badge.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
 
+/// Màn 38–42 — profile tab with mint cards and settings links.
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key, this.title});
 
@@ -77,142 +85,168 @@ class _ProfileBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final ext = context.fuvekonTheme;
+    final isVerified = account.isVerified == true;
 
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(FuvekonSpacing.page),
       children: [
-        Center(
+        FuveMintCard(
           child: Column(
             children: [
               S3Avatar(
                 imageUrl: account.avatar,
                 initials: account.initials,
+                radius: 44,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
               Text(
                 account.displayName ?? account.email,
-                style: theme.textTheme.headlineSmall,
+                style: TextStyle(
+                  color: ext.contentOnCard,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                ),
                 textAlign: TextAlign.center,
               ),
               if (account.displayName != null) ...[
                 const SizedBox(height: 4),
                 Text(
                   account.email,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+                  style: TextStyle(color: ext.contentOnCardMuted),
                   textAlign: TextAlign.center,
                 ),
               ],
-              if (account.isVerified == true) ...[
-                const SizedBox(height: 12),
-                Chip(
-                  avatar: Icon(
-                    Icons.verified,
-                    size: 18,
-                    color: colorScheme.primary,
-                  ),
-                  label: const Text('Verified'),
-                  visualDensity: VisualDensity.compact,
-                ),
-              ],
+              const SizedBox(height: 12),
+              FuveStatusBadge(
+                label: isVerified ? 'Đã xác minh email' : 'Chưa xác minh',
+                variant: isVerified
+                    ? FuveStatusBadgeVariant.success
+                    : FuveStatusBadgeVariant.pending,
+                icon: isVerified ? Icons.verified : Icons.mark_email_unread_outlined,
+              ),
             ],
           ),
         ),
-        const SizedBox(height: 32),
-        _InfoSection(
-          title: 'Account',
-          children: [
-            if (account.fursonaName != null && account.fursonaName!.isNotEmpty)
-              _InfoTile(
-                icon: Icons.pets_outlined,
-                label: 'Nickname',
-                value: account.fursonaName!,
+        const SizedBox(height: FuvekonSpacing.stackGapLg),
+        const FuveSectionHeader(title: 'Thông tin tài khoản'),
+        const SizedBox(height: FuvekonSpacing.stackGapMd),
+        FuveMintCard(
+          child: Column(
+            children: [
+              _InfoRow(label: 'Nickname', value: account.fursonaName),
+              _InfoRow(label: 'Họ tên', value: _fullName(account)),
+              _InfoRow(label: 'Email', value: account.email),
+              _InfoRow(label: 'Quốc gia', value: account.country),
+              _InfoRow(
+                label: 'CMND/Hộ chiếu',
+                value: _displayOrPlaceholder(account.idCard),
               ),
-            if (account.firstName != null && account.firstName!.isNotEmpty)
-              _InfoTile(
-                icon: Icons.badge_outlined,
-                label: 'First name',
-                value: account.firstName!,
-              ),
-            if (account.lastName != null && account.lastName!.isNotEmpty)
-              _InfoTile(
-                icon: Icons.badge_outlined,
-                label: 'Last name',
-                value: account.lastName!,
-              ),
-            _InfoTile(
-              icon: Icons.email_outlined,
-              label: 'Email',
-              value: account.email,
-            ),
-            if (account.country != null && account.country!.isNotEmpty)
-              _InfoTile(
-                icon: Icons.public_outlined,
-                label: 'Country',
-                value: account.country!,
-              ),
-            _InfoTile(
-              icon: Icons.credit_card_outlined,
-              label: 'Passport/ID card',
-              value: _displayOrPlaceholder(account.idCard),
-            ),
-            if (account.dateOfBirth != null && account.dateOfBirth!.isNotEmpty)
-              _InfoTile(
-                icon: Icons.cake_outlined,
-                label: 'Date of birth',
-                value: account.dateOfBirth!,
-              ),
-          ],
+              _InfoRow(label: 'Ngày sinh', value: account.dateOfBirth),
+            ],
+          ),
         ),
         if (account.isDealer == true || account.isHasTicket == true) ...[
-          const SizedBox(height: 16),
-          _InfoSection(
-            title: 'Status',
-            children: [
-              if (account.isDealer == true)
-                const _InfoTile(
-                  icon: Icons.storefront_outlined,
-                  label: 'Dealer',
-                  value: 'Yes',
-                ),
-              if (account.isHasTicket == true)
-                ListTile(
-                  leading: const Icon(Icons.confirmation_number_outlined),
-                  title: const Text('Ticket'),
-                  subtitle: const Text('View your ticket'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => context.go(Routes.accountTicket),
-                ),
-            ],
+          const SizedBox(height: FuvekonSpacing.stackGapLg),
+          const FuveSectionHeader(title: 'Trạng thái'),
+          const SizedBox(height: FuvekonSpacing.stackGapMd),
+          FuveMintCard(
+            child: Column(
+              children: [
+                if (account.isDealer == true)
+                  FuveSettingsRow(
+                    icon: Icons.storefront_outlined,
+                    label: 'Gian hàng dealer',
+                    subtitle: 'Quản lý booth và nhân viên',
+                    onTap: () => context.push(Routes.accountDealer),
+                    showDivider: account.isHasTicket == true,
+                  ),
+                if (account.isHasTicket == true)
+                  FuveSettingsRow(
+                    icon: Icons.confirmation_number_outlined,
+                    label: 'Vé của tôi',
+                    subtitle: 'Xem vé và QR check-in',
+                    onTap: () => context.go(Routes.accountTicket),
+                    showDivider: false,
+                  ),
+              ],
+            ),
           ),
         ],
-        const SizedBox(height: 24),
-        FilledButton.icon(
-          onPressed: () async {
-            final updated = await context.push<bool>(
-              Routes.accountEdit,
-              extra: account,
-            );
-            if (updated == true && context.mounted) {
-              context.read<ProfileBloc>().add(
-                    const ProfileEvent.refreshRequested(),
-                  );
-            }
-          },
-          icon: const Icon(Icons.edit_outlined),
-          label: const Text('Edit profile'),
-        ),
-        const SizedBox(height: 16),
-        ListTile(
-          leading: Icon(Icons.logout, color: colorScheme.error),
-          title: Text(
-            'Sign out',
-            style: TextStyle(color: colorScheme.error),
+        const SizedBox(height: FuvekonSpacing.stackGapLg),
+        const FuveSectionHeader(title: 'Hồ sơ & đăng ký'),
+        const SizedBox(height: FuvekonSpacing.stackGapMd),
+        FuveMintCard(
+          child: Column(
+            children: [
+              FuveSettingsRow(
+                icon: Icons.folder_shared_outlined,
+                label: 'Hồ sơ đã gửi',
+                subtitle: 'Panel, talent, conbook',
+                onTap: () => context.push(Routes.accountSubmissions),
+                showDivider: true,
+              ),
+              FuveSettingsRow(
+                icon: Icons.menu_book_outlined,
+                label: 'Thông tin conbook',
+                subtitle: 'Quy định và gửi bài',
+                onTap: () => context.push(Routes.artbook),
+                showDivider: false,
+              ),
+            ],
           ),
-          onTap: () {
+        ),
+        const SizedBox(height: FuvekonSpacing.stackGapLg),
+        const FuveSectionHeader(title: 'Cài đặt tài khoản'),
+        const SizedBox(height: FuvekonSpacing.stackGapMd),
+        FuveMintCard(
+          child: Column(
+            children: [
+              FuveSettingsRow(
+                icon: Icons.edit_outlined,
+                label: 'Chỉnh sửa hồ sơ',
+                onTap: () async {
+                  final updated = await context.push<bool>(
+                    Routes.accountEdit,
+                    extra: account,
+                  );
+                  if (updated == true && context.mounted) {
+                    context.read<ProfileBloc>().add(
+                          const ProfileEvent.refreshRequested(),
+                        );
+                  }
+                },
+                showDivider: true,
+              ),
+              FuveSettingsRow(
+                icon: Icons.verified_user_outlined,
+                label: 'Xác minh danh tính',
+                subtitle: 'API đang phát triển',
+                onTap: () => context.push(Routes.accountVerifyIdentity),
+                showDivider: true,
+              ),
+              FuveSettingsRow(
+                icon: Icons.lock_outline,
+                label: 'Đổi mật khẩu',
+                onTap: () => context.push(Routes.accountChangePassword),
+                showDivider: true,
+              ),
+              FuveSettingsRow(
+                icon: Icons.settings_outlined,
+                label: 'Cài đặt ứng dụng',
+                subtitle: 'Giao diện và ngôn ngữ',
+                onTap: () => context.push(Routes.accountSettings),
+                showDivider: false,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: FuvekonSpacing.stackGapLg),
+        FuvePillButton(
+          label: 'Đăng xuất',
+          icon: Icons.logout,
+          variant: FuvePillButtonVariant.outline,
+          onPressed: () {
             context.read<AuthBloc>().add(const AuthEvent.logoutRequested());
           },
         ),
@@ -221,56 +255,54 @@ class _ProfileBody extends StatelessWidget {
   }
 }
 
+String? _fullName(Account account) {
+  final parts = [account.firstName, account.lastName]
+      .whereType<String>()
+      .where((s) => s.isNotEmpty);
+  final joined = parts.join(' ').trim();
+  return joined.isEmpty ? null : joined;
+}
+
 String _displayOrPlaceholder(String? value) {
   if (value == null || value.trim().isEmpty) return '—';
   return value.trim();
 }
 
-class _InfoSection extends StatelessWidget {
-  const _InfoSection({
-    required this.title,
-    required this.children,
-  });
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({required this.label, required this.value});
 
-  final String title;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        const SizedBox(height: 8),
-        AppContentCard(
-          padding: EdgeInsets.zero,
-          child: Column(children: children),
-        ),
-      ],
-    );
-  }
-}
-
-class _InfoTile extends StatelessWidget {
-  const _InfoTile({
-    required this.icon,
-    required this.label,
-    required this.value,
-  });
-
-  final IconData icon;
   final String label;
-  final String value;
+  final String? value;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(label),
-      subtitle: Text(value),
+    if (value == null || value!.isEmpty) return const SizedBox.shrink();
+    final ext = context.fuvekonTheme;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 110,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: ext.contentOnCardMuted,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value!,
+              style: TextStyle(color: ext.contentOnCard),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -304,10 +336,11 @@ class _ProfileError extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 24),
-            FilledButton.icon(
+            FuvePillButton(
+              label: 'Thử lại',
+              icon: Icons.refresh,
+              expanded: false,
               onPressed: onRetry,
-              icon: const Icon(Icons.refresh),
-              label: const Text('Try again'),
             ),
           ],
         ),

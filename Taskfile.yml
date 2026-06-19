@@ -29,6 +29,7 @@ tasks:
       - task: backend:_wait
       - task: backend:_migrate
       - task: backend:_seed
+      - task: backend:_swagger
       - echo ""
       - echo "Backend ready!"
       - echo "  API     http://localhost:8085/swagger/index.html"
@@ -43,6 +44,7 @@ tasks:
       - task: backend:_infra
       - task: backend:_wait
       - task: backend:_migrate
+      - task: backend:_swagger
       - task: backend:_services
 
   backend:stop:
@@ -59,8 +61,9 @@ tasks:
 
   backend:_tools:
     internal: true
+    dir: "{{.BACKEND_DIR}}"
     cmds:
-      - echo "Dev tools ready (services run with go run, no air required)"
+      - go run ./tools/devctl/main.go ensure-tools
 
   backend:_env:
     internal: true
@@ -130,6 +133,12 @@ tasks:
     dir: "{{.BACKEND_DIR}}/services/general-service"
     cmds:
       - go run ./cmd/seed
+
+  backend:_swagger:
+    internal: true
+    dir: "{{.BACKEND_DIR}}"
+    cmds:
+      - go run ./tools/devctl/main.go swagger-init
 
   backend:_services:
     internal: true

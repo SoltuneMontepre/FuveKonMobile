@@ -1,5 +1,7 @@
 import 'package:fuvekonmobile/core/api/auth_api.dart';
+import 'package:fuvekonmobile/core/auth/auth_session_controller.dart';
 import 'package:fuvekonmobile/core/auth/user_role.dart';
+import 'package:fuvekonmobile/core/errors/failures.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/features/profile/domain/usecases/get_me_usecase.dart';
@@ -10,13 +12,16 @@ class SessionHydrationService {
     required AuthSessionNotifier notifier,
     required GetMeUseCase getMeUseCase,
     required AccountApi accountApi,
-  })  : _notifier = notifier,
-        _getMeUseCase = getMeUseCase,
-        _accountApi = accountApi;
+    required AuthSessionController sessionController,
+  }) : _notifier = notifier,
+       _getMeUseCase = getMeUseCase,
+       _accountApi = accountApi,
+       _sessionController = sessionController;
 
   final AuthSessionNotifier _notifier;
   final GetMeUseCase _getMeUseCase;
   final AccountApi _accountApi;
+  final AuthSessionController _sessionController;
   Future<void>? _inFlight;
 
   Future<void> hydrate({bool force = false}) async {
@@ -64,6 +69,10 @@ class SessionHydrationService {
             success: true,
           );
         case Error(:final failure):
+          if (failure is AuthFailure) {
+            // Stale token (e.g. after DB reseed) or revoked session.
+            _sessionController.notifySessionExpired();
+          }
           _failHydration(failure.message);
       }
     } catch (error) {
@@ -73,8 +82,9 @@ class SessionHydrationService {
 
   Future<List<String>> _loadPermissions() async {
     try {
-      final permsResult =
-          await _accountApi.getMyPermissions(throwOnFailure: false);
+      final permsResult = await _accountApi.getMyPermissions(
+        throwOnFailure: false,
+      );
       if (permsResult.isSuccess && permsResult.data != null) {
         return permsResult.data!;
       }

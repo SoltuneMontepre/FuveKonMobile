@@ -100,1862 +100,2108 @@ abstract class AppLocalizations {
 
   /// No description provided for @continueButton.
   ///
-  /// In vi, this message translates to:
-  /// **'Tiếp tục'**
+  /// In en, this message translates to:
+  /// **'Continue'**
   String get continueButton;
 
   /// No description provided for @versionLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Phiên bản {version}'**
+  /// In en, this message translates to:
+  /// **'Version {version}'**
   String versionLabel(String version);
 
   /// No description provided for @supportLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Hỗ trợ'**
+  /// In en, this message translates to:
+  /// **'Support'**
   String get supportLabel;
 
   /// No description provided for @languageTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Chọn ngôn ngữ'**
+  /// In en, this message translates to:
+  /// **'Choose language'**
   String get languageTitle;
 
   /// No description provided for @languageSubtitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng chọn ngôn ngữ để tiếp tục'**
+  /// In en, this message translates to:
+  /// **'Please select a language to continue'**
   String get languageSubtitle;
 
   /// No description provided for @languageVietnamese.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Tiếng Việt'**
   String get languageVietnamese;
 
   /// No description provided for @languageEnglish.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'English'**
   String get languageEnglish;
 
   /// No description provided for @themeSwitchToLight.
   ///
-  /// In vi, this message translates to:
-  /// **'Chế độ sáng'**
+  /// In en, this message translates to:
+  /// **'Light mode'**
   String get themeSwitchToLight;
 
   /// No description provided for @themeSwitchToDark.
   ///
-  /// In vi, this message translates to:
-  /// **'Chế độ tối'**
+  /// In en, this message translates to:
+  /// **'Dark mode'**
   String get themeSwitchToDark;
 
   /// No description provided for @splashTagline.
   ///
-  /// In vi, this message translates to:
-  /// **'Nơi kết nối cộng đồng sự kiện và nghệ thuật'**
+  /// In en, this message translates to:
+  /// **'Where event communities and art connect'**
   String get splashTagline;
 
   /// No description provided for @startupHydrationFailedTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Không thể kết nối máy chủ'**
+  /// In en, this message translates to:
+  /// **'Could not connect to the server'**
   String get startupHydrationFailedTitle;
 
   /// No description provided for @startupHydrationFailedBody.
   ///
-  /// In vi, this message translates to:
-  /// **'Kiểm tra kết nối mạng hoặc cấu hình API, rồi thử lại.'**
+  /// In en, this message translates to:
+  /// **'Check your internet connection or API settings, then try again.'**
   String get startupHydrationFailedBody;
 
   /// No description provided for @startupRetry.
   ///
-  /// In vi, this message translates to:
-  /// **'Thử lại'**
+  /// In en, this message translates to:
+  /// **'Try again'**
   String get startupRetry;
 
   /// No description provided for @brandTagline.
   ///
-  /// In vi, this message translates to:
-  /// **'Cổng thông tin sự kiện chuyên nghiệp'**
+  /// In en, this message translates to:
+  /// **'Professional event information portal'**
   String get brandTagline;
 
   /// No description provided for @loginTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng nhập'**
+  /// In en, this message translates to:
+  /// **'Sign in'**
   String get loginTitle;
 
   /// No description provided for @loginEmailLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Email hoặc Số điện thoại'**
+  /// In en, this message translates to:
+  /// **'Email or phone number'**
   String get loginEmailLabel;
 
   /// No description provided for @loginEmailHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Nhập email hoặc SĐT'**
+  /// In en, this message translates to:
+  /// **'Enter email or phone'**
   String get loginEmailHint;
 
   /// No description provided for @loginPasswordLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Mật khẩu'**
+  /// In en, this message translates to:
+  /// **'Password'**
   String get loginPasswordLabel;
 
   /// No description provided for @loginForgotPassword.
   ///
-  /// In vi, this message translates to:
-  /// **'Quên mật khẩu?'**
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
   String get loginForgotPassword;
 
   /// No description provided for @loginSubmit.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng nhập'**
+  /// In en, this message translates to:
+  /// **'Sign in'**
   String get loginSubmit;
 
   /// No description provided for @loginOrDivider.
   ///
-  /// In vi, this message translates to:
-  /// **'HOẶC'**
+  /// In en, this message translates to:
+  /// **'OR'**
   String get loginOrDivider;
 
   /// No description provided for @loginGoogle.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng nhập với Google'**
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
   String get loginGoogle;
 
   /// No description provided for @authGoogleNotConfigured.
   ///
-  /// In vi, this message translates to:
-  /// **'Chưa cấu hình Google Sign-In. Thêm GOOGLE_CLIENT_ID vào file .env rồi khởi động lại app.'**
+  /// In en, this message translates to:
+  /// **'Google Sign-In is not configured. Add GOOGLE_CLIENT_ID to .env and restart the app.'**
   String get authGoogleNotConfigured;
 
   /// No description provided for @authGoogleUnsupportedPlatform.
   ///
-  /// In vi, this message translates to:
-  /// **'Google Sign-In chưa hỗ trợ trên Linux/Windows. Hãy chạy app trên Android, iOS, Web (Chrome) hoặc macOS.'**
+  /// In en, this message translates to:
+  /// **'Google Sign-In is not supported on Linux/Windows. Run the app on Android, iOS, Web (Chrome), or macOS.'**
   String get authGoogleUnsupportedPlatform;
 
   /// No description provided for @authGoogleLoginFailed.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng nhập Google thất bại. Vui lòng thử lại hoặc dùng email/mật khẩu.'**
+  /// In en, this message translates to:
+  /// **'Google sign-in failed. Please try again or use email and password.'**
   String get authGoogleLoginFailed;
 
   /// No description provided for @authGoogleDeveloperError.
   ///
-  /// In vi, this message translates to:
-  /// **'Lỗi cấu hình Google OAuth trên Android. Trong Google Cloud Console, tạo OAuth client Android với package com.example.fuvekonmobile và thêm SHA-1 của debug keystore (Android Studio → Gradle → signingReport).'**
+  /// In en, this message translates to:
+  /// **'Google OAuth is misconfigured on Android. In Google Cloud Console, create an Android OAuth client for package com.example.fuvekonmobile and add your debug keystore SHA-1 (Android Studio → Gradle → signingReport).'**
   String get authGoogleDeveloperError;
 
   /// No description provided for @authGoogleIdTokenMissing.
   ///
-  /// In vi, this message translates to:
-  /// **'Google không trả về ID token. Kiểm tra GOOGLE_CLIENT_ID (Web client) trong .env và OAuth client Android trên Google Cloud.'**
+  /// In en, this message translates to:
+  /// **'Google did not return an ID token. Check GOOGLE_CLIENT_ID (Web client) in .env and the Android OAuth client in Google Cloud.'**
   String get authGoogleIdTokenMissing;
 
   /// No description provided for @authGoogleRegistrationDetailsRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng hoàn tất đăng ký với thông tin cá nhân.'**
+  /// In en, this message translates to:
+  /// **'Please complete registration with your profile details.'**
   String get authGoogleRegistrationDetailsRequired;
 
   /// No description provided for @loginNoAccount.
   ///
-  /// In vi, this message translates to:
-  /// **'Chưa có tài khoản?'**
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
   String get loginNoAccount;
 
   /// No description provided for @loginRegisterLink.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng ký'**
+  /// In en, this message translates to:
+  /// **'Register'**
   String get loginRegisterLink;
 
   /// No description provided for @forgotPasswordTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Quên mật khẩu'**
+  /// In en, this message translates to:
+  /// **'Forgot password'**
   String get forgotPasswordTitle;
 
   /// No description provided for @forgotPasswordSubtitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Nhập email hoặc số điện thoại để nhận hướng dẫn đặt lại mật khẩu.'**
+  /// In en, this message translates to:
+  /// **'Enter your email or phone number to receive password reset instructions.'**
   String get forgotPasswordSubtitle;
 
   /// No description provided for @forgotPasswordEmailHint.
   ///
-  /// In vi, this message translates to:
-  /// **'VD: user@example.com'**
+  /// In en, this message translates to:
+  /// **'e.g. user@example.com'**
   String get forgotPasswordEmailHint;
 
   /// No description provided for @forgotPasswordSubmit.
   ///
-  /// In vi, this message translates to:
-  /// **'Gửi liên kết đặt lại mật khẩu'**
+  /// In en, this message translates to:
+  /// **'Send password reset link'**
   String get forgotPasswordSubmit;
 
   /// No description provided for @forgotPasswordBackToLogin.
   ///
-  /// In vi, this message translates to:
-  /// **'Quay lại đăng nhập'**
+  /// In en, this message translates to:
+  /// **'Back to sign in'**
   String get forgotPasswordBackToLogin;
 
   /// No description provided for @forgotPasswordSuccessMessage.
   ///
-  /// In vi, this message translates to:
-  /// **'Nếu tài khoản tồn tại, liên kết đặt lại mật khẩu đã được gửi tới email của bạn.'**
+  /// In en, this message translates to:
+  /// **'If an account exists, a password reset link has been sent to your email.'**
   String get forgotPasswordSuccessMessage;
 
   /// No description provided for @forgotPasswordSentHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng kiểm tra hộp thư và làm theo hướng dẫn.'**
+  /// In en, this message translates to:
+  /// **'Please check your inbox and follow the instructions.'**
   String get forgotPasswordSentHint;
 
   /// No description provided for @forgotPasswordFailureMessage.
   ///
-  /// In vi, this message translates to:
-  /// **'Không thể gửi email đặt lại mật khẩu. Vui lòng thử lại.'**
+  /// In en, this message translates to:
+  /// **'Could not send reset email. Please try again.'**
   String get forgotPasswordFailureMessage;
 
   /// No description provided for @registerTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Tạo tài khoản'**
+  /// In en, this message translates to:
+  /// **'Create account'**
   String get registerTitle;
 
   /// No description provided for @registerSubtitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Bắt đầu hành trình quản lý sự kiện của bạn'**
+  /// In en, this message translates to:
+  /// **'Start your event management journey'**
   String get registerSubtitle;
 
   /// No description provided for @registerFullNameLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Họ và tên'**
+  /// In en, this message translates to:
+  /// **'Full name'**
   String get registerFullNameLabel;
 
   /// No description provided for @registerFullNameHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Nhập họ và tên'**
+  /// In en, this message translates to:
+  /// **'Enter your full name'**
   String get registerFullNameHint;
 
   /// No description provided for @registerEmailLabel.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Email'**
   String get registerEmailLabel;
 
   /// No description provided for @registerEmailHint.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'example@domain.com'**
   String get registerEmailHint;
 
   /// No description provided for @registerPhoneLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Số điện thoại'**
+  /// In en, this message translates to:
+  /// **'Phone number'**
   String get registerPhoneLabel;
 
   /// No description provided for @registerPhoneHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Nhập số điện thoại'**
+  /// In en, this message translates to:
+  /// **'Enter phone number'**
   String get registerPhoneHint;
 
   /// No description provided for @registerPasswordLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Mật khẩu'**
+  /// In en, this message translates to:
+  /// **'Password'**
   String get registerPasswordLabel;
 
   /// No description provided for @registerPasswordHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Tạo mật khẩu'**
+  /// In en, this message translates to:
+  /// **'Create a password'**
   String get registerPasswordHint;
 
   /// No description provided for @registerConfirmPasswordLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Xác nhận mật khẩu'**
+  /// In en, this message translates to:
+  /// **'Confirm password'**
   String get registerConfirmPasswordLabel;
 
   /// No description provided for @registerConfirmPasswordHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Nhập lại mật khẩu'**
+  /// In en, this message translates to:
+  /// **'Re-enter password'**
   String get registerConfirmPasswordHint;
 
   /// No description provided for @registerTermsPrefix.
   ///
-  /// In vi, this message translates to:
-  /// **'Tôi đồng ý với '**
+  /// In en, this message translates to:
+  /// **'I agree to the '**
   String get registerTermsPrefix;
 
   /// No description provided for @registerTermsTos.
   ///
-  /// In vi, this message translates to:
-  /// **'Điều khoản dịch vụ'**
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
   String get registerTermsTos;
 
   /// No description provided for @registerTermsAnd.
   ///
-  /// In vi, this message translates to:
-  /// **' và '**
+  /// In en, this message translates to:
+  /// **' and '**
   String get registerTermsAnd;
 
   /// No description provided for @registerTermsPrivacy.
   ///
-  /// In vi, this message translates to:
-  /// **'Chính sách bảo mật'**
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
   String get registerTermsPrivacy;
 
   /// No description provided for @registerTermsSuffix.
   ///
-  /// In vi, this message translates to:
-  /// **' của FUVEKON.'**
+  /// In en, this message translates to:
+  /// **' of FUVEKON.'**
   String get registerTermsSuffix;
 
   /// No description provided for @registerSubmit.
   ///
-  /// In vi, this message translates to:
-  /// **'Tạo tài khoản'**
+  /// In en, this message translates to:
+  /// **'Create account'**
   String get registerSubmit;
 
   /// No description provided for @registerHasAccount.
   ///
-  /// In vi, this message translates to:
-  /// **'Đã có tài khoản?'**
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
   String get registerHasAccount;
 
   /// No description provided for @registerLoginLink.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng nhập'**
+  /// In en, this message translates to:
+  /// **'Sign in'**
   String get registerLoginLink;
 
   /// No description provided for @registerSuccessMessage.
   ///
-  /// In vi, this message translates to:
-  /// **'Tạo tài khoản thành công. Vui lòng kiểm tra email để nhận mã xác minh.'**
+  /// In en, this message translates to:
+  /// **'Account created. Please check your email for a verification code.'**
   String get registerSuccessMessage;
 
   /// No description provided for @registerFailureMessage.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng ký thất bại. Vui lòng thử lại.'**
+  /// In en, this message translates to:
+  /// **'Registration failed. Please try again.'**
   String get registerFailureMessage;
 
   /// No description provided for @validationEmailRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng nhập email hoặc SĐT'**
+  /// In en, this message translates to:
+  /// **'Please enter email or phone'**
   String get validationEmailRequired;
 
   /// No description provided for @validationEmailInvalid.
   ///
-  /// In vi, this message translates to:
-  /// **'Email không hợp lệ'**
+  /// In en, this message translates to:
+  /// **'Invalid email address'**
   String get validationEmailInvalid;
 
   /// No description provided for @validationPasswordRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng nhập mật khẩu'**
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
   String get validationPasswordRequired;
 
   /// No description provided for @validationPasswordMin.
   ///
-  /// In vi, this message translates to:
-  /// **'Mật khẩu tối thiểu 6 ký tự'**
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
   String get validationPasswordMin;
 
   /// No description provided for @validationFullNameRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng nhập họ và tên'**
+  /// In en, this message translates to:
+  /// **'Please enter your full name'**
   String get validationFullNameRequired;
 
   /// No description provided for @validationFullNameMin.
   ///
-  /// In vi, this message translates to:
-  /// **'Họ và tên phải có ít nhất 2 ký tự'**
+  /// In en, this message translates to:
+  /// **'Full name must be at least 2 characters'**
   String get validationFullNameMin;
 
   /// No description provided for @validationPhoneRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng nhập số điện thoại'**
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
   String get validationPhoneRequired;
 
   /// No description provided for @validationPhoneInvalid.
   ///
-  /// In vi, this message translates to:
-  /// **'Số điện thoại không hợp lệ'**
+  /// In en, this message translates to:
+  /// **'Invalid phone number'**
   String get validationPhoneInvalid;
 
   /// No description provided for @validationConfirmPasswordRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng xác nhận mật khẩu'**
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
   String get validationConfirmPasswordRequired;
 
   /// No description provided for @validationPasswordMismatch.
   ///
-  /// In vi, this message translates to:
-  /// **'Mật khẩu không khớp'**
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
   String get validationPasswordMismatch;
 
   /// No description provided for @validationTermsRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng đồng ý với điều khoản để tiếp tục'**
+  /// In en, this message translates to:
+  /// **'Please accept the terms to continue'**
   String get validationTermsRequired;
 
   /// No description provided for @introBadge.
   ///
-  /// In vi, this message translates to:
-  /// **'GIỚI THIỆU'**
+  /// In en, this message translates to:
+  /// **'INTRODUCTION'**
   String get introBadge;
 
   /// No description provided for @introHeroLine1.
   ///
-  /// In vi, this message translates to:
-  /// **'Khám phá\n'**
+  /// In en, this message translates to:
+  /// **'Discover\n'**
   String get introHeroLine1;
 
   /// No description provided for @introHeroBrand.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'FUVEKON'**
   String get introHeroBrand;
 
   /// No description provided for @introHeroSubtitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Lễ hội văn hóa Anime và quản lý sự kiện chuyên nghiệp hàng đầu.'**
+  /// In en, this message translates to:
+  /// **'The premier Anime culture festival and professional event management platform.'**
   String get introHeroSubtitle;
 
   /// No description provided for @introWhatIsTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'FUVEKON là gì?'**
+  /// In en, this message translates to:
+  /// **'What is FUVEKON?'**
   String get introWhatIsTitle;
 
   /// No description provided for @introWhatIsBody.
   ///
-  /// In vi, this message translates to:
-  /// **'FUVEKON là điểm giao thoa độc đáo giữa thẩm mỹ văn hóa Anime và nền tảng quản lý sự kiện chuyên nghiệp.'**
+  /// In en, this message translates to:
+  /// **'FUVEKON is a unique intersection of Anime culture aesthetics and a professional event management platform.'**
   String get introWhatIsBody;
 
   /// No description provided for @introAudienceTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Dành cho ai?'**
+  /// In en, this message translates to:
+  /// **'Who is it for?'**
   String get introAudienceTitle;
 
   /// No description provided for @introAudienceArtistTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Nghệ sĩ & Creator'**
+  /// In en, this message translates to:
+  /// **'Artists & Creators'**
   String get introAudienceArtistTitle;
 
   /// No description provided for @introAudienceArtistBody.
   ///
-  /// In vi, this message translates to:
-  /// **'Giao lưu và trưng bày tác phẩm.'**
+  /// In en, this message translates to:
+  /// **'Connect and showcase your work.'**
   String get introAudienceArtistBody;
 
   /// No description provided for @introAudienceFanTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Fan hâm mộ'**
+  /// In en, this message translates to:
+  /// **'Fans'**
   String get introAudienceFanTitle;
 
   /// No description provided for @introAudienceFanBody.
   ///
-  /// In vi, this message translates to:
-  /// **'Trải nghiệm không gian văn hóa đặc sắc.'**
+  /// In en, this message translates to:
+  /// **'Experience a distinctive cultural space.'**
   String get introAudienceFanBody;
 
   /// No description provided for @introAudienceOrganizerTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Nhà tổ chức sự kiện'**
+  /// In en, this message translates to:
+  /// **'Event organizers'**
   String get introAudienceOrganizerTitle;
 
   /// No description provided for @introAudienceOrganizerBody.
   ///
-  /// In vi, this message translates to:
-  /// **'Tìm kiếm cơ hội hợp tác và nền tảng quản lý chuyên nghiệp.'**
+  /// In en, this message translates to:
+  /// **'Find collaboration opportunities and a professional management platform.'**
   String get introAudienceOrganizerBody;
 
   /// No description provided for @introViewRules.
   ///
-  /// In vi, this message translates to:
-  /// **'Xem nội quy'**
+  /// In en, this message translates to:
+  /// **'View event rules'**
   String get introViewRules;
 
   /// No description provided for @introViewFaq.
   ///
-  /// In vi, this message translates to:
-  /// **'Xem FAQ'**
+  /// In en, this message translates to:
+  /// **'View FAQ'**
   String get introViewFaq;
 
   /// No description provided for @navIntroduction.
   ///
-  /// In vi, this message translates to:
-  /// **'Giới thiệu'**
+  /// In en, this message translates to:
+  /// **'Introduction'**
   String get navIntroduction;
 
   /// No description provided for @navArtbook.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Conbook'**
   String get navArtbook;
 
   /// No description provided for @navFaq.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'FAQ'**
   String get navFaq;
 
   /// No description provided for @navRules.
   ///
-  /// In vi, this message translates to:
-  /// **'Nội quy'**
+  /// In en, this message translates to:
+  /// **'Rules'**
   String get navRules;
 
   /// No description provided for @navLogin.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng nhập'**
+  /// In en, this message translates to:
+  /// **'Sign in'**
   String get navLogin;
 
   /// No description provided for @navLogout.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng xuất'**
+  /// In en, this message translates to:
+  /// **'Sign out'**
   String get navLogout;
 
   /// No description provided for @navHome.
   ///
-  /// In vi, this message translates to:
-  /// **'Trang chủ'**
+  /// In en, this message translates to:
+  /// **'Home'**
   String get navHome;
 
   /// No description provided for @navSchedule.
   ///
-  /// In vi, this message translates to:
-  /// **'Lịch trình'**
+  /// In en, this message translates to:
+  /// **'Schedule'**
   String get navSchedule;
 
   /// No description provided for @navMyTickets.
   ///
-  /// In vi, this message translates to:
-  /// **'Vé của tôi'**
+  /// In en, this message translates to:
+  /// **'My tickets'**
   String get navMyTickets;
+
+  /// No description provided for @scheduleMyItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'My itinerary'**
+  String get scheduleMyItinerary;
+
+  /// No description provided for @scheduleViewMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue map'**
+  String get scheduleViewMap;
+
+  /// No description provided for @scheduleActivityDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity detail'**
+  String get scheduleActivityDetail;
+
+  /// No description provided for @scheduleEventDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Event detail'**
+  String get scheduleEventDetail;
+
+  /// No description provided for @scheduleVenueDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue detail'**
+  String get scheduleVenueDetail;
+
+  /// No description provided for @scheduleDayFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Select day'**
+  String get scheduleDayFilter;
+
+  /// No description provided for @scheduleActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities'**
+  String get scheduleActivities;
+
+  /// No description provided for @scheduleNoActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'No activities on this day'**
+  String get scheduleNoActivities;
+
+  /// No description provided for @scheduleBookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my itinerary'**
+  String get scheduleBookmark;
+
+  /// No description provided for @scheduleBookmarked.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to itinerary'**
+  String get scheduleBookmarked;
+
+  /// No description provided for @scheduleAddedToItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to your itinerary'**
+  String get scheduleAddedToItinerary;
+
+  /// No description provided for @scheduleConflictTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule conflict'**
+  String get scheduleConflictTitle;
+
+  /// No description provided for @scheduleConflictMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This activity overlaps with \"{title}\" in your itinerary. Replace it?'**
+  String scheduleConflictMessage(String title);
+
+  /// No description provided for @scheduleConflictReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get scheduleConflictReplace;
+
+  /// No description provided for @scheduleConflictCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get scheduleConflictCancel;
+
+  /// No description provided for @scheduleEmptyItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing saved yet'**
+  String get scheduleEmptyItinerary;
+
+  /// No description provided for @scheduleEmptyItineraryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark panels, talent shows, or workshops from the master schedule.'**
+  String get scheduleEmptyItineraryHint;
+
+  /// No description provided for @scheduleRemoveBookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from itinerary'**
+  String get scheduleRemoveBookmark;
+
+  /// No description provided for @scheduleTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get scheduleTime;
+
+  /// No description provided for @scheduleLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get scheduleLocation;
+
+  /// No description provided for @scheduleSpeakers.
+  ///
+  /// In en, this message translates to:
+  /// **'Speakers'**
+  String get scheduleSpeakers;
+
+  /// No description provided for @scheduleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get scheduleDescription;
+
+  /// No description provided for @scheduleVenues.
+  ///
+  /// In en, this message translates to:
+  /// **'Venues'**
+  String get scheduleVenues;
+
+  /// No description provided for @scheduleLocations.
+  ///
+  /// In en, this message translates to:
+  /// **'Locations'**
+  String get scheduleLocations;
+
+  /// No description provided for @scheduleKindPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel'**
+  String get scheduleKindPanel;
+
+  /// No description provided for @scheduleKindTalent.
+  ///
+  /// In en, this message translates to:
+  /// **'Talent'**
+  String get scheduleKindTalent;
+
+  /// No description provided for @scheduleKindWorkshop.
+  ///
+  /// In en, this message translates to:
+  /// **'Workshop'**
+  String get scheduleKindWorkshop;
+
+  /// No description provided for @scheduleKindCeremony.
+  ///
+  /// In en, this message translates to:
+  /// **'Ceremony'**
+  String get scheduleKindCeremony;
+
+  /// No description provided for @scheduleKindOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get scheduleKindOther;
 
   /// No description provided for @navNotifications.
   ///
-  /// In vi, this message translates to:
-  /// **'Thông báo'**
+  /// In en, this message translates to:
+  /// **'Notifications'**
   String get navNotifications;
 
   /// No description provided for @navAccount.
   ///
-  /// In vi, this message translates to:
-  /// **'Tài khoản'**
+  /// In en, this message translates to:
+  /// **'Account'**
   String get navAccount;
 
   /// No description provided for @navSwitchToAdmin.
   ///
-  /// In vi, this message translates to:
-  /// **'Chế độ quản trị'**
+  /// In en, this message translates to:
+  /// **'Admin mode'**
   String get navSwitchToAdmin;
 
   /// No description provided for @navSwitchToUser.
   ///
-  /// In vi, this message translates to:
-  /// **'Chế độ người dùng'**
+  /// In en, this message translates to:
+  /// **'User mode'**
   String get navSwitchToUser;
 
   /// No description provided for @myTicketsFilterActive.
   ///
-  /// In vi, this message translates to:
-  /// **'Đang hiệu lực'**
+  /// In en, this message translates to:
+  /// **'Active'**
   String get myTicketsFilterActive;
 
   /// No description provided for @myTicketsFilterUsed.
   ///
-  /// In vi, this message translates to:
-  /// **'Đã dùng'**
+  /// In en, this message translates to:
+  /// **'Used'**
   String get myTicketsFilterUsed;
 
   /// No description provided for @myTicketsFilterAll.
   ///
-  /// In vi, this message translates to:
-  /// **'Tất cả'**
+  /// In en, this message translates to:
+  /// **'All'**
   String get myTicketsFilterAll;
 
   /// No description provided for @myTicketsStatusActive.
   ///
-  /// In vi, this message translates to:
-  /// **'Đang hiệu lực'**
+  /// In en, this message translates to:
+  /// **'Active'**
   String get myTicketsStatusActive;
 
   /// No description provided for @myTicketsStatusUsed.
   ///
-  /// In vi, this message translates to:
-  /// **'Đã dùng'**
+  /// In en, this message translates to:
+  /// **'Used'**
   String get myTicketsStatusUsed;
 
   /// No description provided for @myTicketsViewTicket.
   ///
-  /// In vi, this message translates to:
-  /// **'Xem vé →'**
+  /// In en, this message translates to:
+  /// **'View ticket →'**
   String get myTicketsViewTicket;
 
   /// No description provided for @myTicketsEventDateRange.
   ///
-  /// In vi, this message translates to:
-  /// **'20-22/10/2024'**
+  /// In en, this message translates to:
+  /// **'Oct 20–22, 2024'**
   String get myTicketsEventDateRange;
 
   /// No description provided for @myTicketsEmptyTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Bạn chưa có vé'**
+  /// In en, this message translates to:
+  /// **'You don\'t have a ticket'**
   String get myTicketsEmptyTitle;
 
   /// No description provided for @myTicketsEmptySubtitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Mua vé để tham gia sự kiện.'**
+  /// In en, this message translates to:
+  /// **'Buy a ticket to attend the event.'**
   String get myTicketsEmptySubtitle;
 
   /// No description provided for @myTicketsEmptyFilter.
   ///
-  /// In vi, this message translates to:
-  /// **'Không có vé trong mục này'**
+  /// In en, this message translates to:
+  /// **'No tickets in this tab'**
   String get myTicketsEmptyFilter;
 
   /// No description provided for @myTicketsBrowse.
   ///
-  /// In vi, this message translates to:
-  /// **'Xem các hạng vé'**
+  /// In en, this message translates to:
+  /// **'Browse ticket tiers'**
   String get myTicketsBrowse;
 
   /// No description provided for @eTicketEventLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'SỰ KIỆN'**
+  /// In en, this message translates to:
+  /// **'EVENT'**
   String get eTicketEventLabel;
 
   /// No description provided for @eTicketValid.
   ///
-  /// In vi, this message translates to:
-  /// **'Hợp lệ'**
+  /// In en, this message translates to:
+  /// **'Valid'**
   String get eTicketValid;
 
   /// No description provided for @eTicketOwner.
   ///
-  /// In vi, this message translates to:
-  /// **'Người sở hữu'**
+  /// In en, this message translates to:
+  /// **'Owner'**
   String get eTicketOwner;
 
   /// No description provided for @eTicketTier.
   ///
-  /// In vi, this message translates to:
-  /// **'Hạng vé'**
+  /// In en, this message translates to:
+  /// **'Tier'**
   String get eTicketTier;
 
   /// No description provided for @eTicketDay.
   ///
-  /// In vi, this message translates to:
-  /// **'Ngày'**
+  /// In en, this message translates to:
+  /// **'Date'**
   String get eTicketDay;
 
   /// No description provided for @eTicketScanHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Quét mã QR tại cổng kiểm soát'**
+  /// In en, this message translates to:
+  /// **'Scan the QR code at the entrance'**
   String get eTicketScanHint;
 
   /// No description provided for @eTicketCodeLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Mã vé'**
+  /// In en, this message translates to:
+  /// **'Ticket code'**
   String get eTicketCodeLabel;
 
   /// No description provided for @eTicketBenefitsTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Quyền lợi vé {tier}'**
+  /// In en, this message translates to:
+  /// **'{tier} ticket benefits'**
   String eTicketBenefitsTitle(String tier);
 
   /// No description provided for @eTicketUpgrade.
   ///
-  /// In vi, this message translates to:
-  /// **'Nâng cấp vé'**
+  /// In en, this message translates to:
+  /// **'Upgrade ticket'**
   String get eTicketUpgrade;
 
   /// No description provided for @eTicketSaveWallet.
   ///
-  /// In vi, this message translates to:
-  /// **'Lưu vào ví Apple/Google'**
+  /// In en, this message translates to:
+  /// **'Save to Apple/Google Wallet'**
   String get eTicketSaveWallet;
 
   /// No description provided for @eTicketWalletSoon.
   ///
-  /// In vi, this message translates to:
-  /// **'Tính năng lưu ví sẽ có sau.'**
+  /// In en, this message translates to:
+  /// **'Wallet save coming soon.'**
   String get eTicketWalletSoon;
 
   /// No description provided for @ticketUpgradeTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Nâng cấp hạng vé'**
+  /// In en, this message translates to:
+  /// **'Upgrade ticket tier'**
   String get ticketUpgradeTitle;
 
   /// No description provided for @ticketUpgradeCurrentLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'VÉ HIỆN TẠI CỦA BẠN'**
+  /// In en, this message translates to:
+  /// **'YOUR CURRENT TICKET'**
   String get ticketUpgradeCurrentLabel;
 
   /// No description provided for @ticketUpgradeOptionsLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Lựa chọn nâng cấp'**
+  /// In en, this message translates to:
+  /// **'Upgrade options'**
   String get ticketUpgradeOptionsLabel;
 
   /// No description provided for @ticketUpgradeExtraBenefits.
   ///
-  /// In vi, this message translates to:
-  /// **'QUYỀN LỢI BỔ SUNG'**
+  /// In en, this message translates to:
+  /// **'ADDITIONAL BENEFITS'**
   String get ticketUpgradeExtraBenefits;
 
   /// No description provided for @ticketUpgradeTotalLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'TỔNG THANH TOÁN THÊM'**
+  /// In en, this message translates to:
+  /// **'TOTAL ADDITIONAL PAYMENT'**
   String get ticketUpgradeTotalLabel;
 
   /// No description provided for @ticketUpgradeContinue.
   ///
-  /// In vi, this message translates to:
-  /// **'Tiếp tục nâng cấp'**
+  /// In en, this message translates to:
+  /// **'Continue upgrade'**
   String get ticketUpgradeContinue;
 
   /// No description provided for @ticketUpgradeInfoNote.
   ///
-  /// In vi, this message translates to:
-  /// **'Việc nâng cấp vé VIP lên Super VIP sẽ được hệ thống xử lý và xác nhận trong vòng 24h làm việc.'**
+  /// In en, this message translates to:
+  /// **'Upgrading your ticket will be processed and confirmed within 24 business hours.'**
   String get ticketUpgradeInfoNote;
 
   /// No description provided for @ticketUpgradeNoTicket.
   ///
-  /// In vi, this message translates to:
-  /// **'Bạn chưa có vé để nâng cấp.'**
+  /// In en, this message translates to:
+  /// **'You don\'t have a ticket to upgrade.'**
   String get ticketUpgradeNoTicket;
 
   /// No description provided for @ticketUpgradeMaxTier.
   ///
-  /// In vi, this message translates to:
-  /// **'Bạn đang ở hạng vé cao nhất ({tier}).'**
+  /// In en, this message translates to:
+  /// **'You are already on the highest tier ({tier}).'**
   String ticketUpgradeMaxTier(String tier);
 
   /// No description provided for @authHomeUpcomingBadge.
   ///
-  /// In vi, this message translates to:
-  /// **'Sự kiện sắp diễn ra'**
+  /// In en, this message translates to:
+  /// **'Upcoming events'**
   String get authHomeUpcomingBadge;
 
   /// No description provided for @authHomeHeroTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Lễ Hội Giao Lưu Văn Hóa Anime'**
+  /// In en, this message translates to:
+  /// **'Anime Culture Exchange Festival'**
   String get authHomeHeroTitle;
 
   /// No description provided for @authHomeHeroSubtitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Khám phá không gian nghệ thuật và trải nghiệm độc đáo.'**
+  /// In en, this message translates to:
+  /// **'Discover art spaces and unique experiences.'**
   String get authHomeHeroSubtitle;
 
   /// No description provided for @authHomeSearchHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Tìm kiếm sự kiện, nghệ sĩ...'**
+  /// In en, this message translates to:
+  /// **'Search events, artists...'**
   String get authHomeSearchHint;
 
   /// No description provided for @authHomeFeaturedTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Sự kiện nổi bật'**
+  /// In en, this message translates to:
+  /// **'Featured events'**
   String get authHomeFeaturedTitle;
 
   /// No description provided for @authHomeSeeAll.
   ///
-  /// In vi, this message translates to:
-  /// **'Xem tất cả'**
+  /// In en, this message translates to:
+  /// **'See all'**
   String get authHomeSeeAll;
 
   /// No description provided for @authHomeHotBadge.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Hot'**
   String get authHomeHotBadge;
 
   /// No description provided for @authHomeFeaturedEventTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Triển Lãm Nghệ Thuật Đương Đại'**
+  /// In en, this message translates to:
+  /// **'Contemporary Art Exhibition'**
   String get authHomeFeaturedEventTitle;
 
   /// No description provided for @authHomeFeaturedEventDate.
   ///
-  /// In vi, this message translates to:
-  /// **'20 Tháng 10, 2023'**
+  /// In en, this message translates to:
+  /// **'October 20, 2023'**
   String get authHomeFeaturedEventDate;
 
   /// No description provided for @authHomeFeaturedEventLocation.
   ///
-  /// In vi, this message translates to:
-  /// **'Trung Tâm SECC'**
+  /// In en, this message translates to:
+  /// **'SECC Center'**
   String get authHomeFeaturedEventLocation;
 
   /// No description provided for @authHomeBuyTicket.
   ///
-  /// In vi, this message translates to:
-  /// **'Mua vé'**
+  /// In en, this message translates to:
+  /// **'Buy tickets'**
   String get authHomeBuyTicket;
+
+  /// No description provided for @authHomeViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get authHomeViewDetails;
+
+  /// No description provided for @authHomeViewTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'View tickets'**
+  String get authHomeViewTickets;
 
   /// No description provided for @authHomeNotificationsEmpty.
   ///
-  /// In vi, this message translates to:
-  /// **'Chưa có thông báo mới.'**
+  /// In en, this message translates to:
+  /// **'No new notifications yet.'**
   String get authHomeNotificationsEmpty;
+
+  /// No description provided for @authHomeBentoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get authHomeBentoTitle;
+
+  /// No description provided for @authHomeMyTicketTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My tickets'**
+  String get authHomeMyTicketTitle;
+
+  /// No description provided for @authHomeMyTicketSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View e-ticket & QR'**
+  String get authHomeMyTicketSubtitle;
+
+  /// No description provided for @authHomeTodayScheduleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s schedule'**
+  String get authHomeTodayScheduleTitle;
+
+  /// No description provided for @authHomeTodaySchedulePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel Voice Actor · 2:00 PM'**
+  String get authHomeTodaySchedulePreview;
+
+  /// No description provided for @authHomeBuyTicketBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy FUVEKON tickets'**
+  String get authHomeBuyTicketBanner;
+
+  /// No description provided for @authHomeBuyTicketBannerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Early bird now open'**
+  String get authHomeBuyTicketBannerSubtitle;
+
+  /// No description provided for @authHomeShortcutsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shortcuts'**
+  String get authHomeShortcutsTitle;
+
+  /// No description provided for @authHomeShortcutArtbook.
+  ///
+  /// In en, this message translates to:
+  /// **'Artbook'**
+  String get authHomeShortcutArtbook;
+
+  /// No description provided for @authHomeShortcutLostFound.
+  ///
+  /// In en, this message translates to:
+  /// **'L&F'**
+  String get authHomeShortcutLostFound;
 
   /// No description provided for @landingBadge.
   ///
-  /// In vi, this message translates to:
-  /// **'SỰ KIỆN HÀNG ĐẦU'**
+  /// In en, this message translates to:
+  /// **'TOP EVENT'**
   String get landingBadge;
 
   /// No description provided for @landingHeroTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Sự kiện Anime'**
+  /// In en, this message translates to:
+  /// **'Anime Event'**
   String get landingHeroTitle;
 
   /// No description provided for @landingHeroBody.
   ///
-  /// In vi, this message translates to:
-  /// **'Trải nghiệm không gian văn hóa độc bản với hệ thống quản lý vé và lịch trình thông minh. Tham gia ngay để không bỏ lỡ những khoảnh khắc tuyệt vời nhất.'**
+  /// In en, this message translates to:
+  /// **'Experience a unique cultural space with smart ticket management and scheduling. Join now so you don\'t miss the most wonderful moments.'**
   String get landingHeroBody;
 
   /// No description provided for @landingRegister.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng ký'**
+  /// In en, this message translates to:
+  /// **'Register'**
   String get landingRegister;
 
   /// No description provided for @landingViewTickets.
   ///
-  /// In vi, this message translates to:
-  /// **'Xem vé'**
+  /// In en, this message translates to:
+  /// **'View tickets'**
   String get landingViewTickets;
 
   /// No description provided for @exploreTicketsTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Khám phá các loại vé'**
+  /// In en, this message translates to:
+  /// **'Explore ticket types'**
   String get exploreTicketsTitle;
 
   /// No description provided for @exploreTicketsSubtitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Lựa chọn trải nghiệm phù hợp nhất với bạn tại triển lãm.'**
+  /// In en, this message translates to:
+  /// **'Choose the experience that suits you best at the exhibition.'**
   String get exploreTicketsSubtitle;
 
   /// No description provided for @exploreTicketsFooterInfo.
   ///
-  /// In vi, this message translates to:
-  /// **'Bạn có thể xem thông tin vé trước. Để mua vé, vui lòng đăng ký hoặc đăng nhập.'**
+  /// In en, this message translates to:
+  /// **'You can browse ticket details first. To purchase, please register or sign in.'**
   String get exploreTicketsFooterInfo;
 
   /// No description provided for @exploreTicketsRegisterCta.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng ký để mua vé'**
+  /// In en, this message translates to:
+  /// **'Register to buy tickets'**
   String get exploreTicketsRegisterCta;
 
   /// No description provided for @exploreTicketsBuyCta.
   ///
-  /// In vi, this message translates to:
-  /// **'Mua vé ngay'**
+  /// In en, this message translates to:
+  /// **'Buy tickets now'**
   String get exploreTicketsBuyCta;
 
   /// No description provided for @exploreTicketsLoginPrompt.
   ///
-  /// In vi, this message translates to:
-  /// **'Đã có tài khoản?'**
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
   String get exploreTicketsLoginPrompt;
 
   /// No description provided for @exploreTicketsLoginLink.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng nhập ngay'**
+  /// In en, this message translates to:
+  /// **'Sign in now'**
   String get exploreTicketsLoginLink;
 
   /// No description provided for @exploreTicketsPopularBadge.
   ///
-  /// In vi, this message translates to:
-  /// **'Phổ biến nhất'**
+  /// In en, this message translates to:
+  /// **'Most popular'**
   String get exploreTicketsPopularBadge;
 
   /// No description provided for @exploreTicketsSoldOut.
   ///
-  /// In vi, this message translates to:
-  /// **'Hết vé'**
+  /// In en, this message translates to:
+  /// **'Sold out'**
   String get exploreTicketsSoldOut;
 
   /// No description provided for @exploreTicketsEmpty.
   ///
-  /// In vi, this message translates to:
-  /// **'Hiện chưa có hạng vé nào.'**
+  /// In en, this message translates to:
+  /// **'No ticket tiers are available yet.'**
   String get exploreTicketsEmpty;
 
   /// No description provided for @exploreTicketsRetry.
   ///
-  /// In vi, this message translates to:
-  /// **'Thử lại'**
+  /// In en, this message translates to:
+  /// **'Retry'**
   String get exploreTicketsRetry;
 
   /// No description provided for @ticketDetailBenefitsTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Quyền lợi đi kèm'**
+  /// In en, this message translates to:
+  /// **'Included benefits'**
   String get ticketDetailBenefitsTitle;
 
   /// No description provided for @ticketDetailCompareTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'So sánh với {standardTier}'**
+  /// In en, this message translates to:
+  /// **'Compare with {standardTier}'**
   String ticketDetailCompareTitle(String standardTier);
 
   /// No description provided for @ticketDetailTotal.
   ///
-  /// In vi, this message translates to:
-  /// **'Tổng cộng'**
+  /// In en, this message translates to:
+  /// **'Total'**
   String get ticketDetailTotal;
 
   /// No description provided for @ticketDetailCompareAccess.
   ///
-  /// In vi, this message translates to:
-  /// **'Quyền truy cập'**
+  /// In en, this message translates to:
+  /// **'Access'**
   String get ticketDetailCompareAccess;
 
   /// No description provided for @ticketDetailCompareCheckIn.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Check-in'**
   String get ticketDetailCompareCheckIn;
 
   /// No description provided for @ticketDetailComparePriority.
   ///
-  /// In vi, this message translates to:
-  /// **'Ưu tiên'**
+  /// In en, this message translates to:
+  /// **'Priority'**
   String get ticketDetailComparePriority;
 
   /// No description provided for @ticketDetailCompareShared.
   ///
-  /// In vi, this message translates to:
-  /// **'Thông thường'**
+  /// In en, this message translates to:
+  /// **'Shared'**
   String get ticketDetailCompareShared;
 
   /// No description provided for @ticketDetailCompareBadge.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Badge'**
   String get ticketDetailCompareBadge;
 
   /// No description provided for @ticketDetailCompareCustom.
   ///
-  /// In vi, this message translates to:
-  /// **'Tùy chỉnh'**
+  /// In en, this message translates to:
+  /// **'Custom'**
   String get ticketDetailCompareCustom;
 
   /// No description provided for @ticketDetailCompareNormal.
   ///
-  /// In vi, this message translates to:
-  /// **'Tiêu chuẩn'**
+  /// In en, this message translates to:
+  /// **'Standard'**
   String get ticketDetailCompareNormal;
 
   /// No description provided for @ticketDetailCompareGifts.
   ///
-  /// In vi, this message translates to:
-  /// **'Quà tặng thêm'**
+  /// In en, this message translates to:
+  /// **'Extra gifts'**
   String get ticketDetailCompareGifts;
 
   /// No description provided for @landingExperienceTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Trải Nghiệm Hoàn Hảo'**
+  /// In en, this message translates to:
+  /// **'Perfect Experience'**
   String get landingExperienceTitle;
 
   /// No description provided for @landingExperienceBody.
   ///
-  /// In vi, this message translates to:
-  /// **'Quản lý hành trình của bạn tại sự kiện một cách dễ dàng.'**
+  /// In en, this message translates to:
+  /// **'Manage your journey at the event with ease.'**
   String get landingExperienceBody;
 
   /// No description provided for @rulesTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Nội quy sự kiện'**
+  /// In en, this message translates to:
+  /// **'Event rules'**
   String get rulesTitle;
 
   /// No description provided for @rulesIntro.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng đọc kỹ các quy định dưới đây để đảm bảo một kỳ triển lãm an toàn, chuyên nghiệp và đáng nhớ cho tất cả mọi người.'**
+  /// In en, this message translates to:
+  /// **'Please read the following rules carefully to ensure a safe, professional, and memorable convention for everyone.'**
   String get rulesIntro;
 
   /// No description provided for @rulesAttendanceTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Nội quy tham dự'**
+  /// In en, this message translates to:
+  /// **'Attendance rules'**
   String get rulesAttendanceTitle;
 
   /// No description provided for @rulesAttendance1.
   ///
-  /// In vi, this message translates to:
-  /// **'Xuất trình vé hợp lệ tại cổng.'**
+  /// In en, this message translates to:
+  /// **'Present a valid ticket at the entrance.'**
   String get rulesAttendance1;
 
   /// No description provided for @rulesAttendance2.
   ///
-  /// In vi, this message translates to:
-  /// **'Không mang vũ khí, chất cháy nổ.'**
+  /// In en, this message translates to:
+  /// **'No weapons or flammable materials.'**
   String get rulesAttendance2;
 
   /// No description provided for @rulesAttendance3.
   ///
-  /// In vi, this message translates to:
-  /// **'Tôn trọng không gian chung.'**
+  /// In en, this message translates to:
+  /// **'Respect shared spaces.'**
   String get rulesAttendance3;
 
   /// No description provided for @rulesCosplayTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Quy định cosplay'**
+  /// In en, this message translates to:
+  /// **'Cosplay guidelines'**
   String get rulesCosplayTitle;
 
   /// No description provided for @rulesCosplay1.
   ///
-  /// In vi, this message translates to:
-  /// **'Trang phục phù hợp thuần phong mỹ tục.'**
+  /// In en, this message translates to:
+  /// **'Costumes must be appropriate and respectful.'**
   String get rulesCosplay1;
 
   /// No description provided for @rulesCosplay2.
   ///
-  /// In vi, this message translates to:
-  /// **'Đạo cụ không sắc nhọn, nguy hiểm.'**
+  /// In en, this message translates to:
+  /// **'Props must not be sharp or dangerous.'**
   String get rulesCosplay2;
 
   /// No description provided for @rulesCosplay3.
   ///
-  /// In vi, this message translates to:
-  /// **'Sử dụng khu vực thay đồ đúng quy định.'**
+  /// In en, this message translates to:
+  /// **'Use designated changing areas only.'**
   String get rulesCosplay3;
 
   /// No description provided for @rulesBoothTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Quy định gian hàng'**
+  /// In en, this message translates to:
+  /// **'Vendor booth rules'**
   String get rulesBoothTitle;
 
   /// No description provided for @rulesBooth1.
   ///
-  /// In vi, this message translates to:
-  /// **'Kinh doanh đúng danh mục đăng ký.'**
+  /// In en, this message translates to:
+  /// **'Sell only registered product categories.'**
   String get rulesBooth1;
 
   /// No description provided for @rulesBooth2.
   ///
-  /// In vi, this message translates to:
-  /// **'Không lấn chiếm lối đi chung.'**
+  /// In en, this message translates to:
+  /// **'Do not block walkways.'**
   String get rulesBooth2;
 
   /// No description provided for @rulesBooth3.
   ///
-  /// In vi, this message translates to:
-  /// **'Đảm bảo vệ sinh khu vực.'**
+  /// In en, this message translates to:
+  /// **'Keep your booth area clean.'**
   String get rulesBooth3;
 
   /// No description provided for @rulesConductTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Quy định hành vi'**
+  /// In en, this message translates to:
+  /// **'Code of conduct'**
   String get rulesConductTitle;
 
   /// No description provided for @rulesConduct1.
   ///
-  /// In vi, this message translates to:
-  /// **'Nghiêm cấm quấy rối dưới mọi hình thức.'**
+  /// In en, this message translates to:
+  /// **'Harassment of any kind is strictly prohibited.'**
   String get rulesConduct1;
 
   /// No description provided for @rulesConduct2.
   ///
-  /// In vi, this message translates to:
-  /// **'Không xả rác bừa bãi.'**
+  /// In en, this message translates to:
+  /// **'No littering.'**
   String get rulesConduct2;
 
   /// No description provided for @rulesConduct3.
   ///
-  /// In vi, this message translates to:
-  /// **'Tuân thủ hướng dẫn của BTC.'**
+  /// In en, this message translates to:
+  /// **'Follow staff instructions.'**
   String get rulesConduct3;
 
   /// No description provided for @rulesAgreeCheckbox.
   ///
-  /// In vi, this message translates to:
-  /// **'Tôi đã đọc, hiểu và đồng ý với các nội quy trên.'**
+  /// In en, this message translates to:
+  /// **'I have read, understood, and agree to the rules above.'**
   String get rulesAgreeCheckbox;
 
   /// No description provided for @rulesConfirmButton.
   ///
-  /// In vi, this message translates to:
-  /// **'Xác nhận đồng ý'**
+  /// In en, this message translates to:
+  /// **'Confirm agreement'**
   String get rulesConfirmButton;
 
   /// No description provided for @faqPageTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Câu hỏi thường gặp'**
+  /// In en, this message translates to:
+  /// **'Frequently asked questions'**
   String get faqPageTitle;
 
   /// No description provided for @faqPageSubtitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Tìm kiếm câu trả lời nhanh chóng cho các thắc mắc của bạn.'**
+  /// In en, this message translates to:
+  /// **'Quickly find answers to your questions.'**
   String get faqPageSubtitle;
 
   /// No description provided for @faqSearchHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Bạn cần tìm gì?'**
+  /// In en, this message translates to:
+  /// **'What are you looking for?'**
   String get faqSearchHint;
 
   /// No description provided for @faqNoResults.
   ///
-  /// In vi, this message translates to:
-  /// **'Không tìm thấy kết quả phù hợp.'**
+  /// In en, this message translates to:
+  /// **'No matching results found.'**
   String get faqNoResults;
 
   /// No description provided for @faqNeedHelp.
   ///
-  /// In vi, this message translates to:
-  /// **'Bạn cần hỗ trợ thêm? '**
+  /// In en, this message translates to:
+  /// **'Need more help? '**
   String get faqNeedHelp;
 
   /// No description provided for @faqContactUs.
   ///
-  /// In vi, this message translates to:
-  /// **'Liên hệ chúng tôi →'**
+  /// In en, this message translates to:
+  /// **'Contact us →'**
   String get faqContactUs;
 
   /// No description provided for @faqCatTickets.
   ///
-  /// In vi, this message translates to:
-  /// **'Vé'**
+  /// In en, this message translates to:
+  /// **'Tickets'**
   String get faqCatTickets;
 
   /// No description provided for @faqTicketsQ1.
   ///
-  /// In vi, this message translates to:
-  /// **'Mua vé ở đâu?'**
+  /// In en, this message translates to:
+  /// **'Where can I buy tickets?'**
   String get faqTicketsQ1;
 
   /// No description provided for @faqTicketsA1.
   ///
-  /// In vi, this message translates to:
-  /// **'Vào mục Vé trên app FUVEKON, chọn hạng vé phù hợp và hoàn tất thanh toán theo hướng dẫn. Mỗi tài khoản chỉ được sở hữu một vé active tại một thời điểm.'**
+  /// In en, this message translates to:
+  /// **'Go to Tickets in the FUVEKON app, choose a tier, and complete payment as instructed. Each account can only hold one active ticket at a time.'**
   String get faqTicketsA1;
 
   /// No description provided for @faqTicketsQ2.
   ///
-  /// In vi, this message translates to:
-  /// **'Có những hạng vé nào?'**
+  /// In en, this message translates to:
+  /// **'What ticket tiers are available?'**
   String get faqTicketsQ2;
 
   /// No description provided for @faqTicketsA2.
   ///
-  /// In vi, this message translates to:
-  /// **'BTC công bố các hạng vé (Standard, VIP, v.v.) kèm quyền lợi tương ứng trên app. Giá và số lượng có thể thay đổi theo từng đợt mở bán.'**
+  /// In en, this message translates to:
+  /// **'The organizing committee publishes tiers (Standard, VIP, etc.) with corresponding benefits in the app. Price and quantity may change each sales wave.'**
   String get faqTicketsA2;
 
   /// No description provided for @faqTicketsQ3.
   ///
-  /// In vi, this message translates to:
-  /// **'Thanh toán vé bằng cách nào?'**
+  /// In en, this message translates to:
+  /// **'How do I pay for tickets?'**
   String get faqTicketsQ3;
 
   /// No description provided for @faqTicketsA3.
   ///
-  /// In vi, this message translates to:
-  /// **'Sau khi đặt vé, bạn chuyển khoản qua mã QR ngân hàng hoặc PayPal như hướng dẫn, rồi bấm \"Tôi đã thanh toán\". BTC sẽ xác minh và duyệt vé trong thời gian sớm nhất.'**
+  /// In en, this message translates to:
+  /// **'After booking, transfer via bank QR or PayPal as instructed, then tap \"I have paid\". The committee will verify and approve your ticket as soon as possible.'**
   String get faqTicketsA3;
 
   /// No description provided for @faqTicketsQ4.
   ///
-  /// In vi, this message translates to:
-  /// **'Vé điện tử có hợp lệ không?'**
+  /// In en, this message translates to:
+  /// **'Are e-tickets valid?'**
   String get faqTicketsQ4;
 
   /// No description provided for @faqTicketsA4.
   ///
-  /// In vi, this message translates to:
-  /// **'Có. Sau khi vé được duyệt, mã QR check-in và badge điện tử sẽ được gửi qua email và hiển thị trong app. Xuất trình QR tại cổng soát vé.'**
+  /// In en, this message translates to:
+  /// **'Yes. Once approved, your check-in QR and digital badge are sent by email and shown in the app. Present the QR at the gate.'**
   String get faqTicketsA4;
 
   /// No description provided for @faqTicketsQ5.
   ///
-  /// In vi, this message translates to:
-  /// **'Tôi có thể nâng cấp vé không?'**
+  /// In en, this message translates to:
+  /// **'Can I upgrade my ticket?'**
   String get faqTicketsQ5;
 
   /// No description provided for @faqTicketsA5.
   ///
-  /// In vi, this message translates to:
-  /// **'Có. Chủ vé đã được duyệt có thể nâng cấp lên hạng cao hơn bằng cách trả phần chênh lệch. Vé nâng cấp cũng cần được BTC xác minh thanh toán trước khi có hiệu lực.'**
+  /// In en, this message translates to:
+  /// **'Yes. Approved ticket holders can upgrade by paying the difference. Upgrades also require payment verification before taking effect.'**
   String get faqTicketsA5;
 
   /// No description provided for @faqTicketsQ6.
   ///
-  /// In vi, this message translates to:
-  /// **'Tôi có thể hoàn vé không?'**
+  /// In en, this message translates to:
+  /// **'Can I get a refund?'**
   String get faqTicketsQ6;
 
   /// No description provided for @faqTicketsA6.
   ///
-  /// In vi, this message translates to:
-  /// **'Vé đã mua không được hoàn tiền, trừ khi BTC có thông báo chính thức (ví dụ: sự kiện hủy hoặc thay đổi lớn).'**
+  /// In en, this message translates to:
+  /// **'Purchased tickets are non-refundable unless the committee announces otherwise (e.g. event cancellation or major changes).'**
   String get faqTicketsA6;
 
   /// No description provided for @faqCatRegister.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng ký'**
+  /// In en, this message translates to:
+  /// **'Registration'**
   String get faqCatRegister;
 
   /// No description provided for @faqRegisterQ1.
   ///
-  /// In vi, this message translates to:
-  /// **'Làm sao để tạo tài khoản?'**
+  /// In en, this message translates to:
+  /// **'How do I create an account?'**
   String get faqRegisterQ1;
 
   /// No description provided for @faqRegisterA1.
   ///
-  /// In vi, this message translates to:
-  /// **'Chọn Đăng ký trên màn hình đăng nhập, điền email và mật khẩu, sau đó xác minh OTP gửi về email để kích hoạt tài khoản.'**
+  /// In en, this message translates to:
+  /// **'Choose Register on the sign-in screen, enter email and password, then verify the OTP sent to your email to activate your account.'**
   String get faqRegisterA1;
 
   /// No description provided for @faqRegisterQ2.
   ///
-  /// In vi, this message translates to:
-  /// **'Có thể đăng nhập bằng Google không?'**
+  /// In en, this message translates to:
+  /// **'Can I sign in with Google?'**
   String get faqRegisterQ2;
 
   /// No description provided for @faqRegisterA2.
   ///
-  /// In vi, this message translates to:
-  /// **'Có. FUVEKON hỗ trợ đăng nhập nhanh qua tài khoản Google. Lần đầu đăng nhập có thể cần bổ sung thông tin hồ sơ.'**
+  /// In en, this message translates to:
+  /// **'Yes. FUVEKON supports quick sign-in with Google. First-time sign-in may require completing your profile.'**
   String get faqRegisterA2;
 
   /// No description provided for @faqRegisterQ3.
   ///
-  /// In vi, this message translates to:
-  /// **'Tại sao cần xác minh email?'**
+  /// In en, this message translates to:
+  /// **'Why do I need to verify email?'**
   String get faqRegisterQ3;
 
   /// No description provided for @faqRegisterA3.
   ///
-  /// In vi, this message translates to:
-  /// **'Xác minh email giúp bảo vệ tài khoản và cho phép bạn chỉnh sửa hồ sơ, mua vé, đăng ký panel/talent/dealer sau khi verify.'**
+  /// In en, this message translates to:
+  /// **'Email verification protects your account and unlocks profile editing, ticket purchase, and panel/talent/dealer registration after verification.'**
   String get faqRegisterA3;
 
   /// No description provided for @faqRegisterQ4.
   ///
-  /// In vi, this message translates to:
-  /// **'Quên mật khẩu thì làm sao?'**
+  /// In en, this message translates to:
+  /// **'What if I forgot my password?'**
   String get faqRegisterQ4;
 
   /// No description provided for @faqRegisterA4.
   ///
-  /// In vi, this message translates to:
-  /// **'Chọn Quên mật khẩu trên màn đăng nhập, nhập email đã đăng ký và làm theo link/OTP để đặt lại mật khẩu mới.'**
+  /// In en, this message translates to:
+  /// **'Choose Forgot password on the sign-in screen, enter your registered email, and follow the link/OTP to set a new password.'**
   String get faqRegisterA4;
 
   /// No description provided for @faqRegisterQ5.
   ///
-  /// In vi, this message translates to:
-  /// **'Không nhận được mã OTP?'**
+  /// In en, this message translates to:
+  /// **'I didn\'t receive the OTP code?'**
   String get faqRegisterQ5;
 
   /// No description provided for @faqRegisterA5.
   ///
-  /// In vi, this message translates to:
-  /// **'Kiểm tra hộp thư spam. Nếu vẫn không thấy, dùng nút Gửi lại OTP trên app hoặc liên hệ contact@fuvekon.vn.'**
+  /// In en, this message translates to:
+  /// **'Check your spam folder. If still missing, use Resend OTP in the app or contact contact@fuvekon.vn.'**
   String get faqRegisterA5;
 
   /// No description provided for @faqCatDealer.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Dealer'**
   String get faqCatDealer;
 
   /// No description provided for @faqDealerQ1.
   ///
-  /// In vi, this message translates to:
-  /// **'Làm sao đăng ký gian hàng?'**
+  /// In en, this message translates to:
+  /// **'How do I register a booth?'**
   String get faqDealerQ1;
 
   /// No description provided for @faqDealerA1.
   ///
-  /// In vi, this message translates to:
-  /// **'Vào mục Dealer trên app, đọc quy định gian hàng, điền form đăng ký và tải lên tối đa 5 bảng giá. Hồ sơ sẽ được BTC xem xét.'**
+  /// In en, this message translates to:
+  /// **'Go to Dealer in the app, read booth rules, fill out the form, and upload up to 5 price sheets. Your application will be reviewed.'**
   String get faqDealerA1;
 
   /// No description provided for @faqDealerQ2.
   ///
-  /// In vi, this message translates to:
-  /// **'Điều kiện để trở thành Dealer?'**
+  /// In en, this message translates to:
+  /// **'What are the requirements to become a Dealer?'**
   String get faqDealerQ2;
 
   /// No description provided for @faqDealerA2.
   ///
-  /// In vi, this message translates to:
-  /// **'Bạn cần tài khoản đã xác minh email và tuân thủ quy định sản phẩm, bản quyền của BTC. Chi tiết xem tại mục Dealer trên app.'**
+  /// In en, this message translates to:
+  /// **'You need a verified email account and must comply with product and copyright rules. See Dealer in the app for details.'**
   String get faqDealerA2;
 
   /// No description provided for @faqDealerQ3.
   ///
-  /// In vi, this message translates to:
-  /// **'Phí gian hàng bao nhiêu?'**
+  /// In en, this message translates to:
+  /// **'How much does a booth cost?'**
   String get faqDealerQ3;
 
   /// No description provided for @faqDealerA3.
   ///
-  /// In vi, this message translates to:
-  /// **'Phí phụ thuộc loại gian hàng, diện tích và vị trí. BTC sẽ gửi thông tin chi phí sau khi duyệt hồ sơ đăng ký.'**
+  /// In en, this message translates to:
+  /// **'Fees depend on booth type, size, and location. The committee sends cost details after approving your application.'**
   String get faqDealerA3;
 
   /// No description provided for @faqDealerQ4.
   ///
-  /// In vi, this message translates to:
-  /// **'Thêm nhân viên gian hàng thế nào?'**
+  /// In en, this message translates to:
+  /// **'How do I add booth staff?'**
   String get faqDealerQ4;
 
   /// No description provided for @faqDealerA4.
   ///
-  /// In vi, this message translates to:
-  /// **'Chủ gian hàng tạo mã mời (booth code) trong app. Nhân viên nhập mã này tại mục Tham gia gian hàng để được thêm vào booth.'**
+  /// In en, this message translates to:
+  /// **'The booth owner creates an invite code in the app. Staff enter it under Join booth to be added.'**
   String get faqDealerA4;
 
   /// No description provided for @faqDealerQ5.
   ///
-  /// In vi, this message translates to:
-  /// **'Bao lâu thì biết kết quả duyệt?'**
+  /// In en, this message translates to:
+  /// **'How long until I know the result?'**
   String get faqDealerQ5;
 
   /// No description provided for @faqDealerA5.
   ///
-  /// In vi, this message translates to:
-  /// **'Thời gian duyệt thường từ 3–7 ngày làm việc. Bạn sẽ nhận thông báo qua email và trong app khi hồ sơ được duyệt hoặc từ chối.'**
+  /// In en, this message translates to:
+  /// **'Review usually takes 3–7 business days. You\'ll be notified by email and in the app when approved or rejected.'**
   String get faqDealerA5;
 
   /// No description provided for @faqCatTalent.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Talent Show'**
   String get faqCatTalent;
 
   /// No description provided for @faqTalentQ1.
   ///
-  /// In vi, this message translates to:
-  /// **'Ai có thể đăng ký biểu diễn?'**
+  /// In en, this message translates to:
+  /// **'Who can apply to perform?'**
   String get faqTalentQ1;
 
   /// No description provided for @faqTalentA1.
   ///
-  /// In vi, this message translates to:
-  /// **'Nghệ sĩ, cosplayer, ca sĩ, vũ công và creator có thể nộp hồ sơ qua mục Talent trên app.'**
+  /// In en, this message translates to:
+  /// **'Artists, cosplayers, singers, dancers, and creators can submit via Talent in the app.'**
   String get faqTalentA1;
 
   /// No description provided for @faqTalentQ2.
   ///
-  /// In vi, this message translates to:
-  /// **'Có cần vé sự kiện không?'**
+  /// In en, this message translates to:
+  /// **'Do I need an event ticket?'**
   String get faqTalentQ2;
 
   /// No description provided for @faqTalentA2.
   ///
-  /// In vi, this message translates to:
-  /// **'Có. Bạn cần sở hữu vé đã được duyệt và tài khoản đã xác minh email trước khi gửi đơn đăng ký talent.'**
+  /// In en, this message translates to:
+  /// **'Yes. You need an approved ticket and a verified email account before submitting a talent application.'**
   String get faqTalentA2;
 
   /// No description provided for @faqTalentQ3.
   ///
-  /// In vi, this message translates to:
-  /// **'Hồ sơ talent cần gì?'**
+  /// In en, this message translates to:
+  /// **'What does a talent application need?'**
   String get faqTalentQ3;
 
   /// No description provided for @faqTalentA3.
   ///
-  /// In vi, this message translates to:
-  /// **'Giới thiệu bản thân, mô tả tiết mục dự kiến, hình ảnh/video tham khảo và thông tin liên hệ. Form chi tiết có trên app.'**
+  /// In en, this message translates to:
+  /// **'Self-introduction, planned performance description, reference photos/videos, and contact info. The full form is in the app.'**
   String get faqTalentA3;
 
   /// No description provided for @faqTalentQ4.
   ///
-  /// In vi, this message translates to:
-  /// **'Thời hạn đăng ký?'**
+  /// In en, this message translates to:
+  /// **'What is the application deadline?'**
   String get faqTalentQ4;
 
   /// No description provided for @faqTalentA4.
   ///
-  /// In vi, this message translates to:
-  /// **'Thời hạn đóng đơn được công bố trên app, website và fanpage chính thức FUVEKON. Nộp sớm để BTC sắp xếp lịch biểu diễn.'**
+  /// In en, this message translates to:
+  /// **'Deadlines are announced on the app, website, and official fanpage. Apply early so the committee can schedule performances.'**
   String get faqTalentA4;
 
   /// No description provided for @faqCatPanel.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Panel'**
   String get faqCatPanel;
 
   /// No description provided for @faqPanelQ1.
   ///
-  /// In vi, this message translates to:
-  /// **'Panel là gì?'**
+  /// In en, this message translates to:
+  /// **'What is a panel?'**
   String get faqPanelQ1;
 
   /// No description provided for @faqPanelA1.
   ///
-  /// In vi, this message translates to:
-  /// **'Panel là buổi giao lưu, thảo luận chuyên đề với khách mời, diễn giả và người hâm mộ trong không gian sự kiện.'**
+  /// In en, this message translates to:
+  /// **'A panel is a themed discussion or Q&A session with guests, speakers, and fans at the event.'**
   String get faqPanelA1;
 
   /// No description provided for @faqPanelQ2.
   ///
-  /// In vi, this message translates to:
-  /// **'Đăng ký panel như thế nào?'**
+  /// In en, this message translates to:
+  /// **'How do I register a panel?'**
   String get faqPanelQ2;
 
   /// No description provided for @faqPanelA2.
   ///
-  /// In vi, this message translates to:
-  /// **'Vào mục Panel, điền đề xuất chủ đề, thông tin diễn giả và nội dung dự kiến. BTC sẽ duyệt và xếp lịch nếu phù hợp.'**
+  /// In en, this message translates to:
+  /// **'Go to Panel, submit your topic proposal, speaker info, and planned content. The committee will review and schedule if suitable.'**
   String get faqPanelA2;
 
   /// No description provided for @faqPanelQ3.
   ///
-  /// In vi, this message translates to:
-  /// **'Có cần vé để đăng ký panel không?'**
+  /// In en, this message translates to:
+  /// **'Do I need a ticket to register a panel?'**
   String get faqPanelQ3;
 
   /// No description provided for @faqPanelA3.
   ///
-  /// In vi, this message translates to:
-  /// **'Có. Người đăng ký cần vé active đã duyệt và tài khoản email đã xác minh, tương tự đăng ký talent.'**
+  /// In en, this message translates to:
+  /// **'Yes. Applicants need an approved active ticket and verified email, similar to talent registration.'**
   String get faqPanelA3;
 
   /// No description provided for @faqPanelQ4.
   ///
-  /// In vi, this message translates to:
-  /// **'Lịch panel công bố khi nào?'**
+  /// In en, this message translates to:
+  /// **'When is the panel schedule published?'**
   String get faqPanelQ4;
 
   /// No description provided for @faqPanelA4.
   ///
-  /// In vi, this message translates to:
-  /// **'Lịch panel chính thức được đăng tại mục Lịch trình sau khi BTC duyệt xong các đơn. Bạn có thể bookmark để nhận nhắc nhở.'**
+  /// In en, this message translates to:
+  /// **'The official schedule is posted under Schedule after applications are reviewed. You can bookmark items for reminders.'**
   String get faqPanelA4;
 
   /// No description provided for @faqCatSchedule.
   ///
-  /// In vi, this message translates to:
-  /// **'Lịch trình'**
+  /// In en, this message translates to:
+  /// **'Schedule'**
   String get faqCatSchedule;
 
   /// No description provided for @faqScheduleQ1.
   ///
-  /// In vi, this message translates to:
-  /// **'Xem lịch trình ở đâu?'**
+  /// In en, this message translates to:
+  /// **'Where can I view the schedule?'**
   String get faqScheduleQ1;
 
   /// No description provided for @faqScheduleA1.
   ///
-  /// In vi, this message translates to:
-  /// **'Mục Lịch trình trên app hiển thị toàn bộ hoạt động theo ngày, khung giờ và sân khấu/khu vực.'**
+  /// In en, this message translates to:
+  /// **'Schedule in the app shows all activities by day, time slot, and stage/area.'**
   String get faqScheduleA1;
 
   /// No description provided for @faqScheduleQ2.
   ///
-  /// In vi, this message translates to:
-  /// **'Lịch có thay đổi không?'**
+  /// In en, this message translates to:
+  /// **'Can the schedule change?'**
   String get faqScheduleQ2;
 
   /// No description provided for @faqScheduleA2.
   ///
-  /// In vi, this message translates to:
-  /// **'BTC có thể điều chỉnh lịch vì lý do vận hành. Thay đổi sẽ được cập nhật trên app và gửi thông báo nếu bạn đã bookmark mục đó.'**
+  /// In en, this message translates to:
+  /// **'The committee may adjust the schedule for operational reasons. Updates appear in the app and notifications if you bookmarked an item.'**
   String get faqScheduleA2;
 
   /// No description provided for @faqScheduleQ3.
   ///
-  /// In vi, this message translates to:
-  /// **'Lịch cá nhân (My Schedule) là gì?'**
+  /// In en, this message translates to:
+  /// **'What is My Schedule?'**
   String get faqScheduleQ3;
 
   /// No description provided for @faqScheduleA3.
   ///
-  /// In vi, this message translates to:
-  /// **'Bạn có thể bookmark panel, talent show hoặc workshop yêu thích để xem trên timeline cá nhân và nhận nhắc trước 10–15 phút.'**
+  /// In en, this message translates to:
+  /// **'Bookmark panels, talent shows, or workshops to view on your personal timeline and get reminders 10–15 minutes ahead.'**
   String get faqScheduleA3;
 
   /// No description provided for @faqScheduleQ4.
   ///
-  /// In vi, this message translates to:
-  /// **'Sự kiện diễn ra mấy ngày?'**
+  /// In en, this message translates to:
+  /// **'How many days is the event?'**
   String get faqScheduleQ4;
 
   /// No description provided for @faqScheduleA4.
   ///
-  /// In vi, this message translates to:
-  /// **'Thời gian và địa điểm chính thức được công bố trên trang sự kiện và mục Giới thiệu trên app.'**
+  /// In en, this message translates to:
+  /// **'Official dates and venue are announced on the event page and Introduction in the app.'**
   String get faqScheduleA4;
 
   /// No description provided for @faqCatLostFound.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'Lost & Found'**
   String get faqCatLostFound;
 
   /// No description provided for @faqLostFoundQ1.
   ///
-  /// In vi, this message translates to:
-  /// **'Tôi bị mất đồ tại sự kiện?'**
+  /// In en, this message translates to:
+  /// **'I lost something at the event?'**
   String get faqLostFoundQ1;
 
   /// No description provided for @faqLostFoundA1.
   ///
-  /// In vi, this message translates to:
-  /// **'Đến quầy Lost & Found tại venue hoặc gửi báo mất trên app (mô tả, hình ảnh, thời gian và vị trí ước tính).'**
+  /// In en, this message translates to:
+  /// **'Visit the Lost & Found desk at the venue or report a loss in the app (description, photo, time, and approximate location).'**
   String get faqLostFoundA1;
 
   /// No description provided for @faqLostFoundQ2.
   ///
-  /// In vi, this message translates to:
-  /// **'Xem danh sách đồ tìm thấy ở đâu?'**
+  /// In en, this message translates to:
+  /// **'Where can I see found items?'**
   String get faqLostFoundQ2;
 
   /// No description provided for @faqLostFoundA2.
   ///
-  /// In vi, this message translates to:
-  /// **'Bảng tin Lost & Found công khai trên app liệt kê đồ được ghi nhận (ẩn thông tin nhận dạng nhạy cảm để tránh gian lận).'**
+  /// In en, this message translates to:
+  /// **'The public Lost & Found board in the app lists recorded items (sensitive identifying details are hidden to prevent fraud).'**
   String get faqLostFoundA2;
 
   /// No description provided for @faqLostFoundQ3.
   ///
-  /// In vi, this message translates to:
-  /// **'Nhận lại đồ bị mất thế nào?'**
+  /// In en, this message translates to:
+  /// **'How do I claim a lost item?'**
   String get faqLostFoundQ3;
 
   /// No description provided for @faqLostFoundA3.
   ///
-  /// In vi, this message translates to:
-  /// **'Mang giấy tờ tùy thân đến quầy hỗ trợ, mô tả vật dụng và thời gian mất. Staff sẽ đối chiếu và bàn giao nếu khớp.'**
+  /// In en, this message translates to:
+  /// **'Bring ID to the support desk, describe the item and when it was lost. Staff will verify and return it if it matches.'**
   String get faqLostFoundA3;
 
   /// No description provided for @faqLostFoundQ4.
   ///
-  /// In vi, this message translates to:
-  /// **'Đồ mất bao lâu thì được xử lý?'**
+  /// In en, this message translates to:
+  /// **'How long until a lost item is processed?'**
   String get faqLostFoundQ4;
 
   /// No description provided for @faqLostFoundA4.
   ///
-  /// In vi, this message translates to:
-  /// **'Staff cập nhật trạng thái (Lost / Found / Claimed) trên hệ thống. Bạn theo dõi tiến trình trong app hoặc liên hệ quầy.'**
+  /// In en, this message translates to:
+  /// **'Staff update status (Lost / Found / Claimed) in the system. Track progress in the app or contact the desk.'**
   String get faqLostFoundA4;
 
   /// No description provided for @artbookTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Conbook FUVEKON'**
+  /// In en, this message translates to:
+  /// **'FUVEKON Conbook'**
   String get artbookTitle;
 
   /// No description provided for @artbookSubtitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Hành trình Nghệ thuật - 2024'**
+  /// In en, this message translates to:
+  /// **'Artistic Journey — 2024'**
   String get artbookSubtitle;
 
   /// No description provided for @artbookDescription.
   ///
-  /// In vi, this message translates to:
-  /// **'Cuốn sách tổng hợp hơn 50 tác phẩm nghệ thuật từ cộng đồng sáng tạo FUVEKON, được in trên giấy mỹ thuật cao cấp.'**
+  /// In en, this message translates to:
+  /// **'A collection of over 50 artworks from the FUVEKON creative community, printed on premium art paper.'**
   String get artbookDescription;
 
   /// No description provided for @artbookPageCount.
   ///
-  /// In vi, this message translates to:
-  /// **'120 Trang'**
+  /// In en, this message translates to:
+  /// **'120 Pages'**
   String get artbookPageCount;
 
   /// No description provided for @artbookPaperType.
   ///
-  /// In vi, this message translates to:
-  /// **'Giấy Couche 150gsm'**
+  /// In en, this message translates to:
+  /// **'150gsm Couche paper'**
   String get artbookPaperType;
 
   /// No description provided for @artbookSubmitCta.
   ///
-  /// In vi, this message translates to:
-  /// **'Gửi tác phẩm cho Conbook'**
+  /// In en, this message translates to:
+  /// **'Submit artwork for Conbook'**
   String get artbookSubmitCta;
 
   /// No description provided for @artbookSubmitBack.
   ///
-  /// In vi, this message translates to:
-  /// **'QUAY LẠI'**
+  /// In en, this message translates to:
+  /// **'GO BACK'**
   String get artbookSubmitBack;
 
   /// No description provided for @artbookSubmitTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Gửi Conbook'**
+  /// In en, this message translates to:
+  /// **'Submit Conbook'**
   String get artbookSubmitTitle;
 
   /// No description provided for @artbookSubmitIntro.
   ///
-  /// In vi, this message translates to:
-  /// **'Nơi tôn vinh những tác phẩm xuất sắc. Hãy gửi kiệt tác của bạn để được BTC xem xét đưa vào cuốn Conbook FUVEKON.'**
+  /// In en, this message translates to:
+  /// **'A place to celebrate outstanding works. Send your masterpiece for the organizing committee to review for the FUVEKON Conbook.'**
   String get artbookSubmitIntro;
 
   /// No description provided for @artbookFormSectionTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Thông tin tác phẩm'**
+  /// In en, this message translates to:
+  /// **'Artwork information'**
   String get artbookFormSectionTitle;
 
   /// No description provided for @artbookFieldTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Tên tác phẩm'**
+  /// In en, this message translates to:
+  /// **'Artwork title'**
   String get artbookFieldTitle;
 
   /// No description provided for @artbookFieldTitleHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Ví dụ: Giấc mơ chiều thu'**
+  /// In en, this message translates to:
+  /// **'e.g. Autumn daydream'**
   String get artbookFieldTitleHint;
 
   /// No description provided for @artbookFieldAuthor.
   ///
-  /// In vi, this message translates to:
-  /// **'Tác giả / Bút danh'**
+  /// In en, this message translates to:
+  /// **'Author / Pen name'**
   String get artbookFieldAuthor;
 
   /// No description provided for @artbookFieldAuthorHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Nhập bút danh của bạn'**
+  /// In en, this message translates to:
+  /// **'Enter your pen name'**
   String get artbookFieldAuthorHint;
 
   /// No description provided for @artbookFieldGenre.
   ///
-  /// In vi, this message translates to:
-  /// **'Thể loại'**
+  /// In en, this message translates to:
+  /// **'Genre'**
   String get artbookFieldGenre;
 
   /// No description provided for @artbookFieldGenreHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Chọn thể loại'**
+  /// In en, this message translates to:
+  /// **'Select a genre'**
   String get artbookFieldGenreHint;
 
   /// No description provided for @artbookFieldDescription.
   ///
-  /// In vi, this message translates to:
-  /// **'Mô tả ý tưởng (Không bắt buộc)'**
+  /// In en, this message translates to:
+  /// **'Idea description (optional)'**
   String get artbookFieldDescription;
 
   /// No description provided for @artbookFieldDescriptionHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Chia sẻ câu chuyện đằng sau tác phẩm của bạn...'**
+  /// In en, this message translates to:
+  /// **'Share the story behind your artwork...'**
   String get artbookFieldDescriptionHint;
 
   /// No description provided for @artbookFieldPortfolio.
   ///
-  /// In vi, this message translates to:
-  /// **'Link Portfolio'**
+  /// In en, this message translates to:
+  /// **'Portfolio link'**
   String get artbookFieldPortfolio;
 
   /// No description provided for @artbookFieldPortfolioHint.
   ///
-  /// In vi, this message translates to:
+  /// In en, this message translates to:
   /// **'https://'**
   String get artbookFieldPortfolioHint;
 
   /// No description provided for @artbookFieldPreview.
   ///
-  /// In vi, this message translates to:
-  /// **'Preview Tác phẩm'**
+  /// In en, this message translates to:
+  /// **'Artwork preview'**
   String get artbookFieldPreview;
 
   /// No description provided for @artbookFieldRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng điền thông tin này'**
+  /// In en, this message translates to:
+  /// **'This field is required'**
   String get artbookFieldRequired;
 
   /// No description provided for @artbookUploadLabel.
   ///
-  /// In vi, this message translates to:
-  /// **'Kéo thả file hoặc Click để tải lên'**
+  /// In en, this message translates to:
+  /// **'Drag and drop or click to upload'**
   String get artbookUploadLabel;
 
   /// No description provided for @artbookUploadHint.
   ///
-  /// In vi, this message translates to:
-  /// **'Hỗ trợ JPG, PNG, PDF. Tối đa 20MB.'**
+  /// In en, this message translates to:
+  /// **'Supports JPG, PNG, PDF. Max 20MB.'**
   String get artbookUploadHint;
 
   /// No description provided for @artbookPreviewRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng tải lên preview tác phẩm'**
+  /// In en, this message translates to:
+  /// **'Please upload an artwork preview'**
   String get artbookPreviewRequired;
 
   /// No description provided for @artbookSubmitButton.
   ///
-  /// In vi, this message translates to:
-  /// **'Gửi tác phẩm cho Conbook'**
+  /// In en, this message translates to:
+  /// **'Submit artwork for Conbook'**
   String get artbookSubmitButton;
 
   /// No description provided for @artbookRulesTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'Quy định nộp bài'**
+  /// In en, this message translates to:
+  /// **'Submission rules'**
   String get artbookRulesTitle;
 
   /// No description provided for @artbookRuleSizeTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'KÍCH THƯỚC'**
+  /// In en, this message translates to:
+  /// **'SIZE'**
   String get artbookRuleSizeTitle;
 
   /// No description provided for @artbookRuleSizeBody.
   ///
-  /// In vi, this message translates to:
-  /// **'A4 (210 x 297mm), lề an toàn 5mm.'**
+  /// In en, this message translates to:
+  /// **'A4 (210 x 297mm) with a 5mm safety margin.'**
   String get artbookRuleSizeBody;
 
   /// No description provided for @artbookRuleFormatTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'ĐỊNH DẠNG'**
+  /// In en, this message translates to:
+  /// **'FORMAT'**
   String get artbookRuleFormatTitle;
 
   /// No description provided for @artbookRuleFormatBody.
   ///
-  /// In vi, this message translates to:
-  /// **'Chế độ màu CMYK, tối thiểu 300dpi.'**
+  /// In en, this message translates to:
+  /// **'CMYK color mode, minimum 300dpi.'**
   String get artbookRuleFormatBody;
 
   /// No description provided for @artbookRuleCopyrightTitle.
   ///
-  /// In vi, this message translates to:
-  /// **'BẢN QUYỀN'**
+  /// In en, this message translates to:
+  /// **'COPYRIGHT'**
   String get artbookRuleCopyrightTitle;
 
   /// No description provided for @artbookRuleCopyrightBody.
   ///
-  /// In vi, this message translates to:
-  /// **'Tác phẩm phải là nguyên bản, chưa từng xuất bản thương mại.'**
+  /// In en, this message translates to:
+  /// **'Must be original work that has never been commercially published.'**
   String get artbookRuleCopyrightBody;
 
   /// No description provided for @artbookDeadline.
   ///
-  /// In vi, this message translates to:
-  /// **'Hạn chót nộp tác phẩm: 20 Tháng 11, 2023'**
+  /// In en, this message translates to:
+  /// **'Submission deadline: November 20, 2023'**
   String get artbookDeadline;
 
   /// No description provided for @artbookLoginRequired.
   ///
-  /// In vi, this message translates to:
-  /// **'Vui lòng đăng nhập để gửi tác phẩm Conbook'**
+  /// In en, this message translates to:
+  /// **'Please sign in to submit your Conbook artwork'**
   String get artbookLoginRequired;
 
   /// No description provided for @artbookSubmitSuccess.
   ///
-  /// In vi, this message translates to:
-  /// **'Đã gửi tác phẩm thành công!'**
+  /// In en, this message translates to:
+  /// **'Artwork submitted successfully!'**
   String get artbookSubmitSuccess;
 
   /// No description provided for @artbookSubmitFailed.
   ///
-  /// In vi, this message translates to:
-  /// **'Không thể gửi tác phẩm. Vui lòng thử lại.'**
+  /// In en, this message translates to:
+  /// **'Could not submit artwork. Please try again.'**
   String get artbookSubmitFailed;
 
   /// No description provided for @artbookGenreIllustration.
   ///
-  /// In vi, this message translates to:
-  /// **'Minh họa'**
+  /// In en, this message translates to:
+  /// **'Illustration'**
   String get artbookGenreIllustration;
 
   /// No description provided for @artbookGenreComic.
   ///
-  /// In vi, this message translates to:
-  /// **'Truyện tranh'**
+  /// In en, this message translates to:
+  /// **'Comic'**
   String get artbookGenreComic;
 
   /// No description provided for @artbookGenrePhoto.
   ///
-  /// In vi, this message translates to:
-  /// **'Nhiếp ảnh'**
+  /// In en, this message translates to:
+  /// **'Photography'**
   String get artbookGenrePhoto;
 
   /// No description provided for @artbookGenreDigital.
   ///
-  /// In vi, this message translates to:
-  /// **'Digital Art'**
+  /// In en, this message translates to:
+  /// **'Digital art'**
   String get artbookGenreDigital;
 
   /// No description provided for @artbookGenreOther.
   ///
-  /// In vi, this message translates to:
-  /// **'Khác'**
+  /// In en, this message translates to:
+  /// **'Other'**
   String get artbookGenreOther;
 }
 

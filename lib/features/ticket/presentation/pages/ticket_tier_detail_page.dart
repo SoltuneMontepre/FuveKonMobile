@@ -9,6 +9,7 @@ import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_state.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_tier_detail_bloc.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:go_router/go_router.dart';
 
 class TicketTierDetailPage extends StatelessWidget {
@@ -36,42 +37,44 @@ class _TicketTierDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const _DetailHeader(),
-            Expanded(
-              child: BlocBuilder<TicketTierDetailBloc, TicketTierDetailState>(
-                builder: (context, state) {
-                  return switch (state) {
-                    TicketTierDetailInitial() || TicketTierDetailLoading() =>
-                      const Center(child: CircularProgressIndicator()),
-                    TicketTierDetailLoaded(
-                      :final tier,
-                      :final allTiers,
-                    ) =>
-                      _DetailBody(tier: tier, allTiers: allTiers),
-                    TicketTierDetailFailure(:final message) => _ErrorBody(
-                        message: message,
-                        onRetry: () => context.read<TicketTierDetailBloc>().add(
-                              TicketTierDetailStarted(
-                                GoRouterState.of(context)
-                                    .pathParameters['id']!,
+      body: FuvekonIllustratedPageStack(
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const _DetailHeader(),
+              Expanded(
+                child: BlocBuilder<TicketTierDetailBloc, TicketTierDetailState>(
+                  builder: (context, state) {
+                    return switch (state) {
+                      TicketTierDetailInitial() || TicketTierDetailLoading() =>
+                        const Center(child: CircularProgressIndicator()),
+                      TicketTierDetailLoaded(
+                        :final tier,
+                        :final allTiers,
+                      ) =>
+                        _DetailBody(tier: tier, allTiers: allTiers),
+                      TicketTierDetailFailure(:final message) => _ErrorBody(
+                          message: message,
+                          onRetry: () => context.read<TicketTierDetailBloc>().add(
+                                TicketTierDetailStarted(
+                                  GoRouterState.of(context)
+                                      .pathParameters['id']!,
+                                ),
                               ),
-                            ),
-                      ),
-                  };
+                        ),
+                    };
+                  },
+                ),
+              ),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  final isAuth = _isAuthenticated(state);
+                  return _BottomCta(isAuthenticated: isAuth);
                 },
               ),
-            ),
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                final isAuth = _isAuthenticated(state);
-                return _BottomCta(isAuthenticated: isAuth);
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -636,13 +639,10 @@ class _BottomCta extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: FuvekonColors.darkSurface,
-        border: Border(top: BorderSide(color: FuvekonColors.darkBorder)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+      child: FuvekonIllustratedContentPanel(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
         child: Row(
           children: [
             Expanded(

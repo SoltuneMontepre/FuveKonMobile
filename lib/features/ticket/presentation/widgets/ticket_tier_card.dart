@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/utils/ticket_price.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 
 class TierCardColors {
   const TierCardColors({
@@ -28,7 +30,7 @@ const _tierPalettes = [
     price: Colors.white,
     check: FuvekonColors.lightGold,
     button: FuvekonColors.tier1,
-    buttonText: Color(0xFFE5FFED),
+    buttonText: FuvekonColors.onSageGreenContainer,
   ),
   TierCardColors(
     banner: FuvekonColors.tier2,
@@ -36,7 +38,7 @@ const _tierPalettes = [
     price: Colors.white,
     check: FuvekonColors.sageGreen,
     button: FuvekonColors.dustyRoseContainer,
-    buttonText: Color(0xFFFCDAE5),
+    buttonText: FuvekonColors.secondaryFixed,
   ),
   TierCardColors(
     banner: FuvekonColors.tier3,
@@ -66,6 +68,8 @@ class TicketTierCard extends StatelessWidget {
     required this.isPurchasing,
     this.soldOut = false,
     this.closed = false,
+    this.actionLabel,
+    this.showAction = true,
   });
 
   final TicketTier tier;
@@ -75,136 +79,160 @@ class TicketTierCard extends StatelessWidget {
   final bool isPurchasing;
   final bool soldOut;
   final bool closed;
+  final String? actionLabel;
+  final bool showAction;
 
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
+    final ext = context.fuvekonTheme;
+    final theme = Theme.of(context);
     final colors = _tierPalettes[rank.clamp(0, _tierPalettes.length - 1)];
     final isTop = rank == _tierPalettes.length - 1;
 
     String buttonLabel;
     if (isPurchasing) {
-      buttonLabel = 'Processing…';
+      buttonLabel = 'Đang xử lý…';
     } else if (soldOut) {
-      buttonLabel = 'Sold out';
+      buttonLabel = 'Hết vé';
     } else if (closed) {
-      buttonLabel = 'Closed';
+      buttonLabel = 'Đã đóng';
     } else if (disabled) {
-      buttonLabel = 'Unavailable';
+      buttonLabel = 'Không khả dụng';
     } else {
-      buttonLabel = isTop ? 'Buy now' : 'Buy now';
+      buttonLabel = actionLabel ?? 'Mua ngay';
     }
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      elevation: 2,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            color: colors.banner,
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
-            child: Column(
-              children: [
-                if (isTop)
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          FuvekonColors.lightGold,
-                          Color(0xFFFFE088),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      'FINEST',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: FuvekonColors.surfaceContainerHighest,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.2,
-                          ),
-                    ),
-                  ),
-                Text(
-                  tier.ticketName,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: colors.title,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  formatTierPrice(tier, locale: locale),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: colors.price,
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (tier.description.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Text(
-                      tier.description,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontStyle: FontStyle.italic,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurfaceVariant,
-                          ),
-                    ),
-                  ),
-                ...tier.benefits.map(
-                  (benefit) => Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(Icons.check, size: 16, color: colors.check),
-                        const SizedBox(width: 8),
-                        Expanded(child: Text(benefit)),
-                      ],
-                    ),
-                  ),
-                ),
-                if (soldOut)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      'Sold out',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 12),
-                FilledButton(
-                  onPressed: disabled || isPurchasing ? null : onPurchase,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: colors.button,
-                    foregroundColor: colors.buttonText,
-                  ),
-                  child: Text(buttonLabel),
-                ),
-              ],
-            ),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(FuvekonRadii.card),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.18),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
         ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(FuvekonRadii.card),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              color: colors.banner,
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
+              child: Column(
+                children: [
+                  if (isTop)
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            FuvekonColors.lightGold,
+                            Color(0xFFFFE088),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'FINEST',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: FuvekonColors.surfaceContainerHighest,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+                  Text(
+                    tier.ticketName,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: colors.title,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    formatTierPrice(tier, locale: locale),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: colors.price,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ColoredBox(
+              color: ext.contentCard,
+              child: Padding(
+                padding: const EdgeInsets.all(FuvekonSpacing.card),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (tier.description.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Text(
+                          tier.description,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: ext.contentOnCardMuted,
+                          ),
+                        ),
+                      ),
+                    ...tier.benefits.map(
+                      (benefit) => Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.check, size: 16, color: colors.check),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                benefit,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: ext.contentOnCard,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (soldOut)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          'Hết vé',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.error,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    if (showAction) ...[
+                      const SizedBox(height: FuvekonSpacing.stackGapMd),
+                      FuvePillButton(
+                        label: buttonLabel,
+                        onPressed:
+                            disabled || isPurchasing ? null : onPurchase,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

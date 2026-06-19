@@ -10,6 +10,7 @@ import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_tiers_bloc.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:go_router/go_router.dart';
 
 class ExploreTicketsPage extends StatelessWidget {
@@ -36,40 +37,42 @@ class _ExploreTicketsView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const _ExploreTicketsHeader(),
-            Expanded(
-              child: BlocBuilder<TicketTiersBloc, TicketTiersState>(
-                builder: (context, state) {
-                  return switch (state) {
-                    TicketTiersInitial() || TicketTiersLoading() =>
-                      const Center(child: CircularProgressIndicator()),
-                    TicketTiersLoaded(:final tiers) when tiers.isEmpty =>
-                      EmptyState(
-                        icon: Icons.confirmation_number_outlined,
-                        title: l10n.exploreTicketsEmpty,
-                      ),
-                    TicketTiersLoaded(:final tiers) => _LoadedBody(tiers: tiers),
-                    TicketTiersFailure(:final message) => _ErrorBody(
-                        message: message,
-                        onRetry: () => context.read<TicketTiersBloc>().add(
-                              const TicketTiersRefreshRequested(),
-                            ),
-                      ),
-                  };
+      body: FuvekonIllustratedPageStack(
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const _ExploreTicketsHeader(),
+              Expanded(
+                child: BlocBuilder<TicketTiersBloc, TicketTiersState>(
+                  builder: (context, state) {
+                    return switch (state) {
+                      TicketTiersInitial() || TicketTiersLoading() =>
+                        const Center(child: CircularProgressIndicator()),
+                      TicketTiersLoaded(:final tiers) when tiers.isEmpty =>
+                        EmptyState(
+                          icon: Icons.confirmation_number_outlined,
+                          title: l10n.exploreTicketsEmpty,
+                        ),
+                      TicketTiersLoaded(:final tiers) => _LoadedBody(tiers: tiers),
+                      TicketTiersFailure(:final message) => _ErrorBody(
+                          message: message,
+                          onRetry: () => context.read<TicketTiersBloc>().add(
+                                const TicketTiersRefreshRequested(),
+                              ),
+                        ),
+                    };
+                  },
+                ),
+              ),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, authState) {
+                  final isAuth = _isAuthenticated(authState);
+                  return _ExploreTicketsFooter(isAuthenticated: isAuth);
                 },
               ),
-            ),
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, authState) {
-                final isAuth = _isAuthenticated(authState);
-                return _ExploreTicketsFooter(isAuthenticated: isAuth);
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -181,21 +184,23 @@ class _ExploreTicketsFooter extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (!isAuthenticated)
-            Text(
-              l10n.exploreTicketsFooterInfo,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: FuvekonColors.darkTextSecondary,
-                fontSize: 13,
-                height: 1.45,
+      child: FuvekonIllustratedContentPanel(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (!isAuthenticated)
+              Text(
+                l10n.exploreTicketsFooterInfo,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: FuvekonColors.darkTextSecondary,
+                  fontSize: 13,
+                  height: 1.45,
+                ),
               ),
-            ),
-          if (!isAuthenticated) const SizedBox(height: 16),
-          FilledButton(
+            if (!isAuthenticated) const SizedBox(height: 16),
+            FilledButton(
             onPressed: () => context.go(
               isAuthenticated ? Routes.ticketPurchase : Routes.register,
             ),
@@ -258,6 +263,7 @@ class _ExploreTicketsFooter extends StatelessWidget {
           ],
         ],
       ),
+    ),
     );
   }
 }

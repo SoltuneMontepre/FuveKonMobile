@@ -40,11 +40,58 @@ class LostFoundService {
     }
   }
 
-  Future<void> claim(String id, {String message = ''}) async {
+  Future<LostFoundPublicItem> getById(String id) async {
+    try {
+      final response = await _api.getById(id);
+      if (!response.isSuccess || response.data == null) {
+        throw ServerException(response.errorMessage ?? response.message);
+      }
+      return LostFoundPublicItem.fromJson(response.data!);
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw ServerException('Không thể tải chi tiết vật phẩm.');
+    }
+  }
+
+  Future<LostFoundPublicItem> getRequest(String id) async {
+    try {
+      final response = await _api.getRequest(id);
+      if (response.isSuccess && response.data != null) {
+        return LostFoundPublicItem.fromJson(response.data!);
+      }
+    } catch (_) {
+      // Dedicated endpoint may not exist yet.
+    }
+
+    return getById(id);
+  }
+
+  Future<LostFoundPublicItem> report(LostFoundReportInput input) async {
+    try {
+      final response = await _api.report(input.toJson());
+      if (!response.isSuccess || response.data == null) {
+        throw ServerException(response.errorMessage ?? response.message);
+      }
+      return LostFoundPublicItem.fromJson(response.data!);
+    } on ServerException {
+      rethrow;
+    } catch (_) {
+      throw ServerException('Không thể gửi báo mất. Vui lòng thử lại.');
+    }
+  }
+
+  Future<String> claim(String id, {String message = ''}) async {
     final response = await _api.claim(id, message: message);
     if (!response.isSuccess) {
       throw ServerException(response.errorMessage ?? response.message);
     }
+
+    final data = response.data;
+    if (data != null && data['item_id'] != null) {
+      return data['item_id'].toString();
+    }
+    return id;
   }
 }
 

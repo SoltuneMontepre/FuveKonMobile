@@ -1,6 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
+
+/// Wraps interactive sections on illustrated pages with the dark content panel
+/// and light-on-dark theme tokens for nested form widgets.
+class AppIllustratedInteractiveSection extends StatelessWidget {
+  const AppIllustratedInteractiveSection({
+    super.key,
+    required this.child,
+    this.padding,
+  });
+
+  final Widget child;
+  final EdgeInsetsGeometry? padding;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final ext = theme.extension<FuvekonThemeExtension>()!;
+
+    final illustratedExt = ext.copyWith(
+      contentCard: Colors.transparent,
+      contentOnCard: FuvekonColors.darkPrimary,
+      contentOnCardMuted: FuvekonColors.darkTextSecondary,
+      uploadZoneBackground: FuvekonColors.darkSurface.withValues(alpha: 0.55),
+      uploadZoneBorder: Colors.white.withValues(alpha: 0.22),
+      infoTitle: Colors.white,
+      notesSurface: Colors.black.withValues(alpha: 0.35),
+    );
+
+    return Theme(
+      data: theme.copyWith(
+        extensions: theme.extensions.values
+            .map<ThemeExtension<dynamic>>((extension) {
+          return extension is FuvekonThemeExtension ? illustratedExt : extension;
+        }).toList(),
+      ),
+      child: FuvekonIllustratedContentPanel(
+        padding: padding ?? const EdgeInsets.fromLTRB(20, 24, 20, 24),
+        child: child,
+      ),
+    );
+  }
+}
 
 /// Standard page shell: dark background, sage app-bar title, optional back button.
 class AppPageScaffold extends StatelessWidget {
@@ -12,6 +55,7 @@ class AppPageScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.showBackButton = true,
     this.padding = const EdgeInsets.all(FuvekonSpacing.page),
+    this.illustratedBackground = false,
   });
 
   final String title;
@@ -20,22 +64,36 @@ class AppPageScaffold extends StatelessWidget {
   final Widget? floatingActionButton;
   final bool showBackButton;
   final EdgeInsetsGeometry padding;
+  final bool illustratedBackground;
 
   @override
   Widget build(BuildContext context) {
     final canPop = Navigator.of(context).canPop();
+    final content = illustratedBackground
+        ? AppIllustratedInteractiveSection(child: body)
+        : Padding(padding: padding, child: body);
 
     return Scaffold(
+      extendBodyBehindAppBar: illustratedBackground,
+      backgroundColor:
+          illustratedBackground ? FuvekonColors.darkBg : null,
       appBar: AppBar(
         title: Text(title),
         automaticallyImplyLeading: showBackButton && canPop,
         actions: actions,
+        backgroundColor:
+            illustratedBackground ? Colors.transparent : null,
+        elevation: illustratedBackground ? 0 : null,
+        scrolledUnderElevation: illustratedBackground ? 0 : null,
+        surfaceTintColor:
+            illustratedBackground ? Colors.transparent : null,
       ),
       floatingActionButton: floatingActionButton,
-      body: Padding(
-        padding: padding,
-        child: body,
-      ),
+      body: illustratedBackground
+          ? FuvekonIllustratedPageStack(
+              child: SafeArea(child: Padding(padding: padding, child: content)),
+            )
+          : content,
     );
   }
 }
@@ -51,6 +109,7 @@ class AppScrollPage extends StatelessWidget {
     this.wrapInCard = true,
     this.showBackButton = true,
     this.padding = const EdgeInsets.all(FuvekonSpacing.page),
+    this.illustratedBackground = false,
   });
 
   final String? title;
@@ -60,40 +119,60 @@ class AppScrollPage extends StatelessWidget {
   final bool wrapInCard;
   final bool showBackButton;
   final EdgeInsetsGeometry padding;
+  final bool illustratedBackground;
 
   @override
   Widget build(BuildContext context) {
     final canPop = Navigator.of(context).canPop();
+    final scrollContent = SingleChildScrollView(
+      padding: padding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (hero != null) ...[
+            hero!,
+            const SizedBox(height: FuvekonSpacing.section),
+          ],
+          if (wrapInCard)
+            illustratedBackground
+                ? AppIllustratedInteractiveSection(child: child)
+                : AppContentCard(child: child)
+          else
+            child,
+          if (footer != null) ...[
+            const SizedBox(height: FuvekonSpacing.field),
+            illustratedBackground
+                ? AppIllustratedInteractiveSection(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                    child: footer!,
+                  )
+                : footer!,
+          ],
+        ],
+      ),
+    );
 
     return Scaffold(
+      extendBodyBehindAppBar: illustratedBackground,
+      backgroundColor:
+          illustratedBackground ? FuvekonColors.darkBg : null,
       appBar: title == null
           ? null
           : AppBar(
               title: Text(title!),
               automaticallyImplyLeading: showBackButton && canPop,
+              backgroundColor:
+                  illustratedBackground ? Colors.transparent : null,
+              elevation: illustratedBackground ? 0 : null,
+              scrolledUnderElevation: illustratedBackground ? 0 : null,
+              surfaceTintColor:
+                  illustratedBackground ? Colors.transparent : null,
             ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: padding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (hero != null) ...[
-                hero!,
-                const SizedBox(height: FuvekonSpacing.section),
-              ],
-              if (wrapInCard)
-                AppContentCard(child: child)
-              else
-                child,
-              if (footer != null) ...[
-                const SizedBox(height: FuvekonSpacing.field),
-                footer!,
-              ],
-            ],
-          ),
-        ),
-      ),
+      body: illustratedBackground
+          ? FuvekonIllustratedPageStack(
+              child: SafeArea(child: scrollContent),
+            )
+          : SafeArea(child: scrollContent),
     );
   }
 }

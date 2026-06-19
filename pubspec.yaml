@@ -29,6 +29,7 @@ dependencies:
     sdk: flutter
   mobile_scanner: ^7.2.0
   image_picker: ^1.1.2
+  google_fonts: ^8.1.0
   qr_flutter: ^4.1.0
 
 dev_dependencies:
@@ -48,7 +49,7 @@ flutter:
     - assets/images/ticket/
     - assets/images/logo/
     - assets/images/Section - Hero Banner.png
-    - assets/images/un-auth-user-landing-section.png
+    - assets/images/guest-landing-background.png
     - assets/images/background-trang-chu.png
     - assets/images/event.png
     - assets/images/cover-artbook.png

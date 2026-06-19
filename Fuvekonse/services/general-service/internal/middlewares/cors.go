@@ -1,18 +1,33 @@
 package middlewares
 
 import (
+	"os"
 	"slices"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
+func isOriginAllowed(origin string, trimmedOrigins []string) bool {
+	if origin == "" {
+		return false
+	}
+	if slices.Contains(trimmedOrigins, origin) {
+		return true
+	}
+	// Local dev: Flutter web uses dynamic localhost ports.
+	if strings.EqualFold(strings.TrimSpace(os.Getenv("ENV")), "development") {
+		return strings.HasPrefix(origin, "http://localhost:") ||
+			strings.HasPrefix(origin, "http://127.0.0.1:")
+	}
+	return false
+}
+
 func handlePreflightRequest(c *gin.Context, origin string, trimmedOrigins []string) bool {
 	if origin == "" {
 		return false
 	}
-	allowed := slices.Contains(trimmedOrigins, origin)
-	if allowed {
+	if isOriginAllowed(origin, trimmedOrigins) {
 		setCorsHeaders(c, origin)
 		c.Header("Access-Control-Max-Age", "43200")
 		c.AbortWithStatus(204)
@@ -31,7 +46,7 @@ func setCorsHeaders(c *gin.Context, origin string) {
 }
 
 func handleActualRequest(c *gin.Context, origin string, trimmedOrigins []string) {
-	if origin != "" && slices.Contains(trimmedOrigins, origin) {
+	if origin != "" && isOriginAllowed(origin, trimmedOrigins) {
 		setCorsHeaders(c, origin)
 	}
 }

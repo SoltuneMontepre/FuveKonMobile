@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/features/schedule/domain/entities/featured_event_summary.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_section_header.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:intl/intl.dart';
 class AuthenticatedHomePage extends StatelessWidget {
   const AuthenticatedHomePage({super.key});
 
   static const heroBackgroundAsset = 'assets/images/background-trang-chu.png';
-  static const featuredEventAsset = 'assets/images/event.png';
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +22,55 @@ class AuthenticatedHomePage extends StatelessWidget {
       color: FuvekonColors.darkBg,
       child: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: _HeroSection(l10n: l10n),
-          ),
+          SliverToBoxAdapter(child: _HeroSection(l10n: l10n)),
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(20, 28, 20, 32),
+            padding: const EdgeInsets.fromLTRB(
+              FuvekonSpacing.page,
+              24,
+              FuvekonSpacing.page,
+              16,
+            ),
             sliver: SliverToBoxAdapter(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _SectionHeader(
+                  FuveSectionHeader(title: l10n.authHomeBentoTitle),
+                  const SizedBox(height: 16),
+                  _BentoGrid(l10n: l10n),
+                ],
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+              FuvekonSpacing.page,
+              8,
+              FuvekonSpacing.page,
+              16,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  FuveSectionHeader(title: l10n.authHomeShortcutsTitle),
+                  const SizedBox(height: 12),
+                  _ShortcutRow(l10n: l10n),
+                ],
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+              FuvekonSpacing.page,
+              8,
+              FuvekonSpacing.page,
+              32,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  FuveSectionHeader(
                     title: l10n.authHomeFeaturedTitle,
                     actionLabel: l10n.authHomeSeeAll,
                     onActionTap: () => context.go(Routes.ticket),
@@ -36,7 +78,7 @@ class AuthenticatedHomePage extends StatelessWidget {
                   const SizedBox(height: 16),
                   _FeaturedEventCard(
                     l10n: l10n,
-                    onBuyTicket: () => context.go(Routes.ticketPurchase),
+                    event: kHomeFeaturedEvent,
                   ),
                 ],
               ),
@@ -44,6 +86,227 @@ class AuthenticatedHomePage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _BentoGrid extends StatelessWidget {
+  const _BentoGrid({required this.l10n});
+
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: FuveMintCard(
+                onTap: () => context.go(Routes.accountTicket),
+                showGoldAccent: true,
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.confirmation_number_outlined,
+                      color: FuvekonColors.onSageGreen,
+                      size: 28,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      l10n.authHomeMyTicketTitle,
+                      style: const TextStyle(
+                        color: FuvekonColors.onSageGreen,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.authHomeMyTicketSubtitle,
+                      style: const TextStyle(
+                        color: FuvekonColors.premiumOnMintCardMuted,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: FuveMintCard(
+                onTap: () => context.go(Routes.accountSchedule),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.calendar_today_outlined,
+                      color: FuvekonColors.onSageGreen,
+                      size: 28,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      l10n.authHomeTodayScheduleTitle,
+                      style: const TextStyle(
+                        color: FuvekonColors.onSageGreen,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.authHomeTodaySchedulePreview,
+                      style: const TextStyle(
+                        color: FuvekonColors.premiumOnMintCardMuted,
+                        fontSize: 12,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        FuveMintCard(
+          onTap: () => context.push(Routes.ticketPurchase),
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: FuvekonColors.sageGreen.withValues(alpha: 0.25),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.local_activity_outlined,
+                  color: FuvekonColors.onSageGreen,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.authHomeBuyTicketBanner,
+                      style: const TextStyle(
+                        color: FuvekonColors.onSageGreen,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      l10n.authHomeBuyTicketBannerSubtitle,
+                      style: const TextStyle(
+                        color: FuvekonColors.premiumOnMintCardMuted,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(
+                Icons.chevron_right,
+                color: FuvekonColors.premiumOnMintCardMuted,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ShortcutRow extends StatelessWidget {
+  const _ShortcutRow({required this.l10n});
+
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    final shortcuts = [
+      (
+        icon: Icons.calendar_month_outlined,
+        label: l10n.navSchedule,
+        route: Routes.accountSchedule,
+      ),
+      (
+        icon: Icons.confirmation_number_outlined,
+        label: l10n.navMyTickets,
+        route: Routes.accountTicket,
+      ),
+      (
+        icon: Icons.menu_book_outlined,
+        label: l10n.authHomeShortcutArtbook,
+        route: Routes.artbook,
+      ),
+      (
+        icon: Icons.search_outlined,
+        label: l10n.authHomeShortcutLostFound,
+        route: Routes.lostFound,
+      ),
+    ];
+
+    return Row(
+      children: shortcuts.map((item) {
+        return Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: InkWell(
+              onTap: () {
+                switch (item.route) {
+                  case Routes.accountSchedule:
+                  case Routes.accountTicket:
+                    context.go(item.route);
+                  default:
+                    context.push(item.route);
+                }
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                decoration: BoxDecoration(
+                  color: FuvekonColors.surfaceContainer,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: FuvekonColors.outlineToken.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      item.icon,
+                      color: FuvekonColors.sageGreen,
+                      size: 22,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      item.label,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: FuvekonColors.onSurfaceVariant,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }
@@ -56,7 +319,7 @@ class _HeroSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 340,
+      height: 320,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -65,7 +328,7 @@ class _HeroSection extends StatelessWidget {
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
             errorBuilder: (context, error, stackTrace) => ColoredBox(
-              color: FuvekonColors.darkSurface,
+              color: FuvekonColors.surfaceContainer,
             ),
           ),
           DecoratedBox(
@@ -74,7 +337,7 @@ class _HeroSection extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  FuvekonColors.darkDeep.withValues(alpha: 0.15),
+                  Colors.black.withValues(alpha: 0.15),
                   FuvekonColors.darkBg.withValues(alpha: 0.55),
                   FuvekonColors.darkBg,
                 ],
@@ -132,7 +395,7 @@ class _StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: FuvekonColors.darkDeep.withValues(alpha: 0.42),
+        color: FuvekonColors.deepNavy.withValues(alpha: 0.42),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
       ),
@@ -158,7 +421,7 @@ class _SearchField extends StatelessWidget {
     return Container(
       height: 48,
       decoration: BoxDecoration(
-        color: FuvekonColors.surfaceContainerLow,
+        color: FuvekonColors.deepNavy.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
@@ -191,130 +454,87 @@ class _SearchField extends StatelessWidget {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({
-    required this.title,
-    required this.actionLabel,
-    required this.onActionTap,
-  });
-
-  final String title;
-  final String actionLabel;
-  final VoidCallback onActionTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 22,
-          decoration: BoxDecoration(
-            color: FuvekonColors.darkPrimary,
-            borderRadius: BorderRadius.circular(999),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: FuvekonColors.darkPrimary,
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: onActionTap,
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white.withValues(alpha: 0.55),
-            padding: EdgeInsets.zero,
-            minimumSize: Size.zero,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: Text(
-            actionLabel,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class _FeaturedEventCard extends StatelessWidget {
   const _FeaturedEventCard({
     required this.l10n,
-    required this.onBuyTicket,
+    required this.event,
   });
 
   final AppLocalizations l10n;
-  final VoidCallback onBuyTicket;
+  final FeaturedEventSummary event;
+
+  void _openEventDetail(BuildContext context) {
+    context.push(Routes.accountScheduleEvent(event.id));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: FuvekonColors.darkCard,
-        borderRadius: BorderRadius.circular(FuvekonRadii.card),
-      ),
+    final isPast = event.isPast;
+    final dateLabel = _formatFeaturedDateRange(context, event);
+
+    return FuveMintCard(
+      padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(FuvekonRadii.card),
-            ),
-            child: Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Image.asset(
-                    AuthenticatedHomePage.featuredEventAsset,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => ColoredBox(
-                      color: FuvekonColors.darkSurface,
-                      child: Icon(
-                        Icons.image_outlined,
-                        color: Colors.white.withValues(alpha: 0.3),
-                        size: 48,
+          InkWell(
+            onTap: () => _openEventDetail(context),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(FuvekonRadii.card),
+              ),
+              child: Stack(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Image.asset(
+                      event.imageAsset,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => ColoredBox(
+                        color: FuvekonColors.surfaceContainer,
+                        child: Icon(
+                          Icons.image_outlined,
+                          color: Colors.white.withValues(alpha: 0.3),
+                          size: 48,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 12,
-                  left: 12,
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: FuvekonColors.darkPrimary,
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.star,
-                          size: 12,
-                          color: FuvekonColors.darkButtonText,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          l10n.authHomeHotBadge,
-                          style: const TextStyle(
-                            color: FuvekonColors.darkButtonText,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
+                  Positioned(
+                    top: 12,
+                    left: 12,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: FuvekonColors.sageGreen,
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            size: 12,
+                            color: FuvekonColors.onSageGreen,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 4),
+                          Text(
+                            l10n.authHomeHotBadge,
+                            style: const TextStyle(
+                              color: FuvekonColors.onSageGreen,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Padding(
@@ -322,42 +542,42 @@ class _FeaturedEventCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  l10n.authHomeFeaturedEventTitle,
-                  style: const TextStyle(
-                    color: FuvekonColors.darkCardText,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
+                InkWell(
+                  onTap: () => _openEventDetail(context),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        event.title,
+                        style: const TextStyle(
+                          color: FuvekonColors.onSageGreen,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      _MetaRow(
+                        icon: Icons.calendar_today_outlined,
+                        label: dateLabel,
+                      ),
+                      const SizedBox(height: 6),
+                      _MetaRow(
+                        icon: Icons.location_on_outlined,
+                        label: event.locationLabel,
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 10),
-                _MetaRow(
-                  icon: Icons.calendar_today_outlined,
-                  label: l10n.authHomeFeaturedEventDate,
-                ),
-                const SizedBox(height: 6),
-                _MetaRow(
-                  icon: Icons.location_on_outlined,
-                  label: l10n.authHomeFeaturedEventLocation,
                 ),
                 const SizedBox(height: 16),
-                FilledButton(
-                  onPressed: onBuyTicket,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: FuvekonColors.darkButton,
-                    foregroundColor: FuvekonColors.darkButtonText,
-                    minimumSize: const Size.fromHeight(46),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                  ),
-                  child: Text(
-                    l10n.authHomeBuyTicket,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                    ),
-                  ),
+                FuvePillButton(
+                  label: isPast ? l10n.authHomeViewDetails : l10n.authHomeBuyTicket,
+                  onPressed: () {
+                    if (isPast) {
+                      _openEventDetail(context);
+                    } else {
+                      context.push(Routes.ticketPurchase);
+                    }
+                  },
                 ),
               ],
             ),
@@ -366,6 +586,24 @@ class _FeaturedEventCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String _formatFeaturedDateRange(
+  BuildContext context,
+  FeaturedEventSummary event,
+) {
+  final locale = Localizations.localeOf(context).toString();
+  final monthYear = DateFormat('MMMM y', locale).format(event.startAt);
+  if (event.startAt.year == event.endAt.year &&
+      event.startAt.month == event.endAt.month &&
+      event.startAt.day != event.endAt.day) {
+    return '${event.startAt.day} - ${event.endAt.day} $monthYear';
+  }
+  final format = DateFormat('d MMMM y', locale);
+  if (event.startAt == event.endAt) {
+    return format.format(event.startAt);
+  }
+  return '${format.format(event.startAt)} – ${format.format(event.endAt)}';
 }
 
 class _MetaRow extends StatelessWidget {
@@ -378,13 +616,13 @@ class _MetaRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 15, color: FuvekonColors.textSecondary),
+        Icon(icon, size: 15, color: FuvekonColors.premiumOnMintCardMuted),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             label,
             style: const TextStyle(
-              color: FuvekonColors.textSecondary,
+              color: FuvekonColors.premiumOnMintCardMuted,
               fontSize: 13,
             ),
           ),

@@ -71,38 +71,43 @@ class _GoogleLogo extends StatelessWidget {
 class _GoogleLogoPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final r = size.width / 2;
-    final center = Offset(r, r);
+    final bounds = Offset.zero & size;
+    final center = bounds.center;
 
     const blue = Color(0xFF4285F4);
     const red = Color(0xFFEA4335);
     const yellow = Color(0xFFFBBC05);
     const green = Color(0xFF34A853);
 
-    final stroke = r * 0.38;
+    final stroke = size.width / 4.5;
+    final arcPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = stroke
+      ..strokeCap = StrokeCap.butt;
 
     void arc(Color color, double start, double sweep) {
-      final paint = Paint()
-        ..color = color
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = stroke
-        ..strokeCap = StrokeCap.butt;
       canvas.drawArc(
-        Rect.fromCircle(center: center, radius: r - stroke / 2),
+        bounds,
         start,
         sweep,
         false,
-        paint,
+        arcPaint..color = color,
       );
     }
 
-    arc(blue, -0.45, 1.4);
-    arc(green, 0.95, 1.0);
-    arc(yellow, 1.95, 1.0);
-    arc(red, 2.95, 1.0);
+    // Official Google "G" segment layout (clockwise from top).
+    arc(red, 3.5, 1.9);
+    arc(yellow, 2.5, 1.0);
+    arc(green, 0.9, 1.6);
+    arc(blue, -0.18, 1.1);
 
     canvas.drawRect(
-      Rect.fromLTWH(r - stroke * 0.15, r - stroke * 0.35, r, stroke * 0.7),
+      Rect.fromLTRB(
+        center.dx,
+        center.dy - stroke / 2,
+        bounds.centerRight.dx + stroke / 2 - size.width * 0.02,
+        center.dy + stroke / 2,
+      ),
       Paint()..color = blue,
     );
   }

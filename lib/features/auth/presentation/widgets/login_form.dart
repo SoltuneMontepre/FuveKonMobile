@@ -8,10 +8,17 @@ import 'package:fuvekonmobile/shared/services/google_sign_in_service.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class _LoginFormColors {
-  static const textDark = FuvekonColors.darkButtonText;
-  static const inputFill = FuvekonColors.surfaceContainerHigh;
-  static const inputHint = FuvekonColors.darkTextSecondary;
-  static const accentGreen = FuvekonColors.sageGreenContainer;
+  static const label = Colors.white;
+  static const bodyMuted = Color(0xD9FFFFFF);
+
+  static const inputText = FuvekonColors.onSageGreen;
+  static const inputFill = Color(0xFFF8FCFA);
+  static const inputHint = FuvekonColors.textSecondary;
+  static const inputIcon = FuvekonColors.sageGreenContainer;
+
+  static const buttonBg = FuvekonColors.sageGreen;
+  static const buttonFg = FuvekonColors.onSageGreen;
+  static const link = FuvekonColors.darkPrimary;
   static const forgotGold = FuvekonColors.lightGold;
 }
 
@@ -62,17 +69,19 @@ class _LoginFormState extends State<LoginForm> {
       hintStyle: const TextStyle(color: _LoginFormColors.inputHint),
       filled: true,
       fillColor: _LoginFormColors.inputFill,
-      prefixIcon: Icon(prefixIcon, color: Colors.white.withValues(alpha: 0.55)),
+      prefixIcon: Icon(prefixIcon, color: _LoginFormColors.inputIcon),
       suffixIcon: suffixIcon,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.08)),
+        borderSide: BorderSide(
+          color: _LoginFormColors.inputText.withValues(alpha: 0.12),
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
-          color: _LoginFormColors.accentGreen.withValues(alpha: 0.7),
+          color: _LoginFormColors.link.withValues(alpha: 0.85),
         ),
       ),
       errorBorder: OutlineInputBorder(
@@ -103,7 +112,7 @@ class _LoginFormState extends State<LoginForm> {
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             autofillHints: const [AutofillHints.email],
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: _LoginFormColors.inputText),
             decoration: _inputDecoration(
               hint: l10n.loginEmailHint,
               prefixIcon: Icons.mail_outline,
@@ -149,7 +158,7 @@ class _LoginFormState extends State<LoginForm> {
             controller: _passwordController,
             obscureText: _obscurePassword,
             autofillHints: const [AutofillHints.password],
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: _LoginFormColors.inputText),
             decoration: _inputDecoration(
               hint: '••••••••',
               prefixIcon: Icons.lock_outline,
@@ -158,7 +167,7 @@ class _LoginFormState extends State<LoginForm> {
                   _obscurePassword
                       ? Icons.visibility_outlined
                       : Icons.visibility_off_outlined,
-                  color: Colors.white.withValues(alpha: 0.55),
+                  color: _LoginFormColors.inputIcon,
                 ),
                 onPressed: widget.isLoading
                     ? null
@@ -181,22 +190,25 @@ class _LoginFormState extends State<LoginForm> {
           FilledButton(
             onPressed: widget.isLoading ? null : _submit,
             style: FilledButton.styleFrom(
-              backgroundColor: _LoginFormColors.accentGreen,
-              foregroundColor: Colors.white,
+              backgroundColor: _LoginFormColors.buttonBg,
+              foregroundColor: _LoginFormColors.buttonFg,
               disabledBackgroundColor:
-                  _LoginFormColors.accentGreen.withValues(alpha: 0.45),
+                  _LoginFormColors.buttonBg.withValues(alpha: 0.35),
+              disabledForegroundColor:
+                  _LoginFormColors.buttonFg.withValues(alpha: 0.55),
               minimumSize: const Size.fromHeight(52),
+              elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
             child: widget.isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     height: 22,
                     width: 22,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Colors.white,
+                      color: _LoginFormColors.buttonFg,
                     ),
                   )
                 : Row(
@@ -220,7 +232,7 @@ class _LoginFormState extends State<LoginForm> {
               children: [
                 Expanded(
                   child: Divider(
-                    color: _LoginFormColors.textDark.withValues(alpha: 0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                   ),
                 ),
                 Padding(
@@ -228,7 +240,7 @@ class _LoginFormState extends State<LoginForm> {
                   child: Text(
                     l10n.loginOrDivider,
                     style: TextStyle(
-                      color: _LoginFormColors.textDark.withValues(alpha: 0.55),
+                      color: _LoginFormColors.bodyMuted,
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
                       letterSpacing: 1,
@@ -237,7 +249,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 Expanded(
                   child: Divider(
-                    color: _LoginFormColors.textDark.withValues(alpha: 0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                   ),
                 ),
               ],
@@ -255,7 +267,7 @@ class _LoginFormState extends State<LoginForm> {
                 l10n.authGoogleUnsupportedPlatform,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: _LoginFormColors.textDark.withValues(alpha: 0.65),
+                  color: _LoginFormColors.bodyMuted,
                   fontSize: 12,
                   height: 1.4,
                 ),
@@ -278,7 +290,7 @@ class _FieldLabel extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        color: _LoginFormColors.textDark,
+        color: _LoginFormColors.label,
         fontWeight: FontWeight.w600,
         fontSize: 13.5,
       ),

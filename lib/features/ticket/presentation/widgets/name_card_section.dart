@@ -3,9 +3,12 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/utils/s3_url.dart';
+import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/my_ticket_bloc.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/my_ticket_event.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/my_ticket_state.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_status_badge.dart';
 
 class NameCardSection extends StatefulWidget {
   const NameCardSection({super.key, required this.state});
@@ -47,55 +50,43 @@ class _NameCardSectionState extends State<NameCardSection> {
     final previewBytes = bloc.previewPngBytes;
     final storedUrl = state.ticket.namecardUrl;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Name card',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+    final ext = context.fuvekonTheme;
+    final theme = Theme.of(context);
+
+    return FuveMintCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Name card',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: ext.contentOnCard,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Edit your badge details and preview how it will look.',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
-                            ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Chỉnh sửa thông tin badge và xem trước name card.',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: ext.contentOnCardMuted,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                if (!state.canSaveNameCard)
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.amber.shade100,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      'After approval',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.amber.shade900,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
+              ),
+              if (!state.canSaveNameCard)
+                const FuveStatusBadge(
+                  label: 'Sau khi duyệt',
+                  variant: FuveStatusBadgeVariant.pending,
+                ),
+            ],
+          ),
             const SizedBox(height: 16),
             if (state.canEditNameCard) ...[
               TextField(
@@ -165,7 +156,6 @@ class _NameCardSectionState extends State<NameCardSection> {
             ),
           ],
         ),
-      ),
     );
   }
 }

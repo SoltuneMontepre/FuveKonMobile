@@ -7,6 +7,7 @@ import 'package:fuvekonmobile/core/utils/ticket_price.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_purchase_bloc.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_purchase_event.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_purchase_state.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:go_router/go_router.dart';
 
 class TicketPurchasePage extends StatelessWidget {
@@ -71,7 +72,8 @@ class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: FuvekonColors.darkBg,
-          body: switch (state) {
+          body: FuvekonIllustratedPageStack(
+            child: switch (state) {
             TicketPurchaseInitial() || TicketPurchaseLoading() =>
               const Center(child: CircularProgressIndicator()),
             TicketPurchaseNotFound(:final queued) => _NotFoundBody(
@@ -141,6 +143,7 @@ class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
                 ticket: ticket,
               ),
           },
+          ),
         );
       },
     );
@@ -267,34 +270,37 @@ class _PaymentBody extends StatelessWidget {
                       total: total,
                     ),
                     const SizedBox(height: 32),
-                    FilledButton(
-                      onPressed:
-                          state.isConfirming || needsIdCard ? null : onConfirm,
-                      style: FilledButton.styleFrom(
-                        backgroundColor: FuvekonColors.darkButton,
-                        foregroundColor: FuvekonColors.darkButtonText,
-                        minimumSize: const Size.fromHeight(56),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            FuvekonRadii.button,
-                          ),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            state.isConfirming
-                                ? 'Đang xử lý...'
-                                : 'Tiếp tục thanh toán',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w900,
+                    FuvekonIllustratedContentPanel(
+                      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                      child: FilledButton(
+                        onPressed:
+                            state.isConfirming || needsIdCard ? null : onConfirm,
+                        style: FilledButton.styleFrom(
+                          backgroundColor: FuvekonColors.darkButton,
+                          foregroundColor: FuvekonColors.darkButtonText,
+                          minimumSize: const Size.fromHeight(56),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              FuvekonRadii.button,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward_rounded, size: 20),
-                        ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              state.isConfirming
+                                  ? 'Đang xử lý...'
+                                  : 'Tiếp tục thanh toán',
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            const Icon(Icons.arrow_forward_rounded, size: 20),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -445,37 +451,45 @@ class _ConfirmOrderBody extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 70),
-                    FilledButton(
-                      onPressed: state.isConfirming ? null : onConfirm,
-                      style: FilledButton.styleFrom(
-                        backgroundColor: FuvekonColors.darkButton,
-                        foregroundColor: FuvekonColors.darkButtonText,
-                        minimumSize: const Size.fromHeight(52),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    FuvekonIllustratedContentPanel(
+                      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                            state.isConfirming
-                                ? 'Đang xác nhận...'
-                                : 'Xác nhận và thanh toán',
-                            style: const TextStyle(fontWeight: FontWeight.w900),
+                          FilledButton(
+                            onPressed: state.isConfirming ? null : onConfirm,
+                            style: FilledButton.styleFrom(
+                              backgroundColor: FuvekonColors.darkButton,
+                              foregroundColor: FuvekonColors.darkButtonText,
+                              minimumSize: const Size.fromHeight(52),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  state.isConfirming
+                                      ? 'Đang xác nhận...'
+                                      : 'Xác nhận và thanh toán',
+                                  style: const TextStyle(fontWeight: FontWeight.w900),
+                                ),
+                                const SizedBox(width: 8),
+                                const Icon(Icons.arrow_forward_rounded, size: 18),
+                              ],
+                            ),
                           ),
-                          const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward_rounded, size: 18),
+                          const SizedBox(height: 10),
+                          OutlinedButton(
+                            onPressed: state.isConfirming ? null : onBack,
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: FuvekonColors.dustyRose,
+                              side: const BorderSide(color: FuvekonColors.dustyRose),
+                              minimumSize: const Size.fromHeight(48),
+                              shape: const StadiumBorder(),
+                            ),
+                            child: const Text('Quay lại chỉnh sửa'),
+                          ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    OutlinedButton(
-                      onPressed: state.isConfirming ? null : onBack,
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: FuvekonColors.dustyRose,
-                        side: const BorderSide(color: FuvekonColors.dustyRose),
-                        minimumSize: const Size.fromHeight(48),
-                        shape: const StadiumBorder(),
-                      ),
-                      child: const Text('Quay lại chỉnh sửa'),
                     ),
                   ],
                 ),

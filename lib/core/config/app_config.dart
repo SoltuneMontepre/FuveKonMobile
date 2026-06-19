@@ -20,12 +20,35 @@ abstract final class AppConfig {
   }
 
   /// Fuvekon general API: `https://api.fuve.vn/api/general/v1`
-  static String get baseUrl =>
-      _read('BASE_URL', defaultValue: 'https://api.fuve.vn/api/general/v1');
+  static String get baseUrl => _resolveDevApiHost(
+        _read('BASE_URL', defaultValue: 'https://api.fuve.vn/api/general/v1'),
+      );
+
+  /// Maps dev loopback hosts per platform (Android emulator uses `10.0.2.2`).
+  static String _resolveDevApiHost(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri == null) return url;
+
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      const loopbackHosts = {'localhost', '127.0.0.1'};
+      if (loopbackHosts.contains(uri.host)) {
+        return uri.replace(host: '10.0.2.2').toString();
+      }
+      return url;
+    }
+
+    // `10.0.2.2` is Android-emulator-only; map to loopback on other platforms.
+    if (uri.host == '10.0.2.2') {
+      return uri.replace(host: 'localhost').toString();
+    }
+
+    return url;
+  }
 
   /// Fuvekon Next.js site (used for non-API web assets if needed).
-  static String get webBaseUrl =>
-      _read('WEB_BASE_URL', defaultValue: 'https://fuve.vn');
+  static String get webBaseUrl => _resolveDevApiHost(
+        _read('WEB_BASE_URL', defaultValue: 'https://fuve.vn'),
+      );
 
   /// Google OAuth web client ID (`NEXT_PUBLIC_GOOGLE_CLIENT_ID` on Fuvekon web).
   static String get googleClientId => _read('GOOGLE_CLIENT_ID');

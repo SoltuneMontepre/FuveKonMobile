@@ -8,14 +8,13 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/api/conbook_api.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image_upload_field.dart';
 import 'package:go_router/go_router.dart';
 
 class ArtbookSubmitPage extends StatefulWidget {
   const ArtbookSubmitPage({super.key});
-
-  static const backgroundAsset = 'assets/images/artbook-background.png';
 
   @override
   State<ArtbookSubmitPage> createState() => _ArtbookSubmitPageState();
@@ -113,11 +112,12 @@ class _ArtbookSubmitPageState extends State<ArtbookSubmitPage> {
 
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _SubmitHero(l10n: l10n),
+      body: FuvekonIllustratedPageStack(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _SubmitHero(l10n: l10n),
             Transform.translate(
               offset: const Offset(0, -28),
               child: Padding(
@@ -125,7 +125,7 @@ class _ArtbookSubmitPageState extends State<ArtbookSubmitPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AppContentCard(
+                    AppIllustratedInteractiveSection(
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -285,6 +285,7 @@ class _ArtbookSubmitPageState extends State<ArtbookSubmitPage> {
           ],
         ),
       ),
+      ),
     );
   }
 
@@ -324,14 +325,6 @@ class _SubmitHero extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            ArtbookSubmitPage.backgroundAsset,
-            fit: BoxFit.cover,
-            alignment: Alignment.center,
-            errorBuilder: (context, error, stackTrace) => const ColoredBox(
-              color: FuvekonColors.darkSurface,
-            ),
-          ),
           DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -339,8 +332,8 @@ class _SubmitHero extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.black.withValues(alpha: 0.35),
-                  Colors.black.withValues(alpha: 0.72),
-                  FuvekonColors.darkBg,
+                  Colors.black.withValues(alpha: 0.55),
+                  Colors.transparent,
                 ],
               ),
             ),

@@ -21,7 +21,7 @@ func NewHealthHandler(health *services.HealthService) *HealthHandler {
 //	@Description	Returns health for API, database, Redis, S3, and SQS/Lambda jobs
 //	@Tags			health
 //	@Produce		json
-//	@Success		200	{object}	responses.SystemHealthResponse
+//	@Success		200	{object}	map[string]interface{}
 //	@Router			/admin/health [get]
 func (h *HealthHandler) GetSystemHealth(c *gin.Context) {
 	if h.health == nil {

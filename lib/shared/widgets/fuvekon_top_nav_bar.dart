@@ -9,6 +9,7 @@ import 'package:fuvekonmobile/core/theme/theme_mode_notifier.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
 import 'package:go_router/go_router.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 
 class FuvekonGuestDrawer extends StatelessWidget {
   const FuvekonGuestDrawer({super.key});
@@ -107,9 +108,13 @@ class _FuvekonDrawerBody extends StatelessWidget {
                         isAuthenticated: isAuthenticated,
                       ),
                       onTap: () {
+                        final router = GoRouter.of(context);
+                        final target = item.route;
                         Navigator.of(context).pop();
-                        if (location != item.route) {
-                          context.go(item.route);
+                        if (location != target) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            router.go(target);
+                          });
                         }
                       },
                     ),
@@ -119,9 +124,12 @@ class _FuvekonDrawerBody extends StatelessWidget {
                       label: l10n.navAccount,
                       selected: location.startsWith(Routes.accountProfile),
                       onTap: () {
+                        final router = GoRouter.of(context);
                         Navigator.of(context).pop();
                         if (location != Routes.accountProfile) {
-                          context.go(Routes.accountProfile);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            router.go(Routes.accountProfile);
+                          });
                         }
                       },
                     )
@@ -131,9 +139,12 @@ class _FuvekonDrawerBody extends StatelessWidget {
                       label: l10n.navLogin,
                       selected: FuvekonTopNavBar.isAuthRoute(location),
                       onTap: () {
+                        final router = GoRouter.of(context);
                         Navigator.of(context).pop();
                         if (!FuvekonTopNavBar.isAuthRoute(location)) {
-                          context.go(Routes.login);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            router.go(Routes.login);
+                          });
                         }
                       },
                     ),
@@ -161,8 +172,11 @@ class _FuvekonDrawerBody extends StatelessWidget {
                     label: l10n.languageTitle,
                     selected: location == Routes.language,
                     onTap: () {
+                      final router = GoRouter.of(context);
                       Navigator.of(context).pop();
-                      context.go(Routes.language);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        router.go(Routes.language);
+                      });
                     },
                   ),
                   ListTile(
@@ -271,7 +285,9 @@ class _DrawerNavTile extends StatelessWidget {
 
 /// Minimal top bar: hamburger menu + brand title.
 class FuvekonTopNavBar extends StatelessWidget {
-  const FuvekonTopNavBar({super.key});
+  const FuvekonTopNavBar({super.key, this.transparent = false});
+
+  final bool transparent;
 
   static bool isAuthRoute(String location) {
     return location == Routes.login ||
@@ -295,37 +311,41 @@ class FuvekonTopNavBar extends StatelessWidget {
         ? FuvekonColors.darkBorder
         : FuvekonColors.inputBorder.withValues(alpha: 0.45);
 
+    final bar = Padding(
+      padding: const EdgeInsets.fromLTRB(4, 8, 12, 10),
+      child: Row(
+        children: [
+          IconButton(
+            icon: Icon(Icons.menu, color: iconColor),
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            onPressed: () => FuvekonGuestDrawer.open(context),
+            visualDensity: VisualDensity.compact,
+          ),
+          Expanded(
+            child: Text(
+              'FUVEKON',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: brandColor,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 2,
+                fontSize: 15,
+              ),
+            ),
+          ),
+          const SizedBox(width: 48),
+        ],
+      ),
+    );
+
+    if (transparent) return bar;
+
     return DecoratedBox(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(bottom: BorderSide(color: borderColor)),
       ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(4, 8, 12, 10),
-        child: Row(
-          children: [
-            IconButton(
-              icon: Icon(Icons.menu, color: iconColor),
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              onPressed: () => FuvekonGuestDrawer.open(context),
-              visualDensity: VisualDensity.compact,
-            ),
-            Expanded(
-              child: Text(
-                'FUVEKON',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: brandColor,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            const SizedBox(width: 48),
-          ],
-        ),
-      ),
+      child: bar,
     );
   }
 }
@@ -343,15 +363,19 @@ class FuvekonNavScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: backgroundColor ?? FuvekonColors.darkBg,
       drawer: const FuvekonGuestDrawer(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SafeArea(bottom: false, child: FuvekonTopNavBar()),
-          Expanded(child: body),
-        ],
+      body: FuvekonIllustratedPageStack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SafeArea(
+              bottom: false,
+              child: FuvekonTopNavBar(transparent: true),
+            ),
+            Expanded(child: body),
+          ],
+        ),
       ),
     );
   }

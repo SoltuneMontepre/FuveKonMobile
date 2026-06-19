@@ -3,11 +3,6 @@
 
   "continueButton": "Tiếp tục",
   "versionLabel": "Phiên bản {version}",
-  "@versionLabel": {
-    "placeholders": {
-      "version": {"type": "String"}
-    }
-  },
   "supportLabel": "Hỗ trợ",
 
   "languageTitle": "Chọn ngôn ngữ",
@@ -118,6 +113,36 @@
 
   "navSchedule": "Lịch trình",
   "navMyTickets": "Vé của tôi",
+
+  "scheduleMyItinerary": "Lịch trình cá nhân",
+  "scheduleViewMap": "Bản đồ",
+  "scheduleActivityDetail": "Chi tiết hoạt động",
+  "scheduleEventDetail": "Chi tiết sự kiện",
+  "scheduleVenueDetail": "Chi tiết địa điểm",
+  "scheduleDayFilter": "Chọn ngày",
+  "scheduleActivities": "Hoạt động",
+  "scheduleNoActivities": "Không có hoạt động trong ngày này",
+  "scheduleBookmark": "Thêm vào lịch cá nhân",
+  "scheduleBookmarked": "Đã lưu vào lịch",
+  "scheduleAddedToItinerary": "Đã thêm vào lịch trình cá nhân",
+  "scheduleConflictTitle": "Trùng lịch",
+  "scheduleConflictMessage": "Hoạt động này trùng khung giờ với \"{title}\" trong lịch cá nhân. Bạn có muốn thay thế không?",
+  "scheduleConflictReplace": "Thay thế",
+  "scheduleConflictCancel": "Hủy",
+  "scheduleEmptyItinerary": "Chưa có mục nào",
+  "scheduleEmptyItineraryHint": "Bookmark panel, talent hoặc workshop từ lịch trình tổng.",
+  "scheduleRemoveBookmark": "Xóa khỏi lịch",
+  "scheduleTime": "Thời gian",
+  "scheduleLocation": "Địa điểm",
+  "scheduleSpeakers": "Diễn giả",
+  "scheduleDescription": "Mô tả",
+  "scheduleVenues": "Khu vực",
+  "scheduleLocations": "Vị trí",
+  "scheduleKindPanel": "Panel",
+  "scheduleKindTalent": "Talent",
+  "scheduleKindWorkshop": "Workshop",
+  "scheduleKindCeremony": "Lễ",
+  "scheduleKindOther": "Khác",
   "navNotifications": "Thông báo",
   "navAccount": "Tài khoản",
   "navSwitchToAdmin": "Chế độ quản trị",
@@ -178,7 +203,19 @@
   "authHomeFeaturedEventDate": "20 Tháng 10, 2023",
   "authHomeFeaturedEventLocation": "Trung Tâm SECC",
   "authHomeBuyTicket": "Mua vé",
+  "authHomeViewDetails": "Xem chi tiết",
+  "authHomeViewTickets": "Xem vé",
   "authHomeNotificationsEmpty": "Chưa có thông báo mới.",
+  "authHomeBentoTitle": "Tổng quan",
+  "authHomeMyTicketTitle": "Vé của tôi",
+  "authHomeMyTicketSubtitle": "Xem e-ticket & QR",
+  "authHomeTodayScheduleTitle": "Lịch hôm nay",
+  "authHomeTodaySchedulePreview": "Panel Voice Actor · 14:00",
+  "authHomeBuyTicketBanner": "Mua vé FUVEKON",
+  "authHomeBuyTicketBannerSubtitle": "Early bird đang mở bán",
+  "authHomeShortcutsTitle": "Tiện ích",
+  "authHomeShortcutArtbook": "Artbook",
+  "authHomeShortcutLostFound": "L&F",
 
   "landingBadge": "SỰ KIỆN HÀNG ĐẦU",
   "landingHeroTitle": "Sự kiện Anime",
@@ -199,13 +236,6 @@
   "exploreTicketsRetry": "Thử lại",
   "ticketDetailBenefitsTitle": "Quyền lợi đi kèm",
   "ticketDetailCompareTitle": "So sánh với {standardTier}",
-  "@ticketDetailCompareTitle": {
-    "placeholders": {
-      "standardTier": {
-        "type": "String"
-      }
-    }
-  },
   "ticketDetailTotal": "Tổng cộng",
   "ticketDetailCompareAccess": "Quyền truy cập",
   "ticketDetailCompareCheckIn": "Check-in",

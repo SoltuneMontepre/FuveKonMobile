@@ -6,12 +6,20 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class _RegisterFormColors {
-  static const textDark = FuvekonColors.darkButtonText;
+  // Copy on the dark illustrated panel
+  static const label = Colors.white;
+  static const bodyMuted = Color(0xD9FFFFFF);
+
+  // White input fields — dark text inside for legibility
+  static const inputText = FuvekonColors.onSageGreen;
   static const inputFill = Color(0xFFF8FCFA);
   static const inputHint = FuvekonColors.textSecondary;
-  static const iconMuted = FuvekonColors.sageGreenContainer;
-  static const accentGreen = FuvekonColors.sageGreenContainer;
-  static const linkGreen = FuvekonColors.darkButtonText;
+  static const inputIcon = FuvekonColors.sageGreenContainer;
+
+  // Actions and links
+  static const buttonBg = FuvekonColors.sageGreen;
+  static const buttonFg = FuvekonColors.onSageGreen;
+  static const link = FuvekonColors.darkPrimary;
 }
 
 class RegisterForm extends StatefulWidget {
@@ -84,17 +92,19 @@ class _RegisterFormState extends State<RegisterForm> {
       hintStyle: const TextStyle(color: _RegisterFormColors.inputHint),
       filled: true,
       fillColor: _RegisterFormColors.inputFill,
-      prefixIcon: Icon(prefixIcon, color: _RegisterFormColors.iconMuted),
+      prefixIcon: Icon(prefixIcon, color: _RegisterFormColors.inputIcon),
       suffixIcon: suffixIcon,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: _RegisterFormColors.textDark.withValues(alpha: 0.08)),
+        borderSide: BorderSide(
+          color: _RegisterFormColors.inputText.withValues(alpha: 0.12),
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
-          color: _RegisterFormColors.accentGreen.withValues(alpha: 0.65),
+          color: _RegisterFormColors.link.withValues(alpha: 0.85),
         ),
       ),
       errorBorder: OutlineInputBorder(
@@ -122,7 +132,7 @@ class _RegisterFormState extends State<RegisterForm> {
           TextFormField(
             controller: _fullNameController,
             textCapitalization: TextCapitalization.words,
-            style: const TextStyle(color: _RegisterFormColors.textDark),
+            style: const TextStyle(color: _RegisterFormColors.inputText),
             decoration: _inputDecoration(
               hint: l10n.registerFullNameHint,
               prefixIcon: Icons.person_outline,
@@ -145,7 +155,7 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             autofillHints: const [AutofillHints.email],
-            style: const TextStyle(color: _RegisterFormColors.textDark),
+            style: const TextStyle(color: _RegisterFormColors.inputText),
             decoration: _inputDecoration(
               hint: l10n.registerEmailHint,
               prefixIcon: Icons.mail_outline,
@@ -169,7 +179,7 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _phoneController,
             keyboardType: TextInputType.phone,
             autofillHints: const [AutofillHints.telephoneNumber],
-            style: const TextStyle(color: _RegisterFormColors.textDark),
+            style: const TextStyle(color: _RegisterFormColors.inputText),
             decoration: _inputDecoration(
               hint: l10n.registerPhoneHint,
               prefixIcon: Icons.phone_outlined,
@@ -193,7 +203,7 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _passwordController,
             obscureText: _obscurePassword,
             autofillHints: const [AutofillHints.newPassword],
-            style: const TextStyle(color: _RegisterFormColors.textDark),
+            style: const TextStyle(color: _RegisterFormColors.inputText),
             decoration: _inputDecoration(
               hint: l10n.registerPasswordHint,
               prefixIcon: Icons.lock_outline,
@@ -202,7 +212,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   _obscurePassword
                       ? Icons.visibility_outlined
                       : Icons.visibility_off_outlined,
-                  color: _RegisterFormColors.iconMuted,
+                  color: _RegisterFormColors.inputIcon,
                 ),
                 onPressed: widget.isLoading
                     ? null
@@ -227,7 +237,7 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _confirmPasswordController,
             obscureText: _obscureConfirmPassword,
             autofillHints: const [AutofillHints.newPassword],
-            style: const TextStyle(color: _RegisterFormColors.textDark),
+            style: const TextStyle(color: _RegisterFormColors.inputText),
             decoration: _inputDecoration(
               hint: l10n.registerConfirmPasswordHint,
               prefixIcon: Icons.lock_reset_outlined,
@@ -236,7 +246,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   _obscureConfirmPassword
                       ? Icons.visibility_outlined
                       : Icons.visibility_off_outlined,
-                  color: _RegisterFormColors.iconMuted,
+                  color: _RegisterFormColors.inputIcon,
                 ),
                 onPressed: widget.isLoading
                     ? null
@@ -269,9 +279,9 @@ class _RegisterFormState extends State<RegisterForm> {
                   onChanged: widget.isLoading
                       ? null
                       : (value) => setState(() => _termsAccepted = value ?? false),
-                  activeColor: _RegisterFormColors.accentGreen,
+                  activeColor: _RegisterFormColors.link,
                   side: BorderSide(
-                    color: _RegisterFormColors.textDark.withValues(alpha: 0.35),
+                    color: Colors.white.withValues(alpha: 0.45),
                   ),
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.compact,
@@ -285,24 +295,25 @@ class _RegisterFormState extends State<RegisterForm> {
           FilledButton(
             onPressed: widget.isLoading || !_termsAccepted ? null : _submit,
             style: FilledButton.styleFrom(
-              backgroundColor: _RegisterFormColors.accentGreen,
-              foregroundColor: Colors.white,
+              backgroundColor: _RegisterFormColors.buttonBg,
+              foregroundColor: _RegisterFormColors.buttonFg,
               disabledBackgroundColor:
-                  _RegisterFormColors.accentGreen.withValues(alpha: 0.45),
+                  _RegisterFormColors.buttonBg.withValues(alpha: 0.35),
+              disabledForegroundColor:
+                  _RegisterFormColors.buttonFg.withValues(alpha: 0.55),
               minimumSize: const Size.fromHeight(52),
-              elevation: 2,
-              shadowColor: _RegisterFormColors.accentGreen.withValues(alpha: 0.35),
+              elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
             child: widget.isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     height: 22,
                     width: 22,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Colors.white,
+                      color: _RegisterFormColors.buttonFg,
                     ),
                   )
                 : Row(
@@ -336,7 +347,7 @@ class _FieldLabel extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        color: _RegisterFormColors.textDark,
+        color: _RegisterFormColors.label,
         fontWeight: FontWeight.w600,
         fontSize: 13.5,
       ),
@@ -353,15 +364,15 @@ class _TermsText extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final baseStyle = TextStyle(
-      color: _RegisterFormColors.textDark.withValues(alpha: 0.78),
+      color: _RegisterFormColors.bodyMuted,
       fontSize: 12.5,
       height: 1.45,
     );
     final linkStyle = baseStyle.copyWith(
-      color: _RegisterFormColors.linkGreen,
+      color: _RegisterFormColors.link,
       fontWeight: FontWeight.w700,
       decoration: TextDecoration.underline,
-      decorationColor: _RegisterFormColors.linkGreen.withValues(alpha: 0.5),
+      decorationColor: _RegisterFormColors.link.withValues(alpha: 0.6),
     );
 
     return Text.rich(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// FUVEKON Premium Mobile System palette from `color.md`.
+/// FUVEKON Premium Mobile System palette from [color.md].
 abstract final class FuvekonColors {
-  // ── Design system tokens ──
+  // ── Design system tokens (color.md YAML) ──
   static const surface = Color(0xFF131313);
   static const surfaceBright = Color(0xFF393939);
   static const surfaceContainerLowest = Color(0xFF0E0E0E);
@@ -20,12 +20,35 @@ abstract final class FuvekonColors {
   static const sageGreen = Color(0xFFA9CFB8);
   static const onSageGreen = Color(0xFF133726);
   static const sageGreenContainer = Color(0xFF567A66);
+  static const onSageGreenContainer = Color(0xFFE5FFED);
   static const dustyRose = Color(0xFFDFBEC9);
   static const onDustyRose = Color(0xFF402A33);
   static const dustyRoseContainer = Color(0xFF584049);
+  static const onDustyRoseContainer = Color(0xFFCDADB8);
   static const lightGold = Color(0xFFE9C349);
   static const onLightGold = Color(0xFF3C2F00);
   static const goldContainer = Color(0xFFCCA730);
+  static const primaryFixed = Color(0xFFC4ECD3);
+  static const secondaryFixed = Color(0xFFFCDAE5);
+  static const onError = Color(0xFF690005);
+
+  // ── Semantic aliases used by customer UI widgets ──
+  static const premiumCanvas = charcoal;
+  static const premiumBackground = charcoal;
+  static const premiumNav = deepNavy;
+  static const premiumPrimary = sageGreen;
+  static const premiumOnPrimary = onSageGreen;
+  static const premiumSecondary = dustyRose;
+  static const premiumTertiary = lightGold;
+  static const premiumOnSurface = onSurface;
+  static const premiumOnSurfaceVariant = onSurfaceVariant;
+  static const premiumOutline = outlineToken;
+  static const premiumMintCard = mintCard;
+  static const premiumOnMintCard = onSageGreen;
+  static const premiumOnMintCardMuted = Color(0xFF48715B);
+  static const premiumDecorativeGold = lightGold;
+  static const premiumSurfaceContainer = surfaceContainer;
+  static const premiumSurfaceContainerHigh = surfaceContainerHigh;
 
   // ── Light surfaces ──
   static const main = mintCard;
@@ -33,11 +56,11 @@ abstract final class FuvekonColors {
   static const bg = Color(0xFFEAF3E9);
   static const bgSecondary = Color(0xFFD6E2D7);
 
-  // ── Brand greens ──
+  // ── Brand ──
   static const primary = sageGreen;
   static const secondary = sageGreenContainer;
   static const button = sageGreen;
-  static const buttonHover = Color(0xFFC4ECD3);
+  static const buttonHover = primaryFixed;
   static const buttonActive = Color(0xFF8EBDA3);
   static const outline = outlineToken;
   static const available = Color(0xFF10B981);
@@ -64,7 +87,7 @@ abstract final class FuvekonColors {
   static const tier3 = goldContainer;
   static const tier4 = surfaceContainerHighest;
 
-  // ── Dark mode ──
+  // ── Dark mode (elevation layering per color.md) ──
   static const darkBg = charcoal;
   static const darkDeep = deepNavy;
   static const darkSurface = surfaceContainerLow;
@@ -80,11 +103,18 @@ abstract final class FuvekonColors {
   static const darkCard = mintCard;
   static const darkCardText = onSageGreen;
   static const darkNotesSurface = surfaceContainer;
+
+  // ── Status badges (color.md Components → Badges) ──
+  static const statusSuccessBg = primaryFixed;
+  static const statusPendingBg = sageGreenContainer;
+  static const statusDeniedBg = secondaryFixed;
+  static const statusDeniedText = onError;
 }
 
 /// Layout tokens shared across light and dark themes.
 abstract final class FuvekonRadii {
   static const card = 24.0;
+  static const cardLg = 28.0;
   static const input = 12.0;
   static const button = 999.0;
   static const notes = 20.0;
@@ -93,7 +123,10 @@ abstract final class FuvekonRadii {
 
 abstract final class FuvekonSpacing {
   static const page = 20.0;
-  static const card = 24.0;
+  static const card = 20.0;
   static const field = 16.0;
-  static const section = 24.0;
+  static const section = 32.0;
+  static const stackGapLg = 24.0;
+  static const stackGapMd = 16.0;
+  static const stackGapSm = 8.0;
 }

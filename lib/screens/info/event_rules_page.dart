@@ -5,6 +5,7 @@ import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/shared/services/app_preferences.dart';
+import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -51,7 +52,9 @@ class _EventRulesPageState extends State<EventRulesPage> {
     if (widget.onboarding) {
       return Scaffold(
         backgroundColor: FuvekonColors.darkBg,
-        body: SafeArea(child: body),
+        body: FuvekonIllustratedPageStack(
+          child: SafeArea(child: body),
+        ),
       );
     }
 
@@ -109,51 +112,53 @@ class _RulesBody extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                InkWell(
-                  onTap: () => onAgreedChanged(!agreed),
-                  borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: Checkbox(
-                            value: agreed,
-                            onChanged: (value) =>
-                                onAgreedChanged(value ?? false),
-                            activeColor: _RulesColors.accentGreen,
-                            side: BorderSide(
-                              color: Colors.white.withValues(alpha: 0.45),
-                            ),
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            l10n.rulesAgreeCheckbox,
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.85),
-                              fontSize: 13.5,
-                              height: 1.45,
+            child: FuvekonIllustratedContentPanel(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  InkWell(
+                    onTap: () => onAgreedChanged(!agreed),
+                    borderRadius: BorderRadius.circular(8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: Checkbox(
+                              value: agreed,
+                              onChanged: (value) =>
+                                  onAgreedChanged(value ?? false),
+                              activeColor: _RulesColors.accentGreen,
+                              side: BorderSide(
+                                color: Colors.white.withValues(alpha: 0.45),
+                              ),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              l10n.rulesAgreeCheckbox,
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.85),
+                                fontSize: 13.5,
+                                height: 1.45,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                FilledButton(
-                  onPressed: onConfirm,
-                  style: FilledButton.styleFrom(
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    onPressed: onConfirm,
+                    style: FilledButton.styleFrom(
                     backgroundColor: _RulesColors.accentGreen,
                     disabledBackgroundColor: const Color(0xFF3A3A3A),
                     disabledForegroundColor: const Color(0xFF888888),
@@ -171,7 +176,8 @@ class _RulesBody extends StatelessWidget {
                     ),
                   ),
                 ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

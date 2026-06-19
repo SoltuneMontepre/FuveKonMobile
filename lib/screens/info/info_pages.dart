@@ -5,6 +5,9 @@ import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';
 export 'event_rules_page.dart';
 export 'faq_page.dart';
 export 'lost_found_page.dart';
+export 'lost_found_detail_page.dart';
+export 'lost_found_report_page.dart';
+export 'lost_found_request_page.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -27,19 +30,6 @@ class TosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EventRulesPage(onboarding: onboarding);
-  }
-}
-
-class SchedulePage extends StatelessWidget {
-  const SchedulePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'Schedule',
-      subtitle: 'Event schedule and programming.',
-      icon: Icons.calendar_month_outlined,
-    );
   }
 }
 
