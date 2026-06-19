@@ -7,7 +7,7 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_lost_found_form_sheet.dart';
-import 'package:fuvekonmobile/screens/admin/widgets/staff_tab_scaffold.dart';
+import 'package:fuvekonmobile/screens/admin/widgets/admin_list_scaffold.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
 import 'package:go_router/go_router.dart';
@@ -161,236 +161,100 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StaffTabScaffold(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              FuvekonSpacing.page,
-              12,
-              FuvekonSpacing.page,
-              0,
-            ),
-            child: Text(
-              'Quản lý thất lạc',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: FuvekonColors.darkAppBarTitle,
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              FuvekonSpacing.page,
-              12,
-              FuvekonSpacing.page,
-              4,
-            ),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _onSearchChanged,
-              decoration: InputDecoration(
-                hintText: 'Tìm tiêu đề, mô tả, vị trí...',
-                prefixIcon: const Icon(Icons.search_rounded),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        onPressed: () {
-                          _searchController.clear();
-                          _onSearchChanged('');
-                        },
-                        icon: const Icon(Icons.close_rounded),
-                      )
-                    : null,
-              ),
-            ),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(
-              horizontal: FuvekonSpacing.page,
-              vertical: 4,
-            ),
-            child: Row(
-              children: [
-                _FilterChip(
-                  label: 'Tất cả',
-                  selected: _statusFilter.isEmpty,
-                  onTap: () => _setStatusFilter(''),
-                ),
-                _FilterChip(
-                  label: 'Đang mở',
-                  selected: _statusFilter == 'open',
-                  onTap: () => _setStatusFilter('open'),
-                ),
-                _FilterChip(
-                  label: 'Đã nhận',
-                  selected: _statusFilter == 'claimed',
-                  onTap: () => _setStatusFilter('claimed'),
-                ),
-                _FilterChip(
-                  label: 'Đã xử lý',
-                  selected: _statusFilter == 'resolved',
-                  onTap: () => _setStatusFilter('resolved'),
-                ),
-                const SizedBox(width: 8),
-                _FilterChip(
-                  label: 'Thất lạc',
-                  selected: _typeFilter == 'lost',
-                  onTap: () => _setTypeFilter(
-                    _typeFilter == 'lost' ? '' : 'lost',
-                  ),
-                ),
-                _FilterChip(
-                  label: 'Nhặt được',
-                  selected: _typeFilter == 'found',
-                  onTap: () => _setTypeFilter(
-                    _typeFilter == 'found' ? '' : 'found',
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(child: _buildBody()),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBody() {
-    if (_loading && _items.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (_error != null && _items.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(FuvekonSpacing.page),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                _error!,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
-              ),
-              const SizedBox(height: 16),
-              FilledButton(
-                onPressed: () => _load(refresh: true),
-                child: const Text('Thử lại'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (_items.isEmpty) {
-      return Stack(
-        children: [
-          const EmptyState(
-            title: 'Chưa có mục thất lạc',
-            subtitle: 'Nhấn + để thêm vật thất lạc hoặc nhặt được.',
-            icon: Icons.inventory_2_outlined,
-          ),
-          _buildFab(),
-        ],
-      );
-    }
-
-    return Stack(
-      children: [
-        RefreshIndicator(
-          onRefresh: () => _load(refresh: true),
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification.metrics.pixels >=
-                      notification.metrics.maxScrollExtent - 200 &&
-                  !_loadingMore &&
-                  (_meta?.hasMore ?? false)) {
-                _load(refresh: false);
-              }
-              return false;
-            },
-            child: ListView.separated(
-              padding: const EdgeInsets.fromLTRB(
-                FuvekonSpacing.page,
-                8,
-                FuvekonSpacing.page,
-                88,
-              ),
-              itemCount: _items.length + (_loadingMore ? 1 : 0),
-              separatorBuilder: (_, _) => const SizedBox(height: 8),
-              itemBuilder: (context, index) {
-                if (index >= _items.length) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-                final item = _items[index];
-                return _LostFoundTile(
-                  item: item,
-                  onTap: () => _openDetail(item),
-                );
-              },
-            ),
-          ),
-        ),
-        _buildFab(),
-      ],
-    );
-  }
-
-  Widget _buildFab() {
-    return Positioned(
-      right: FuvekonSpacing.page,
-      bottom: FuvekonSpacing.page,
-      child: FloatingActionButton(
+    return AdminListScaffold(
+      title: 'Quản lý thất lạc',
+      embedded: true,
+      floatingActionButton: FloatingActionButton(
         onPressed: () => _openForm(),
         backgroundColor: FuvekonColors.darkPrimary,
         foregroundColor: FuvekonColors.darkButtonText,
         child: const Icon(Icons.add_rounded),
       ),
+      header: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AdminListSearchField(
+            controller: _searchController,
+            hintText: 'Tìm tiêu đề, mô tả, vị trí...',
+            onChanged: _onSearchChanged,
+          ),
+          AdminListFilterRow(
+            children: [
+              AdminListFilterChip(
+                label: 'Tất cả',
+                selected: _statusFilter.isEmpty,
+                onTap: () => _setStatusFilter(''),
+              ),
+              AdminListFilterChip(
+                label: 'Đang mở',
+                selected: _statusFilter == 'open',
+                onTap: () => _setStatusFilter('open'),
+              ),
+              AdminListFilterChip(
+                label: 'Đã nhận',
+                selected: _statusFilter == 'claimed',
+                onTap: () => _setStatusFilter('claimed'),
+              ),
+              AdminListFilterChip(
+                label: 'Đã xử lý',
+                selected: _statusFilter == 'resolved',
+                onTap: () => _setStatusFilter('resolved'),
+              ),
+              const SizedBox(width: 8),
+              AdminListFilterChip(
+                label: 'Thất lạc',
+                selected: _typeFilter == 'lost',
+                onTap: () => _setTypeFilter(_typeFilter == 'lost' ? '' : 'lost'),
+              ),
+              AdminListFilterChip(
+                label: 'Nhặt được',
+                selected: _typeFilter == 'found',
+                onTap: () =>
+                    _setTypeFilter(_typeFilter == 'found' ? '' : 'found'),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: _buildBody(),
     );
   }
-}
 
-class _FilterChip extends StatelessWidget {
-  const _FilterChip({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: FilterChip(
-        label: Text(label),
-        selected: selected,
-        onSelected: (_) => onTap(),
-        selectedColor: FuvekonColors.darkPrimary.withValues(alpha: 0.25),
-        checkmarkColor: FuvekonColors.darkPrimary,
-        labelStyle: TextStyle(
-          color: selected
-              ? FuvekonColors.darkPrimary
-              : FuvekonColors.darkTextSecondary,
-          fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+  Widget _buildBody() {
+    return AdminListBody(
+      loading: _loading,
+      error: _error,
+      isEmpty: _items.isEmpty,
+      onRetry: () => _load(refresh: true),
+      onRefresh: () => _load(refresh: true),
+      loadingMore: _loadingMore,
+      hasMore: _meta?.hasMore ?? false,
+      onLoadMore: () => _load(refresh: false),
+      emptyState: const EmptyState(
+        title: 'Chưa có mục thất lạc',
+        subtitle: 'Nhấn + để thêm vật thất lạc hoặc nhặt được.',
+        icon: Icons.inventory_2_outlined,
+      ),
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(
+          FuvekonSpacing.page,
+          8,
+          FuvekonSpacing.page,
+          88,
         ),
-        side: BorderSide(
-          color: selected
-              ? FuvekonColors.darkPrimary
-              : FuvekonColors.darkBorder,
-        ),
-        backgroundColor: FuvekonColors.darkSurfaceElevated,
+        itemCount: _items.length + (_loadingMore ? 1 : 0),
+        separatorBuilder: (_, _) => const SizedBox(height: 8),
+        itemBuilder: (context, index) {
+          if (index >= _items.length) {
+            return const AdminListLoadMoreIndicator();
+          }
+          final item = _items[index];
+          return _LostFoundTile(
+            item: item,
+            onTap: () => _openDetail(item),
+          );
+        },
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
+import 'package:fuvekonmobile/screens/admin/widgets/admin_list_scaffold.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
 import 'package:go_router/go_router.dart';
@@ -126,54 +127,22 @@ class _AdminUsersPageState extends State<AdminUsersPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quản lý người dùng'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Tất cả'),
-            Tab(text: 'Bị cấm'),
-          ],
-        ),
-      ),
-      body: Column(
+    return AdminListScaffold(
+      title: 'Quản lý người dùng',
+      tabs: const ['Tất cả', 'Bị cấm'],
+      tabController: _tabController,
+      header: _tabController.index == 0
+          ? AdminListSearchField(
+              controller: _searchController,
+              hintText: 'Tìm email, tên, fursona...',
+              onChanged: _onSearchChanged,
+            )
+          : null,
+      body: TabBarView(
+        controller: _tabController,
         children: [
-          if (_tabController.index == 0)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                FuvekonSpacing.page,
-                12,
-                FuvekonSpacing.page,
-                4,
-              ),
-              child: TextField(
-                controller: _searchController,
-                onChanged: _onSearchChanged,
-                decoration: InputDecoration(
-                  hintText: 'Tìm email, tên, fursona...',
-                  prefixIcon: const Icon(Icons.search_rounded),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? IconButton(
-                          onPressed: () {
-                            _searchController.clear();
-                            _onSearchChanged('');
-                          },
-                          icon: const Icon(Icons.close_rounded),
-                        )
-                      : null,
-                ),
-              ),
-            ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildTabBody(0),
-                _buildTabBody(1),
-              ],
-            ),
-          ),
+          _buildTabBody(0),
+          _buildTabBody(1),
         ],
       ),
     );
@@ -186,73 +155,35 @@ class _AdminUsersPageState extends State<AdminUsersPage>
     final items = _itemsByTab[index] ?? const <AdminUserItem>[];
     final meta = _metaByTab[index];
 
-    if (loading && items.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (error != null && items.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(FuvekonSpacing.page),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                error,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
-              ),
-              const SizedBox(height: 16),
-              FilledButton(
-                onPressed: () => _loadTab(index, refresh: true),
-                child: const Text('Thử lại'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (items.isEmpty) {
-      return EmptyState(
+    return AdminListBody(
+      loading: loading,
+      error: error,
+      isEmpty: items.isEmpty,
+      onRetry: () => _loadTab(index, refresh: true),
+      onRefresh: _refresh,
+      loadingMore: loadingMore,
+      hasMore: meta?.hasMore ?? false,
+      onLoadMore: () => _loadTab(index, refresh: false),
+      emptyState: EmptyState(
         title: 'Không có người dùng',
         subtitle: index == 0
             ? 'Không tìm thấy người dùng phù hợp.'
             : 'Chưa có ai trong danh sách cấm.',
         icon: Icons.people_outline,
-      );
-    }
-
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (notification) {
-          if (notification.metrics.pixels >=
-                  notification.metrics.maxScrollExtent - 200 &&
-              !loadingMore &&
-              (meta?.hasMore ?? false)) {
-            _loadTab(index, refresh: false);
+      ),
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(FuvekonSpacing.page),
+        itemCount: items.length + (loadingMore ? 1 : 0),
+        separatorBuilder: (_, _) => const SizedBox(height: 8),
+        itemBuilder: (context, i) {
+          if (i >= items.length) {
+            return const AdminListLoadMoreIndicator();
           }
-          return false;
-        },
-        child: ListView.separated(
-          padding: const EdgeInsets.all(FuvekonSpacing.page),
-          itemCount: items.length + (loadingMore ? 1 : 0),
-          separatorBuilder: (_, _) => const SizedBox(height: 8),
-          itemBuilder: (context, i) {
-            if (i >= items.length) {
-              return const Padding(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                child: Center(child: CircularProgressIndicator()),
-              );
-            }
 
-            final user = items[i];
-            return _UserTile(user: user, onTap: () => _openUser(user));
-          },
-        ),
+          final user = items[i];
+          return _UserTile(user: user, onTap: () => _openUser(user));
+        },
       ),
     );
   }

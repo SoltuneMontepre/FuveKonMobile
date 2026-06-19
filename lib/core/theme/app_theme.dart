@@ -121,7 +121,7 @@ abstract final class AppTheme {
       titleMedium: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w700,
-        color: cardHeadline,
+        color: isLight ? cardHeadline : headlineColor,
       ),
       titleSmall: TextStyle(
         fontSize: 14,
@@ -202,9 +202,13 @@ abstract final class AppTheme {
         filled: true,
         fillColor: inputFill,
         floatingLabelBehavior: FloatingLabelBehavior.never,
-        labelStyle: textTheme.labelMedium,
+        labelStyle: textTheme.labelMedium?.copyWith(
+          color: isLight ? cardHeadline : FuvekonColors.darkText,
+        ),
         hintStyle: TextStyle(
-          color: cardBody.withValues(alpha: 0.65),
+          color: isLight
+              ? cardBody.withValues(alpha: 0.65)
+              : FuvekonColors.darkText.withValues(alpha: 0.75),
           fontSize: 14,
         ),
         border: OutlineInputBorder(

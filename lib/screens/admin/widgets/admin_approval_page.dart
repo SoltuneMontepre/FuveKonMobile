@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
+import 'package:fuvekonmobile/screens/admin/widgets/admin_list_scaffold.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
 
@@ -276,14 +277,10 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [for (final tab in widget.tabs) Tab(text: tab.label)],
-        ),
-      ),
+    return AdminListScaffold(
+      title: widget.title,
+      tabs: [for (final tab in widget.tabs) tab.label],
+      tabController: _tabController,
       body: TabBarView(
         controller: _tabController,
         children: [
@@ -298,46 +295,19 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
     final error = _errorByTab[index];
     final items = _itemsByTab[index] ?? const <AdminListItem>[];
 
-    if (loading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (error != null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(FuvekonSpacing.page),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                error,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
-              ),
-              const SizedBox(height: 16),
-              FilledButton(
-                onPressed: () => _loadTab(index),
-                child: const Text('Thử lại'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (items.isEmpty) {
-      return EmptyState(
+    return AdminListBody(
+      loading: loading,
+      error: error,
+      isEmpty: items.isEmpty,
+      onRetry: () => _loadTab(index),
+      onRefresh: _refresh,
+      emptyState: EmptyState(
         title: 'Không có mục nào',
         subtitle: 'Danh sách ${widget.tabs[index].label.toLowerCase()} trống.',
         icon: Icons.inbox_outlined,
-      );
-    }
-
-    return RefreshIndicator(
-      onRefresh: _refresh,
+      ),
       child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(FuvekonSpacing.page),
         itemCount: items.length,
         separatorBuilder: (_, _) => const SizedBox(height: 8),

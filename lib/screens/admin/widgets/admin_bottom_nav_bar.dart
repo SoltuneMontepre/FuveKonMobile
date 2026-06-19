@@ -28,8 +28,9 @@ class AdminBottomNavBar extends StatelessWidget {
     return UserPermissions.adminShellBranches
         .where(
           (branch) =>
-              branch.requiredPermission == null ||
-              hasPermission(branch.requiredPermission!),
+              branch.showInBottomNav &&
+              (branch.requiredPermission == null ||
+                  hasPermission(branch.requiredPermission!)),
         )
         .map((branch) {
           final meta = _branchLabels[branch.branchIndex]!;

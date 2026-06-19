@@ -9,7 +9,7 @@ abstract final class UserPermissions {
   static const viewDashboard = 'view_dashboard';
   static const manageUsers = 'manage_users';
 
-  /// Bottom-nav shell branches (index matches [AdminRoutes] StatefulShellRoute).
+  /// Shell branches (index matches [AdminRoutes] StatefulShellRoute).
   static const adminShellBranches = <AdminShellBranch>[
     AdminShellBranch(branchIndex: 0, route: Routes.admin),
     AdminShellBranch(
@@ -26,11 +26,13 @@ abstract final class UserPermissions {
       branchIndex: 3,
       route: Routes.adminHistory,
       requiredPermission: scanTickets,
+      showInBottomNav: false,
     ),
     AdminShellBranch(
       branchIndex: 4,
       route: Routes.adminLostFound,
       requiredPermission: approveProfiles,
+      showInBottomNav: false,
     ),
     AdminShellBranch(
       branchIndex: 5,
@@ -116,9 +118,11 @@ class AdminShellBranch {
     required this.branchIndex,
     required this.route,
     this.requiredPermission,
+    this.showInBottomNav = true,
   });
 
   final int branchIndex;
   final String route;
   final String? requiredPermission;
+  final bool showInBottomNav;
 }
