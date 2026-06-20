@@ -3,8 +3,10 @@ import 'package:fuvekonmobile/core/api/dealer_api.dart';
 import 'package:fuvekonmobile/core/api/panel_api.dart';
 import 'package:fuvekonmobile/core/api/talent_api.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/screens/account/widgets/dealer_registration_form_fields.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:go_router/go_router.dart';
@@ -224,25 +226,49 @@ class _DealerRegistrationPageState extends State<DealerRegistrationPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descController = TextEditingController();
-  final _priceSheetController = TextEditingController();
+  final _priceSheetUrls = <String>[];
   bool _isSubmitting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (sl<AuthSessionNotifier>().isAuthenticated) {
+        context.go(Routes.accountDealerRegister);
+      }
+    });
+  }
 
   @override
   void dispose() {
     _nameController.dispose();
     _descController.dispose();
-    _priceSheetController.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
+    if (!sl<AuthSessionNotifier>().isAuthenticated) {
+      context.go(Routes.login);
+      return;
+    }
+
     if (!(_formKey.currentState?.validate() ?? false)) return;
+
+    final priceSheetError = validateDealerPriceSheets(_priceSheetUrls);
+    if (priceSheetError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(priceSheetError)),
+      );
+      return;
+    }
+
     setState(() => _isSubmitting = true);
     try {
       final response = await sl<DealerApi>().registerDealer({
         'booth_name': _nameController.text.trim(),
         'description': _descController.text.trim(),
-        'price_sheets': [_priceSheetController.text.trim()],
+        'price_sheets': List.of(_priceSheetUrls),
       });
       if (!mounted) return;
       if (response.isSuccess) {
@@ -277,48 +303,16 @@ class _DealerRegistrationPageState extends State<DealerRegistrationPage> {
       ),
       child: Form(
         key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AppLabeledField(
-              label: 'Tên gian hàng',
-              required: true,
-              field: TextFormField(
-                controller: _nameController,
-                enabled: !_isSubmitting,
-                validator: (v) => (v == null || v.trim().isEmpty)
-                    ? 'Nhập tên gian hàng'
-                    : null,
-              ),
-            ),
-            const SizedBox(height: FuvekonSpacing.field),
-            AppLabeledField(
-              label: 'Mô tả',
-              required: true,
-              field: TextFormField(
-                controller: _descController,
-                enabled: !_isSubmitting,
-                maxLines: 3,
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Nhập mô tả' : null,
-              ),
-            ),
-            const SizedBox(height: FuvekonSpacing.field),
-            AppLabeledField(
-              label: 'URL bảng giá',
-              required: true,
-              field: TextFormField(
-                controller: _priceSheetController,
-                enabled: !_isSubmitting,
-                keyboardType: TextInputType.url,
-                validator: (v) {
-                  if (v == null || v.trim().isEmpty) return 'Nhập URL bảng giá';
-                  if (!v.startsWith('http')) return 'URL không hợp lệ';
-                  return null;
-                },
-              ),
-            ),
-          ],
+        child: DealerRegistrationFormFields(
+          nameController: _nameController,
+          descController: _descController,
+          priceSheetUrls: _priceSheetUrls,
+          onPriceSheetsChanged: (urls) => setState(() {
+            _priceSheetUrls
+              ..clear()
+              ..addAll(urls);
+          }),
+          enabled: !_isSubmitting,
         ),
       ),
     );

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_event.dart';
+import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_state.dart';
 import 'package:fuvekonmobile/features/schedule/domain/entities/featured_event_summary.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
@@ -10,6 +15,7 @@ import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_section_header.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+
 class AuthenticatedHomePage extends StatelessWidget {
   const AuthenticatedHomePage({super.key});
 
@@ -17,49 +23,68 @@ class AuthenticatedHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<ProfileBloc>()..add(const ProfileEvent.started()),
+      child: const _AuthenticatedHomeView(),
+    );
+  }
+}
+
+class _AuthenticatedHomeView extends StatelessWidget {
+  const _AuthenticatedHomeView();
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return ColoredBox(
-      color: FuvekonColors.darkBg,
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: _HeroSection(l10n: l10n)),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(
-              FuvekonSpacing.page,
-              24,
-              FuvekonSpacing.page,
-              16,
-            ),
-            sliver: SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  FuveSectionHeader(title: l10n.authHomeBentoTitle),
-                  const SizedBox(height: 16),
-                  _BentoGrid(l10n: l10n),
-                ],
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, profileState) {
+        final hasTicket = switch (profileState) {
+          ProfileLoaded(:final account) => account.isHasTicket == true,
+          _ => false,
+        };
+
+        return ColoredBox(
+          color: FuvekonColors.darkBg,
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(child: _HeroSection(l10n: l10n)),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(
+                  FuvekonSpacing.page,
+                  24,
+                  FuvekonSpacing.page,
+                  16,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      FuveSectionHeader(title: l10n.authHomeBentoTitle),
+                      const SizedBox(height: 16),
+                      _BentoGrid(l10n: l10n),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(
-              FuvekonSpacing.page,
-              8,
-              FuvekonSpacing.page,
-              16,
-            ),
-            sliver: SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  FuveSectionHeader(title: l10n.authHomeShortcutsTitle),
-                  const SizedBox(height: 12),
-                  _ShortcutRow(l10n: l10n),
-                ],
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(
+                  FuvekonSpacing.page,
+                  8,
+                  FuvekonSpacing.page,
+                  16,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      FuveSectionHeader(title: l10n.authHomeShortcutsTitle),
+                      const SizedBox(height: 12),
+                      _ShortcutSection(l10n: l10n, hasTicket: hasTicket),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(
               FuvekonSpacing.page,
@@ -87,6 +112,8 @@ class AuthenticatedHomePage extends StatelessWidget {
           ),
         ],
       ),
+        );
+      },
     );
   }
 }
@@ -263,49 +290,114 @@ class _ScheduleOverviewCard extends StatelessWidget {
   }
 }
 
-class _ShortcutRow extends StatelessWidget {
-  const _ShortcutRow({required this.l10n});
+class _HomeShortcut {
+  const _HomeShortcut({
+    required this.icon,
+    required this.label,
+    required this.route,
+    this.useGo = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final String route;
+  final bool useGo;
+}
+
+class _ShortcutSection extends StatelessWidget {
+  const _ShortcutSection({
+    required this.l10n,
+    required this.hasTicket,
+  });
 
   final AppLocalizations l10n;
+  final bool hasTicket;
 
   @override
   Widget build(BuildContext context) {
-    final shortcuts = [
-      (
+    final shortcuts = <_HomeShortcut>[
+      _HomeShortcut(
         icon: Icons.calendar_month_outlined,
         label: l10n.navSchedule,
         route: Routes.accountSchedule,
+        useGo: true,
       ),
-      (
+      _HomeShortcut(
         icon: Icons.confirmation_number_outlined,
         label: l10n.navMyTickets,
         route: Routes.accountTicket,
+        useGo: true,
       ),
-      (
+      _HomeShortcut(
         icon: Icons.menu_book_outlined,
         label: l10n.authHomeShortcutArtbook,
         route: Routes.artbook,
       ),
-      (
+      _HomeShortcut(
         icon: Icons.search_outlined,
         label: l10n.authHomeShortcutLostFound,
         route: Routes.lostFound,
       ),
+      if (hasTicket) ...[
+        _HomeShortcut(
+          icon: Icons.mic_external_on_outlined,
+          label: l10n.authHomeShortcutTalent,
+          route: Routes.talent,
+        ),
+        _HomeShortcut(
+          icon: Icons.groups_outlined,
+          label: l10n.authHomeShortcutPanel,
+          route: Routes.panel,
+        ),
+        _HomeShortcut(
+          icon: Icons.storefront_outlined,
+          label: l10n.authHomeShortcutDealer,
+          route: Routes.accountDealer,
+        ),
+      ],
     ];
 
+    final rows = <List<_HomeShortcut>>[];
+    for (var i = 0; i < shortcuts.length; i += 4) {
+      rows.add(
+        shortcuts.sublist(i, i + 4 > shortcuts.length ? shortcuts.length : i + 4),
+      );
+    }
+
+    return Column(
+      children: [
+        for (var rowIndex = 0; rowIndex < rows.length; rowIndex++) ...[
+          if (rowIndex > 0) const SizedBox(height: 10),
+          _ShortcutRow(items: rows[rowIndex]),
+        ],
+      ],
+    );
+  }
+}
+
+class _ShortcutRow extends StatelessWidget {
+  const _ShortcutRow({required this.items});
+
+  final List<_HomeShortcut> items;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
-      children: shortcuts.map((item) {
+      children: List.generate(4, (index) {
+        if (index >= items.length) {
+          return const Expanded(child: SizedBox.shrink());
+        }
+
+        final item = items[index];
         return Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: InkWell(
               onTap: () {
-                switch (item.route) {
-                  case Routes.accountSchedule:
-                  case Routes.accountTicket:
-                    context.go(item.route);
-                  default:
-                    context.push(item.route);
+                if (item.useGo) {
+                  context.go(item.route);
+                } else {
+                  context.push(item.route);
                 }
               },
               borderRadius: BorderRadius.circular(16),
@@ -343,7 +435,7 @@ class _ShortcutRow extends StatelessWidget {
             ),
           ),
         );
-      }).toList(),
+      }),
     );
   }
 }

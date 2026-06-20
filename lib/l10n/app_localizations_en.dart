@@ -624,6 +624,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authHomeShortcutLostFound => 'L&F';
 
   @override
+  String get authHomeShortcutTalent => 'Talent';
+
+  @override
+  String get authHomeShortcutPanel => 'Panel';
+
+  @override
+  String get authHomeShortcutDealer => 'Dealer';
+
+  @override
   String get landingBadge => 'TOP EVENT';
 
   @override

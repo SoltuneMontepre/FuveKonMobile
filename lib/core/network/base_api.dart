@@ -20,9 +20,14 @@ abstract class BaseApi {
     Map<String, dynamic>? queryParameters,
     T? Function(dynamic value)? mapData,
     bool throwOnFailure = true,
+    Options? options,
   }) {
     return _envelope(
-      _client.get<JsonMap>(path, queryParameters: queryParameters),
+      _client.get<JsonMap>(
+        path,
+        queryParameters: queryParameters,
+        options: options,
+      ),
       mapData: mapData,
       throwOnFailure: throwOnFailure,
     );

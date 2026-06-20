@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:fuvekonmobile/core/constants/api_constants.dart';
 import 'package:fuvekonmobile/core/network/api_response.dart';
 import 'package:fuvekonmobile/core/network/base_api.dart';
@@ -47,6 +48,10 @@ class DealerApi extends BaseApi {
     return get(
       ApiConstants.dealerMe,
       mapData: mapJsonObject,
+      throwOnFailure: false,
+      options: Options(
+        validateStatus: (status) => status != null && status < 500,
+      ),
     );
   }
 

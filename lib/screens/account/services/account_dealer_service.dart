@@ -66,6 +66,9 @@ class DealerBoothInfo {
   final bool isVerified;
   final List<String> priceSheets;
   final List<DealerStaffMember> staff;
+
+  bool isOwner(String userId) =>
+      staff.any((member) => member.userId == userId && member.isOwner);
 }
 
 class AccountDealerService {
@@ -76,12 +79,15 @@ class AccountDealerService {
   Future<DealerBoothInfo?> getMyDealer({bool useMockFallback = true}) async {
     try {
       final response = await _api.getMyDealer();
+      if (response.statusCode == 404) return null;
       if (!response.isSuccess || response.data == null) {
-        if (response.statusCode == 404) return null;
         throw ServerException(response.errorMessage ?? response.message);
       }
       return DealerBoothInfo.fromJson(response.data!);
-    } catch (_) {
+    } on ServerException {
+      if (!useMockFallback) rethrow;
+      return _mockBooth;
+    } on NetworkException {
       if (!useMockFallback) rethrow;
       return _mockBooth;
     }
@@ -123,6 +129,24 @@ class AccountDealerService {
     if (!response.isSuccess) {
       throw ServerException(response.errorMessage ?? response.message);
     }
+  }
+
+  Future<DealerBoothInfo> editDealer({
+    required String boothId,
+    String? boothName,
+    String? description,
+    List<String>? priceSheets,
+  }) async {
+    final payload = <String, dynamic>{};
+    if (boothName != null) payload['booth_name'] = boothName;
+    if (description != null) payload['description'] = description;
+    if (priceSheets != null) payload['price_sheets'] = priceSheets;
+
+    final response = await _api.editDealer(boothId, payload);
+    if (!response.isSuccess || response.data == null) {
+      throw ServerException(response.errorMessage ?? response.message);
+    }
+    return DealerBoothInfo.fromJson(response.data!);
   }
 
   static const _mockBooth = DealerBoothInfo(

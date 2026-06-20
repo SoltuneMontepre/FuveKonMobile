@@ -1268,6 +1268,24 @@ abstract class AppLocalizations {
   /// **'L&F'**
   String get authHomeShortcutLostFound;
 
+  /// No description provided for @authHomeShortcutTalent.
+  ///
+  /// In en, this message translates to:
+  /// **'Talent'**
+  String get authHomeShortcutTalent;
+
+  /// No description provided for @authHomeShortcutPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel'**
+  String get authHomeShortcutPanel;
+
+  /// No description provided for @authHomeShortcutDealer.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer'**
+  String get authHomeShortcutDealer;
+
   /// No description provided for @landingBadge.
   ///
   /// In en, this message translates to:
