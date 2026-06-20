@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_submission_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_list_scaffold.dart';
@@ -99,8 +102,7 @@ class _AdminUsersPageState extends State<AdminUsersPage>
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorByTab[index] =
-            e.toString().replaceFirst('ServerException: ', '');
+        _errorByTab[index] = formatAdminError(context.l10n, e);
         _loadingByTab[index] = false;
         _loadingMoreByTab[index] = false;
       });
@@ -127,14 +129,16 @@ class _AdminUsersPageState extends State<AdminUsersPage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return AdminListScaffold(
-      title: 'Quản lý người dùng',
-      tabs: const ['Tất cả', 'Bị cấm'],
+      title: l10n.adminUsersTitle,
+      tabs: [l10n.adminAll, l10n.adminUsersTabBlacklisted],
       tabController: _tabController,
       header: _tabController.index == 0
           ? AdminListSearchField(
               controller: _searchController,
-              hintText: 'Tìm email, tên, fursona...',
+              hintText: l10n.adminUsersSearchHint,
               onChanged: _onSearchChanged,
             )
           : null,
@@ -149,6 +153,7 @@ class _AdminUsersPageState extends State<AdminUsersPage>
   }
 
   Widget _buildTabBody(int index) {
+    final l10n = context.l10n;
     final loading = _loadingByTab[index] ?? (index == 0);
     final loadingMore = _loadingMoreByTab[index] ?? false;
     final error = _errorByTab[index];
@@ -165,10 +170,10 @@ class _AdminUsersPageState extends State<AdminUsersPage>
       hasMore: meta?.hasMore ?? false,
       onLoadMore: () => _loadTab(index, refresh: false),
       emptyState: EmptyState(
-        title: 'Không có người dùng',
+        title: l10n.adminUsersEmpty,
         subtitle: index == 0
-            ? 'Không tìm thấy người dùng phù hợp.'
-            : 'Chưa có ai trong danh sách cấm.',
+            ? l10n.adminUsersEmptySearch
+            : l10n.adminUsersEmptyBlacklisted,
         icon: Icons.people_outline,
       ),
       child: ListView.separated(
@@ -197,6 +202,7 @@ class _UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Material(
@@ -218,7 +224,7 @@ class _UserTile extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          user.subtitle ?? user.email,
+          user.localizedSubtitle(l10n),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.bodySmall?.copyWith(

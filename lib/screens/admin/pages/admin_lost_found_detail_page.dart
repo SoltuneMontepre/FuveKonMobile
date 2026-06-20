@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_submission_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_lost_found_form_sheet.dart';
@@ -50,29 +54,26 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = formatAdminError(context.l10n, e);
         _loading = false;
       });
     }
   }
 
   Future<void> _runAction(Future<void> Function() action) async {
+    final l10n = context.l10n;
     setState(() => _actionInProgress = true);
     try {
       await action();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cập nhật thành công.')),
+        SnackBar(content: Text(l10n.adminUpdateSuccess)),
       );
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _actionInProgress = false);
@@ -117,19 +118,20 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
   }
 
   Future<void> _confirmDelete() async {
+    final l10n = context.l10n;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Xóa mục thất lạc?'),
-        content: const Text('Hành động này không thể hoàn tác.'),
+        title: Text(l10n.adminLostFoundDeleteTitle),
+        content: Text(l10n.adminCannotUndo),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Hủy'),
+            child: Text(l10n.adminCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Xóa'),
+            child: Text(l10n.adminDelete),
           ),
         ],
       ),
@@ -140,19 +142,20 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final item = _item;
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
       appBar: AppBar(
         backgroundColor: FuvekonColors.darkBg,
         foregroundColor: FuvekonColors.darkText,
-        title: Text(item?.title ?? 'Chi tiết vật phẩm'),
+        title: Text(item?.title ?? l10n.adminLostFoundDetailTitle),
       ),
-      body: _buildBody(),
+      body: _buildBody(l10n),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AppLocalizations l10n) {
     if (_loading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -174,7 +177,7 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: _load,
-                child: const Text('Thử lại'),
+                child: Text(l10n.adminRetry),
               ),
             ],
           ),
@@ -197,24 +200,24 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
         _HeaderCard(item: item),
         if (claim != null && claimer != null) ...[
           const SizedBox(height: FuvekonSpacing.section),
-          const AdminUserSectionTitle(title: 'Người nhận (đã claim)'),
+          AdminUserSectionTitle(title: l10n.adminLostFoundRecipientClaimed),
           const SizedBox(height: 12),
-          _ClaimCard(claim: claim, claimer: claimer),
+          _ClaimCard(l10n: l10n, claim: claim, claimer: claimer),
         ] else if (item.itemType == 'found' && item.status == 'open') ...[
           const SizedBox(height: FuvekonSpacing.section),
           Text(
-            'Chưa có người dùng nào claim vật phẩm này.',
+            l10n.adminLostFoundNoClaim,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: FuvekonColors.darkTextSecondary,
                 ),
           ),
         ],
         const SizedBox(height: FuvekonSpacing.section),
-        const AdminUserSectionTitle(title: 'Thông tin vật phẩm'),
+        AdminUserSectionTitle(title: l10n.adminLostFoundItemInfo),
         const SizedBox(height: 12),
         _InfoCard(
           children: [
-            for (final field in item.details)
+            for (final field in item.localizedDetails(l10n))
               _InfoField(
                 label: field.label,
                 value: field.value,
@@ -223,18 +226,18 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
           ],
         ),
         const SizedBox(height: FuvekonSpacing.section),
-        const AdminUserSectionTitle(title: 'Thao tác'),
+        AdminUserSectionTitle(title: l10n.adminDealerActions),
         const SizedBox(height: 12),
         if (item.canConfirmReturn)
           _ActionButton(
-            label: 'Xác nhận hoàn trả',
+            label: l10n.adminLostFoundConfirmReturn,
             color: FuvekonColors.available,
             loading: _actionInProgress,
             onPressed: _openReturn,
           )
         else if (item.itemType == 'lost' && item.status != 'resolved')
           _ActionButton(
-            label: 'Đánh dấu đã xử lý',
+            label: l10n.adminLostFoundMarkResolved,
             color: FuvekonColors.available,
             loading: _actionInProgress,
             onPressed: () => _runAction(
@@ -242,12 +245,12 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
             ),
           ),
         _ActionButton(
-          label: 'Chỉnh sửa',
+          label: l10n.adminEdit,
           color: FuvekonColors.darkPrimary,
           onPressed: () => _openEdit(item),
         ),
         _ActionButton(
-          label: 'Xóa',
+          label: l10n.adminDelete,
           color: const Color(0xFFF0A0A8),
           loading: _actionInProgress,
           onPressed: _confirmDelete,
@@ -264,6 +267,7 @@ class _HeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -304,7 +308,7 @@ class _HeaderCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '${AdminLostFoundItem.itemTypeLabel(item.itemType)} • ${AdminLostFoundItem.statusLabel(item.status)}',
+                  '${lostFoundTypeLabel(l10n, item.itemType)} • ${lostFoundStatusLabel(l10n, item.status)}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: FuvekonColors.darkTextSecondary,
                       ),
@@ -321,8 +325,13 @@ class _HeaderCard extends StatelessWidget {
 }
 
 class _ClaimCard extends StatelessWidget {
-  const _ClaimCard({required this.claim, required this.claimer});
+  const _ClaimCard({
+    required this.l10n,
+    required this.claim,
+    required this.claimer,
+  });
 
+  final AppLocalizations l10n;
   final AdminLostFoundClaim claim;
   final AdminLostFoundClaimUser claimer;
 
@@ -348,14 +357,14 @@ class _ClaimCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'CCCD: ${AdminLostFoundClaimUser.maskSensitive(claimer.idCard)}',
+            '${l10n.adminFieldIdCard}: ${AdminLostFoundClaimUser.maskSensitive(claimer.idCard)}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: FuvekonColors.textSecondary,
                 ),
           ),
           const SizedBox(height: 4),
           Text(
-            'Email: ${AdminLostFoundClaimUser.maskSensitive(claimer.email)}',
+            '${l10n.adminFieldEmail}: ${AdminLostFoundClaimUser.maskSensitive(claimer.email)}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: FuvekonColors.textSecondary,
                 ),
@@ -452,7 +461,8 @@ class _StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = AdminLostFoundItem.statusColor(status);
+    final l10n = context.l10n;
+    final color = lostFoundStatusColor(status);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
@@ -460,7 +470,7 @@ class _StatusChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
-        AdminLostFoundItem.statusLabel(status),
+        lostFoundStatusLabel(l10n, status),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w600,

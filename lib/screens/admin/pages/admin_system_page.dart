@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/auth/user_permissions.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_event_settings_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_system_status_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/event_controls_section.dart';
@@ -91,8 +93,8 @@ class _AdminSystemPageState extends State<AdminSystemPage> {
       if (!mounted) return;
       setState(() => _updatingToggle = null);
       final message = error is AppException
-          ? error.message
-          : 'Không cập nhật được cài đặt sự kiện';
+          ? formatAdminMessage(context.l10n, error.message)
+          : formatAdminError(context.l10n, error);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );

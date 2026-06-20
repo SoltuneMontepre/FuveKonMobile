@@ -123,7 +123,11 @@ abstract final class Routes {
   static String adminScheduleDetail(String id) => '/admin/schedules/$id';
   static const adminUsers = '/admin/users';
   static String adminUserDetail(String id) => '/admin/users/$id';
-  static String adminUserEdit(String id) => '/admin/users/$id/edit';
+  static String adminUserEdit(String id, {String? section}) {
+    final path = '/admin/users/$id/edit';
+    if (section == null || section.isEmpty) return path;
+    return '$path?section=$section';
+  }
 
   static const publicRoutes = {
     home,

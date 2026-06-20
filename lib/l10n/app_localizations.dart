@@ -2287,6 +2287,3018 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get artbookGenreOther;
+
+  /// No description provided for @adminCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get adminCancel;
+
+  /// No description provided for @adminSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get adminSave;
+
+  /// No description provided for @adminSaveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get adminSaveChanges;
+
+  /// No description provided for @adminDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get adminDelete;
+
+  /// No description provided for @adminEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get adminEdit;
+
+  /// No description provided for @adminRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get adminRetry;
+
+  /// No description provided for @adminConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get adminConfirm;
+
+  /// No description provided for @adminBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back'**
+  String get adminBack;
+
+  /// No description provided for @adminCancelAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get adminCancelAction;
+
+  /// No description provided for @adminAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get adminAdd;
+
+  /// No description provided for @adminCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get adminCreate;
+
+  /// No description provided for @adminViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get adminViewAll;
+
+  /// No description provided for @adminUpdateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated successfully.'**
+  String get adminUpdateSuccess;
+
+  /// No description provided for @adminErrorWithDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {detail}'**
+  String adminErrorWithDetail(String detail);
+
+  /// No description provided for @adminCannotUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get adminCannotUndo;
+
+  /// No description provided for @adminYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get adminYes;
+
+  /// No description provided for @adminNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get adminNo;
+
+  /// No description provided for @adminAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get adminAll;
+
+  /// No description provided for @adminNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get adminNone;
+
+  /// No description provided for @adminFieldStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get adminFieldStatus;
+
+  /// No description provided for @adminFieldDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get adminFieldDescription;
+
+  /// No description provided for @adminFieldTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get adminFieldTitle;
+
+  /// No description provided for @adminStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get adminStatusPending;
+
+  /// No description provided for @adminStatusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get adminStatusApproved;
+
+  /// No description provided for @adminStatusRequireChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs changes'**
+  String get adminStatusRequireChanges;
+
+  /// No description provided for @adminStatusDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Denied'**
+  String get adminStatusDenied;
+
+  /// No description provided for @adminApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get adminApprove;
+
+  /// No description provided for @adminRequireChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Request changes'**
+  String get adminRequireChanges;
+
+  /// No description provided for @adminDeny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny'**
+  String get adminDeny;
+
+  /// No description provided for @adminMarkPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark pending again'**
+  String get adminMarkPending;
+
+  /// No description provided for @adminMarkPendingReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to pending'**
+  String get adminMarkPendingReturn;
+
+  /// No description provided for @adminDenyReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Denial reason'**
+  String get adminDenyReason;
+
+  /// No description provided for @adminDenyReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter denial reason...'**
+  String get adminDenyReasonHint;
+
+  /// No description provided for @adminEmptyList.
+  ///
+  /// In en, this message translates to:
+  /// **'No items'**
+  String get adminEmptyList;
+
+  /// No description provided for @adminEmptyTabList.
+  ///
+  /// In en, this message translates to:
+  /// **'The {tab} list is empty.'**
+  String adminEmptyTabList(String tab);
+
+  /// No description provided for @adminNavHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get adminNavHome;
+
+  /// No description provided for @adminNavStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get adminNavStats;
+
+  /// No description provided for @adminNavScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get adminNavScan;
+
+  /// No description provided for @adminNavHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get adminNavHistory;
+
+  /// No description provided for @adminNavLostFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost & Found'**
+  String get adminNavLostFound;
+
+  /// No description provided for @adminNavSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get adminNavSystem;
+
+  /// No description provided for @adminBrandTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FUVEKON Admin'**
+  String get adminBrandTitle;
+
+  /// No description provided for @adminFieldEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get adminFieldEmail;
+
+  /// No description provided for @adminFieldFursona.
+  ///
+  /// In en, this message translates to:
+  /// **'Fursona'**
+  String get adminFieldFursona;
+
+  /// No description provided for @adminFieldFirstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get adminFieldFirstName;
+
+  /// No description provided for @adminFieldLastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get adminFieldLastName;
+
+  /// No description provided for @adminFieldCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get adminFieldCountry;
+
+  /// No description provided for @adminFieldIdCard.
+  ///
+  /// In en, this message translates to:
+  /// **'ID card'**
+  String get adminFieldIdCard;
+
+  /// No description provided for @adminFieldDisplayName.
+  ///
+  /// In en, this message translates to:
+  /// **'Display name'**
+  String get adminFieldDisplayName;
+
+  /// No description provided for @adminFieldRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get adminFieldRole;
+
+  /// No description provided for @adminFieldVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get adminFieldVerified;
+
+  /// No description provided for @adminFieldVerifiedYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get adminFieldVerifiedYes;
+
+  /// No description provided for @adminFieldVerifiedNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Not verified'**
+  String get adminFieldVerifiedNo;
+
+  /// No description provided for @adminFieldHasTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Has ticket'**
+  String get adminFieldHasTicket;
+
+  /// No description provided for @adminFieldAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar'**
+  String get adminFieldAvatar;
+
+  /// No description provided for @adminFieldCreatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get adminFieldCreatedAt;
+
+  /// No description provided for @adminFieldLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get adminFieldLastUpdated;
+
+  /// No description provided for @adminFieldDateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth'**
+  String get adminFieldDateOfBirth;
+
+  /// No description provided for @adminFieldPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get adminFieldPermissions;
+
+  /// No description provided for @adminFieldDealer.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer'**
+  String get adminFieldDealer;
+
+  /// No description provided for @adminFieldAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get adminFieldAccount;
+
+  /// No description provided for @adminFieldUser.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get adminFieldUser;
+
+  /// No description provided for @adminFieldBoothName.
+  ///
+  /// In en, this message translates to:
+  /// **'Booth name'**
+  String get adminFieldBoothName;
+
+  /// No description provided for @adminFieldBoothCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Booth code'**
+  String get adminFieldBoothCode;
+
+  /// No description provided for @adminFieldPriceSheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Price sheet'**
+  String get adminFieldPriceSheet;
+
+  /// No description provided for @adminFieldPriceSheetN.
+  ///
+  /// In en, this message translates to:
+  /// **'Price sheet {n}'**
+  String adminFieldPriceSheetN(int n);
+
+  /// No description provided for @adminFieldRegisteredAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered'**
+  String get adminFieldRegisteredAt;
+
+  /// No description provided for @adminFieldNickname.
+  ///
+  /// In en, this message translates to:
+  /// **'Nickname'**
+  String get adminFieldNickname;
+
+  /// No description provided for @adminFieldGenre.
+  ///
+  /// In en, this message translates to:
+  /// **'Genre'**
+  String get adminFieldGenre;
+
+  /// No description provided for @adminFieldParticipantCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Participants'**
+  String get adminFieldParticipantCount;
+
+  /// No description provided for @adminFieldDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get adminFieldDuration;
+
+  /// No description provided for @adminFieldTimeSlot.
+  ///
+  /// In en, this message translates to:
+  /// **'Time slot'**
+  String get adminFieldTimeSlot;
+
+  /// No description provided for @adminFieldIntroduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Introduction'**
+  String get adminFieldIntroduction;
+
+  /// No description provided for @adminFieldSubmittedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get adminFieldSubmittedAt;
+
+  /// No description provided for @adminFieldHandle.
+  ///
+  /// In en, this message translates to:
+  /// **'Handle'**
+  String get adminFieldHandle;
+
+  /// No description provided for @adminFieldConbookImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Conbook image'**
+  String get adminFieldConbookImage;
+
+  /// No description provided for @adminFieldTicketCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket code'**
+  String get adminFieldTicketCode;
+
+  /// No description provided for @adminFieldTicketNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket number'**
+  String get adminFieldTicketNumber;
+
+  /// No description provided for @adminFieldTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket tier'**
+  String get adminFieldTier;
+
+  /// No description provided for @adminFieldTierCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier code'**
+  String get adminFieldTierCode;
+
+  /// No description provided for @adminFieldBadgeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Badge name'**
+  String get adminFieldBadgeName;
+
+  /// No description provided for @adminFieldFursuiter.
+  ///
+  /// In en, this message translates to:
+  /// **'Fursuiter'**
+  String get adminFieldFursuiter;
+
+  /// No description provided for @adminFieldFursuitStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Fursuit staff'**
+  String get adminFieldFursuitStaff;
+
+  /// No description provided for @adminFieldTshirtSize.
+  ///
+  /// In en, this message translates to:
+  /// **'T-shirt size'**
+  String get adminFieldTshirtSize;
+
+  /// No description provided for @adminFieldCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in'**
+  String get adminFieldCheckIn;
+
+  /// No description provided for @adminFieldBadgeImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Badge image'**
+  String get adminFieldBadgeImage;
+
+  /// No description provided for @adminFieldNamecard.
+  ///
+  /// In en, this message translates to:
+  /// **'Namecard'**
+  String get adminFieldNamecard;
+
+  /// No description provided for @adminFieldApprovedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved at'**
+  String get adminFieldApprovedAt;
+
+  /// No description provided for @adminFieldDeniedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Denied at'**
+  String get adminFieldDeniedAt;
+
+  /// No description provided for @adminFieldItemCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Item code'**
+  String get adminFieldItemCode;
+
+  /// No description provided for @adminFieldType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get adminFieldType;
+
+  /// No description provided for @adminFieldLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get adminFieldLocation;
+
+  /// No description provided for @adminFieldContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get adminFieldContact;
+
+  /// No description provided for @adminFieldImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get adminFieldImage;
+
+  /// No description provided for @adminFieldStaffNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff notes'**
+  String get adminFieldStaffNotes;
+
+  /// No description provided for @adminFieldRecipient.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient'**
+  String get adminFieldRecipient;
+
+  /// No description provided for @adminFieldRecipientIdCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient ID'**
+  String get adminFieldRecipientIdCard;
+
+  /// No description provided for @adminFieldRecipientPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient phone'**
+  String get adminFieldRecipientPhone;
+
+  /// No description provided for @adminFieldReturnedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Returned at'**
+  String get adminFieldReturnedAt;
+
+  /// No description provided for @adminFieldUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated'**
+  String get adminFieldUpdatedAt;
+
+  /// No description provided for @adminRoleAdminLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator'**
+  String get adminRoleAdminLabel;
+
+  /// No description provided for @adminRoleDealerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer'**
+  String get adminRoleDealerLabel;
+
+  /// No description provided for @adminRoleStaffLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get adminRoleStaffLabel;
+
+  /// No description provided for @adminRoleUserLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get adminRoleUserLabel;
+
+  /// No description provided for @adminRoleCodeAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get adminRoleCodeAdmin;
+
+  /// No description provided for @adminRoleCodeDealer.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer'**
+  String get adminRoleCodeDealer;
+
+  /// No description provided for @adminRoleCodeStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get adminRoleCodeStaff;
+
+  /// No description provided for @adminRoleCodeAttendee.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendee'**
+  String get adminRoleCodeAttendee;
+
+  /// No description provided for @adminRoleExhibitor.
+  ///
+  /// In en, this message translates to:
+  /// **'Exhibitor'**
+  String get adminRoleExhibitor;
+
+  /// No description provided for @adminRoleStaffSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support staff'**
+  String get adminRoleStaffSupport;
+
+  /// No description provided for @adminRoleAttendee.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendee'**
+  String get adminRoleAttendee;
+
+  /// No description provided for @adminPermissionManageTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage tickets'**
+  String get adminPermissionManageTickets;
+
+  /// No description provided for @adminPermissionScanTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan tickets'**
+  String get adminPermissionScanTickets;
+
+  /// No description provided for @adminPermissionApproveProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve profiles'**
+  String get adminPermissionApproveProfiles;
+
+  /// No description provided for @adminPermissionSendNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Send notifications'**
+  String get adminPermissionSendNotifications;
+
+  /// No description provided for @adminPermissionViewDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'View dashboard'**
+  String get adminPermissionViewDashboard;
+
+  /// No description provided for @adminPermissionManageUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage users'**
+  String get adminPermissionManageUsers;
+
+  /// No description provided for @adminUserActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminUserActive;
+
+  /// No description provided for @adminUserBlacklisted.
+  ///
+  /// In en, this message translates to:
+  /// **'Blacklisted'**
+  String get adminUserBlacklisted;
+
+  /// No description provided for @adminUserBannedFromTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Banned from buying tickets'**
+  String get adminUserBannedFromTickets;
+
+  /// No description provided for @adminBanReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Ban reason'**
+  String get adminBanReason;
+
+  /// No description provided for @adminBanDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Ban date'**
+  String get adminBanDate;
+
+  /// No description provided for @adminDenialCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket denial count'**
+  String get adminDenialCount;
+
+  /// No description provided for @adminAccountDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get adminAccountDeleted;
+
+  /// No description provided for @adminTicketStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting payment'**
+  String get adminTicketStatusPending;
+
+  /// No description provided for @adminTicketStatusAwaitingApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting approval'**
+  String get adminTicketStatusAwaitingApproval;
+
+  /// No description provided for @adminTicketStatusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get adminTicketStatusApproved;
+
+  /// No description provided for @adminTicketStatusDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Denied'**
+  String get adminTicketStatusDenied;
+
+  /// No description provided for @adminTicketStatusAdminGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted by admin'**
+  String get adminTicketStatusAdminGranted;
+
+  /// No description provided for @adminCheckedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in'**
+  String get adminCheckedIn;
+
+  /// No description provided for @adminNotCheckedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Not checked in'**
+  String get adminNotCheckedIn;
+
+  /// No description provided for @adminLostFoundTypeLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost'**
+  String get adminLostFoundTypeLost;
+
+  /// No description provided for @adminLostFoundTypeFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Found'**
+  String get adminLostFoundTypeFound;
+
+  /// No description provided for @adminLostFoundStatusClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Claimed'**
+  String get adminLostFoundStatusClaimed;
+
+  /// No description provided for @adminLostFoundStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get adminLostFoundStatusResolved;
+
+  /// No description provided for @adminLostFoundStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get adminLostFoundStatusOpen;
+
+  /// No description provided for @adminDealerBoothCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Booth code: {code}'**
+  String adminDealerBoothCode(String code);
+
+  /// No description provided for @adminDurationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String adminDurationMinutes(int minutes);
+
+  /// No description provided for @adminErrorLoadUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load users.'**
+  String get adminErrorLoadUsers;
+
+  /// No description provided for @adminErrorLoadBlacklistedUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load blacklisted users.'**
+  String get adminErrorLoadBlacklistedUsers;
+
+  /// No description provided for @adminErrorLoadDealers.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load dealers.'**
+  String get adminErrorLoadDealers;
+
+  /// No description provided for @adminErrorLoadDealer.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load dealer details.'**
+  String get adminErrorLoadDealer;
+
+  /// No description provided for @adminErrorLoadPanels.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load panels.'**
+  String get adminErrorLoadPanels;
+
+  /// No description provided for @adminErrorLoadConbook.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load conbook submissions.'**
+  String get adminErrorLoadConbook;
+
+  /// No description provided for @adminErrorLoadSchedules.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load schedules.'**
+  String get adminErrorLoadSchedules;
+
+  /// No description provided for @adminErrorLoadSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load schedule.'**
+  String get adminErrorLoadSchedule;
+
+  /// No description provided for @adminErrorLoadTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load tickets.'**
+  String get adminErrorLoadTickets;
+
+  /// No description provided for @adminErrorLoadTiers.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load ticket tiers.'**
+  String get adminErrorLoadTiers;
+
+  /// No description provided for @adminErrorLoadTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load ticket details.'**
+  String get adminErrorLoadTicket;
+
+  /// No description provided for @adminErrorLoadTicketStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load ticket statistics.'**
+  String get adminErrorLoadTicketStats;
+
+  /// No description provided for @adminErrorLoadLostFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load lost & found items.'**
+  String get adminErrorLoadLostFound;
+
+  /// No description provided for @adminErrorUpdateEventSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update event settings.'**
+  String get adminErrorUpdateEventSettings;
+
+  /// No description provided for @adminScanInvalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid ticket code.'**
+  String get adminScanInvalidCode;
+
+  /// No description provided for @adminScanNotApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket is not approved or was denied.'**
+  String get adminScanNotApproved;
+
+  /// No description provided for @adminScanAlreadyCheckedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket was already checked in.'**
+  String get adminScanAlreadyCheckedIn;
+
+  /// No description provided for @adminScanConfirmBeforeCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm ticket details before check-in.'**
+  String get adminScanConfirmBeforeCheckIn;
+
+  /// No description provided for @adminScanCheckInSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in successful.'**
+  String get adminScanCheckInSuccess;
+
+  /// No description provided for @adminUserDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'User details'**
+  String get adminUserDetailTitle;
+
+  /// No description provided for @adminDeleteUserTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete user?'**
+  String get adminDeleteUserTitle;
+
+  /// No description provided for @adminDeleteUserBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The account will be soft-deleted and cannot sign in again.'**
+  String get adminDeleteUserBody;
+
+  /// No description provided for @adminBanTicketsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ban from buying tickets'**
+  String get adminBanTicketsTitle;
+
+  /// No description provided for @adminBanReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ban reason'**
+  String get adminBanReasonLabel;
+
+  /// No description provided for @adminBanReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter reason for banning this user...'**
+  String get adminBanReasonHint;
+
+  /// No description provided for @adminBanAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Ban'**
+  String get adminBanAction;
+
+  /// No description provided for @adminBanReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a ban reason.'**
+  String get adminBanReasonRequired;
+
+  /// No description provided for @adminQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick actions'**
+  String get adminQuickActions;
+
+  /// No description provided for @adminRecentHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent history'**
+  String get adminRecentHistory;
+
+  /// No description provided for @adminDetailInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed information'**
+  String get adminDetailInfo;
+
+  /// No description provided for @adminDetailInfoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile, permissions, and account status'**
+  String get adminDetailInfoSubtitle;
+
+  /// No description provided for @adminVerify.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get adminVerify;
+
+  /// No description provided for @adminPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get adminPermissions;
+
+  /// No description provided for @adminUnban.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove ban'**
+  String get adminUnban;
+
+  /// No description provided for @adminBanTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Ban from buying tickets'**
+  String get adminBanTickets;
+
+  /// No description provided for @adminDeleteUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete user'**
+  String get adminDeleteUser;
+
+  /// No description provided for @adminTimelineBanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Banned from buying tickets'**
+  String get adminTimelineBanned;
+
+  /// No description provided for @adminTimelineHasTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Has event ticket'**
+  String get adminTimelineHasTicket;
+
+  /// No description provided for @adminTimelineVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get adminTimelineVerified;
+
+  /// No description provided for @adminTimelineCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created'**
+  String get adminTimelineCreated;
+
+  /// No description provided for @adminTagBanned.
+  ///
+  /// In en, this message translates to:
+  /// **'BANNED'**
+  String get adminTagBanned;
+
+  /// No description provided for @adminTagVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'VERIFIED'**
+  String get adminTagVerified;
+
+  /// No description provided for @adminTagNew.
+  ///
+  /// In en, this message translates to:
+  /// **'NEW'**
+  String get adminTagNew;
+
+  /// No description provided for @adminUsersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'User management'**
+  String get adminUsersTitle;
+
+  /// No description provided for @adminUsersTabBlacklisted.
+  ///
+  /// In en, this message translates to:
+  /// **'Blacklisted'**
+  String get adminUsersTabBlacklisted;
+
+  /// No description provided for @adminUsersSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search email, name, fursona...'**
+  String get adminUsersSearchHint;
+
+  /// No description provided for @adminUsersEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No users'**
+  String get adminUsersEmpty;
+
+  /// No description provided for @adminUsersEmptyBlacklisted.
+  ///
+  /// In en, this message translates to:
+  /// **'No blacklisted users.'**
+  String get adminUsersEmptyBlacklisted;
+
+  /// No description provided for @adminUsersEmptySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'No users match your search.'**
+  String get adminUsersEmptySearch;
+
+  /// No description provided for @adminTicketsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket management'**
+  String get adminTicketsTitle;
+
+  /// No description provided for @adminTicketsTabTiers.
+  ///
+  /// In en, this message translates to:
+  /// **'Tiers'**
+  String get adminTicketsTabTiers;
+
+  /// No description provided for @adminTicketsTabList.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket list'**
+  String get adminTicketsTabList;
+
+  /// No description provided for @adminTicketsNewTier.
+  ///
+  /// In en, this message translates to:
+  /// **'New tier'**
+  String get adminTicketsNewTier;
+
+  /// No description provided for @adminTicketsCreateTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Create tier'**
+  String get adminTicketsCreateTier;
+
+  /// No description provided for @adminTicketsPendingOver24h.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending > 24 hours'**
+  String get adminTicketsPendingOver24h;
+
+  /// No description provided for @adminTicketsSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search code, email, name...'**
+  String get adminTicketsSearchHint;
+
+  /// No description provided for @adminTicketsDisableSales.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable sales'**
+  String get adminTicketsDisableSales;
+
+  /// No description provided for @adminTicketsEnableSales.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable sales'**
+  String get adminTicketsEnableSales;
+
+  /// No description provided for @adminTicketsHideStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide from store'**
+  String get adminTicketsHideStore;
+
+  /// No description provided for @adminTicketsShowStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Show on store'**
+  String get adminTicketsShowStore;
+
+  /// No description provided for @adminTicketsDeleteTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete tier'**
+  String get adminTicketsDeleteTier;
+
+  /// No description provided for @adminTicketsStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get adminTicketsStock;
+
+  /// No description provided for @adminTicketsBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'Benefits'**
+  String get adminTicketsBenefits;
+
+  /// No description provided for @adminTicketsSelling.
+  ///
+  /// In en, this message translates to:
+  /// **'Selling'**
+  String get adminTicketsSelling;
+
+  /// No description provided for @adminTicketsSalesOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales off'**
+  String get adminTicketsSalesOff;
+
+  /// No description provided for @adminTicketsStoreVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible'**
+  String get adminTicketsStoreVisible;
+
+  /// No description provided for @adminTicketsStoreHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden'**
+  String get adminTicketsStoreHidden;
+
+  /// No description provided for @adminTicketsDeleteTierTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete tier?'**
+  String get adminTicketsDeleteTierTitle;
+
+  /// No description provided for @adminTicketsDeleteTierBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes the tier and cannot be undone.'**
+  String get adminTicketsDeleteTierBody;
+
+  /// No description provided for @adminTicketsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No tickets'**
+  String get adminTicketsEmpty;
+
+  /// No description provided for @adminTicketsEmptyTiers.
+  ///
+  /// In en, this message translates to:
+  /// **'No ticket tiers yet.'**
+  String get adminTicketsEmptyTiers;
+
+  /// No description provided for @adminTierEditCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create ticket tier'**
+  String get adminTierEditCreate;
+
+  /// No description provided for @adminTierEditEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit ticket tier'**
+  String get adminTierEditEdit;
+
+  /// No description provided for @adminTierNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier name'**
+  String get adminTierNameLabel;
+
+  /// No description provided for @adminTierPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price (VND)'**
+  String get adminTierPriceLabel;
+
+  /// No description provided for @adminTierStockLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get adminTierStockLabel;
+
+  /// No description provided for @adminTierDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier description'**
+  String get adminTierDescriptionLabel;
+
+  /// No description provided for @adminTierBenefitsList.
+  ///
+  /// In en, this message translates to:
+  /// **'Benefits list'**
+  String get adminTierBenefitsList;
+
+  /// No description provided for @adminTierAddBenefit.
+  ///
+  /// In en, this message translates to:
+  /// **'Add benefit'**
+  String get adminTierAddBenefit;
+
+  /// No description provided for @adminTierSalesStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales status'**
+  String get adminTierSalesStatus;
+
+  /// No description provided for @adminTierPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Display preview'**
+  String get adminTierPreview;
+
+  /// No description provided for @adminTierCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier created.'**
+  String get adminTierCreated;
+
+  /// No description provided for @adminTierUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier updated.'**
+  String get adminTierUpdated;
+
+  /// No description provided for @adminSchedulesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule management'**
+  String get adminSchedulesTitle;
+
+  /// No description provided for @adminSchedulesCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create schedule'**
+  String get adminSchedulesCreate;
+
+  /// No description provided for @adminSchedulesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No schedules yet'**
+  String get adminSchedulesEmpty;
+
+  /// No description provided for @adminSchedulesEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit schedule'**
+  String get adminSchedulesEdit;
+
+  /// No description provided for @adminSchedulesCreateNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new schedule'**
+  String get adminSchedulesCreateNew;
+
+  /// No description provided for @adminSchedulesNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule name'**
+  String get adminSchedulesNameLabel;
+
+  /// No description provided for @adminScheduleEndAfterStart.
+  ///
+  /// In en, this message translates to:
+  /// **'End time must be after start time.'**
+  String get adminScheduleEndAfterStart;
+
+  /// No description provided for @adminScheduleDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete schedule?'**
+  String get adminScheduleDeleteTitle;
+
+  /// No description provided for @adminScheduleDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'All items in this schedule will be deleted.'**
+  String get adminScheduleDeleteBody;
+
+  /// No description provided for @adminScheduleDeleteItemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete schedule item?'**
+  String get adminScheduleDeleteItemTitle;
+
+  /// No description provided for @adminScheduleDeleteItemBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{title}\"?'**
+  String adminScheduleDeleteItemBody(String title);
+
+  /// No description provided for @adminScheduleEditMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit schedule'**
+  String get adminScheduleEditMenu;
+
+  /// No description provided for @adminScheduleDeleteMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete schedule'**
+  String get adminScheduleDeleteMenu;
+
+  /// No description provided for @adminScheduleNoItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No schedule items yet'**
+  String get adminScheduleNoItems;
+
+  /// No description provided for @adminScheduleEditItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit item'**
+  String get adminScheduleEditItem;
+
+  /// No description provided for @adminScheduleAddItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Add schedule item'**
+  String get adminScheduleAddItem;
+
+  /// No description provided for @adminScheduleOverlapBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Location overlap'**
+  String get adminScheduleOverlapBadge;
+
+  /// No description provided for @adminDashboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Event overview'**
+  String get adminDashboardTitle;
+
+  /// No description provided for @adminDashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 90 days'**
+  String get adminDashboardSubtitle;
+
+  /// No description provided for @adminDashboardTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Tickets'**
+  String get adminDashboardTickets;
+
+  /// No description provided for @adminDashboardByTier.
+  ///
+  /// In en, this message translates to:
+  /// **'By tier'**
+  String get adminDashboardByTier;
+
+  /// No description provided for @adminDashboardRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue'**
+  String get adminDashboardRevenue;
+
+  /// No description provided for @adminDashboardUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get adminDashboardUsers;
+
+  /// No description provided for @adminDashboardDealers.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealers'**
+  String get adminDashboardDealers;
+
+  /// No description provided for @adminDashboardTotalTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Total tickets'**
+  String get adminDashboardTotalTickets;
+
+  /// No description provided for @adminDashboardApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get adminDashboardApproved;
+
+  /// No description provided for @adminDashboardPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get adminDashboardPending;
+
+  /// No description provided for @adminDashboardDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Denied'**
+  String get adminDashboardDenied;
+
+  /// No description provided for @adminDashboardSold.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold {sold} / {total}'**
+  String adminDashboardSold(int sold, int total);
+
+  /// No description provided for @adminDashboardRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} left'**
+  String adminDashboardRemaining(int count);
+
+  /// No description provided for @adminDashboardUsersByCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Users by country'**
+  String get adminDashboardUsersByCountry;
+
+  /// No description provided for @adminDashboardUnknownCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get adminDashboardUnknownCountry;
+
+  /// No description provided for @adminDashboardUsersByCountryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No country data yet'**
+  String get adminDashboardUsersByCountryEmpty;
+
+  /// No description provided for @adminDashboardUsersByCountryMore.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more countries'**
+  String adminDashboardUsersByCountryMore(int count);
+
+  /// No description provided for @adminConbookTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Conbook'**
+  String get adminConbookTitle;
+
+  /// No description provided for @adminConbookApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve conbook'**
+  String get adminConbookApprove;
+
+  /// No description provided for @adminConbookDeny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny conbook'**
+  String get adminConbookDeny;
+
+  /// No description provided for @adminPanelsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel management'**
+  String get adminPanelsTitle;
+
+  /// No description provided for @adminPanelsApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve panel'**
+  String get adminPanelsApprove;
+
+  /// No description provided for @adminPanelsDeny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny panel'**
+  String get adminPanelsDeny;
+
+  /// No description provided for @adminDealersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer management'**
+  String get adminDealersTitle;
+
+  /// No description provided for @adminDealersApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve booth'**
+  String get adminDealersApprove;
+
+  /// No description provided for @adminDealersDeny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny registration'**
+  String get adminDealersDeny;
+
+  /// No description provided for @adminDealerDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Booth details'**
+  String get adminDealerDetailTitle;
+
+  /// No description provided for @adminDealerInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Booth information'**
+  String get adminDealerInfo;
+
+  /// No description provided for @adminDealerPriceSheets.
+  ///
+  /// In en, this message translates to:
+  /// **'Price sheets'**
+  String get adminDealerPriceSheets;
+
+  /// No description provided for @adminDealerStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Booth staff'**
+  String get adminDealerStaff;
+
+  /// No description provided for @adminDealerNoStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'No staff members yet.'**
+  String get adminDealerNoStaff;
+
+  /// No description provided for @adminDealerActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get adminDealerActions;
+
+  /// No description provided for @adminDealerOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Booth owner'**
+  String get adminDealerOwner;
+
+  /// No description provided for @adminDealerJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined:'**
+  String get adminDealerJoined;
+
+  /// No description provided for @adminLostFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost & Found management'**
+  String get adminLostFoundTitle;
+
+  /// No description provided for @adminLostFoundSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search title, code, location...'**
+  String get adminLostFoundSearchHint;
+
+  /// No description provided for @adminLostFoundEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No items'**
+  String get adminLostFoundEmpty;
+
+  /// No description provided for @adminLostFoundDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Item details'**
+  String get adminLostFoundDetailTitle;
+
+  /// No description provided for @adminLostFoundRecipientClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient (claimed)'**
+  String get adminLostFoundRecipientClaimed;
+
+  /// No description provided for @adminLostFoundNoClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'No active claim for this item.'**
+  String get adminLostFoundNoClaim;
+
+  /// No description provided for @adminLostFoundConfirmReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm return'**
+  String get adminLostFoundConfirmReturn;
+
+  /// No description provided for @adminLostFoundMarkResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as resolved'**
+  String get adminLostFoundMarkResolved;
+
+  /// No description provided for @adminLostFoundDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete item?'**
+  String get adminLostFoundDeleteTitle;
+
+  /// No description provided for @adminLostFoundReturnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm return'**
+  String get adminLostFoundReturnTitle;
+
+  /// No description provided for @adminLostFoundReturnSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Return confirmed successfully.'**
+  String get adminLostFoundReturnSuccess;
+
+  /// No description provided for @adminLostFoundVerifyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description matches item'**
+  String get adminLostFoundVerifyDescription;
+
+  /// No description provided for @adminLostFoundVerifyOwnership.
+  ///
+  /// In en, this message translates to:
+  /// **'Ownership evidence provided'**
+  String get adminLostFoundVerifyOwnership;
+
+  /// No description provided for @adminLostFoundVerifyIdentity.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity verified'**
+  String get adminLostFoundVerifyIdentity;
+
+  /// No description provided for @adminLostFoundAuditNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This action will be logged in the system audit log.'**
+  String get adminLostFoundAuditNote;
+
+  /// No description provided for @adminScanHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan history'**
+  String get adminScanHistoryTitle;
+
+  /// No description provided for @adminScanHistoryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No scans recorded yet.'**
+  String get adminScanHistoryEmpty;
+
+  /// No description provided for @adminScanOutcomeValid.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid'**
+  String get adminScanOutcomeValid;
+
+  /// No description provided for @adminScanOutcomeReused.
+  ///
+  /// In en, this message translates to:
+  /// **'Reused'**
+  String get adminScanOutcomeReused;
+
+  /// No description provided for @adminScanOutcomeRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get adminScanOutcomeRejected;
+
+  /// No description provided for @adminUserEditPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get adminUserEditPermissions;
+
+  /// No description provided for @adminUserEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit user'**
+  String get adminUserEditTitle;
+
+  /// No description provided for @adminUserEditPersonalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal information'**
+  String get adminUserEditPersonalInfo;
+
+  /// No description provided for @adminUserEditAccountStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Account status'**
+  String get adminUserEditAccountStatus;
+
+  /// No description provided for @adminUserEditRoles.
+  ///
+  /// In en, this message translates to:
+  /// **'Roles'**
+  String get adminUserEditRoles;
+
+  /// No description provided for @adminUserEditPermissionGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission group'**
+  String get adminUserEditPermissionGroup;
+
+  /// No description provided for @adminUserEditVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get adminUserEditVerified;
+
+  /// No description provided for @adminUserEditVerifiedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email has been verified'**
+  String get adminUserEditVerifiedSubtitle;
+
+  /// No description provided for @adminUserEditAdminNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrators have all permissions.'**
+  String get adminUserEditAdminNote;
+
+  /// No description provided for @adminUserTicketsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'User tickets'**
+  String get adminUserTicketsTitle;
+
+  /// No description provided for @adminUserTicketsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant, approve, edit, or delete tickets'**
+  String get adminUserTicketsSubtitle;
+
+  /// No description provided for @adminUserTicketsNoTiers.
+  ///
+  /// In en, this message translates to:
+  /// **'No ticket tiers available to grant.'**
+  String get adminUserTicketsNoTiers;
+
+  /// No description provided for @adminUserTicketsGrant.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant ticket'**
+  String get adminUserTicketsGrant;
+
+  /// No description provided for @adminUserTicketsGrantSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket granted to user.'**
+  String get adminUserTicketsGrantSuccess;
+
+  /// No description provided for @adminUserTicketsDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete ticket?'**
+  String get adminUserTicketsDeleteTitle;
+
+  /// No description provided for @adminUserTicketsDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete ticket {code}? This cannot be undone.'**
+  String adminUserTicketsDeleteBody(String code);
+
+  /// No description provided for @adminUserTicketsDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket deleted.'**
+  String get adminUserTicketsDeleted;
+
+  /// No description provided for @adminUserTicketsApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve ticket'**
+  String get adminUserTicketsApprove;
+
+  /// No description provided for @adminUserTicketsApproveSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket approved.'**
+  String get adminUserTicketsApproveSuccess;
+
+  /// No description provided for @adminUserTicketsDeny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny ticket'**
+  String get adminUserTicketsDeny;
+
+  /// No description provided for @adminUserTicketsDenySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket denied.'**
+  String get adminUserTicketsDenySuccess;
+
+  /// No description provided for @adminUserTicketsResendQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend QR email'**
+  String get adminUserTicketsResendQr;
+
+  /// No description provided for @adminUserTicketsResendQrSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'QR email resent.'**
+  String get adminUserTicketsResendQrSuccess;
+
+  /// No description provided for @adminUserTicketsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit ticket'**
+  String get adminUserTicketsEdit;
+
+  /// No description provided for @adminUserTicketsDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete ticket'**
+  String get adminUserTicketsDelete;
+
+  /// No description provided for @adminUserTicketsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'User has no tickets.'**
+  String get adminUserTicketsEmpty;
+
+  /// No description provided for @adminUserTicketsGrantDialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant ticket'**
+  String get adminUserTicketsGrantDialog;
+
+  /// No description provided for @adminUserTicketsTierLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket tier'**
+  String get adminUserTicketsTierLabel;
+
+  /// No description provided for @adminUserTicketsEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit ticket'**
+  String get adminUserTicketsEditTitle;
+
+  /// No description provided for @adminUserTicketsNotSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not selected'**
+  String get adminUserTicketsNotSelected;
+
+  /// No description provided for @adminSectionOnSite.
+  ///
+  /// In en, this message translates to:
+  /// **'On-site operations'**
+  String get adminSectionOnSite;
+
+  /// No description provided for @adminSectionOnSiteSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in, scan history, and lost & found.'**
+  String get adminSectionOnSiteSubtitle;
+
+  /// No description provided for @adminSectionEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Event management'**
+  String get adminSectionEvent;
+
+  /// No description provided for @adminSectionEventSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tickets, configuration, and event operations.'**
+  String get adminSectionEventSubtitle;
+
+  /// No description provided for @adminSectionContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Content review'**
+  String get adminSectionContent;
+
+  /// No description provided for @adminSectionContentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Conbook, panels, and dealer booths.'**
+  String get adminSectionContentSubtitle;
+
+  /// No description provided for @adminSectionUsersReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Users & reports'**
+  String get adminSectionUsersReports;
+
+  /// No description provided for @adminSectionUsersReportsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts and ticket sales data.'**
+  String get adminSectionUsersReportsSubtitle;
+
+  /// No description provided for @adminSectionOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get adminSectionOther;
+
+  /// No description provided for @adminSectionOtherSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedules, notifications, and system.'**
+  String get adminSectionOtherSubtitle;
+
+  /// No description provided for @adminMenuScanTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan ticket'**
+  String get adminMenuScanTicket;
+
+  /// No description provided for @adminMenuScanHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan history'**
+  String get adminMenuScanHistory;
+
+  /// No description provided for @adminMenuLostFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost & Found'**
+  String get adminMenuLostFound;
+
+  /// No description provided for @adminMenuTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket management'**
+  String get adminMenuTickets;
+
+  /// No description provided for @adminMenuConbook.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Conbook'**
+  String get adminMenuConbook;
+
+  /// No description provided for @adminMenuPanels.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel management'**
+  String get adminMenuPanels;
+
+  /// No description provided for @adminMenuDealers.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer management'**
+  String get adminMenuDealers;
+
+  /// No description provided for @adminMenuUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get adminMenuUsers;
+
+  /// No description provided for @adminMenuStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get adminMenuStats;
+
+  /// No description provided for @adminMenuNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get adminMenuNotifications;
+
+  /// No description provided for @adminMenuSchedules.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedules'**
+  String get adminMenuSchedules;
+
+  /// No description provided for @adminEventSchedulesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule management'**
+  String get adminEventSchedulesTitle;
+
+  /// No description provided for @adminEventSchedulesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedules by day and time slot.'**
+  String get adminEventSchedulesSubtitle;
+
+  /// No description provided for @adminEventSchedulesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No schedules yet'**
+  String get adminEventSchedulesEmpty;
+
+  /// No description provided for @adminEventSchedulesCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new schedule'**
+  String get adminEventSchedulesCreate;
+
+  /// No description provided for @adminEventSchedulesCreateShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Create schedule'**
+  String get adminEventSchedulesCreateShort;
+
+  /// No description provided for @adminEventSchedulesNoTime.
+  ///
+  /// In en, this message translates to:
+  /// **'No time set'**
+  String get adminEventSchedulesNoTime;
+
+  /// No description provided for @adminEventSchedulesFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get adminEventSchedulesFrom;
+
+  /// No description provided for @adminEventSchedulesTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get adminEventSchedulesTo;
+
+  /// No description provided for @adminEventSchedulesDaysItems.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days · {items} items'**
+  String adminEventSchedulesDaysItems(int days, int items);
+
+  /// No description provided for @adminEventControlsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Event controls'**
+  String get adminEventControlsTitle;
+
+  /// No description provided for @adminSystemStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'System status'**
+  String get adminSystemStatusTitle;
+
+  /// No description provided for @adminSystemStatusSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor core services in real time.'**
+  String get adminSystemStatusSubtitle;
+
+  /// No description provided for @adminSystemHealthy.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy'**
+  String get adminSystemHealthy;
+
+  /// No description provided for @adminSystemWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get adminSystemWarning;
+
+  /// No description provided for @adminSystemError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get adminSystemError;
+
+  /// No description provided for @adminSystemUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get adminSystemUnknown;
+
+  /// No description provided for @adminStaffReadySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to serve attendees at the event.'**
+  String get adminStaffReadySubtitle;
+
+  /// No description provided for @adminStaffCheckInGate.
+  ///
+  /// In en, this message translates to:
+  /// **'Gate check-in'**
+  String get adminStaffCheckInGate;
+
+  /// No description provided for @adminStaffReadyBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get adminStaffReadyBadge;
+
+  /// No description provided for @adminStaffScanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan ticket QR codes to check in attendees.'**
+  String get adminStaffScanHint;
+
+  /// No description provided for @adminStaffGreetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning,'**
+  String get adminStaffGreetingMorning;
+
+  /// No description provided for @adminStaffGreetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon,'**
+  String get adminStaffGreetingAfternoon;
+
+  /// No description provided for @adminStaffGreetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening,'**
+  String get adminStaffGreetingEvening;
+
+  /// No description provided for @adminStaffShiftStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift statistics'**
+  String get adminStaffShiftStats;
+
+  /// No description provided for @adminStaffShiftNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data yet'**
+  String get adminStaffShiftNoData;
+
+  /// No description provided for @adminStaffShiftUpdatedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated at'**
+  String get adminStaffShiftUpdatedAt;
+
+  /// No description provided for @adminStaffShiftScannedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tickets scanned today'**
+  String get adminStaffShiftScannedToday;
+
+  /// No description provided for @adminStaffTrafficWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'TRAFFIC WARNING'**
+  String get adminStaffTrafficWarning;
+
+  /// No description provided for @adminSalesTimelineDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily ticket sales'**
+  String get adminSalesTimelineDefault;
+
+  /// No description provided for @adminQrContinueScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue scanning'**
+  String get adminQrContinueScan;
+
+  /// No description provided for @adminQrProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing ticket...'**
+  String get adminQrProcessing;
+
+  /// No description provided for @adminQrAlignFrame.
+  ///
+  /// In en, this message translates to:
+  /// **'Align the ticket QR code in the frame'**
+  String get adminQrAlignFrame;
+
+  /// No description provided for @adminQrManualEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter code manually'**
+  String get adminQrManualEntry;
+
+  /// No description provided for @adminQrCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in'**
+  String get adminQrCheckIn;
+
+  /// No description provided for @adminQrEnterCodeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter ticket code'**
+  String get adminQrEnterCodeTitle;
+
+  /// No description provided for @adminQrTicketInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket information'**
+  String get adminQrTicketInfo;
+
+  /// No description provided for @adminQrGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest'**
+  String get adminQrGuest;
+
+  /// No description provided for @adminQrNoTicketImage.
+  ///
+  /// In en, this message translates to:
+  /// **'No ticket image'**
+  String get adminQrNoTicketImage;
+
+  /// No description provided for @adminQrReadyCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to check in'**
+  String get adminQrReadyCheckIn;
+
+  /// No description provided for @adminQrConnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting...'**
+  String get adminQrConnecting;
+
+  /// No description provided for @adminQrScanNow.
+  ///
+  /// In en, this message translates to:
+  /// **'SCAN TICKET NOW'**
+  String get adminQrScanNow;
+
+  /// No description provided for @adminTierBadgeSoldOut.
+  ///
+  /// In en, this message translates to:
+  /// **'SOLD OUT'**
+  String get adminTierBadgeSoldOut;
+
+  /// No description provided for @adminTierBadgePaused.
+  ///
+  /// In en, this message translates to:
+  /// **'PAUSED'**
+  String get adminTierBadgePaused;
+
+  /// No description provided for @adminTierBadgeSelling.
+  ///
+  /// In en, this message translates to:
+  /// **'SELLING'**
+  String get adminTierBadgeSelling;
+
+  /// No description provided for @adminTierViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View ticket details →'**
+  String get adminTierViewDetails;
+
+  /// No description provided for @adminTierLowStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Low stock'**
+  String get adminTierLowStock;
+
+  /// No description provided for @adminPlaceholderDashboardUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard Users'**
+  String get adminPlaceholderDashboardUsers;
+
+  /// No description provided for @adminPlaceholderDashboardUsersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'User analytics and breakdowns.'**
+  String get adminPlaceholderDashboardUsersSubtitle;
+
+  /// No description provided for @adminPlaceholderTalent.
+  ///
+  /// In en, this message translates to:
+  /// **'Talent Management'**
+  String get adminPlaceholderTalent;
+
+  /// No description provided for @adminPlaceholderTalentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review and manage talent applications.'**
+  String get adminPlaceholderTalentSubtitle;
+
+  /// No description provided for @adminTierUpdateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket tier updated successfully.'**
+  String get adminTierUpdateSuccess;
+
+  /// No description provided for @adminLostFoundFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Record lost & found item'**
+  String get adminLostFoundFormTitle;
+
+  /// No description provided for @adminLostFoundFormType.
+  ///
+  /// In en, this message translates to:
+  /// **'Item type'**
+  String get adminLostFoundFormType;
+
+  /// No description provided for @adminLostFoundFormTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get adminLostFoundFormTitleLabel;
+
+  /// No description provided for @adminLostFoundFormDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get adminLostFoundFormDescription;
+
+  /// No description provided for @adminLostFoundFormLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get adminLostFoundFormLocation;
+
+  /// No description provided for @adminLostFoundFormContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact info'**
+  String get adminLostFoundFormContact;
+
+  /// No description provided for @adminLostFoundFormNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff notes'**
+  String get adminLostFoundFormNotes;
+
+  /// No description provided for @adminLostFoundFormImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get adminLostFoundFormImage;
+
+  /// No description provided for @adminLostFoundFormRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get adminLostFoundFormRequired;
+
+  /// No description provided for @adminRoleCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'{role} Current'**
+  String adminRoleCurrent(String role);
+
+  /// No description provided for @adminStatusPillDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get adminStatusPillDeleted;
+
+  /// No description provided for @adminStatusPillBlacklisted.
+  ///
+  /// In en, this message translates to:
+  /// **'Blacklisted'**
+  String get adminStatusPillBlacklisted;
+
+  /// No description provided for @adminStatusPillActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminStatusPillActive;
+
+  /// No description provided for @adminTimelineBannedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account restricted from buying tickets.'**
+  String get adminTimelineBannedSubtitle;
+
+  /// No description provided for @adminTimelineHasTicketSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'User registered or was granted a ticket.'**
+  String get adminTimelineHasTicketSubtitle;
+
+  /// No description provided for @adminTimelineVerifiedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account identity has been verified.'**
+  String get adminTimelineVerifiedSubtitle;
+
+  /// No description provided for @adminTimelineCreatedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered on the system.'**
+  String get adminTimelineCreatedSubtitle;
+
+  /// No description provided for @adminTagTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'TICKET'**
+  String get adminTagTicket;
+
+  /// No description provided for @adminEventCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} events'**
+  String adminEventCount(int count);
+
+  /// No description provided for @adminLostFoundEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to add a lost or found item.'**
+  String get adminLostFoundEmptySubtitle;
+
+  /// No description provided for @adminUserEditPersonalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update the user\'s profile and contact details.'**
+  String get adminUserEditPersonalSubtitle;
+
+  /// No description provided for @adminUserTicketsManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage ticket'**
+  String get adminUserTicketsManage;
+
+  /// No description provided for @adminLostFoundFormEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit lost & found item'**
+  String get adminLostFoundFormEditTitle;
+
+  /// No description provided for @adminLostFoundFormAddItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Add item'**
+  String get adminLostFoundFormAddItem;
+
+  /// No description provided for @adminLostFoundItemInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Item information'**
+  String get adminLostFoundItemInfo;
+
+  /// No description provided for @adminLostFoundRecipientInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient information'**
+  String get adminLostFoundRecipientInfo;
+
+  /// No description provided for @adminLostFoundUserConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'The user confirmed this is their item.'**
+  String get adminLostFoundUserConfirmed;
+
+  /// No description provided for @adminLostFoundVerifyChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification checklist'**
+  String get adminLostFoundVerifyChecklist;
+
+  /// No description provided for @adminLostFoundReturnNoClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'No user has claimed this item yet.'**
+  String get adminLostFoundReturnNoClaim;
+
+  /// No description provided for @adminLostFoundReturnCannot.
+  ///
+  /// In en, this message translates to:
+  /// **'This item cannot be returned.'**
+  String get adminLostFoundReturnCannot;
+
+  /// No description provided for @adminLostFoundReturnNoRecipient.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient information not found.'**
+  String get adminLostFoundReturnNoRecipient;
+
+  /// No description provided for @adminLostFoundVerifyRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the verification checklist before confirming.'**
+  String get adminLostFoundVerifyRequired;
+
+  /// No description provided for @adminLostFoundUserNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note from user'**
+  String get adminLostFoundUserNote;
+
+  /// No description provided for @adminDealerStaffCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Booth staff ({count})'**
+  String adminDealerStaffCount(int count);
+
+  /// No description provided for @adminDealerPriceSheetsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Price sheets ({count})'**
+  String adminDealerPriceSheetsCount(int count);
+
+  /// No description provided for @adminEventControlsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable or disable ticket sales and registration channels.'**
+  String get adminEventControlsSubtitle;
+
+  /// No description provided for @adminEventToggleTicketSales.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket sales'**
+  String get adminEventToggleTicketSales;
+
+  /// No description provided for @adminEventToggleTicketSalesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow users to purchase and upgrade event tickets.'**
+  String get adminEventToggleTicketSalesSubtitle;
+
+  /// No description provided for @adminEventTogglePanelRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel registration'**
+  String get adminEventTogglePanelRegistration;
+
+  /// No description provided for @adminEventTogglePanelRegistrationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow panel registration in the app.'**
+  String get adminEventTogglePanelRegistrationSubtitle;
+
+  /// No description provided for @adminEventToggleTalentRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Talent registration'**
+  String get adminEventToggleTalentRegistration;
+
+  /// No description provided for @adminEventToggleTalentRegistrationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow talent registration in the app.'**
+  String get adminEventToggleTalentRegistrationSubtitle;
+
+  /// No description provided for @adminEventToggleDealerRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer registration'**
+  String get adminEventToggleDealerRegistration;
+
+  /// No description provided for @adminEventToggleDealerRegistrationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow dealer booth registration in the app.'**
+  String get adminEventToggleDealerRegistrationSubtitle;
+
+  /// No description provided for @adminTicketsTabAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get adminTicketsTabAll;
+
+  /// No description provided for @adminTicketsTabPendingReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending review'**
+  String get adminTicketsTabPendingReview;
+
+  /// No description provided for @adminTicketsTabApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get adminTicketsTabApproved;
+
+  /// No description provided for @adminTicketsTabDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Denied'**
+  String get adminTicketsTabDenied;
+
+  /// No description provided for @adminTicketsEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No tickets match the current filters.'**
+  String get adminTicketsEmptySubtitle;
+
+  /// No description provided for @adminTicketsEmptyTiersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first tier to start selling.'**
+  String get adminTicketsEmptyTiersSubtitle;
+
+  /// No description provided for @adminTicketsEmptyFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'No tiers in the \"{filter}\" filter.'**
+  String adminTicketsEmptyFilter(String filter);
+
+  /// No description provided for @adminTicketsDeleteTierBodyNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting \"{name}\" permanently removes this tier and all sold tickets in it. This cannot be undone.'**
+  String adminTicketsDeleteTierBodyNamed(String name);
+
+  /// No description provided for @adminTicketsStockSoldOut.
+  ///
+  /// In en, this message translates to:
+  /// **' (sold out)'**
+  String get adminTicketsStockSoldOut;
+
+  /// No description provided for @adminTierFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get adminTierFilterAll;
+
+  /// No description provided for @adminTierFilterSelling.
+  ///
+  /// In en, this message translates to:
+  /// **'Selling'**
+  String get adminTierFilterSelling;
+
+  /// No description provided for @adminTierFilterPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get adminTierFilterPaused;
+
+  /// No description provided for @adminTierFilterSoldOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold out'**
+  String get adminTierFilterSoldOut;
+
+  /// No description provided for @adminTierStatTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total tickets'**
+  String get adminTierStatTotal;
+
+  /// No description provided for @adminTierStatSold.
+  ///
+  /// In en, this message translates to:
+  /// **'Tickets sold'**
+  String get adminTierStatSold;
+
+  /// No description provided for @adminTierStatRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get adminTierStatRemaining;
+
+  /// No description provided for @adminTierStatApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved tickets'**
+  String get adminTierStatApproved;
+
+  /// No description provided for @adminTierSoldCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold: {sold} / {total}'**
+  String adminTierSoldCount(int sold, int total);
+
+  /// No description provided for @adminTierNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a tier name'**
+  String get adminTierNameRequired;
+
+  /// No description provided for @adminTierMaxChars255.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum 255 characters'**
+  String get adminTierMaxChars255;
+
+  /// No description provided for @adminTierEnterPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter price'**
+  String get adminTierEnterPrice;
+
+  /// No description provided for @adminTierInvalidPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid price'**
+  String get adminTierInvalidPrice;
+
+  /// No description provided for @adminTierEnterStockQty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter quantity'**
+  String get adminTierEnterStockQty;
+
+  /// No description provided for @adminTierInvalidStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid quantity'**
+  String get adminTierInvalidStock;
+
+  /// No description provided for @adminTierBenefitHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter benefit...'**
+  String get adminTierBenefitHint;
+
+  /// No description provided for @adminTierDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief description of audience and perks...'**
+  String get adminTierDescriptionHint;
+
+  /// No description provided for @adminTierNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. VIP Pass - Early Bird'**
+  String get adminTierNameHint;
+
+  /// No description provided for @adminTierAllowPurchaseSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow users to purchase this tier'**
+  String get adminTierAllowPurchaseSubtitle;
+
+  /// No description provided for @adminTierSaveCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create tier'**
+  String get adminTierSaveCreate;
+
+  /// No description provided for @adminTierSaveEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Save tier'**
+  String get adminTierSaveEdit;
+
+  /// No description provided for @adminTierDiscard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get adminTierDiscard;
+
+  /// No description provided for @adminTierSystemWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'System warning'**
+  String get adminTierSystemWarningTitle;
+
+  /// No description provided for @adminTierSystemWarningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes may affect users who already purchased tickets. Review carefully before saving.'**
+  String get adminTierSystemWarningBody;
+
+  /// No description provided for @adminTierPreviewNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier name'**
+  String get adminTierPreviewNamePlaceholder;
+
+  /// No description provided for @adminSchedulesEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create schedules by day and time slot.'**
+  String get adminSchedulesEmptySubtitle;
+
+  /// No description provided for @adminSchedulesDaysCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days'**
+  String adminSchedulesDaysCount(int count);
+
+  /// No description provided for @adminSchedulesItemsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items'**
+  String adminSchedulesItemsCount(int count);
+
+  /// No description provided for @adminScheduleDefaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get adminScheduleDefaultTitle;
+
+  /// No description provided for @adminScheduleSelectDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a day to view the schedule.'**
+  String get adminScheduleSelectDay;
+
+  /// No description provided for @adminScheduleEmptyDayOnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'No items on {date}.'**
+  String adminScheduleEmptyDayOnDate(String date);
+
+  /// No description provided for @adminScheduleOverlapSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **' (schedule conflict)'**
+  String get adminScheduleOverlapSchedule;
+
+  /// No description provided for @adminScheduleItemTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get adminScheduleItemTitleLabel;
+
+  /// No description provided for @adminScheduleItemDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Speaker / description (optional)'**
+  String get adminScheduleItemDescriptionLabel;
+
+  /// No description provided for @adminScheduleItemCategoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Category (optional)'**
+  String get adminScheduleItemCategoryLabel;
+
+  /// No description provided for @adminScheduleItemCategoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel, Workshop...'**
+  String get adminScheduleItemCategoryHint;
+
+  /// No description provided for @adminScheduleItemLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location (optional)'**
+  String get adminScheduleItemLocationLabel;
+
+  /// No description provided for @adminScheduleItemLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hall A, Main stage...'**
+  String get adminScheduleItemLocationHint;
+
+  /// No description provided for @adminScheduleStartLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get adminScheduleStartLabel;
+
+  /// No description provided for @adminScheduleEndLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get adminScheduleEndLabel;
+
+  /// No description provided for @adminScheduleTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a title.'**
+  String get adminScheduleTitleRequired;
+
+  /// No description provided for @adminSchedulesNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a name.'**
+  String get adminSchedulesNameRequired;
+
+  /// No description provided for @adminDashboardLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load analytics'**
+  String get adminDashboardLoadFailed;
+
+  /// No description provided for @adminDashboardLoadFailedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again later.'**
+  String get adminDashboardLoadFailedSubtitle;
+
+  /// No description provided for @adminChartPeriod7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get adminChartPeriod7Days;
+
+  /// No description provided for @adminChartPeriod30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days'**
+  String get adminChartPeriod30Days;
+
+  /// No description provided for @adminChartPeriod90Days.
+  ///
+  /// In en, this message translates to:
+  /// **'90 days'**
+  String get adminChartPeriod90Days;
+
+  /// No description provided for @adminStaffReadyConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'System connected and ready to scan tickets.'**
+  String get adminStaffReadyConnected;
+
+  /// No description provided for @adminStaffConnectingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait a moment.'**
+  String get adminStaffConnectingHint;
+
+  /// No description provided for @adminStaffTrafficWarningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer Area A is overloaded (90%). Redirect foot traffic.'**
+  String get adminStaffTrafficWarningBody;
+
+  /// No description provided for @adminQrCameraPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission is required to scan tickets. Enable it in Settings.'**
+  String get adminQrCameraPermission;
+
+  /// No description provided for @adminQrUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This device does not support QR scanning.'**
+  String get adminQrUnsupported;
+
+  /// No description provided for @adminQrCameraOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open camera.'**
+  String get adminQrCameraOpenFailed;
+
+  /// No description provided for @adminQrTicketLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket'**
+  String get adminQrTicketLabel;
+
+  /// No description provided for @adminQrGuestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest'**
+  String get adminQrGuestLabel;
 }
 
 class _AppLocalizationsDelegate

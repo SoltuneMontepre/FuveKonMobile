@@ -1179,4 +1179,1590 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get artbookGenreOther => 'Khác';
+
+  @override
+  String get adminCancel => 'Hủy';
+
+  @override
+  String get adminSave => 'Lưu';
+
+  @override
+  String get adminSaveChanges => 'Lưu thay đổi';
+
+  @override
+  String get adminDelete => 'Xóa';
+
+  @override
+  String get adminEdit => 'Chỉnh sửa';
+
+  @override
+  String get adminRetry => 'Thử lại';
+
+  @override
+  String get adminConfirm => 'Xác nhận';
+
+  @override
+  String get adminBack => 'Quay lại';
+
+  @override
+  String get adminCancelAction => 'Hủy bỏ';
+
+  @override
+  String get adminAdd => 'Thêm';
+
+  @override
+  String get adminCreate => 'Tạo';
+
+  @override
+  String get adminViewAll => 'Xem tất cả';
+
+  @override
+  String get adminUpdateSuccess => 'Cập nhật thành công.';
+
+  @override
+  String adminErrorWithDetail(String detail) {
+    return 'Lỗi: $detail';
+  }
+
+  @override
+  String get adminCannotUndo => 'Hành động này không thể hoàn tác.';
+
+  @override
+  String get adminYes => 'Có';
+
+  @override
+  String get adminNo => 'Không';
+
+  @override
+  String get adminAll => 'Tất cả';
+
+  @override
+  String get adminNone => 'Không có';
+
+  @override
+  String get adminFieldStatus => 'Trạng thái';
+
+  @override
+  String get adminFieldDescription => 'Mô tả';
+
+  @override
+  String get adminFieldTitle => 'Tiêu đề';
+
+  @override
+  String get adminStatusPending => 'Chờ duyệt';
+
+  @override
+  String get adminStatusApproved => 'Đã duyệt';
+
+  @override
+  String get adminStatusRequireChanges => 'Cần chỉnh sửa';
+
+  @override
+  String get adminStatusDenied => 'Từ chối';
+
+  @override
+  String get adminApprove => 'Duyệt';
+
+  @override
+  String get adminRequireChanges => 'Yêu cầu chỉnh sửa';
+
+  @override
+  String get adminDeny => 'Từ chối';
+
+  @override
+  String get adminMarkPending => 'Chờ duyệt lại';
+
+  @override
+  String get adminMarkPendingReturn => 'Đưa về chờ duyệt';
+
+  @override
+  String get adminDenyReason => 'Lý do từ chối';
+
+  @override
+  String get adminDenyReasonHint => 'Nhập lý do từ chối vé...';
+
+  @override
+  String get adminEmptyList => 'Không có mục nào';
+
+  @override
+  String adminEmptyTabList(String tab) {
+    return 'Danh sách $tab trống.';
+  }
+
+  @override
+  String get adminNavHome => 'Trang chủ';
+
+  @override
+  String get adminNavStats => 'Thống kê';
+
+  @override
+  String get adminNavScan => 'Quét mã';
+
+  @override
+  String get adminNavHistory => 'Lịch sử';
+
+  @override
+  String get adminNavLostFound => 'Thất lạc';
+
+  @override
+  String get adminNavSystem => 'Hệ thống';
+
+  @override
+  String get adminBrandTitle => 'FUVEKON Admin';
+
+  @override
+  String get adminFieldEmail => 'Email';
+
+  @override
+  String get adminFieldFursona => 'Fursona';
+
+  @override
+  String get adminFieldFirstName => 'Họ';
+
+  @override
+  String get adminFieldLastName => 'Tên';
+
+  @override
+  String get adminFieldCountry => 'Quốc gia';
+
+  @override
+  String get adminFieldIdCard => 'CCCD/CMND';
+
+  @override
+  String get adminFieldDisplayName => 'Tên hiển thị';
+
+  @override
+  String get adminFieldRole => 'Vai trò';
+
+  @override
+  String get adminFieldVerified => 'Xác minh';
+
+  @override
+  String get adminFieldVerifiedYes => 'Đã xác minh';
+
+  @override
+  String get adminFieldVerifiedNo => 'Chưa xác minh';
+
+  @override
+  String get adminFieldHasTicket => 'Có vé';
+
+  @override
+  String get adminFieldAvatar => 'Ảnh đại diện';
+
+  @override
+  String get adminFieldCreatedAt => 'Ngày tạo';
+
+  @override
+  String get adminFieldLastUpdated => 'Cập nhật lần cuối';
+
+  @override
+  String get adminFieldDateOfBirth => 'Ngày sinh';
+
+  @override
+  String get adminFieldPermissions => 'Quyền';
+
+  @override
+  String get adminFieldDealer => 'Dealer';
+
+  @override
+  String get adminFieldAccount => 'Tài khoản';
+
+  @override
+  String get adminFieldUser => 'Người dùng';
+
+  @override
+  String get adminFieldBoothName => 'Tên gian hàng';
+
+  @override
+  String get adminFieldBoothCode => 'Mã gian';
+
+  @override
+  String get adminFieldPriceSheet => 'Bảng giá';
+
+  @override
+  String adminFieldPriceSheetN(int n) {
+    return 'Bảng giá $n';
+  }
+
+  @override
+  String get adminFieldRegisteredAt => 'Ngày đăng ký';
+
+  @override
+  String get adminFieldNickname => 'Nickname';
+
+  @override
+  String get adminFieldGenre => 'Thể loại';
+
+  @override
+  String get adminFieldParticipantCount => 'Số người tham gia';
+
+  @override
+  String get adminFieldDuration => 'Thời lượng';
+
+  @override
+  String get adminFieldTimeSlot => 'Khung giờ';
+
+  @override
+  String get adminFieldIntroduction => 'Giới thiệu';
+
+  @override
+  String get adminFieldSubmittedAt => 'Ngày gửi';
+
+  @override
+  String get adminFieldHandle => 'Handle';
+
+  @override
+  String get adminFieldConbookImage => 'Ảnh conbook';
+
+  @override
+  String get adminFieldTicketCode => 'Mã vé';
+
+  @override
+  String get adminFieldTicketNumber => 'Số vé';
+
+  @override
+  String get adminFieldTier => 'Hạng vé';
+
+  @override
+  String get adminFieldTierCode => 'Mã hạng';
+
+  @override
+  String get adminFieldBadgeName => 'Tên badge';
+
+  @override
+  String get adminFieldFursuiter => 'Fursuiter';
+
+  @override
+  String get adminFieldFursuitStaff => 'Fursuit staff';
+
+  @override
+  String get adminFieldTshirtSize => 'Size áo';
+
+  @override
+  String get adminFieldCheckIn => 'Check-in';
+
+  @override
+  String get adminFieldBadgeImage => 'Ảnh badge';
+
+  @override
+  String get adminFieldNamecard => 'Namecard';
+
+  @override
+  String get adminFieldApprovedAt => 'Ngày duyệt';
+
+  @override
+  String get adminFieldDeniedAt => 'Ngày từ chối';
+
+  @override
+  String get adminFieldItemCode => 'Mã vật phẩm';
+
+  @override
+  String get adminFieldType => 'Loại';
+
+  @override
+  String get adminFieldLocation => 'Vị trí';
+
+  @override
+  String get adminFieldContact => 'Liên hệ';
+
+  @override
+  String get adminFieldImage => 'Ảnh';
+
+  @override
+  String get adminFieldStaffNotes => 'Ghi chú nhân viên';
+
+  @override
+  String get adminFieldRecipient => 'Người nhận';
+
+  @override
+  String get adminFieldRecipientIdCard => 'CCCD người nhận';
+
+  @override
+  String get adminFieldRecipientPhone => 'SĐT người nhận';
+
+  @override
+  String get adminFieldReturnedAt => 'Hoàn trả lúc';
+
+  @override
+  String get adminFieldUpdatedAt => 'Cập nhật';
+
+  @override
+  String get adminRoleAdminLabel => 'Quản trị viên';
+
+  @override
+  String get adminRoleDealerLabel => 'Dealer';
+
+  @override
+  String get adminRoleStaffLabel => 'Nhân viên';
+
+  @override
+  String get adminRoleUserLabel => 'Người dùng';
+
+  @override
+  String get adminRoleCodeAdmin => 'Admin';
+
+  @override
+  String get adminRoleCodeDealer => 'Dealer';
+
+  @override
+  String get adminRoleCodeStaff => 'Staff';
+
+  @override
+  String get adminRoleCodeAttendee => 'Attendee';
+
+  @override
+  String get adminRoleExhibitor => 'Nhà triển lãm';
+
+  @override
+  String get adminRoleStaffSupport => 'Nhân viên hỗ trợ';
+
+  @override
+  String get adminRoleAttendee => 'Khách tham quan';
+
+  @override
+  String get adminPermissionManageTickets => 'Quản lý vé';
+
+  @override
+  String get adminPermissionScanTickets => 'Quét vé';
+
+  @override
+  String get adminPermissionApproveProfiles => 'Duyệt hồ sơ';
+
+  @override
+  String get adminPermissionSendNotifications => 'Gửi thông báo';
+
+  @override
+  String get adminPermissionViewDashboard => 'Xem dashboard';
+
+  @override
+  String get adminPermissionManageUsers => 'Quản lý người dùng';
+
+  @override
+  String get adminUserActive => 'Hoạt động';
+
+  @override
+  String get adminUserBlacklisted => 'Bị cấm';
+
+  @override
+  String get adminUserBannedFromTickets => 'Bị cấm mua vé';
+
+  @override
+  String get adminBanReason => 'Lý do cấm';
+
+  @override
+  String get adminBanDate => 'Ngày cấm';
+
+  @override
+  String get adminDenialCount => 'Số lần từ chối vé';
+
+  @override
+  String get adminAccountDeleted => 'Đã xóa';
+
+  @override
+  String get adminTicketStatusPending => 'Chờ thanh toán';
+
+  @override
+  String get adminTicketStatusAwaitingApproval => 'Chờ duyệt';
+
+  @override
+  String get adminTicketStatusApproved => 'Đã duyệt';
+
+  @override
+  String get adminTicketStatusDenied => 'Từ chối';
+
+  @override
+  String get adminTicketStatusAdminGranted => 'Cấp bởi admin';
+
+  @override
+  String get adminCheckedIn => 'Đã check-in';
+
+  @override
+  String get adminNotCheckedIn => 'Chưa check-in';
+
+  @override
+  String get adminLostFoundTypeLost => 'Thất lạc';
+
+  @override
+  String get adminLostFoundTypeFound => 'Nhặt được';
+
+  @override
+  String get adminLostFoundStatusClaimed => 'Đã nhận';
+
+  @override
+  String get adminLostFoundStatusResolved => 'Đã xử lý';
+
+  @override
+  String get adminLostFoundStatusOpen => 'Đang mở';
+
+  @override
+  String adminDealerBoothCode(String code) {
+    return 'Mã gian: $code';
+  }
+
+  @override
+  String adminDurationMinutes(int minutes) {
+    return '$minutes phút';
+  }
+
+  @override
+  String get adminErrorLoadUsers => 'Không thể tải danh sách người dùng.';
+
+  @override
+  String get adminErrorLoadBlacklistedUsers =>
+      'Không thể tải danh sách người bị cấm.';
+
+  @override
+  String get adminErrorLoadDealers => 'Không thể tải danh sách dealer.';
+
+  @override
+  String get adminErrorLoadDealer => 'Không thể tải thông tin gian hàng.';
+
+  @override
+  String get adminErrorLoadPanels => 'Không thể tải danh sách panel.';
+
+  @override
+  String get adminErrorLoadConbook => 'Không thể tải danh sách conbook.';
+
+  @override
+  String get adminErrorLoadSchedules => 'Không thể tải danh sách lịch trình.';
+
+  @override
+  String get adminErrorLoadSchedule => 'Không thể tải lịch trình.';
+
+  @override
+  String get adminErrorLoadTickets => 'Không thể tải danh sách vé.';
+
+  @override
+  String get adminErrorLoadTiers => 'Không thể tải danh sách hạng vé.';
+
+  @override
+  String get adminErrorLoadTicket => 'Không thể tải thông tin vé.';
+
+  @override
+  String get adminErrorLoadTicketStats => 'Không thể tải thống kê vé.';
+
+  @override
+  String get adminErrorLoadLostFound => 'Không thể tải danh sách thất lạc.';
+
+  @override
+  String get adminErrorUpdateEventSettings =>
+      'Không cập nhật được cài đặt sự kiện';
+
+  @override
+  String get adminScanInvalidCode => 'Mã vé không hợp lệ.';
+
+  @override
+  String get adminScanNotApproved => 'Vé chưa được duyệt hoặc đã bị từ chối.';
+
+  @override
+  String get adminScanAlreadyCheckedIn => 'Vé đã được check-in trước đó.';
+
+  @override
+  String get adminScanConfirmBeforeCheckIn =>
+      'Xác nhận thông tin vé trước khi check-in.';
+
+  @override
+  String get adminScanCheckInSuccess => 'Check-in thành công.';
+
+  @override
+  String get adminUserDetailTitle => 'Chi tiết người dùng';
+
+  @override
+  String get adminDeleteUserTitle => 'Xóa người dùng?';
+
+  @override
+  String get adminDeleteUserBody =>
+      'Tài khoản sẽ bị xóa mềm và không thể đăng nhập lại.';
+
+  @override
+  String get adminBanTicketsTitle => 'Cấm mua vé';
+
+  @override
+  String get adminBanReasonLabel => 'Lý do cấm';
+
+  @override
+  String get adminBanReasonHint => 'Nhập lý do cấm người dùng...';
+
+  @override
+  String get adminBanAction => 'Cấm';
+
+  @override
+  String get adminBanReasonRequired => 'Vui lòng nhập lý do cấm.';
+
+  @override
+  String get adminQuickActions => 'Thao tác nhanh';
+
+  @override
+  String get adminRecentHistory => 'Lịch sử gần đây';
+
+  @override
+  String get adminDetailInfo => 'Thông tin chi tiết';
+
+  @override
+  String get adminDetailInfoSubtitle =>
+      'Hồ sơ, quyền hạn và trạng thái tài khoản';
+
+  @override
+  String get adminVerify => 'Xác minh';
+
+  @override
+  String get adminPermissions => 'Phân quyền';
+
+  @override
+  String get adminUnban => 'Gỡ cấm';
+
+  @override
+  String get adminBanTickets => 'Cấm mua vé';
+
+  @override
+  String get adminDeleteUser => 'Xóa người dùng';
+
+  @override
+  String get adminTimelineBanned => 'Bị cấm mua vé';
+
+  @override
+  String get adminTimelineHasTicket => 'Có vé sự kiện';
+
+  @override
+  String get adminTimelineVerified => 'Đã xác minh';
+
+  @override
+  String get adminTimelineCreated => 'Tạo tài khoản';
+
+  @override
+  String get adminTagBanned => 'CẤM';
+
+  @override
+  String get adminTagVerified => 'XÁC MINH';
+
+  @override
+  String get adminTagNew => 'MỚI';
+
+  @override
+  String get adminUsersTitle => 'Quản lý người dùng';
+
+  @override
+  String get adminUsersTabBlacklisted => 'Bị cấm';
+
+  @override
+  String get adminUsersSearchHint => 'Tìm email, tên, fursona...';
+
+  @override
+  String get adminUsersEmpty => 'Không có người dùng';
+
+  @override
+  String get adminUsersEmptyBlacklisted => 'Không có người bị cấm.';
+
+  @override
+  String get adminUsersEmptySearch => 'Không tìm thấy người dùng phù hợp.';
+
+  @override
+  String get adminTicketsTitle => 'Quản lý vé';
+
+  @override
+  String get adminTicketsTabTiers => 'Hạng vé';
+
+  @override
+  String get adminTicketsTabList => 'Danh sách vé';
+
+  @override
+  String get adminTicketsNewTier => 'Hạng vé mới';
+
+  @override
+  String get adminTicketsCreateTier => 'Tạo hạng vé';
+
+  @override
+  String get adminTicketsPendingOver24h => 'Chờ > 24 giờ';
+
+  @override
+  String get adminTicketsSearchHint => 'Tìm mã vé, email, tên...';
+
+  @override
+  String get adminTicketsDisableSales => 'Tắt bán';
+
+  @override
+  String get adminTicketsEnableSales => 'Bật bán';
+
+  @override
+  String get adminTicketsHideStore => 'Ẩn khỏi cửa hàng';
+
+  @override
+  String get adminTicketsShowStore => 'Hiện trên cửa hàng';
+
+  @override
+  String get adminTicketsDeleteTier => 'Xóa hạng vé';
+
+  @override
+  String get adminTicketsStock => 'Tồn kho';
+
+  @override
+  String get adminTicketsBenefits => 'Quyền lợi';
+
+  @override
+  String get adminTicketsSelling => 'Đang bán';
+
+  @override
+  String get adminTicketsSalesOff => 'Tắt bán';
+
+  @override
+  String get adminTicketsStoreVisible => 'Hiện cửa hàng';
+
+  @override
+  String get adminTicketsStoreHidden => 'Ẩn';
+
+  @override
+  String get adminTicketsDeleteTierTitle => 'Xóa hạng vé?';
+
+  @override
+  String get adminTicketsDeleteTierBody =>
+      'Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn hạng vé.';
+
+  @override
+  String get adminTicketsEmpty => 'Không có vé';
+
+  @override
+  String get adminTicketsEmptyTiers => 'Chưa có hạng vé.';
+
+  @override
+  String get adminTierEditCreate => 'Tạo hạng vé';
+
+  @override
+  String get adminTierEditEdit => 'Chỉnh sửa hạng vé';
+
+  @override
+  String get adminTierNameLabel => 'Tên hạng vé';
+
+  @override
+  String get adminTierPriceLabel => 'Giá vé (VND)';
+
+  @override
+  String get adminTierStockLabel => 'Số lượng';
+
+  @override
+  String get adminTierDescriptionLabel => 'Mô tả hạng vé';
+
+  @override
+  String get adminTierBenefitsList => 'Danh sách quyền lợi';
+
+  @override
+  String get adminTierAddBenefit => 'Thêm quyền lợi';
+
+  @override
+  String get adminTierSalesStatus => 'Trạng thái bán';
+
+  @override
+  String get adminTierPreview => 'Preview Hiển Thị';
+
+  @override
+  String get adminTierCreated => 'Đã tạo hạng vé.';
+
+  @override
+  String get adminTierUpdated => 'Đã cập nhật hạng vé.';
+
+  @override
+  String get adminSchedulesTitle => 'Quản lý lịch trình';
+
+  @override
+  String get adminSchedulesCreate => 'Tạo lịch';
+
+  @override
+  String get adminSchedulesEmpty => 'Chưa có lịch trình';
+
+  @override
+  String get adminSchedulesEdit => 'Chỉnh sửa lịch trình';
+
+  @override
+  String get adminSchedulesCreateNew => 'Tạo lịch trình mới';
+
+  @override
+  String get adminSchedulesNameLabel => 'Tên lịch trình';
+
+  @override
+  String get adminScheduleEndAfterStart =>
+      'Thời gian kết thúc phải sau thời gian bắt đầu.';
+
+  @override
+  String get adminScheduleDeleteTitle => 'Xóa lịch trình?';
+
+  @override
+  String get adminScheduleDeleteBody => 'Tất cả mục trong lịch sẽ bị xóa.';
+
+  @override
+  String get adminScheduleDeleteItemTitle => 'Xóa mục lịch trình?';
+
+  @override
+  String adminScheduleDeleteItemBody(String title) {
+    return 'Xóa \"$title\"?';
+  }
+
+  @override
+  String get adminScheduleEditMenu => 'Chỉnh sửa lịch';
+
+  @override
+  String get adminScheduleDeleteMenu => 'Xóa lịch trình';
+
+  @override
+  String get adminScheduleNoItems => 'Chưa có mục lịch trình';
+
+  @override
+  String get adminScheduleEditItem => 'Chỉnh sửa mục';
+
+  @override
+  String get adminScheduleAddItem => 'Thêm mục lịch trình';
+
+  @override
+  String get adminScheduleOverlapBadge => 'Trùng địa điểm';
+
+  @override
+  String get adminDashboardTitle => 'Tổng quan sự kiện';
+
+  @override
+  String get adminDashboardSubtitle => 'Dữ liệu 90 ngày gần nhất';
+
+  @override
+  String get adminDashboardTickets => 'Vé';
+
+  @override
+  String get adminDashboardByTier => 'Theo hạng vé';
+
+  @override
+  String get adminDashboardRevenue => 'Doanh thu';
+
+  @override
+  String get adminDashboardUsers => 'Người dùng';
+
+  @override
+  String get adminDashboardDealers => 'Dealer';
+
+  @override
+  String get adminDashboardTotalTickets => 'Tổng vé';
+
+  @override
+  String get adminDashboardApproved => 'Đã duyệt';
+
+  @override
+  String get adminDashboardPending => 'Chờ duyệt';
+
+  @override
+  String get adminDashboardDenied => 'Từ chối';
+
+  @override
+  String adminDashboardSold(int sold, int total) {
+    return 'Đã bán $sold / $total';
+  }
+
+  @override
+  String adminDashboardRemaining(int count) {
+    return 'Còn $count';
+  }
+
+  @override
+  String get adminDashboardUsersByCountry => 'Người dùng theo quốc gia';
+
+  @override
+  String get adminDashboardUnknownCountry => 'Không rõ';
+
+  @override
+  String get adminDashboardUsersByCountryEmpty => 'Chưa có dữ liệu quốc gia';
+
+  @override
+  String adminDashboardUsersByCountryMore(int count) {
+    return '+$count quốc gia khác';
+  }
+
+  @override
+  String get adminConbookTitle => 'Duyệt Conbook';
+
+  @override
+  String get adminConbookApprove => 'Duyệt conbook';
+
+  @override
+  String get adminConbookDeny => 'Từ chối conbook';
+
+  @override
+  String get adminPanelsTitle => 'Quản lý Panel';
+
+  @override
+  String get adminPanelsApprove => 'Duyệt panel';
+
+  @override
+  String get adminPanelsDeny => 'Từ chối panel';
+
+  @override
+  String get adminDealersTitle => 'Quản lý Dealer';
+
+  @override
+  String get adminDealersApprove => 'Duyệt gian hàng';
+
+  @override
+  String get adminDealersDeny => 'Từ chối đăng ký';
+
+  @override
+  String get adminDealerDetailTitle => 'Chi tiết gian hàng';
+
+  @override
+  String get adminDealerInfo => 'Thông tin gian hàng';
+
+  @override
+  String get adminDealerPriceSheets => 'Bảng giá';
+
+  @override
+  String get adminDealerStaff => 'Nhân viên gian hàng';
+
+  @override
+  String get adminDealerNoStaff => 'Chưa có nhân viên nào.';
+
+  @override
+  String get adminDealerActions => 'Thao tác';
+
+  @override
+  String get adminDealerOwner => 'Chủ gian';
+
+  @override
+  String get adminDealerJoined => 'Tham gia:';
+
+  @override
+  String get adminLostFoundTitle => 'Quản lý thất lạc';
+
+  @override
+  String get adminLostFoundSearchHint => 'Tìm tiêu đề, mã, vị trí...';
+
+  @override
+  String get adminLostFoundEmpty => 'Không có vật phẩm';
+
+  @override
+  String get adminLostFoundDetailTitle => 'Chi tiết vật phẩm';
+
+  @override
+  String get adminLostFoundRecipientClaimed => 'Người nhận (đã claim)';
+
+  @override
+  String get adminLostFoundNoClaim => 'Chưa có claim cho vật phẩm này.';
+
+  @override
+  String get adminLostFoundConfirmReturn => 'Xác nhận hoàn trả';
+
+  @override
+  String get adminLostFoundMarkResolved => 'Đánh dấu đã xử lý';
+
+  @override
+  String get adminLostFoundDeleteTitle => 'Xóa vật phẩm?';
+
+  @override
+  String get adminLostFoundReturnTitle => 'Xác nhận hoàn trả';
+
+  @override
+  String get adminLostFoundReturnSuccess => 'Đã xác nhận hoàn trả thành công.';
+
+  @override
+  String get adminLostFoundVerifyDescription => 'Mô tả đúng vật phẩm';
+
+  @override
+  String get adminLostFoundVerifyOwnership => 'Có bằng chứng sở hữu';
+
+  @override
+  String get adminLostFoundVerifyIdentity => 'Đã xác minh danh tính';
+
+  @override
+  String get adminLostFoundAuditNote =>
+      'Hành động này sẽ được ghi vào nhật ký hệ thống';
+
+  @override
+  String get adminScanHistoryTitle => 'Lịch sử quét vé';
+
+  @override
+  String get adminScanHistoryEmpty => 'Chưa có lượt quét nào được ghi nhận.';
+
+  @override
+  String get adminScanOutcomeValid => 'Hợp lệ';
+
+  @override
+  String get adminScanOutcomeReused => 'Dùng lại';
+
+  @override
+  String get adminScanOutcomeRejected => 'Từ chối';
+
+  @override
+  String get adminUserEditPermissions => 'Phân quyền';
+
+  @override
+  String get adminUserEditTitle => 'Chỉnh sửa người dùng';
+
+  @override
+  String get adminUserEditPersonalInfo => 'Thông tin cá nhân';
+
+  @override
+  String get adminUserEditAccountStatus => 'Trạng thái tài khoản';
+
+  @override
+  String get adminUserEditRoles => 'Vai trò';
+
+  @override
+  String get adminUserEditPermissionGroup => 'Permission Group';
+
+  @override
+  String get adminUserEditVerified => 'Đã xác minh';
+
+  @override
+  String get adminUserEditVerifiedSubtitle =>
+      'Tài khoản đã được xác minh email';
+
+  @override
+  String get adminUserEditAdminNote => 'Quản trị viên có toàn bộ quyền.';
+
+  @override
+  String get adminUserTicketsTitle => 'Vé của người dùng';
+
+  @override
+  String get adminUserTicketsSubtitle => 'Cấp, duyệt, chỉnh sửa hoặc xóa vé';
+
+  @override
+  String get adminUserTicketsNoTiers => 'Chưa có hạng vé để cấp.';
+
+  @override
+  String get adminUserTicketsGrant => 'Cấp vé';
+
+  @override
+  String get adminUserTicketsGrantSuccess => 'Đã cấp vé cho người dùng.';
+
+  @override
+  String get adminUserTicketsDeleteTitle => 'Xóa vé?';
+
+  @override
+  String adminUserTicketsDeleteBody(String code) {
+    return 'Xóa vé $code? Hành động không thể hoàn tác.';
+  }
+
+  @override
+  String get adminUserTicketsDeleted => 'Đã xóa vé.';
+
+  @override
+  String get adminUserTicketsApprove => 'Duyệt vé';
+
+  @override
+  String get adminUserTicketsApproveSuccess => 'Đã duyệt vé.';
+
+  @override
+  String get adminUserTicketsDeny => 'Từ chối vé';
+
+  @override
+  String get adminUserTicketsDenySuccess => 'Đã từ chối vé.';
+
+  @override
+  String get adminUserTicketsResendQr => 'Gửi lại email QR';
+
+  @override
+  String get adminUserTicketsResendQrSuccess => 'Đã gửi lại email QR.';
+
+  @override
+  String get adminUserTicketsEdit => 'Chỉnh sửa vé';
+
+  @override
+  String get adminUserTicketsDelete => 'Xóa vé';
+
+  @override
+  String get adminUserTicketsEmpty => 'Người dùng chưa có vé.';
+
+  @override
+  String get adminUserTicketsGrantDialog => 'Cấp vé';
+
+  @override
+  String get adminUserTicketsTierLabel => 'Hạng vé';
+
+  @override
+  String get adminUserTicketsEditTitle => 'Chỉnh sửa vé';
+
+  @override
+  String get adminUserTicketsNotSelected => 'Chưa chọn';
+
+  @override
+  String get adminSectionOnSite => 'Vận hành tại chỗ';
+
+  @override
+  String get adminSectionOnSiteSubtitle =>
+      'Check-in, lịch sử quét và đồ thất lạc.';
+
+  @override
+  String get adminSectionEvent => 'Quản lý sự kiện';
+
+  @override
+  String get adminSectionEventSubtitle => 'Vé, cấu hình và vận hành sự kiện.';
+
+  @override
+  String get adminSectionContent => 'Duyệt nội dung';
+
+  @override
+  String get adminSectionContentSubtitle =>
+      'Conbook, panel và gian hàng dealer.';
+
+  @override
+  String get adminSectionUsersReports => 'Người dùng & báo cáo';
+
+  @override
+  String get adminSectionUsersReportsSubtitle => 'Tài khoản và số liệu bán vé.';
+
+  @override
+  String get adminSectionOther => 'Khác';
+
+  @override
+  String get adminSectionOtherSubtitle => 'Lịch trình, thông báo và hệ thống.';
+
+  @override
+  String get adminMenuScanTicket => 'Quét vé';
+
+  @override
+  String get adminMenuScanHistory => 'Lịch sử quét';
+
+  @override
+  String get adminMenuLostFound => 'Thất lạc';
+
+  @override
+  String get adminMenuTickets => 'Quản lý vé';
+
+  @override
+  String get adminMenuConbook => 'Duyệt Conbook';
+
+  @override
+  String get adminMenuPanels => 'Quản lý Panel';
+
+  @override
+  String get adminMenuDealers => 'Quản lý Dealer';
+
+  @override
+  String get adminMenuUsers => 'Người dùng';
+
+  @override
+  String get adminMenuStats => 'Thống kê';
+
+  @override
+  String get adminMenuNotifications => 'Thông báo';
+
+  @override
+  String get adminMenuSchedules => 'Lịch trình';
+
+  @override
+  String get adminEventSchedulesTitle => 'Quản lý lịch trình';
+
+  @override
+  String get adminEventSchedulesSubtitle =>
+      'Lịch trình theo ngày và khung giờ.';
+
+  @override
+  String get adminEventSchedulesEmpty => 'Chưa có lịch trình';
+
+  @override
+  String get adminEventSchedulesCreate => 'Tạo lịch trình mới';
+
+  @override
+  String get adminEventSchedulesCreateShort => 'Tạo lịch trình';
+
+  @override
+  String get adminEventSchedulesNoTime => 'Chưa đặt thời gian';
+
+  @override
+  String get adminEventSchedulesFrom => 'Từ';
+
+  @override
+  String get adminEventSchedulesTo => 'Đến';
+
+  @override
+  String adminEventSchedulesDaysItems(int days, int items) {
+    return '$days ngày · $items mục';
+  }
+
+  @override
+  String get adminEventControlsTitle => 'Điều khiển sự kiện';
+
+  @override
+  String get adminSystemStatusTitle => 'Trạng thái hệ thống';
+
+  @override
+  String get adminSystemStatusSubtitle =>
+      'Giám sát các dịch vụ cốt lõi theo thời gian thực.';
+
+  @override
+  String get adminSystemHealthy => 'Hoạt động';
+
+  @override
+  String get adminSystemWarning => 'Cảnh báo';
+
+  @override
+  String get adminSystemError => 'Lỗi';
+
+  @override
+  String get adminSystemUnknown => 'Không rõ';
+
+  @override
+  String get adminStaffReadySubtitle =>
+      'Sẵn sàng phục vụ khách tham dự tại sự kiện.';
+
+  @override
+  String get adminStaffCheckInGate => 'Check-in tại cổng';
+
+  @override
+  String get adminStaffReadyBadge => 'Sẵn sàng';
+
+  @override
+  String get adminStaffScanHint => 'Quét mã QR vé để check-in khách tham dự.';
+
+  @override
+  String get adminStaffGreetingMorning => 'Chào buổi sáng,';
+
+  @override
+  String get adminStaffGreetingAfternoon => 'Chào buổi chiều,';
+
+  @override
+  String get adminStaffGreetingEvening => 'Chào buổi tối,';
+
+  @override
+  String get adminStaffShiftStats => 'Thống kê ca trực';
+
+  @override
+  String get adminStaffShiftNoData => 'Chưa có dữ liệu';
+
+  @override
+  String get adminStaffShiftUpdatedAt => 'Cập nhật lúc';
+
+  @override
+  String get adminStaffShiftScannedToday => 'Vé đã quét hôm nay';
+
+  @override
+  String get adminStaffTrafficWarning => 'CẢNH BÁO LƯU LƯỢNG';
+
+  @override
+  String get adminSalesTimelineDefault => 'Bán vé theo ngày';
+
+  @override
+  String get adminQrContinueScan => 'Tiếp tục quét';
+
+  @override
+  String get adminQrProcessing => 'Đang xử lý vé...';
+
+  @override
+  String get adminQrAlignFrame => 'Đưa mã QR vé vào khung hình';
+
+  @override
+  String get adminQrManualEntry => 'Nhập mã thủ công';
+
+  @override
+  String get adminQrCheckIn => 'Check-in';
+
+  @override
+  String get adminQrEnterCodeTitle => 'Nhập mã vé';
+
+  @override
+  String get adminQrTicketInfo => 'Thông tin vé';
+
+  @override
+  String get adminQrGuest => 'Guest';
+
+  @override
+  String get adminQrNoTicketImage => 'Không có ảnh vé';
+
+  @override
+  String get adminQrReadyCheckIn => 'Sẵn sàng check-in';
+
+  @override
+  String get adminQrConnecting => 'Đang kết nối...';
+
+  @override
+  String get adminQrScanNow => 'QUÉT VÉ NGAY';
+
+  @override
+  String get adminTierBadgeSoldOut => 'HẾT VÉ';
+
+  @override
+  String get adminTierBadgePaused => 'TẠM DỪNG';
+
+  @override
+  String get adminTierBadgeSelling => 'ĐANG BÁN';
+
+  @override
+  String get adminTierViewDetails => 'Xem chi tiết vé →';
+
+  @override
+  String get adminTierLowStock => 'Sắp hết';
+
+  @override
+  String get adminPlaceholderDashboardUsers => 'Dashboard Users';
+
+  @override
+  String get adminPlaceholderDashboardUsersSubtitle =>
+      'User analytics and breakdowns.';
+
+  @override
+  String get adminPlaceholderTalent => 'Talent Management';
+
+  @override
+  String get adminPlaceholderTalentSubtitle =>
+      'Review and manage talent applications.';
+
+  @override
+  String get adminTierUpdateSuccess => 'Cập nhật hạng vé thành công.';
+
+  @override
+  String get adminLostFoundFormTitle => 'Ghi nhận vật phẩm';
+
+  @override
+  String get adminLostFoundFormType => 'Loại vật phẩm';
+
+  @override
+  String get adminLostFoundFormTitleLabel => 'Tiêu đề';
+
+  @override
+  String get adminLostFoundFormDescription => 'Mô tả';
+
+  @override
+  String get adminLostFoundFormLocation => 'Vị trí';
+
+  @override
+  String get adminLostFoundFormContact => 'Thông tin liên hệ';
+
+  @override
+  String get adminLostFoundFormNotes => 'Ghi chú nhân viên';
+
+  @override
+  String get adminLostFoundFormImage => 'Hình ảnh';
+
+  @override
+  String get adminLostFoundFormRequired => 'Vui lòng điền thông tin này';
+
+  @override
+  String adminRoleCurrent(String role) {
+    return '$role Hiện tại';
+  }
+
+  @override
+  String get adminStatusPillDeleted => 'Đã xóa';
+
+  @override
+  String get adminStatusPillBlacklisted => 'Bị cấm';
+
+  @override
+  String get adminStatusPillActive => 'Hoạt động';
+
+  @override
+  String get adminTimelineBannedSubtitle => 'Tài khoản bị hạn chế mua vé.';
+
+  @override
+  String get adminTimelineHasTicketSubtitle =>
+      'Người dùng đã đăng ký hoặc được cấp vé.';
+
+  @override
+  String get adminTimelineVerifiedSubtitle =>
+      'Tài khoản đã được xác minh danh tính.';
+
+  @override
+  String get adminTimelineCreatedSubtitle => 'Đăng ký tài khoản trên hệ thống.';
+
+  @override
+  String get adminTagTicket => 'VÉ';
+
+  @override
+  String adminEventCount(int count) {
+    return '$count sự kiện';
+  }
+
+  @override
+  String get adminLostFoundEmptySubtitle =>
+      'Nhấn + để thêm vật thất lạc hoặc nhặt được.';
+
+  @override
+  String get adminUserEditPersonalSubtitle =>
+      'Cập nhật hồ sơ và liên hệ của người dùng';
+
+  @override
+  String get adminUserTicketsManage => 'Quản lý vé';
+
+  @override
+  String get adminLostFoundFormEditTitle => 'Chỉnh sửa mục thất lạc';
+
+  @override
+  String get adminLostFoundFormAddItem => 'Thêm mục';
+
+  @override
+  String get adminLostFoundItemInfo => 'Thông tin vật phẩm';
+
+  @override
+  String get adminLostFoundRecipientInfo => 'Thông tin người nhận';
+
+  @override
+  String get adminLostFoundUserConfirmed =>
+      'Người dùng đã xác nhận đây là vật phẩm của họ';
+
+  @override
+  String get adminLostFoundVerifyChecklist => 'Checklist xác minh';
+
+  @override
+  String get adminLostFoundReturnNoClaim =>
+      'Chưa có người dùng nào nhận vật phẩm này.';
+
+  @override
+  String get adminLostFoundReturnCannot => 'Vật phẩm này không thể hoàn trả.';
+
+  @override
+  String get adminLostFoundReturnNoRecipient =>
+      'Không tìm thấy thông tin người nhận.';
+
+  @override
+  String get adminLostFoundVerifyRequired =>
+      'Vui lòng hoàn tất checklist xác minh trước khi xác nhận.';
+
+  @override
+  String get adminLostFoundUserNote => 'Ghi chú từ người dùng';
+
+  @override
+  String adminDealerStaffCount(int count) {
+    return 'Nhân viên gian hàng ($count)';
+  }
+
+  @override
+  String adminDealerPriceSheetsCount(int count) {
+    return 'Bảng giá ($count)';
+  }
+
+  @override
+  String get adminEventControlsSubtitle =>
+      'Bật hoặc tắt bán vé và các kênh đăng ký.';
+
+  @override
+  String get adminEventToggleTicketSales => 'Mở bán vé';
+
+  @override
+  String get adminEventToggleTicketSalesSubtitle =>
+      'Cho phép người dùng mua và nâng cấp vé sự kiện.';
+
+  @override
+  String get adminEventTogglePanelRegistration => 'Đăng ký Panel';
+
+  @override
+  String get adminEventTogglePanelRegistrationSubtitle =>
+      'Cho phép đăng ký tham gia panel trên app.';
+
+  @override
+  String get adminEventToggleTalentRegistration => 'Đăng ký Talent';
+
+  @override
+  String get adminEventToggleTalentRegistrationSubtitle =>
+      'Cho phép đăng ký talent trên app.';
+
+  @override
+  String get adminEventToggleDealerRegistration => 'Đăng ký Dealer';
+
+  @override
+  String get adminEventToggleDealerRegistrationSubtitle =>
+      'Cho phép đăng ký gian hàng dealer trên app.';
+
+  @override
+  String get adminTicketsTabAll => 'Tất cả';
+
+  @override
+  String get adminTicketsTabPendingReview => 'Chờ duyệt';
+
+  @override
+  String get adminTicketsTabApproved => 'Đã duyệt';
+
+  @override
+  String get adminTicketsTabDenied => 'Từ chối';
+
+  @override
+  String get adminTicketsEmptySubtitle =>
+      'Không tìm thấy vé phù hợp với bộ lọc.';
+
+  @override
+  String get adminTicketsEmptyTiersSubtitle =>
+      'Tạo hạng vé đầu tiên để bắt đầu bán.';
+
+  @override
+  String adminTicketsEmptyFilter(String filter) {
+    return 'Không có hạng vé nào trong bộ lọc \"$filter\".';
+  }
+
+  @override
+  String adminTicketsDeleteTierBodyNamed(String name) {
+    return 'Xóa \"$name\" sẽ xóa vĩnh viễn hạng vé này và tất cả vé đã bán thuộc hạng. Hành động không thể hoàn tác.';
+  }
+
+  @override
+  String get adminTicketsStockSoldOut => ' (hết vé)';
+
+  @override
+  String get adminTierFilterAll => 'Tất cả';
+
+  @override
+  String get adminTierFilterSelling => 'Đang bán';
+
+  @override
+  String get adminTierFilterPaused => 'Tạm dừng';
+
+  @override
+  String get adminTierFilterSoldOut => 'Hết vé';
+
+  @override
+  String get adminTierStatTotal => 'Tổng vé';
+
+  @override
+  String get adminTierStatSold => 'Vé đã bán';
+
+  @override
+  String get adminTierStatRemaining => 'Vé còn lại';
+
+  @override
+  String get adminTierStatApproved => 'Vé đã duyệt';
+
+  @override
+  String adminTierSoldCount(int sold, int total) {
+    return 'Đã bán: $sold / $total';
+  }
+
+  @override
+  String get adminTierNameRequired => 'Vui lòng nhập tên hạng vé';
+
+  @override
+  String get adminTierMaxChars255 => 'Tối đa 255 ký tự';
+
+  @override
+  String get adminTierEnterPrice => 'Nhập giá';
+
+  @override
+  String get adminTierInvalidPrice => 'Giá không hợp lệ';
+
+  @override
+  String get adminTierEnterStockQty => 'Nhập SL';
+
+  @override
+  String get adminTierInvalidStock => 'Không hợp lệ';
+
+  @override
+  String get adminTierBenefitHint => 'Nhập quyền lợi...';
+
+  @override
+  String get adminTierDescriptionHint =>
+      'Mô tả ngắn gọn về đối tượng và đặc quyền...';
+
+  @override
+  String get adminTierNameHint => 'VD: VIP Pass - Early Bird';
+
+  @override
+  String get adminTierAllowPurchaseSubtitle =>
+      'Cho phép người dùng mua hạng vé này';
+
+  @override
+  String get adminTierSaveCreate => 'Tạo hạng vé';
+
+  @override
+  String get adminTierSaveEdit => 'Lưu hạng vé';
+
+  @override
+  String get adminTierDiscard => 'Hủy bỏ';
+
+  @override
+  String get adminTierSystemWarningTitle => 'Cảnh báo hệ thống';
+
+  @override
+  String get adminTierSystemWarningBody =>
+      'Thay đổi thông tin có thể ảnh hưởng đến người dùng đã mua vé. Vui lòng cân nhắc kỹ trước khi lưu.';
+
+  @override
+  String get adminTierPreviewNamePlaceholder => 'Tên hạng vé';
+
+  @override
+  String get adminSchedulesEmptySubtitle =>
+      'Tạo lịch trình theo ngày và khung giờ.';
+
+  @override
+  String adminSchedulesDaysCount(int count) {
+    return '$count ngày';
+  }
+
+  @override
+  String adminSchedulesItemsCount(int count) {
+    return '$count mục';
+  }
+
+  @override
+  String get adminScheduleDefaultTitle => 'Lịch trình';
+
+  @override
+  String get adminScheduleSelectDay => 'Chọn ngày để xem lịch trình.';
+
+  @override
+  String adminScheduleEmptyDayOnDate(String date) {
+    return 'Chưa có mục nào vào ngày $date.';
+  }
+
+  @override
+  String get adminScheduleOverlapSchedule => ' (Trùng lịch)';
+
+  @override
+  String get adminScheduleItemTitleLabel => 'Tiêu đề';
+
+  @override
+  String get adminScheduleItemDescriptionLabel => 'Diễn giả / mô tả (tuỳ chọn)';
+
+  @override
+  String get adminScheduleItemCategoryLabel => 'Hạng mục (tuỳ chọn)';
+
+  @override
+  String get adminScheduleItemCategoryHint => 'Panel, Workshop...';
+
+  @override
+  String get adminScheduleItemLocationLabel => 'Địa điểm (tuỳ chọn)';
+
+  @override
+  String get adminScheduleItemLocationHint => 'Hall A, Sân khấu chính...';
+
+  @override
+  String get adminScheduleStartLabel => 'Bắt đầu';
+
+  @override
+  String get adminScheduleEndLabel => 'Kết thúc';
+
+  @override
+  String get adminScheduleTitleRequired => 'Vui lòng nhập tiêu đề.';
+
+  @override
+  String get adminSchedulesNameRequired => 'Vui lòng nhập tên.';
+
+  @override
+  String get adminDashboardLoadFailed => 'Không tải được thống kê';
+
+  @override
+  String get adminDashboardLoadFailedSubtitle => 'Vui lòng thử lại sau.';
+
+  @override
+  String get adminChartPeriod7Days => '7 ngày';
+
+  @override
+  String get adminChartPeriod30Days => '30 ngày';
+
+  @override
+  String get adminChartPeriod90Days => '90 ngày';
+
+  @override
+  String get adminStaffReadyConnected =>
+      'Hệ thống đã kết nối và sẵn sàng quét vé.';
+
+  @override
+  String get adminStaffConnectingHint => 'Vui lòng chờ trong giây lát.';
+
+  @override
+  String get adminStaffTrafficWarningBody =>
+      'Khu vực Dealer A đang quá tải (90%). Yêu cầu phân luồng khách tham quan.';
+
+  @override
+  String get adminQrCameraPermission =>
+      'Cần quyền camera để quét vé. Hãy bật trong Cài đặt.';
+
+  @override
+  String get adminQrUnsupported => 'Thiết bị không hỗ trợ quét mã QR.';
+
+  @override
+  String get adminQrCameraOpenFailed => 'Không thể mở camera.';
+
+  @override
+  String get adminQrTicketLabel => 'Vé';
+
+  @override
+  String get adminQrGuestLabel => 'Khách';
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/auth/user_permissions.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 class AdminBottomNavBar extends StatelessWidget {
@@ -15,16 +17,27 @@ class AdminBottomNavBar extends StatelessWidget {
   final bool Function(String permission) hasPermission;
   final ValueChanged<int> onTap;
 
-  static const _branchLabels = {
-    0: ('Trang chủ', Icons.home_outlined),
-    1: ('Thống kê', Icons.analytics_outlined),
-    2: ('Quét mã', Icons.qr_code_scanner_outlined),
-    3: ('Lịch sử', Icons.history_rounded),
-    4: ('Thất lạc', Icons.inventory_2_outlined),
-    5: ('Hệ thống', Icons.dns_outlined),
+  static const _branchIcons = {
+    0: Icons.home_outlined,
+    1: Icons.analytics_outlined,
+    2: Icons.qr_code_scanner_outlined,
+    3: Icons.history_rounded,
+    4: Icons.inventory_2_outlined,
+    5: Icons.dns_outlined,
   };
 
-  List<_NavItem> _visibleItems() {
+  String _branchLabel(AppLocalizations l10n, int branchIndex) =>
+      switch (branchIndex) {
+        0 => l10n.adminNavHome,
+        1 => l10n.adminNavStats,
+        2 => l10n.adminNavScan,
+        3 => l10n.adminNavHistory,
+        4 => l10n.adminNavLostFound,
+        5 => l10n.adminNavSystem,
+        _ => '',
+      };
+
+  List<_NavItem> _visibleItems(AppLocalizations l10n) {
     return UserPermissions.adminShellBranches
         .where(
           (branch) =>
@@ -33,10 +46,9 @@ class AdminBottomNavBar extends StatelessWidget {
                   hasPermission(branch.requiredPermission!)),
         )
         .map((branch) {
-          final meta = _branchLabels[branch.branchIndex]!;
           return _NavItem(
-            label: meta.$1,
-            icon: meta.$2,
+            label: _branchLabel(l10n, branch.branchIndex),
+            icon: _branchIcons[branch.branchIndex]!,
             route: branch.route,
             branchIndex: branch.branchIndex,
           );
@@ -50,7 +62,8 @@ class AdminBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = _visibleItems();
+    final l10n = context.l10n;
+    final items = _visibleItems(l10n);
     if (items.isEmpty) return const SizedBox.shrink();
 
     final currentNavIndex = _navIndexForBranch(items, currentBranchIndex);

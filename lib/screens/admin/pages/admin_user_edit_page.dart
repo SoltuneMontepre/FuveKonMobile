@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
@@ -8,9 +11,14 @@ import 'package:fuvekonmobile/shared/widgets/s3_image_upload_field.dart';
 import 'package:go_router/go_router.dart';
 
 class AdminUserEditPage extends StatefulWidget {
-  const AdminUserEditPage({super.key, required this.userId});
+  const AdminUserEditPage({
+    super.key,
+    required this.userId,
+    this.focusPermissions = false,
+  });
 
   final String userId;
+  final bool focusPermissions;
 
   @override
   State<AdminUserEditPage> createState() => _AdminUserEditPageState();
@@ -18,6 +26,7 @@ class AdminUserEditPage extends StatefulWidget {
 
 class _AdminUserEditPageState extends State<AdminUserEditPage> {
   final _formKey = GlobalKey<FormState>();
+  final _permissionsSectionKey = GlobalKey();
   late final AdminUserService _service;
 
   late final TextEditingController _fursonaController;
@@ -84,10 +93,15 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
             : List<String>.from(user.permissions);
         _loading = false;
       });
+      if (widget.focusPermissions) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _scrollToPermissions();
+        });
+      }
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = formatAdminError(context.l10n, e);
         _loading = false;
       });
     }
@@ -99,6 +113,17 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
       _role = role;
       _permissions = List<String>.from(defaultPermissionsForRole(role));
     });
+  }
+
+  void _scrollToPermissions() {
+    final targetContext = _permissionsSectionKey.currentContext;
+    if (targetContext == null) return;
+    Scrollable.ensureVisible(
+      targetContext,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      alignment: 0.08,
+    );
   }
 
   void _togglePermission(String code) {
@@ -120,6 +145,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
+    final l10n = context.l10n;
     setState(() => _saving = true);
     try {
       await _service.updateUser(
@@ -139,16 +165,12 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Cập nhật thành công.')));
+      ).showSnackBar(SnackBar(content: Text(l10n.adminUpdateSuccess)));
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -157,9 +179,14 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chỉnh sửa người dùng'),
+        title: Text(
+          widget.focusPermissions
+              ? l10n.adminUserEditPermissions
+              : l10n.adminUserEditTitle,
+        ),
         actions: [
           if (!_loading && _error == null)
             TextButton(
@@ -170,15 +197,15 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Lưu'),
+                  : Text(l10n.adminSave),
             ),
         ],
       ),
-      body: _buildBody(),
+      body: _buildBody(l10n),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AppLocalizations l10n) {
     if (_loading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -198,7 +225,10 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              FilledButton(onPressed: _load, child: const Text('Thử lại')),
+              FilledButton(
+                onPressed: _load,
+                child: Text(l10n.adminRetry),
+              ),
             ],
           ),
         ),
@@ -229,17 +259,17 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
             ),
             const SizedBox(height: FuvekonSpacing.section),
             AdminUserEditSectionCard(
-              title: 'Thông tin cá nhân',
-              subtitle: 'Cập nhật hồ sơ và liên hệ của người dùng',
+              title: l10n.adminUserEditPersonalInfo,
+              subtitle: l10n.adminUserEditPersonalSubtitle,
               child: Column(
                 children: [
                   TextFormField(
                     initialValue: user.email,
                     readOnly: true,
                     style: inputTextStyle,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.email_outlined),
+                    decoration: InputDecoration(
+                      labelText: l10n.adminFieldEmail,
+                      prefixIcon: const Icon(Icons.email_outlined),
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -248,9 +278,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                     enabled: !_saving,
                     style: inputTextStyle,
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
-                      labelText: 'Fursona',
-                      prefixIcon: Icon(Icons.pets_outlined),
+                    decoration: InputDecoration(
+                      labelText: l10n.adminFieldFursona,
+                      prefixIcon: const Icon(Icons.pets_outlined),
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -262,9 +292,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                           enabled: !_saving,
                           style: inputTextStyle,
                           textCapitalization: TextCapitalization.words,
-                          decoration: const InputDecoration(
-                            labelText: 'Họ',
-                            prefixIcon: Icon(Icons.badge_outlined),
+                          decoration: InputDecoration(
+                            labelText: l10n.adminFieldFirstName,
+                            prefixIcon: const Icon(Icons.badge_outlined),
                           ),
                         ),
                       ),
@@ -275,9 +305,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                           enabled: !_saving,
                           style: inputTextStyle,
                           textCapitalization: TextCapitalization.words,
-                          decoration: const InputDecoration(
-                            labelText: 'Tên',
-                            prefixIcon: Icon(Icons.badge_outlined),
+                          decoration: InputDecoration(
+                            labelText: l10n.adminFieldLastName,
+                            prefixIcon: const Icon(Icons.badge_outlined),
                           ),
                         ),
                       ),
@@ -289,9 +319,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                     enabled: !_saving,
                     style: inputTextStyle,
                     textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
-                      labelText: 'Quốc gia',
-                      prefixIcon: Icon(Icons.public_outlined),
+                    decoration: InputDecoration(
+                      labelText: l10n.adminFieldCountry,
+                      prefixIcon: const Icon(Icons.public_outlined),
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -299,16 +329,16 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                     controller: _idCardController,
                     enabled: !_saving,
                     style: inputTextStyle,
-                    decoration: const InputDecoration(
-                      labelText: 'CCCD/CMND',
-                      prefixIcon: Icon(Icons.credit_card_outlined),
+                    decoration: InputDecoration(
+                      labelText: l10n.adminFieldIdCard,
+                      prefixIcon: const Icon(Icons.credit_card_outlined),
                     ),
                   ),
                   const SizedBox(height: 14),
                   S3ImageUploadField(
                     imageUrl: _avatarUrl,
                     folder: 'avatars',
-                    label: 'Ảnh đại diện',
+                    label: l10n.adminFieldAvatar,
                     enabled: !_saving,
                     onChanged: (url) => setState(() => _avatarUrl = url),
                   ),
@@ -317,11 +347,11 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
             ),
             const SizedBox(height: FuvekonSpacing.section),
             AdminUserEditSectionCard(
-              title: 'Trạng thái tài khoản',
+              title: l10n.adminUserEditAccountStatus,
               child: SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Đã xác minh'),
-                subtitle: const Text('Tài khoản đã được xác minh email'),
+                title: Text(l10n.adminUserEditVerified),
+                subtitle: Text(l10n.adminUserEditVerifiedSubtitle),
                 value: _isVerified,
                 onChanged: _saving
                     ? null
@@ -329,7 +359,10 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
               ),
             ),
             const SizedBox(height: FuvekonSpacing.section),
-            const AdminUserSectionTitle(title: 'Vai trò'),
+            KeyedSubtree(
+              key: _permissionsSectionKey,
+              child: AdminUserSectionTitle(title: l10n.adminUserEditRoles),
+            ),
             const SizedBox(height: 12),
             AdminUserRoleGrid(
               selectedRole: _role,
@@ -337,7 +370,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
               onRoleSelected: _selectRole,
             ),
             const SizedBox(height: FuvekonSpacing.section),
-            const AdminUserSectionTitle(title: 'Permission Group'),
+            AdminUserSectionTitle(title: l10n.adminUserEditPermissionGroup),
             const SizedBox(height: 12),
             AdminUserPermissionGroup(
               permissions: effectivePermissions,
@@ -347,7 +380,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
             if (isAdminRole(_role)) ...[
               const SizedBox(height: 8),
               Text(
-                'Quản trị viên có toàn bộ quyền.',
+                l10n.adminUserEditAdminNote,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: FuvekonColors.darkTextSecondary,
                 ),
@@ -362,7 +395,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Lưu thay đổi'),
+                  : Text(l10n.adminSaveChanges),
             ),
           ],
         ),

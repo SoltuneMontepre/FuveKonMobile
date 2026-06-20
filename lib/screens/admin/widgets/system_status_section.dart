@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_system_status_service.dart';
 
@@ -16,6 +17,7 @@ class SystemStatusSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Column(
@@ -28,7 +30,7 @@ class SystemStatusSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Trạng thái hệ thống',
+                    l10n.adminSystemStatusTitle,
                     style: theme.textTheme.headlineSmall?.copyWith(
                       color: FuvekonColors.darkAppBarTitle,
                       fontWeight: FontWeight.w700,
@@ -36,7 +38,7 @@ class SystemStatusSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Giám sát các dịch vụ cốt lõi theo thời gian thực.',
+                    l10n.adminSystemStatusSubtitle,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                     ),
@@ -87,6 +89,7 @@ class _SystemStatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final isWarning = service.status == SystemServiceStatus.warning;
     final isError = service.status == SystemServiceStatus.error;
@@ -97,10 +100,10 @@ class _SystemStatusCard extends StatelessWidget {
             : FuvekonColors.available;
 
     final statusLabel = switch (service.status) {
-      SystemServiceStatus.healthy => 'Hoạt động',
-      SystemServiceStatus.warning => 'Cảnh báo',
-      SystemServiceStatus.error => 'Lỗi',
-      SystemServiceStatus.unknown => 'Không rõ',
+      SystemServiceStatus.healthy => l10n.adminSystemHealthy,
+      SystemServiceStatus.warning => l10n.adminSystemWarning,
+      SystemServiceStatus.error => l10n.adminSystemError,
+      SystemServiceStatus.unknown => l10n.adminSystemUnknown,
     };
 
     return DecoratedBox(

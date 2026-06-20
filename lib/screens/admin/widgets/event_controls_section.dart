@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_event_settings_service.dart';
 
 class EventControlsSection extends StatelessWidget {
@@ -18,38 +20,38 @@ class EventControlsSection extends StatelessWidget {
   final Future<void> Function(AdminEventToggle toggle, bool enabled)? onToggle;
   final VoidCallback? onRefresh;
 
-  static const _controls = <({
+  static final _controls = <({
     AdminEventToggle toggle,
-    String title,
-    String subtitle,
+    String Function(AppLocalizations l10n) title,
+    String Function(AppLocalizations l10n) subtitle,
     IconData icon,
     bool Function(AdminEventSettings settings) isEnabled,
   })>[
     (
       toggle: AdminEventToggle.ticketSales,
-      title: 'Mở bán vé',
-      subtitle: 'Cho phép người dùng mua và nâng cấp vé sự kiện.',
+      title: (l10n) => l10n.adminEventToggleTicketSales,
+      subtitle: (l10n) => l10n.adminEventToggleTicketSalesSubtitle,
       icon: Icons.confirmation_number_outlined,
       isEnabled: _ticketSalesEnabled,
     ),
     (
       toggle: AdminEventToggle.panelRegistration,
-      title: 'Đăng ký Panel',
-      subtitle: 'Cho phép đăng ký tham gia panel trên app.',
+      title: (l10n) => l10n.adminEventTogglePanelRegistration,
+      subtitle: (l10n) => l10n.adminEventTogglePanelRegistrationSubtitle,
       icon: Icons.groups_outlined,
       isEnabled: _panelRegistrationEnabled,
     ),
     (
       toggle: AdminEventToggle.talentRegistration,
-      title: 'Đăng ký Talent',
-      subtitle: 'Cho phép đăng ký talent trên app.',
+      title: (l10n) => l10n.adminEventToggleTalentRegistration,
+      subtitle: (l10n) => l10n.adminEventToggleTalentRegistrationSubtitle,
       icon: Icons.mic_external_on_outlined,
       isEnabled: _talentRegistrationEnabled,
     ),
     (
       toggle: AdminEventToggle.dealerRegistration,
-      title: 'Đăng ký Dealer',
-      subtitle: 'Cho phép đăng ký gian hàng dealer trên app.',
+      title: (l10n) => l10n.adminEventToggleDealerRegistration,
+      subtitle: (l10n) => l10n.adminEventToggleDealerRegistrationSubtitle,
       icon: Icons.storefront_outlined,
       isEnabled: _dealerRegistrationEnabled,
     ),
@@ -66,6 +68,7 @@ class EventControlsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Column(
@@ -78,7 +81,7 @@ class EventControlsSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Điều khiển sự kiện',
+                    l10n.adminEventControlsTitle,
                     style: theme.textTheme.headlineSmall?.copyWith(
                       color: FuvekonColors.darkAppBarTitle,
                       fontWeight: FontWeight.w700,
@@ -86,7 +89,7 @@ class EventControlsSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Bật hoặc tắt bán vé và các kênh đăng ký.',
+                    l10n.adminEventControlsSubtitle,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                     ),
@@ -124,8 +127,8 @@ class EventControlsSection extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: _EventToggleCard(
-                title: control.title,
-                subtitle: control.subtitle,
+                title: control.title(l10n),
+                subtitle: control.subtitle(l10n),
                 icon: control.icon,
                 value: enabled,
                 loading: isUpdating,

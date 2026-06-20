@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_submission_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/pages/admin_tier_edit_page.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_ticket_service.dart';
@@ -182,27 +185,28 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
       _loadTicketTab(_ticketTabController.index, refresh: true);
 
   Future<String?> _promptDenyReason() async {
+    final l10n = context.l10n;
     final controller = TextEditingController();
     return showDialog<String>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Lý do từ chối'),
+          title: Text(l10n.adminDenyReason),
           content: TextField(
             controller: controller,
-            decoration: const InputDecoration(
-              hintText: 'Nhập lý do từ chối vé...',
+            decoration: InputDecoration(
+              hintText: l10n.adminDenyReasonHint,
             ),
             maxLines: 3,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Hủy'),
+              child: Text(l10n.adminCancel),
             ),
             FilledButton(
               onPressed: () => Navigator.pop(context, controller.text.trim()),
-              child: const Text('Từ chối'),
+              child: Text(l10n.adminDeny),
             ),
           ],
         );
@@ -227,11 +231,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(context.l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _actionInProgress = null);
@@ -246,18 +246,14 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
       await action();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cập nhật hạng vé thành công.')),
+        SnackBar(content: Text(context.l10n.adminTierUpdateSuccess)),
       );
       if (closeSheet) Navigator.of(context).maybePop();
       await _loadTiers();
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(context.l10n, e))),
       );
     }
   }
@@ -274,26 +270,24 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
   }
 
   Future<void> _confirmDeleteTier(AdminTicketTierItem tier) async {
+    final l10n = context.l10n;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Xóa hạng vé?'),
-          content: Text(
-            'Xóa "${tier.ticketName}" sẽ xóa vĩnh viễn hạng vé này '
-            'và tất cả vé đã bán thuộc hạng. Hành động không thể hoàn tác.',
-          ),
+          title: Text(l10n.adminTicketsDeleteTierTitle),
+          content: Text(l10n.adminTicketsDeleteTierBodyNamed(tier.ticketName)),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Hủy'),
+              child: Text(l10n.adminCancel),
             ),
             FilledButton(
               style: FilledButton.styleFrom(
                 backgroundColor: const Color(0xFFF0A0A8),
               ),
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Xóa'),
+              child: Text(l10n.adminDelete),
             ),
           ],
         );
@@ -305,6 +299,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
   }
 
   void _showTicketDetail(AdminTicketItem item) {
+    final l10n = context.l10n;
     final loading = _actionInProgress == item.id;
 
     showModalBottomSheet<void>(
@@ -357,7 +352,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                     child: ListView(
                       controller: scrollController,
                       children: [
-                        for (final field in item.details)
+                        for (final field in item.localizedDetails(l10n))
                           Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: Column(
@@ -403,19 +398,19 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                   ),
                   if (item.canApprove) ...[
                     _ActionButton(
-                      label: 'Duyệt vé',
+                      label: l10n.adminUserTicketsApprove,
                       color: FuvekonColors.available,
                       loading: loading,
                       onPressed: () => _runTicketAction(
                         item,
                         action: () => _service.approveTicket(item.id),
-                        successMessage: 'Đã duyệt vé.',
+                        successMessage: l10n.adminUserTicketsApproveSuccess,
                       ),
                     ),
                   ],
                   if (item.canDeny) ...[
                     _ActionButton(
-                      label: 'Từ chối vé',
+                      label: l10n.adminUserTicketsDeny,
                       color: const Color(0xFFF0A0A8),
                       loading: loading,
                       onPressed: () async {
@@ -425,20 +420,20 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                           item,
                           action: () =>
                               _service.denyTicket(item.id, reason: reason),
-                          successMessage: 'Đã từ chối vé.',
+                          successMessage: l10n.adminUserTicketsDenySuccess,
                         );
                       },
                     ),
                   ],
                   if (item.canResendQr) ...[
                     _ActionButton(
-                      label: 'Gửi lại email QR',
+                      label: l10n.adminUserTicketsResendQr,
                       color: const Color(0xFF60A5FA),
                       loading: loading,
                       onPressed: () => _runTicketAction(
                         item,
                         action: () => _service.resendQrEmail(item.id),
-                        successMessage: 'Đã gửi lại email QR.',
+                        successMessage: l10n.adminUserTicketsResendQrSuccess,
                       ),
                     ),
                   ],
@@ -452,6 +447,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
   }
 
   void _showTierDetail(AdminTicketTierItem tier) {
+    final l10n = context.l10n;
     final currency = NumberFormat.currency(
       locale: 'vi_VN',
       symbol: '₫',
@@ -510,26 +506,26 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                       children: [
                         if (tier.description.isNotEmpty)
                           _TierDetailRow(
-                            label: 'Mô tả',
+                            label: l10n.adminFieldDescription,
                             value: tier.description,
                           ),
                         if (tier.stock != null)
                           _TierDetailRow(
-                            label: 'Tồn kho',
+                            label: l10n.adminTicketsStock,
                             value:
-                                '${tier.stock}${tier.isSoldOut ? ' (hết vé)' : ''}',
+                                '${tier.stock}${tier.isSoldOut ? l10n.adminTicketsStockSoldOut : ''}',
                           ),
                         _TierDetailRow(
-                          label: 'Trạng thái',
+                          label: l10n.adminFieldStatus,
                           value: [
-                            if (tier.isActive) 'Đang bán' else 'Tắt bán',
-                            if (tier.isVisible) 'Hiện cửa hàng' else 'Ẩn',
+                            if (tier.isActive) l10n.adminTicketsSelling else l10n.adminTicketsSalesOff,
+                            if (tier.isVisible) l10n.adminTicketsStoreVisible else l10n.adminTicketsStoreHidden,
                           ].join(' • '),
                         ),
                         if (tier.benefits.isNotEmpty) ...[
                           const SizedBox(height: 8),
                           Text(
-                            'Quyền lợi',
+                            l10n.adminTicketsBenefits,
                             style: Theme.of(context)
                                 .textTheme
                                 .labelMedium
@@ -567,7 +563,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                     ),
                   ),
                   _ActionButton(
-                    label: 'Chỉnh sửa',
+                    label: l10n.adminEdit,
                     color: FuvekonColors.primary,
                     onPressed: () {
                       Navigator.pop(context);
@@ -575,7 +571,9 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                     },
                   ),
                   _ActionButton(
-                    label: tier.isActive ? 'Tắt bán' : 'Bật bán',
+                    label: tier.isActive
+                        ? l10n.adminTicketsDisableSales
+                        : l10n.adminTicketsEnableSales,
                     color: tier.isActive
                         ? const Color(0xFFF0A0A8)
                         : FuvekonColors.available,
@@ -587,8 +585,8 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                   ),
                   _ActionButton(
                     label: tier.isVisible
-                        ? 'Ẩn khỏi cửa hàng'
-                        : 'Hiện trên cửa hàng',
+                        ? l10n.adminTicketsHideStore
+                        : l10n.adminTicketsShowStore,
                     color: const Color(0xFF60A5FA),
                     onPressed: () => _runTierAction(
                       () => _service.setTierVisibility(
@@ -598,7 +596,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                     ),
                   ),
                   _ActionButton(
-                    label: 'Xóa hạng vé',
+                    label: l10n.adminTicketsDeleteTier,
                     color: const Color(0xFFDC2626),
                     onPressed: () {
                       Navigator.pop(context);
@@ -616,14 +614,15 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quản lý vé'),
+        title: Text(l10n.adminTicketsTitle),
         bottom: TabBar(
           controller: _mainTabController,
-          tabs: const [
-            Tab(text: 'Hạng vé'),
-            Tab(text: 'Danh sách vé'),
+          tabs: [
+            Tab(text: l10n.adminTicketsTabTiers),
+            Tab(text: l10n.adminTicketsTabList),
           ],
         ),
       ),
@@ -640,13 +639,14 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
               backgroundColor: FuvekonColors.darkCard,
               foregroundColor: FuvekonColors.darkCardText,
               icon: const Icon(Icons.add_rounded),
-              label: const Text('Hạng vé mới'),
+              label: Text(l10n.adminTicketsNewTier),
             )
           : null,
     );
   }
 
   Widget _buildTicketsSection() {
+    final l10n = context.l10n;
     return Column(
       children: [
         Padding(
@@ -660,7 +660,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
             controller: _searchController,
             onChanged: _onSearchChanged,
             decoration: InputDecoration(
-              hintText: 'Tìm mã vé, email, tên...',
+              hintText: l10n.adminTicketsSearchHint,
               prefixIcon: const Icon(Icons.search_rounded),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
@@ -678,11 +678,11 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
           controller: _ticketTabController,
           isScrollable: true,
           tabAlignment: TabAlignment.start,
-          tabs: const [
-            Tab(text: 'Tất cả'),
-            Tab(text: 'Chờ duyệt'),
-            Tab(text: 'Đã duyệt'),
-            Tab(text: 'Từ chối'),
+          tabs: [
+            Tab(text: l10n.adminTicketsTabAll),
+            Tab(text: l10n.adminTicketsTabPendingReview),
+            Tab(text: l10n.adminTicketsTabApproved),
+            Tab(text: l10n.adminTicketsTabDenied),
           ],
         ),
         if (_ticketTabController.index == AdminTicketTab.pendingReview.index)
@@ -692,7 +692,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
               vertical: 8,
             ),
             child: FilterChip(
-              label: const Text('Chờ > 24 giờ'),
+              label: Text(l10n.adminTicketsPendingOver24h),
               selected: _pendingOver24Only,
               onSelected: (selected) {
                 setState(() => _pendingOver24Only = selected);
@@ -734,7 +734,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                error,
+                formatAdminError(context.l10n, error),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
@@ -743,7 +743,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: () => _loadTicketTab(index, refresh: true),
-                child: const Text('Thử lại'),
+                child: Text(context.l10n.adminRetry),
               ),
             ],
           ),
@@ -753,8 +753,8 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
 
     if (items.isEmpty) {
       return EmptyState(
-        title: 'Không có vé',
-        subtitle: 'Không tìm thấy vé phù hợp với bộ lọc.',
+        title: context.l10n.adminTicketsEmpty,
+        subtitle: context.l10n.adminTicketsEmptySubtitle,
         icon: Icons.confirmation_number_outlined,
       );
     }
@@ -795,6 +795,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
   }
 
   Widget _buildTiersSection() {
+    final l10n = context.l10n;
     if (_tiersLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -807,7 +808,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _tiersError!,
+                formatAdminError(l10n, _tiersError!),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
@@ -816,7 +817,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: _loadTiers,
-                child: const Text('Thử lại'),
+                child: Text(context.l10n.adminRetry),
               ),
             ],
           ),
@@ -831,16 +832,16 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const EmptyState(
-                title: 'Chưa có hạng vé',
-                subtitle: 'Tạo hạng vé đầu tiên để bắt đầu bán.',
+              EmptyState(
+                title: l10n.adminTicketsEmptyTiers,
+                subtitle: l10n.adminTicketsEmptyTiersSubtitle,
                 icon: Icons.layers_outlined,
               ),
               const SizedBox(height: 16),
               FilledButton.icon(
                 onPressed: () => _openTierEditor(),
                 icon: const Icon(Icons.add_rounded),
-                label: const Text('Tạo hạng vé'),
+                label: Text(l10n.adminTicketsCreateTier),
               ),
             ],
           ),
@@ -871,8 +872,10 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 48),
               child: EmptyState(
-                title: 'Không có hạng vé',
-                subtitle: 'Không có hạng vé nào trong bộ lọc "${_tierFilter.label}".',
+                title: l10n.adminTicketsEmptyTiers,
+                subtitle: l10n.adminTicketsEmptyFilter(
+                  _tierFilter.label(l10n),
+                ),
                 icon: Icons.filter_list_off_rounded,
               ),
             )
@@ -924,7 +927,7 @@ class _TicketTile extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          ticket.subtitle ?? ticket.referenceCode,
+          ticket.localizedSubtitle(context.l10n),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.bodySmall?.copyWith(
@@ -956,7 +959,7 @@ class _StatusChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        ticketStatusLabelVi(status),
+        ticketStatusLabel(context.l10n, status),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w600,

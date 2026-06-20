@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image_upload_field.dart';
@@ -77,11 +79,7 @@ class _AdminLostFoundFormSheetState extends State<AdminLostFoundFormSheet> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(context.l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _submitting = false);
@@ -90,6 +88,7 @@ class _AdminLostFoundFormSheetState extends State<AdminLostFoundFormSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -114,7 +113,9 @@ class _AdminLostFoundFormSheetState extends State<AdminLostFoundFormSheet> {
               ),
               const SizedBox(height: 16),
               Text(
-                _isEditing ? 'Chỉnh sửa mục thất lạc' : 'Thêm mục thất lạc',
+                _isEditing
+                    ? l10n.adminLostFoundFormEditTitle
+                    : l10n.adminLostFoundFormTitle,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: FuvekonColors.darkText,
                       fontWeight: FontWeight.w700,
@@ -123,11 +124,17 @@ class _AdminLostFoundFormSheetState extends State<AdminLostFoundFormSheet> {
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 initialValue: _itemType,
-                decoration: const InputDecoration(labelText: 'Loại'),
+                decoration: InputDecoration(labelText: l10n.adminLostFoundFormType),
                 dropdownColor: FuvekonColors.darkSurfaceElevated,
-                items: const [
-                  DropdownMenuItem(value: 'found', child: Text('Nhặt được')),
-                  DropdownMenuItem(value: 'lost', child: Text('Thất lạc')),
+                items: [
+                  DropdownMenuItem(
+                    value: 'found',
+                    child: Text(l10n.adminLostFoundTypeFound),
+                  ),
+                  DropdownMenuItem(
+                    value: 'lost',
+                    child: Text(l10n.adminLostFoundTypeLost),
+                  ),
                 ],
                 onChanged: (value) {
                   if (value != null) _itemType = value;
@@ -136,10 +143,12 @@ class _AdminLostFoundFormSheetState extends State<AdminLostFoundFormSheet> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Tiêu đề *'),
+                decoration: InputDecoration(
+                  labelText: '${l10n.adminLostFoundFormTitleLabel} *',
+                ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Vui lòng nhập tiêu đề';
+                    return l10n.adminLostFoundFormRequired;
                   }
                   return null;
                 },
@@ -147,31 +156,38 @@ class _AdminLostFoundFormSheetState extends State<AdminLostFoundFormSheet> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(labelText: 'Mô tả'),
+                decoration: InputDecoration(
+                  labelText: l10n.adminLostFoundFormDescription,
+                ),
                 maxLines: 3,
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _locationController,
-                decoration: const InputDecoration(labelText: 'Vị trí'),
+                decoration: InputDecoration(
+                  labelText: l10n.adminLostFoundFormLocation,
+                ),
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _contactController,
-                decoration: const InputDecoration(labelText: 'Liên hệ'),
+                decoration: InputDecoration(
+                  labelText: l10n.adminLostFoundFormContact,
+                ),
               ),
               const SizedBox(height: 12),
               S3ImageUploadField(
                 imageUrl: _imageUrl,
                 folder: 'lost-found',
+                label: l10n.adminLostFoundFormImage,
                 enabled: !_submitting,
                 onChanged: (url) => setState(() => _imageUrl = url),
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _staffNotesController,
-                decoration: const InputDecoration(
-                  labelText: 'Ghi chú nhân viên',
+                decoration: InputDecoration(
+                  labelText: l10n.adminLostFoundFormNotes,
                 ),
                 maxLines: 2,
               ),
@@ -184,7 +200,11 @@ class _AdminLostFoundFormSheetState extends State<AdminLostFoundFormSheet> {
                         height: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : Text(_isEditing ? 'Lưu thay đổi' : 'Thêm mục'),
+                    : Text(
+                        _isEditing
+                            ? l10n.adminSaveChanges
+                            : l10n.adminLostFoundFormAddItem,
+                      ),
               ),
             ],
           ),

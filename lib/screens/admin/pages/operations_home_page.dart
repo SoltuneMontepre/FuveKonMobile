@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/auth/user_permissions.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
@@ -192,22 +193,22 @@ class _StaffHomeContent extends StatelessWidget {
           const SizedBox(height: 8),
           FuvekonHomeGreeting(
             name: account.displayName ?? account.email.split('@').first,
-            subtitle: 'Sẵn sàng phục vụ khách tham dự tại sự kiện.',
+            subtitle: context.l10n.adminStaffReadySubtitle,
           ),
           const SizedBox(height: 20),
           const FuvekonHeroBanner(),
           const SizedBox(height: 16),
           if (auth.hasPermission(UserPermissions.scanTickets)) ...[
             FuvekonSageCard(
-              title: 'Check-in tại cổng',
-              badge: 'Sẵn sàng',
+              title: context.l10n.adminStaffCheckInGate,
+              badge: context.l10n.adminStaffReadyBadge,
               badgeIcon: Icons.check_rounded,
               badgeColor: FuvekonColors.available,
               child: Row(
                 children: [
                   Expanded(
                     child: Text(
-                      'Quét mã QR vé để check-in khách tham dự.',
+                      context.l10n.adminStaffScanHint,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: FuvekonColors.textSecondary,
                           ),

@@ -2,8 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_submission_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_lost_found_form_sheet.dart';
@@ -88,7 +92,7 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = formatAdminError(context.l10n, e);
         _loading = false;
         _loadingMore = false;
       });
@@ -161,8 +165,9 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return AdminListScaffold(
-      title: 'Quản lý thất lạc',
+      title: l10n.adminLostFoundTitle,
       embedded: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openForm(),
@@ -175,39 +180,39 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
         children: [
           AdminListSearchField(
             controller: _searchController,
-            hintText: 'Tìm tiêu đề, mô tả, vị trí...',
+            hintText: l10n.adminLostFoundSearchHint,
             onChanged: _onSearchChanged,
           ),
           AdminListFilterRow(
             children: [
               AdminListFilterChip(
-                label: 'Tất cả',
+                label: l10n.adminAll,
                 selected: _statusFilter.isEmpty,
                 onTap: () => _setStatusFilter(''),
               ),
               AdminListFilterChip(
-                label: 'Đang mở',
+                label: l10n.adminLostFoundStatusOpen,
                 selected: _statusFilter == 'open',
                 onTap: () => _setStatusFilter('open'),
               ),
               AdminListFilterChip(
-                label: 'Đã nhận',
+                label: l10n.adminLostFoundStatusClaimed,
                 selected: _statusFilter == 'claimed',
                 onTap: () => _setStatusFilter('claimed'),
               ),
               AdminListFilterChip(
-                label: 'Đã xử lý',
+                label: l10n.adminLostFoundStatusResolved,
                 selected: _statusFilter == 'resolved',
                 onTap: () => _setStatusFilter('resolved'),
               ),
               const SizedBox(width: 8),
               AdminListFilterChip(
-                label: 'Thất lạc',
+                label: l10n.adminLostFoundTypeLost,
                 selected: _typeFilter == 'lost',
                 onTap: () => _setTypeFilter(_typeFilter == 'lost' ? '' : 'lost'),
               ),
               AdminListFilterChip(
-                label: 'Nhặt được',
+                label: l10n.adminLostFoundTypeFound,
                 selected: _typeFilter == 'found',
                 onTap: () =>
                     _setTypeFilter(_typeFilter == 'found' ? '' : 'found'),
@@ -216,11 +221,11 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
           ),
         ],
       ),
-      body: _buildBody(),
+      body: _buildBody(l10n),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AppLocalizations l10n) {
     return AdminListBody(
       loading: _loading,
       error: _error,
@@ -230,9 +235,9 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
       loadingMore: _loadingMore,
       hasMore: _meta?.hasMore ?? false,
       onLoadMore: () => _load(refresh: false),
-      emptyState: const EmptyState(
-        title: 'Chưa có mục thất lạc',
-        subtitle: 'Nhấn + để thêm vật thất lạc hoặc nhặt được.',
+      emptyState: EmptyState(
+        title: l10n.adminLostFoundEmpty,
+        subtitle: l10n.adminLostFoundEmptySubtitle,
         icon: Icons.inventory_2_outlined,
       ),
       child: ListView.separated(
@@ -269,6 +274,7 @@ class _LostFoundTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     final previewUrl = item.previewImageUrl;
 
     return Material(
@@ -286,13 +292,12 @@ class _LostFoundTile extends StatelessWidget {
               )
             : CircleAvatar(
                 backgroundColor:
-                    AdminLostFoundItem.statusColor(item.status)
-                        .withValues(alpha: 0.15),
+                    lostFoundStatusColor(item.status).withValues(alpha: 0.15),
                 child: Icon(
                   item.itemType == 'lost'
                       ? Icons.search_off_rounded
                       : Icons.inventory_2_outlined,
-                  color: AdminLostFoundItem.statusColor(item.status),
+                  color: lostFoundStatusColor(item.status),
                   size: 22,
                 ),
               ),
@@ -304,7 +309,7 @@ class _LostFoundTile extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          item.subtitle ?? '',
+          item.localizedSubtitle(l10n),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.bodySmall?.copyWith(

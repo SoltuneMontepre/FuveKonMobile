@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_panel_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_approval_page.dart';
 
@@ -8,15 +9,16 @@ class AdminPanelsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final service = sl<AdminPanelService>();
 
     return AdminApprovalPage(
-      title: 'Quản lý Panel',
-      tabs: const [
-        AdminApprovalTabConfig(label: 'Chờ duyệt', index: 0),
-        AdminApprovalTabConfig(label: 'Đã duyệt', index: 1),
-        AdminApprovalTabConfig(label: 'Cần chỉnh sửa', index: 2),
-        AdminApprovalTabConfig(label: 'Từ chối', index: 3),
+      title: l10n.adminPanelsTitle,
+      tabs: [
+        AdminApprovalTabConfig(label: l10n.adminStatusPending, index: 0),
+        AdminApprovalTabConfig(label: l10n.adminStatusApproved, index: 1),
+        AdminApprovalTabConfig(label: l10n.adminStatusRequireChanges, index: 2),
+        AdminApprovalTabConfig(label: l10n.adminStatusDenied, index: 3),
       ],
       loadItems: (index) => service.getPanels(AdminApprovalTab.values[index]),
       onApprove: (item) async => service.approve(item.id),
@@ -25,9 +27,9 @@ class AdminPanelsPage extends StatelessWidget {
       onMarkPending: (item) async => service.markPending(item.id),
       showRequireChanges: true,
       showMarkPending: true,
-      approveLabel: 'Duyệt panel',
-      denyLabel: 'Từ chối panel',
-      markPendingLabel: 'Đưa về chờ duyệt',
+      approveLabel: l10n.adminPanelsApprove,
+      denyLabel: l10n.adminPanelsDeny,
+      markPendingLabel: l10n.adminMarkPendingReturn,
     );
   }
 }

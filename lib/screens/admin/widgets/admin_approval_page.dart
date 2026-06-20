@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_submission_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_list_scaffold.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
@@ -28,10 +32,10 @@ class AdminApprovalPage extends StatefulWidget {
     this.onRequireChanges,
     this.onDeny,
     this.onMarkPending,
-    this.approveLabel = 'Duyệt',
-    this.requireChangesLabel = 'Yêu cầu chỉnh sửa',
-    this.denyLabel = 'Từ chối',
-    this.markPendingLabel = 'Chờ duyệt lại',
+    this.approveLabel = '',
+    this.requireChangesLabel = '',
+    this.denyLabel = '',
+    this.markPendingLabel = '',
     this.onItemTap,
   });
 
@@ -85,6 +89,9 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
     _loadTab(_tabController.index);
   }
 
+  String _resolveLabel(String value, String fallback) =>
+      value.isEmpty ? fallback : value;
+
   Future<void> _loadTab(int index) async {
     if (_loadingByTab[index] == true) return;
     setState(() => _loadingByTab[index] = true);
@@ -99,7 +106,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorByTab[index] = e.toString().replaceFirst('ServerException: ', '');
+        _errorByTab[index] = formatAdminError(context.l10n, e);
         _loadingByTab[index] = false;
       });
     }
@@ -111,6 +118,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
     AdminListItem item,
     AdminApprovalAction action,
   ) async {
+    final l10n = context.l10n;
     setState(() => _actionInProgress = item.id);
     try {
       switch (action) {
@@ -125,18 +133,14 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
       }
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cập nhật thành công.')),
+        SnackBar(content: Text(l10n.adminUpdateSuccess)),
       );
       Navigator.of(context).maybePop();
       await _refresh();
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _actionInProgress = null);
@@ -153,6 +157,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
   }
 
   void _showDetail(AdminListItem item) {
+    final l10n = context.l10n;
     final tabIndex = _tabController.index;
     final showApprove = widget.showApprove && widget.onApprove != null;
     final showRequireChanges =
@@ -160,6 +165,14 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
     final showDeny = widget.showDeny && widget.onDeny != null;
     final showMarkPending =
         widget.showMarkPending && widget.onMarkPending != null;
+    final approveLabel =
+        _resolveLabel(widget.approveLabel, l10n.adminApprove);
+    final requireChangesLabel =
+        _resolveLabel(widget.requireChangesLabel, l10n.adminRequireChanges);
+    final denyLabel = _resolveLabel(widget.denyLabel, l10n.adminDeny);
+    final markPendingLabel =
+        _resolveLabel(widget.markPendingLabel, l10n.adminMarkPendingReturn);
+    final details = _localizedDetails(l10n, item);
 
     showModalBottomSheet<void>(
       context: context,
@@ -203,7 +216,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                     child: ListView(
                       controller: scrollController,
                       children: [
-                        for (final field in item.details)
+                        for (final field in details)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: Column(
@@ -247,11 +260,14 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                       ],
                     ),
                   ),
-                  if (showApprove || showRequireChanges || showDeny || showMarkPending) ...[
+                  if (showApprove ||
+                      showRequireChanges ||
+                      showDeny ||
+                      showMarkPending) ...[
                     const SizedBox(height: 8),
                     if (showApprove && tabIndex == 0)
                       _ActionButton(
-                        label: widget.approveLabel,
+                        label: approveLabel,
                         color: FuvekonColors.available,
                         loading: _actionInProgress == item.id,
                         onPressed: () =>
@@ -259,7 +275,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                       ),
                     if (showRequireChanges && tabIndex == 0)
                       _ActionButton(
-                        label: widget.requireChangesLabel,
+                        label: requireChangesLabel,
                         color: const Color(0xFFFBBF24),
                         loading: _actionInProgress == item.id,
                         onPressed: () => _runAction(
@@ -269,7 +285,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                       ),
                     if (showDeny && tabIndex == 0)
                       _ActionButton(
-                        label: widget.denyLabel,
+                        label: denyLabel,
                         color: const Color(0xFFF0A0A8),
                         loading: _actionInProgress == item.id,
                         onPressed: () =>
@@ -277,7 +293,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                       ),
                     if (showMarkPending && tabIndex != 0)
                       _ActionButton(
-                        label: widget.markPendingLabel,
+                        label: markPendingLabel,
                         color: const Color(0xFFFBBF24),
                         loading: _actionInProgress == item.id,
                         onPressed: () => _runAction(
@@ -295,6 +311,30 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
     );
   }
 
+  List<AdminDetailField> _localizedDetails(
+    AppLocalizations l10n,
+    AdminListItem item,
+  ) =>
+      switch (item) {
+        AdminDealerItem i => i.localizedDetails(l10n),
+        AdminPanelItem i => i.localizedDetails(l10n),
+        AdminUserItem i => i.localizedDetails(l10n),
+        AdminConbookItem i => i.localizedDetails(l10n),
+        AdminTicketItem i => i.localizedDetails(l10n),
+        AdminLostFoundItem i => i.localizedDetails(l10n),
+        _ => item.details,
+      };
+
+  String? _localizedSubtitle(AppLocalizations l10n, AdminListItem item) =>
+      switch (item) {
+        AdminDealerItem i => i.localizedSubtitle(l10n),
+        AdminPanelItem i => i.localizedSubtitle(l10n),
+        AdminUserItem i => i.localizedSubtitle(l10n),
+        AdminTicketItem i => i.localizedSubtitle(l10n),
+        AdminLostFoundItem i => i.localizedSubtitle(l10n),
+        _ => item.subtitle,
+      };
+
   @override
   Widget build(BuildContext context) {
     return AdminListScaffold(
@@ -311,9 +351,11 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
   }
 
   Widget _buildTabBody(int index) {
+    final l10n = context.l10n;
     final loading = _loadingByTab[index] ?? (index == 0);
     final error = _errorByTab[index];
     final items = _itemsByTab[index] ?? const <AdminListItem>[];
+    final tabLabel = widget.tabs[index].label;
 
     return AdminListBody(
       loading: loading,
@@ -322,8 +364,8 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
       onRetry: () => _loadTab(index),
       onRefresh: _refresh,
       emptyState: EmptyState(
-        title: 'Không có mục nào',
-        subtitle: 'Danh sách ${widget.tabs[index].label.toLowerCase()} trống.',
+        title: l10n.adminEmptyList,
+        subtitle: l10n.adminEmptyTabList(tabLabel),
         icon: Icons.inbox_outlined,
       ),
       child: ListView.separated(
@@ -335,6 +377,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
           final item = items[i];
           return _SubmissionTile(
             item: item,
+            subtitle: _localizedSubtitle(l10n, item),
             onTap: () => _openDetail(item),
           );
         },
@@ -344,9 +387,14 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
 }
 
 class _SubmissionTile extends StatelessWidget {
-  const _SubmissionTile({required this.item, required this.onTap});
+  const _SubmissionTile({
+    required this.item,
+    required this.subtitle,
+    required this.onTap,
+  });
 
   final AdminListItem item;
+  final String? subtitle;
   final VoidCallback onTap;
 
   @override
@@ -375,9 +423,9 @@ class _SubmissionTile extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        subtitle: item.subtitle != null
+        subtitle: subtitle != null && subtitle!.isNotEmpty
             ? Text(
-                item.subtitle!,
+                subtitle!,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodySmall?.copyWith(

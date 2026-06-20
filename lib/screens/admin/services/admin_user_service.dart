@@ -1,6 +1,7 @@
 import 'package:fuvekonmobile/core/api/admin_user_api.dart';
 import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
+import 'package:fuvekonmobile/screens/admin/services/admin_dashboard_service.dart';
 
 class PaginationMeta {
   const PaginationMeta({
@@ -187,5 +188,18 @@ class AdminUserService {
     if (!response.isSuccess) {
       throw ServerException(response.errorMessage ?? response.message);
     }
+  }
+
+  Future<List<CountryUserCount>> getUsersByCountry() async {
+    final response = await _api.getCountByCountry();
+    if (!response.isSuccess || response.data == null) {
+      throw ServerException(response.errorMessage ?? response.message);
+    }
+
+    final list = response.data!['by_country'] as List<dynamic>? ?? const [];
+    return list
+        .whereType<Map<String, dynamic>>()
+        .map(CountryUserCount.fromJson)
+        .toList();
   }
 }

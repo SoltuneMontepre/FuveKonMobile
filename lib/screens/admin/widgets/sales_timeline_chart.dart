@@ -1,19 +1,26 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_dashboard_service.dart';
 import 'package:intl/intl.dart';
 
 enum DashboardChartPeriod {
-  days7(7, '7 ngày'),
-  days30(30, '30 ngày'),
-  days90(90, '90 ngày');
+  days7(7),
+  days30(30),
+  days90(90);
 
-  const DashboardChartPeriod(this.days, this.label);
+  const DashboardChartPeriod(this.days);
 
   final int days;
-  final String label;
+
+  String label(AppLocalizations l10n) => switch (this) {
+        DashboardChartPeriod.days7 => l10n.adminChartPeriod7Days,
+        DashboardChartPeriod.days30 => l10n.adminChartPeriod30Days,
+        DashboardChartPeriod.days90 => l10n.adminChartPeriod90Days,
+      };
 }
 
 /// Bar chart for ticket sales over a selectable date range.
@@ -22,13 +29,13 @@ class SalesTimelineChart extends StatefulWidget {
     super.key,
     required this.points,
     this.initialPeriod = DashboardChartPeriod.days7,
-    this.title = 'Bán vé theo ngày',
+    this.title,
     this.barCount = 7,
   });
 
   final List<SalesTimelinePoint> points;
   final DashboardChartPeriod initialPeriod;
-  final String title;
+  final String? title;
   final int barCount;
 
   @override
@@ -50,6 +57,7 @@ class _SalesTimelineChartState extends State<SalesTimelineChart> {
     }
 
     final theme = Theme.of(context);
+    final chartTitle = widget.title ?? context.l10n.adminSalesTimelineDefault;
     final maxCount = data.map((point) => point.count).reduce(math.max);
     final peakIndex = _peakIndex(data, maxCount);
 
@@ -64,7 +72,7 @@ class _SalesTimelineChartState extends State<SalesTimelineChart> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.title,
+              chartTitle,
               style: theme.textTheme.titleSmall?.copyWith(
                 color: FuvekonColors.darkText,
                 fontWeight: FontWeight.w600,
@@ -77,7 +85,7 @@ class _SalesTimelineChartState extends State<SalesTimelineChart> {
               children: [
                 for (final period in DashboardChartPeriod.values)
                   _PeriodChip(
-                    label: period.label,
+                    label: period.label(context.l10n),
                     selected: period == _period,
                     onTap: () {
                       if (period == _period) return;

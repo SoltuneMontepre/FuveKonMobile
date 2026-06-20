@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/shared/services/scan_session_store.dart';
 import 'package:intl/intl.dart';
 
@@ -13,10 +15,11 @@ class StaffShiftStatsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final updatedLabel = stats.lastUpdated == null
-        ? 'Chưa có dữ liệu'
-        : 'Cập nhật lúc ${DateFormat('HH:mm').format(stats.lastUpdated!)}';
+        ? l10n.adminStaffShiftNoData
+        : '${l10n.adminStaffShiftUpdatedAt} ${DateFormat('HH:mm').format(stats.lastUpdated!)}';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +28,7 @@ class StaffShiftStatsSection extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'Thống kê ca trực',
+                l10n.adminStaffShiftStats,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: FuvekonColors.darkText,
                   fontWeight: FontWeight.w600,
@@ -41,7 +44,7 @@ class StaffShiftStatsSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 12),
-        _TotalCard(total: stats.total),
+        _TotalCard(total: stats.total, l10n: l10n),
         const SizedBox(height: 12),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +52,7 @@ class StaffShiftStatsSection extends StatelessWidget {
             Expanded(
               flex: 3,
               child: _StatTile(
-                label: 'Hợp lệ',
+                label: l10n.adminScanOutcomeValid,
                 value: stats.valid,
                 icon: Icons.check_circle_outline,
                 valueColor: FuvekonColors.available,
@@ -62,14 +65,14 @@ class StaffShiftStatsSection extends StatelessWidget {
               child: Column(
                 children: [
                   _StatTile(
-                    label: 'Từ chối',
+                    label: l10n.adminScanOutcomeRejected,
                     value: stats.rejected,
                     icon: Icons.cancel_outlined,
                     valueColor: const Color(0xFFF0A0A8),
                   ),
                   const SizedBox(height: 12),
                   _StatTile(
-                    label: 'Dùng lại',
+                    label: l10n.adminScanOutcomeReused,
                     value: stats.reused,
                     icon: Icons.history_rounded,
                     valueColor: const Color(0xFFFBBF24),
@@ -85,9 +88,10 @@ class StaffShiftStatsSection extends StatelessWidget {
 }
 
 class _TotalCard extends StatelessWidget {
-  const _TotalCard({required this.total});
+  const _TotalCard({required this.total, required this.l10n});
 
   final int total;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +117,7 @@ class _TotalCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Vé đã quét hôm nay',
+                  l10n.adminStaffShiftScannedToday,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: FuvekonColors.darkTextSecondary,
                   ),

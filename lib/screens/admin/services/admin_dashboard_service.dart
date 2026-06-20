@@ -1,6 +1,20 @@
 import 'package:fuvekonmobile/core/api/analytics_api.dart';
 import 'package:fuvekonmobile/core/errors/exceptions.dart';
 
+class CountryUserCount {
+  const CountryUserCount({required this.country, required this.count});
+
+  factory CountryUserCount.fromJson(Map<String, dynamic> json) {
+    return CountryUserCount(
+      country: json['country'] as String? ?? '',
+      count: (json['count'] as num?)?.toInt() ?? 0,
+    );
+  }
+
+  final String country;
+  final int count;
+}
+
 class AdminDashboardData {
   const AdminDashboardData({
     required this.totalTickets,
@@ -12,6 +26,7 @@ class AdminDashboardData {
     required this.totalRevenue,
     required this.tierStats,
     required this.salesTimeline,
+    required this.usersByCountry,
   });
 
   factory AdminDashboardData.fromJson(Map<String, dynamic> json) {
@@ -19,6 +34,8 @@ class AdminDashboardData {
     final revenue = json['revenue'] as Map<String, dynamic>?;
     final tierList = ticketStats?['tier_stats'] as List<dynamic>? ?? const [];
     final timeline = json['sales_timeline'] as List<dynamic>? ?? const [];
+    final byCountry =
+        json['users_by_country'] as List<dynamic>? ?? const [];
 
     return AdminDashboardData(
       totalTickets: (ticketStats?['total_tickets'] as num?)?.toInt() ?? 0,
@@ -36,6 +53,10 @@ class AdminDashboardData {
           .whereType<Map<String, dynamic>>()
           .map(SalesTimelinePoint.fromJson)
           .toList(),
+      usersByCountry: byCountry
+          .whereType<Map<String, dynamic>>()
+          .map(CountryUserCount.fromJson)
+          .toList(),
     );
   }
 
@@ -48,6 +69,7 @@ class AdminDashboardData {
   final double totalRevenue;
   final List<TierStat> tierStats;
   final List<SalesTimelinePoint> salesTimeline;
+  final List<CountryUserCount> usersByCountry;
 }
 
 class TierStat {

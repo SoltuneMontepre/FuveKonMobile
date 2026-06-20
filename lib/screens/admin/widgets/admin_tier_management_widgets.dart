@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:intl/intl.dart';
 
 enum AdminTierFilter { all, selling, paused, soldOut }
 
 extension AdminTierFilterX on AdminTierFilter {
-  String get label => switch (this) {
-        AdminTierFilter.all => 'Tất cả',
-        AdminTierFilter.selling => 'Đang bán',
-        AdminTierFilter.paused => 'Tạm dừng',
-        AdminTierFilter.soldOut => 'Hết vé',
+  String label(AppLocalizations l10n) => switch (this) {
+        AdminTierFilter.all => l10n.adminTierFilterAll,
+        AdminTierFilter.selling => l10n.adminTierFilterSelling,
+        AdminTierFilter.paused => l10n.adminTierFilterPaused,
+        AdminTierFilter.soldOut => l10n.adminTierFilterSoldOut,
       };
 
   bool matches(AdminTicketTierItem tier) => switch (this) {
@@ -108,6 +110,7 @@ class AdminTierStatGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final count = NumberFormat.decimalPattern('vi');
 
     return Column(
@@ -116,7 +119,7 @@ class AdminTierStatGrid extends StatelessWidget {
           children: [
             Expanded(
               child: _StatTile(
-                label: 'Tổng vé',
+                label: l10n.adminTierStatTotal,
                 value: count.format(stats.totalCapacity),
                 highlighted: false,
               ),
@@ -124,7 +127,7 @@ class AdminTierStatGrid extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _StatTile(
-                label: 'Vé đã bán',
+                label: l10n.adminTierStatSold,
                 value: count.format(stats.sold),
                 highlighted: true,
                 trailing: Icon(
@@ -141,7 +144,7 @@ class AdminTierStatGrid extends StatelessWidget {
           children: [
             Expanded(
               child: _StatTile(
-                label: 'Vé còn lại',
+                label: l10n.adminTierStatRemaining,
                 value: count.format(stats.remaining),
                 highlighted: false,
               ),
@@ -149,7 +152,7 @@ class AdminTierStatGrid extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _StatTile(
-                label: 'Vé đã duyệt',
+                label: l10n.adminTierStatApproved,
                 value: count.format(stats.approvedCount),
                 highlighted: false,
               ),
@@ -237,6 +240,7 @@ class AdminTierFilterChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -244,7 +248,7 @@ class AdminTierFilterChips extends StatelessWidget {
           for (final filter in AdminTierFilter.values) ...[
             if (filter != AdminTierFilter.all) const SizedBox(width: 8),
             _FilterChip(
-              label: filter.label,
+              label: filter.label(l10n),
               selected: selected == filter,
               onTap: () => onSelected(filter),
             ),
@@ -322,10 +326,10 @@ class AdminTierCard extends StatelessWidget {
     return _TierCardVariant.active;
   }
 
-  String get _statusLabel {
-    if (tier.isSoldOut) return 'HẾT VÉ';
-    if (!tier.isActive) return 'TẠM DỪNG';
-    return 'ĐANG BÁN';
+  String _statusLabel(AppLocalizations l10n) {
+    if (tier.isSoldOut) return l10n.adminTierBadgeSoldOut;
+    if (!tier.isActive) return l10n.adminTierBadgePaused;
+    return l10n.adminTierBadgeSelling;
   }
 
   Color get _accentColor {
@@ -341,6 +345,7 @@ class AdminTierCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final currency = NumberFormat.currency(
       locale: 'vi_VN',
@@ -390,7 +395,7 @@ class AdminTierCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   _StatusBadge(
-                    label: _statusLabel,
+                    label: _statusLabel(l10n),
                     muted: !isActiveCard,
                   ),
                 ],
@@ -409,7 +414,7 @@ class AdminTierCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Đã bán: $sold / $total',
+                      l10n.adminTierSoldCount(sold, total),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: subtleColor,
                         fontWeight: FontWeight.w500,
@@ -496,7 +501,8 @@ class _DetailsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = 'Xem chi tiết vé →';
+    final l10n = context.l10n;
+    final label = l10n.adminTierViewDetails;
     final style = Theme.of(context).textTheme.labelLarge?.copyWith(
           fontWeight: FontWeight.w600,
         );
@@ -555,6 +561,7 @@ class AdminTierFormPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final currency = NumberFormat.currency(
       locale: 'vi_VN',
@@ -579,7 +586,7 @@ class AdminTierFormPreview extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    ticketName.isNotEmpty ? ticketName : 'Tên hạng vé',
+                    ticketName.isNotEmpty ? ticketName : l10n.adminTierPreviewNamePlaceholder,
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: FuvekonColors.darkCardText,
                       fontWeight: FontWeight.w700,
@@ -599,7 +606,7 @@ class AdminTierFormPreview extends StatelessWidget {
                         vertical: 4,
                       ),
                       child: Text(
-                        'Sắp hết',
+                        l10n.adminTierLowStock,
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: const Color(0xFFB45309),
                           fontWeight: FontWeight.w700,
@@ -697,6 +704,7 @@ class AdminTierSystemWarning extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     const accent = Color(0xFFDC2626);
 
@@ -718,7 +726,7 @@ class AdminTierSystemWarning extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Cảnh báo hệ thống',
+                    l10n.adminTierSystemWarningTitle,
                     style: theme.textTheme.titleSmall?.copyWith(
                       color: FuvekonColors.darkText,
                       fontWeight: FontWeight.w700,
@@ -726,8 +734,7 @@ class AdminTierSystemWarning extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Thay đổi thông tin có thể ảnh hưởng đến người dùng đã '
-                    'mua vé. Vui lòng cân nhắc kỹ trước khi lưu.',
+                    l10n.adminTierSystemWarningBody,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                       height: 1.45,

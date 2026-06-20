@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/staff_dashboard_colors.dart';
 
@@ -7,6 +8,7 @@ class StaffTrafficWarningCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return DecoratedBox(
@@ -29,7 +31,7 @@ class StaffTrafficWarningCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'CẢNH BÁO LƯU LƯỢNG',
+                    l10n.adminStaffTrafficWarning,
                     style: theme.textTheme.labelLarge?.copyWith(
                       color: StaffDashboardColors.trafficAccent,
                       fontWeight: FontWeight.w700,
@@ -37,7 +39,7 @@ class StaffTrafficWarningCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Khu vực Dealer A đang quá tải (90%). Yêu cầu phân luồng khách tham quan.',
+                    l10n.adminStaffTrafficWarningBody,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                     ),

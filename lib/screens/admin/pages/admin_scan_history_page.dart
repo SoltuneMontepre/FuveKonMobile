@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/screens/admin/services/scan_ticket_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/staff_tab_scaffold.dart';
 import 'package:fuvekonmobile/shared/services/scan_session_store.dart';
@@ -36,13 +38,15 @@ class _AdminScanHistoryPageState extends State<AdminScanHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return StaffTabScaffold(
       child: _loading
           ? const Center(child: CircularProgressIndicator())
           : _records.isEmpty
-              ? const EmptyState(
-                  title: 'Lịch sử quét vé',
-                  subtitle: 'Chưa có lượt quét nào được ghi nhận.',
+              ? EmptyState(
+                  title: l10n.adminScanHistoryTitle,
+                  subtitle: l10n.adminScanHistoryEmpty,
                   icon: Icons.history_rounded,
                 )
               : RefreshIndicator(
@@ -53,7 +57,7 @@ class _AdminScanHistoryPageState extends State<AdminScanHistoryPage> {
                     separatorBuilder: (_, _) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final record = _records[index];
-                      return _HistoryTile(record: record);
+                      return _HistoryTile(record: record, l10n: l10n);
                     },
                   ),
                 ),
@@ -62,9 +66,10 @@ class _AdminScanHistoryPageState extends State<AdminScanHistoryPage> {
 }
 
 class _HistoryTile extends StatelessWidget {
-  const _HistoryTile({required this.record});
+  const _HistoryTile({required this.record, required this.l10n});
 
   final ScanRecord record;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +81,9 @@ class _HistoryTile extends StatelessWidget {
       ScanOutcome.rejected => const Color(0xFFF0A0A8),
     };
     final label = switch (record.outcome) {
-      ScanOutcome.valid => 'Hợp lệ',
-      ScanOutcome.reused => 'Dùng lại',
-      ScanOutcome.rejected => 'Từ chối',
+      ScanOutcome.valid => l10n.adminScanOutcomeValid,
+      ScanOutcome.reused => l10n.adminScanOutcomeReused,
+      ScanOutcome.rejected => l10n.adminScanOutcomeRejected,
     };
 
     return Material(

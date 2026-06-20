@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.dart';
 import 'package:fuvekonmobile/screens/info/lost_found_models.dart';
@@ -49,13 +52,14 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
     try {
       final item = await _service.getById(widget.itemId);
       if (!mounted) return;
+      final l10n = context.l10n;
       if (!item.canConfirmReturn) {
         setState(() {
           _item = item;
           _loading = false;
           _error = item.activeClaim == null
-              ? 'Chưa có người dùng nào nhận vật phẩm này.'
-              : 'Vật phẩm này không thể hoàn trả.';
+              ? l10n.adminLostFoundReturnNoClaim
+              : l10n.adminLostFoundReturnCannot;
         });
         return;
       }
@@ -66,20 +70,17 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = formatAdminError(context.l10n, e);
         _loading = false;
       });
     }
   }
 
   Future<void> _submit() async {
+    final l10n = context.l10n;
     if (!_allVerified) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Vui lòng hoàn tất checklist xác minh trước khi xác nhận.',
-          ),
-        ),
+        SnackBar(content: Text(l10n.adminLostFoundVerifyRequired)),
       );
       return;
     }
@@ -96,17 +97,13 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
       );
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Đã xác nhận hoàn trả thành công.')),
+        SnackBar(content: Text(l10n.adminLostFoundReturnSuccess)),
       );
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _submitting = false);
@@ -116,6 +113,7 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
@@ -124,18 +122,18 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
         foregroundColor: FuvekonColors.darkText,
         elevation: 0,
         title: Text(
-          'Xác nhận hoàn trả',
+          l10n.adminLostFoundReturnTitle,
           style: theme.textTheme.titleLarge?.copyWith(
             color: FuvekonColors.darkText,
             fontWeight: FontWeight.w700,
           ),
         ),
       ),
-      body: _buildBody(theme),
+      body: _buildBody(theme, l10n),
     );
   }
 
-  Widget _buildBody(ThemeData theme) {
+  Widget _buildBody(ThemeData theme, AppLocalizations l10n) {
     if (_loading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -148,7 +146,7 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _error ?? 'Không tìm thấy thông tin người nhận.',
+                _error ?? l10n.adminLostFoundReturnNoRecipient,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: FuvekonColors.darkTextSecondary,
@@ -157,7 +155,7 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: () => context.pop(),
-                child: const Text('Quay lại'),
+                child: Text(l10n.adminBack),
               ),
             ],
           ),
@@ -178,7 +176,7 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
       children: [
         _SectionTitle(
           icon: Icons.inventory_2_outlined,
-          title: 'Thông tin vật phẩm',
+          title: l10n.adminLostFoundItemInfo,
         ),
         const SizedBox(height: 12),
         _LostFoundLightCard(
@@ -245,11 +243,11 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
         const SizedBox(height: 24),
         _SectionTitle(
           icon: Icons.person_outline_rounded,
-          title: 'Thông tin người nhận',
+          title: l10n.adminLostFoundRecipientInfo,
         ),
         const SizedBox(height: 8),
         Text(
-          'Người dùng đã xác nhận đây là vật phẩm của họ',
+          l10n.adminLostFoundUserConfirmed,
           style: theme.textTheme.bodySmall?.copyWith(
             color: FuvekonColors.darkTextSecondary,
           ),
@@ -258,21 +256,24 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
         _LostFoundLightCard(
           child: Column(
             children: [
-              _ReadOnlyField(label: 'Họ và tên', value: claimer.displayName),
+              _ReadOnlyField(
+                label: l10n.registerFullNameLabel,
+                value: claimer.displayName,
+              ),
               const SizedBox(height: 12),
               _ReadOnlyField(
-                label: 'CCCD',
+                label: l10n.adminFieldIdCard,
                 value: AdminLostFoundClaimUser.maskSensitive(claimer.idCard),
               ),
               const SizedBox(height: 12),
               _ReadOnlyField(
-                label: 'Email',
+                label: l10n.adminFieldEmail,
                 value: AdminLostFoundClaimUser.maskSensitive(claimer.email),
               ),
               if (item.activeClaim?.message.isNotEmpty == true) ...[
                 const SizedBox(height: 12),
                 _ReadOnlyField(
-                  label: 'Ghi chú từ người dùng',
+                  label: l10n.adminLostFoundUserNote,
                   value: item.activeClaim!.message,
                 ),
               ],
@@ -282,10 +283,11 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
         const SizedBox(height: 24),
         _SectionTitle(
           icon: Icons.checklist_rounded,
-          title: 'Checklist xác minh',
+          title: l10n.adminLostFoundVerifyChecklist,
         ),
         const SizedBox(height: 12),
         _VerificationChecklist(
+          l10n: l10n,
           verifiedDescription: _verifiedDescription,
           verifiedOwnership: _verifiedOwnership,
           verifiedIdentity: _verifiedIdentity,
@@ -313,7 +315,7 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
                   height: 22,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Xác nhận hoàn trả'),
+              : Text(l10n.adminLostFoundConfirmReturn),
         ),
         const SizedBox(height: 12),
         OutlinedButton(
@@ -326,7 +328,7 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
               borderRadius: BorderRadius.circular(999),
             ),
           ),
-          child: const Text('Quay lại'),
+          child: Text(l10n.adminBack),
         ),
         const SizedBox(height: 20),
         Row(
@@ -340,7 +342,7 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
             const SizedBox(width: 6),
             Flexible(
               child: Text(
-                'Hành động này sẽ được ghi vào nhật ký hệ thống',
+                l10n.adminLostFoundAuditNote,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: FuvekonColors.darkTextSecondary,
@@ -433,6 +435,7 @@ class _ReadOnlyField extends StatelessWidget {
 
 class _VerificationChecklist extends StatelessWidget {
   const _VerificationChecklist({
+    required this.l10n,
     required this.verifiedDescription,
     required this.verifiedOwnership,
     required this.verifiedIdentity,
@@ -441,6 +444,7 @@ class _VerificationChecklist extends StatelessWidget {
     required this.onIdentityChanged,
   });
 
+  final AppLocalizations l10n;
   final bool verifiedDescription;
   final bool verifiedOwnership;
   final bool verifiedIdentity;
@@ -461,19 +465,19 @@ class _VerificationChecklist extends StatelessWidget {
         child: Column(
           children: [
             _ChecklistTile(
-              label: 'Mô tả đúng vật phẩm',
+              label: l10n.adminLostFoundVerifyDescription,
               value: verifiedDescription,
               onChanged: onDescriptionChanged,
             ),
             const Divider(height: 1, color: FuvekonColors.darkBorder),
             _ChecklistTile(
-              label: 'Có bằng chứng sở hữu',
+              label: l10n.adminLostFoundVerifyOwnership,
               value: verifiedOwnership,
               onChanged: onOwnershipChanged,
             ),
             const Divider(height: 1, color: FuvekonColors.darkBorder),
             _ChecklistTile(
-              label: 'Đã xác minh danh tính',
+              label: l10n.adminLostFoundVerifyIdentity,
               value: verifiedIdentity,
               onChanged: onIdentityChanged,
             ),

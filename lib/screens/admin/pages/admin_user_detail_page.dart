@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_submission_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
@@ -48,29 +52,26 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = formatAdminError(context.l10n, e);
         _loading = false;
       });
     }
   }
 
   Future<void> _runAction(Future<void> Function() action) async {
+    final l10n = context.l10n;
     setState(() => _actionInProgress = true);
     try {
       await action();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cập nhật thành công.')),
+        SnackBar(content: Text(l10n.adminUpdateSuccess)),
       );
       await _load();
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _actionInProgress = false);
@@ -78,24 +79,23 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
   }
 
   Future<void> _confirmDelete() async {
+    final l10n = context.l10n;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Xóa người dùng?'),
-        content: const Text(
-          'Tài khoản sẽ bị xóa mềm và không thể đăng nhập lại.',
-        ),
+        title: Text(l10n.adminDeleteUserTitle),
+        content: Text(l10n.adminDeleteUserBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Hủy'),
+            child: Text(l10n.adminCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
             style: FilledButton.styleFrom(
               backgroundColor: const Color(0xFFF0A0A8),
             ),
-            child: const Text('Xóa'),
+            child: Text(l10n.adminDelete),
           ),
         ],
       ),
@@ -110,27 +110,28 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
   }
 
   Future<void> _blacklistUser() async {
+    final l10n = context.l10n;
     final reasonController = TextEditingController();
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Cấm mua vé'),
+        title: Text(l10n.adminBanTicketsTitle),
         content: TextField(
           controller: reasonController,
           maxLines: 3,
-          decoration: const InputDecoration(
-            labelText: 'Lý do cấm',
-            hintText: 'Nhập lý do cấm người dùng...',
+          decoration: InputDecoration(
+            labelText: l10n.adminBanReasonLabel,
+            hintText: l10n.adminBanReasonHint,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Hủy'),
+            child: Text(l10n.adminCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Cấm'),
+            child: Text(l10n.adminBanAction),
           ),
         ],
       ),
@@ -141,7 +142,7 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     if (reason.isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Vui lòng nhập lý do cấm.')),
+        SnackBar(content: Text(l10n.adminBanReasonRequired)),
       );
       return;
     }
@@ -156,29 +157,37 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     if (updated == true) await _load();
   }
 
+  Future<void> _openPermissions() async {
+    final updated = await context.push<bool>(
+      Routes.adminUserEdit(widget.userId, section: 'permissions'),
+    );
+    if (updated == true) await _load();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final canEdit = _user != null && !_user!.isDeleted;
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
       appBar: AppBar(
         backgroundColor: FuvekonColors.darkBg,
         foregroundColor: FuvekonColors.darkText,
-        title: const Text('Chi tiết người dùng'),
+        title: Text(l10n.adminUserDetailTitle),
         actions: [
           if (canEdit)
             IconButton(
               onPressed: _actionInProgress ? null : _openEdit,
               icon: const Icon(Icons.edit_outlined),
-              tooltip: 'Chỉnh sửa',
+              tooltip: l10n.adminEdit,
             ),
         ],
       ),
-      body: _buildBody(),
+      body: _buildBody(l10n),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AppLocalizations l10n) {
     if (_loading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -200,7 +209,7 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: _load,
-                child: const Text('Thử lại'),
+                child: Text(l10n.adminRetry),
               ),
             ],
           ),
@@ -236,10 +245,12 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
         const SizedBox(height: FuvekonSpacing.section),
         if (!user.isDeleted) ...[
           _QuickActionsSection(
+            l10n: l10n,
             loading: _actionInProgress,
             isVerified: user.isVerified,
             isBlacklisted: user.isBlacklisted,
             onEdit: _openEdit,
+            onPermissions: _openPermissions,
             onVerify: () => _runAction(() => _service.verifyUser(user.id)),
             onBlacklist: _blacklistUser,
             onUnblacklist: () =>
@@ -248,11 +259,13 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
           ),
           const SizedBox(height: FuvekonSpacing.section),
         ],
-        _UserActivitySection(user: user),
+        _UserActivitySection(l10n: l10n, user: user),
         const SizedBox(height: FuvekonSpacing.section),
         _UserDetailsSection(
+          l10n: l10n,
           user: user,
-          permissionsSummary: formatAdminPermissionsSummary(effectivePermissions),
+          permissionsSummary:
+              formatAdminPermissionsSummary(l10n, effectivePermissions),
         ),
       ],
     );
@@ -261,20 +274,24 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
 
 class _QuickActionsSection extends StatelessWidget {
   const _QuickActionsSection({
+    required this.l10n,
     required this.loading,
     required this.isVerified,
     required this.isBlacklisted,
     required this.onEdit,
+    required this.onPermissions,
     required this.onVerify,
     required this.onBlacklist,
     required this.onUnblacklist,
     required this.onDelete,
   });
 
+  final AppLocalizations l10n;
   final bool loading;
   final bool isVerified;
   final bool isBlacklisted;
   final VoidCallback onEdit;
+  final VoidCallback onPermissions;
   final VoidCallback onVerify;
   final VoidCallback onBlacklist;
   final VoidCallback onUnblacklist;
@@ -285,7 +302,7 @@ class _QuickActionsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const AdminUserSectionTitle(title: 'Thao tác nhanh'),
+        AdminUserSectionTitle(title: l10n.adminQuickActions),
         const SizedBox(height: 12),
         GridView.count(
           crossAxisCount: 2,
@@ -298,34 +315,34 @@ class _QuickActionsSection extends StatelessWidget {
             if (!isVerified)
               _QuickActionCard(
                 icon: Icons.verified_outlined,
-                label: 'Xác minh',
+                label: l10n.adminVerify,
                 variant: _QuickActionVariant.primary,
                 onTap: loading ? null : onVerify,
               )
             else
               _QuickActionCard(
                 icon: Icons.edit_outlined,
-                label: 'Chỉnh sửa',
+                label: l10n.adminEdit,
                 variant: _QuickActionVariant.primary,
                 onTap: loading ? null : onEdit,
               ),
             _QuickActionCard(
               icon: Icons.admin_panel_settings_outlined,
-              label: 'Phân quyền',
+              label: l10n.adminPermissions,
               variant: _QuickActionVariant.secondary,
-              onTap: loading ? null : onEdit,
+              onTap: loading ? null : onPermissions,
             ),
             if (isBlacklisted)
               _QuickActionCard(
                 icon: Icons.lock_open_rounded,
-                label: 'Gỡ cấm',
+                label: l10n.adminUnban,
                 variant: _QuickActionVariant.secondary,
                 onTap: loading ? null : onUnblacklist,
               )
             else
               _QuickActionCard(
                 icon: Icons.lock_outline_rounded,
-                label: 'Cấm mua vé',
+                label: l10n.adminBanTickets,
                 variant: _QuickActionVariant.destructive,
                 onTap: loading ? null : onBlacklist,
               ),
@@ -334,7 +351,7 @@ class _QuickActionsSection extends StatelessWidget {
         const SizedBox(height: 10),
         _QuickActionCard(
           icon: Icons.delete_outline_rounded,
-          label: 'Xóa người dùng',
+          label: l10n.adminDeleteUser,
           variant: _QuickActionVariant.destructive,
           fullWidth: true,
           onTap: loading ? null : onDelete,
@@ -454,8 +471,9 @@ class _QuickActionCard extends StatelessWidget {
 }
 
 class _UserActivitySection extends StatelessWidget {
-  const _UserActivitySection({required this.user});
+  const _UserActivitySection({required this.l10n, required this.user});
 
+  final AppLocalizations l10n;
   final AdminUserItem user;
 
   @override
@@ -468,11 +486,11 @@ class _UserActivitySection extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Expanded(
-              child: AdminUserSectionTitle(title: 'Lịch sử gần đây'),
+            Expanded(
+              child: AdminUserSectionTitle(title: l10n.adminRecentHistory),
             ),
             Text(
-              '${events.length} sự kiện',
+              l10n.adminEventCount(events.length),
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: FuvekonColors.darkTextSecondary,
                   ),
@@ -512,11 +530,11 @@ class _UserActivitySection extends StatelessWidget {
       events.add(
         _ActivityEvent(
           at: user.blacklistedAt!,
-          title: 'Bị cấm mua vé',
+          title: l10n.adminTimelineBanned,
           subtitle: user.blacklistReason?.isNotEmpty == true
               ? user.blacklistReason!
-              : 'Tài khoản bị hạn chế mua vé.',
-          tag: 'CẤM',
+              : l10n.adminTimelineBannedSubtitle,
+          tag: l10n.adminTagBanned,
           dotColor: const Color(0xFFFBBF24),
         ),
       );
@@ -526,9 +544,9 @@ class _UserActivitySection extends StatelessWidget {
       events.add(
         _ActivityEvent(
           at: user.createdAt ?? DateTime.now(),
-          title: 'Có vé sự kiện',
-          subtitle: 'Người dùng đã đăng ký hoặc được cấp vé.',
-          tag: 'VÉ',
+          title: l10n.adminTimelineHasTicket,
+          subtitle: l10n.adminTimelineHasTicketSubtitle,
+          tag: l10n.adminTagTicket,
           dotColor: FuvekonColors.available,
         ),
       );
@@ -538,9 +556,9 @@ class _UserActivitySection extends StatelessWidget {
       events.add(
         _ActivityEvent(
           at: user.createdAt ?? DateTime.now(),
-          title: 'Đã xác minh',
-          subtitle: 'Tài khoản đã được xác minh danh tính.',
-          tag: 'XÁC MINH',
+          title: l10n.adminTimelineVerified,
+          subtitle: l10n.adminTimelineVerifiedSubtitle,
+          tag: l10n.adminTagVerified,
           dotColor: FuvekonColors.available,
         ),
       );
@@ -550,9 +568,9 @@ class _UserActivitySection extends StatelessWidget {
       events.add(
         _ActivityEvent(
           at: user.createdAt!,
-          title: 'Tạo tài khoản',
-          subtitle: 'Đăng ký tài khoản trên hệ thống.',
-          tag: 'MỚI',
+          title: l10n.adminTimelineCreated,
+          subtitle: l10n.adminTimelineCreatedSubtitle,
+          tag: l10n.adminTagNew,
           dotColor: FuvekonColors.darkTextSecondary,
         ),
       );
@@ -688,37 +706,43 @@ class _ActivityTimelineTile extends StatelessWidget {
 
 class _UserDetailsSection extends StatelessWidget {
   const _UserDetailsSection({
+    required this.l10n,
     required this.user,
     required this.permissionsSummary,
   });
 
+  final AppLocalizations l10n;
   final AdminUserItem user;
   final String permissionsSummary;
 
   @override
   Widget build(BuildContext context) {
-    final fields = user.details
-        .where(
-          (field) =>
-              field.label != 'Vai trò' &&
-              field.label != 'Email' &&
-              field.label != 'Tên hiển thị' &&
-              field.label != 'Xác minh' &&
-              field.label != 'Ảnh đại diện',
-        )
+    final excludeLabels = {
+      l10n.adminFieldRole,
+      l10n.adminFieldEmail,
+      l10n.adminFieldDisplayName,
+      l10n.adminFieldVerified,
+      l10n.adminFieldAvatar,
+    };
+    final fields = user
+        .localizedDetails(l10n)
+        .where((field) => !excludeLabels.contains(field.label))
         .toList();
 
     return AdminUserEditSectionCard(
-      title: 'Thông tin chi tiết',
-      subtitle: 'Hồ sơ, quyền hạn và trạng thái tài khoản',
+      title: l10n.adminDetailInfo,
+      subtitle: l10n.adminDetailInfoSubtitle,
       child: Column(
         children: [
           _DetailInfoRow(
-            label: 'Vai trò',
+            label: l10n.adminFieldRole,
             value:
-                '${adminRoleTitle(user.role)} · ${adminRoleSubtitle(user.role)}',
+                '${adminRoleTitle(l10n, user.role)} · ${adminRoleSubtitle(l10n, user.role)}',
           ),
-          _DetailInfoRow(label: 'Quyền', value: permissionsSummary),
+          _DetailInfoRow(
+            label: l10n.adminFieldPermissions,
+            value: permissionsSummary,
+          ),
           for (var i = 0; i < fields.length; i++) ...[
             if (i == 0 || fields[i - 1].label != fields[i].label)
               _DetailField(field: fields[i]),
@@ -728,7 +752,7 @@ class _UserDetailsSection extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Ảnh đại diện',
+                l10n.adminFieldAvatar,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                     ),

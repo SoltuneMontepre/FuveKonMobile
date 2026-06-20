@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_ticket_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_tier_management_widgets.dart';
@@ -148,12 +150,11 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
         await _service.updateTier(widget.tier!.id, input);
       }
       if (!mounted) return;
+      final l10n = context.l10n;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            widget.isCreate
-                ? 'Đã tạo hạng vé mới.'
-                : 'Đã cập nhật hạng vé.',
+            widget.isCreate ? l10n.adminTierCreated : l10n.adminTierUpdated,
           ),
         ),
       );
@@ -161,11 +162,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(context.l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -195,13 +192,14 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final previewPrice = _parsePrice(_priceController.text) ?? 0;
     final previewStock = _parseStock(_stockController.text) ?? 0;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.isCreate ? 'Tạo hạng vé' : 'Chỉnh sửa hạng vé'),
+        title: Text(widget.isCreate ? l10n.adminTierEditCreate : l10n.adminTierEditEdit),
       ),
       body: Form(
         key: _formKey,
@@ -218,15 +216,15 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
               const SizedBox(height: 20),
             ],
             AdminTierFormField(
-              label: 'Tên hạng vé',
+              label: l10n.adminTierNameLabel,
               child: TextFormField(
                 controller: _nameController,
-                decoration: _fieldDecoration(hint: 'VD: VIP Pass - Early Bird'),
+                decoration: _fieldDecoration(hint: l10n.adminTierNameHint),
                 textCapitalization: TextCapitalization.sentences,
                 validator: (value) {
                   final trimmed = value?.trim() ?? '';
-                  if (trimmed.isEmpty) return 'Vui lòng nhập tên hạng vé';
-                  if (trimmed.length > 255) return 'Tối đa 255 ký tự';
+                  if (trimmed.isEmpty) return l10n.adminTierNameRequired;
+                  if (trimmed.length > 255) return l10n.adminTierMaxChars255;
                   return null;
                 },
               ),
@@ -236,7 +234,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
               children: [
                 Expanded(
                   child: AdminTierFormField(
-                    label: 'Giá vé (VND)',
+                    label: l10n.adminTierPriceLabel,
                     child: TextFormField(
                       controller: _priceController,
                       decoration: _fieldDecoration(hint: '1500000'),
@@ -244,8 +242,8 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       validator: (value) {
                         final price = _parsePrice(value ?? '');
-                        if (price == null) return 'Nhập giá';
-                        if (price < 0) return 'Giá không hợp lệ';
+                        if (price == null) return l10n.adminTierEnterPrice;
+                        if (price < 0) return l10n.adminTierInvalidPrice;
                         return null;
                       },
                     ),
@@ -254,7 +252,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: AdminTierFormField(
-                    label: 'Số lượng',
+                    label: l10n.adminTierStockLabel,
                     child: TextFormField(
                       controller: _stockController,
                       decoration: _fieldDecoration(hint: '100'),
@@ -262,8 +260,8 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       validator: (value) {
                         final stock = _parseStock(value ?? '');
-                        if (stock == null) return 'Nhập SL';
-                        if (stock < 0) return 'Không hợp lệ';
+                        if (stock == null) return l10n.adminTierEnterStockQty;
+                        if (stock < 0) return l10n.adminTierInvalidStock;
                         return null;
                       },
                     ),
@@ -273,11 +271,11 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
             ),
             const SizedBox(height: 16),
             AdminTierFormField(
-              label: 'Mô tả hạng vé',
+              label: l10n.adminTierDescriptionLabel,
               child: TextFormField(
                 controller: _descriptionController,
                 decoration: _fieldDecoration(
-                  hint: 'Mô tả ngắn gọn về đối tượng và đặc quyền...',
+                  hint: l10n.adminTierDescriptionHint,
                 ),
                 maxLines: 4,
                 maxLength: 500,
@@ -285,7 +283,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
             ),
             const SizedBox(height: 20),
             Text(
-              'Danh sách quyền lợi',
+              l10n.adminTierBenefitsList,
               style: theme.textTheme.labelLarge?.copyWith(
                 color: FuvekonColors.darkTextSecondary,
                 fontWeight: FontWeight.w600,
@@ -311,7 +309,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
                       child: TextFormField(
                         controller: _benefitControllers[i],
                         decoration: _fieldDecoration(
-                          hint: 'Nhập quyền lợi...',
+                          hint: l10n.adminTierBenefitHint,
                         ),
                       ),
                     ),
@@ -330,7 +328,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
               child: TextButton.icon(
                 onPressed: _saving ? null : () => _addBenefitRow(),
                 icon: const Icon(Icons.add_rounded),
-                label: const Text('Thêm quyền lợi'),
+                label: Text(l10n.adminTierAddBenefit),
               ),
             ),
             const SizedBox(height: 8),
@@ -342,14 +340,14 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
               ),
               child: SwitchListTile(
                 title: Text(
-                  'Trạng thái bán',
+                  l10n.adminTierSalesStatus,
                   style: theme.textTheme.titleSmall?.copyWith(
                     color: FuvekonColors.darkText,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 subtitle: Text(
-                  'Cho phép người dùng mua hạng vé này',
+                  l10n.adminTierAllowPurchaseSubtitle,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: FuvekonColors.darkTextSecondary,
                   ),
@@ -363,7 +361,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Preview Hiển Thị',
+              l10n.adminTierPreview,
               style: theme.textTheme.titleSmall?.copyWith(
                 color: FuvekonColors.darkText,
                 fontWeight: FontWeight.w700,
@@ -394,7 +392,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
               label: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  widget.isCreate ? 'Tạo hạng vé' : 'Lưu hạng vé',
+                  widget.isCreate ? l10n.adminTierSaveCreate : l10n.adminTierSaveEdit,
                 ),
               ),
               style: FilledButton.styleFrom(
@@ -417,7 +415,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
-              child: const Text('Hủy bỏ'),
+              child: Text(l10n.adminTierDiscard),
             ),
           ],
         ),

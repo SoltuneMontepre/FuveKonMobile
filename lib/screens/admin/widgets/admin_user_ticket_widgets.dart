@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_submission_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_ticket_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
@@ -66,7 +70,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = formatAdminError(context.l10n, e);
         _loading = false;
       });
     }
@@ -76,6 +80,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
     Future<void> Function() action, {
     required String successMessage,
   }) async {
+    final l10n = context.l10n;
     setState(() => _actionInProgress = true);
     try {
       await action();
@@ -88,11 +93,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _actionInProgress = false);
@@ -100,9 +101,10 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
   }
 
   Future<void> _grantTicket() async {
+    final l10n = context.l10n;
     if (_tiers.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Chưa có hạng vé để cấp.')),
+        SnackBar(content: Text(l10n.adminUserTicketsNoTiers)),
       );
       return;
     }
@@ -118,31 +120,32 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
         userId: widget.userId,
         tierId: tierId,
       ),
-      successMessage: 'Đã cấp vé cho người dùng.',
+      successMessage: l10n.adminUserTicketsGrantSuccess,
     );
   }
 
   Future<String?> _promptDenyReason() async {
+    final l10n = context.l10n;
     final controller = TextEditingController();
     return showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Lý do từ chối'),
+        title: Text(l10n.adminDenyReason),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            hintText: 'Nhập lý do từ chối vé...',
+          decoration: InputDecoration(
+            hintText: l10n.adminDenyReasonHint,
           ),
           maxLines: 3,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Hủy'),
+            child: Text(l10n.adminCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, controller.text.trim()),
-            child: const Text('Từ chối'),
+            child: Text(l10n.adminDeny),
           ),
         ],
       ),
@@ -150,24 +153,23 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
   }
 
   Future<void> _confirmDeleteTicket(AdminTicketItem ticket) async {
+    final l10n = context.l10n;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Xóa vé?'),
-        content: Text(
-          'Xóa vé ${ticket.referenceCode}? Hành động không thể hoàn tác.',
-        ),
+        title: Text(l10n.adminUserTicketsDeleteTitle),
+        content: Text(l10n.adminUserTicketsDeleteBody(ticket.referenceCode)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Hủy'),
+            child: Text(l10n.adminCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
             style: FilledButton.styleFrom(
               backgroundColor: const Color(0xFFF0A0A8),
             ),
-            child: const Text('Xóa'),
+            child: Text(l10n.adminDelete),
           ),
         ],
       ),
@@ -176,7 +178,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
     if (confirmed != true || !mounted) return;
     await _runAction(
       () => _ticketService.deleteTicket(ticket.id),
-      successMessage: 'Đã xóa vé.',
+      successMessage: l10n.adminUserTicketsDeleted,
     );
   }
 
@@ -201,6 +203,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
   }
 
   void _showTicketDetail(AdminTicketItem ticket) {
+    final l10n = context.l10n;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -253,7 +256,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
                     child: ListView(
                       controller: scrollController,
                       children: [
-                        for (final field in ticket.details)
+                        for (final field in ticket.localizedDetails(l10n))
                           _TicketDetailField(field: field),
                       ],
                     ),
@@ -261,20 +264,20 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
                   if (!widget.isDeleted) ...[
                     if (ticket.canApprove)
                       _TicketActionButton(
-                        label: 'Duyệt vé',
+                        label: l10n.adminUserTicketsApprove,
                         color: FuvekonColors.available,
                         loading: _actionInProgress,
                         onPressed: () async {
                           Navigator.pop(context);
                           await _runAction(
                             () => _ticketService.approveTicket(ticket.id),
-                            successMessage: 'Đã duyệt vé.',
+                            successMessage: l10n.adminUserTicketsApproveSuccess,
                           );
                         },
                       ),
                     if (ticket.canDeny)
                       _TicketActionButton(
-                        label: 'Từ chối vé',
+                        label: l10n.adminUserTicketsDeny,
                         color: const Color(0xFFF0A0A8),
                         loading: _actionInProgress,
                         onPressed: () async {
@@ -286,25 +289,25 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
                               ticket.id,
                               reason: reason,
                             ),
-                            successMessage: 'Đã từ chối vé.',
+                            successMessage: l10n.adminUserTicketsDenySuccess,
                           );
                         },
                       ),
                     if (ticket.canResendQr)
                       _TicketActionButton(
-                        label: 'Gửi lại email QR',
+                        label: l10n.adminUserTicketsResendQr,
                         color: const Color(0xFF60A5FA),
                         loading: _actionInProgress,
                         onPressed: () async {
                           Navigator.pop(context);
                           await _runAction(
                             () => _ticketService.resendQrEmail(ticket.id),
-                            successMessage: 'Đã gửi lại email QR.',
+                            successMessage: l10n.adminUserTicketsResendQrSuccess,
                           );
                         },
                       ),
                     _TicketActionButton(
-                      label: 'Chỉnh sửa vé',
+                      label: l10n.adminUserTicketsEdit,
                       color: FuvekonColors.primary,
                       loading: _actionInProgress,
                       onPressed: () {
@@ -313,7 +316,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
                       },
                     ),
                     _TicketActionButton(
-                      label: 'Xóa vé',
+                      label: l10n.adminUserTicketsDelete,
                       color: const Color(0xFFDC2626),
                       loading: _actionInProgress,
                       onPressed: () {
@@ -333,14 +336,15 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return AdminUserEditSectionCard(
-      title: 'Vé của người dùng',
-      subtitle: 'Cấp, duyệt, chỉnh sửa hoặc xóa vé',
-      child: _buildContent(),
+      title: l10n.adminUserTicketsTitle,
+      subtitle: l10n.adminUserTicketsSubtitle,
+      child: _buildContent(l10n),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(AppLocalizations l10n) {
     if (_loading) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 24),
@@ -360,7 +364,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
           const SizedBox(height: 12),
           FilledButton(
             onPressed: _load,
-            child: const Text('Thử lại'),
+            child: Text(l10n.adminRetry),
           ),
         ],
       );
@@ -371,7 +375,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Người dùng chưa có vé.',
+            l10n.adminUserTicketsEmpty,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: FuvekonColors.darkTextSecondary,
                 ),
@@ -379,7 +383,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
           if (!widget.isDeleted) ...[
             const SizedBox(height: 12),
             _TicketActionButton(
-              label: 'Cấp vé',
+              label: l10n.adminUserTicketsGrant,
               color: FuvekonColors.available,
               loading: _actionInProgress,
               onPressed: _grantTicket,
@@ -394,22 +398,27 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _TicketSummaryRow(
-          label: 'Mã vé',
+          label: l10n.adminFieldTicketCode,
           value: ticket.referenceCode,
         ),
         if (ticket.tierName?.isNotEmpty == true)
-          _TicketSummaryRow(label: 'Hạng vé', value: ticket.tierName!),
+          _TicketSummaryRow(
+            label: l10n.adminFieldTier,
+            value: ticket.tierName!,
+          ),
         _TicketSummaryRow(
-          label: 'Trạng thái',
-          value: ticketStatusLabelVi(ticket.status),
+          label: l10n.adminFieldStatus,
+          value: ticketStatusLabel(l10n, ticket.status),
         ),
         _TicketSummaryRow(
-          label: 'Check-in',
-          value: ticket.isCheckedIn ? 'Đã check-in' : 'Chưa check-in',
+          label: l10n.adminFieldCheckIn,
+          value: ticket.isCheckedIn
+              ? l10n.adminCheckedIn
+              : l10n.adminNotCheckedIn,
         ),
         const SizedBox(height: 12),
         _TicketActionButton(
-          label: 'Quản lý vé',
+          label: l10n.adminUserTicketsManage,
           color: FuvekonColors.primary,
           loading: _actionInProgress,
           onPressed: () => _showTicketDetail(ticket),
@@ -426,6 +435,7 @@ class AdminTicketStatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final color = ticketStatusColor(status);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -434,7 +444,7 @@ class AdminTicketStatusChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        ticketStatusLabelVi(status),
+        ticketStatusLabel(l10n, status),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w600,
@@ -581,11 +591,12 @@ class _GrantTicketDialogState extends State<_GrantTicketDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return AlertDialog(
-      title: const Text('Cấp vé'),
+      title: Text(l10n.adminUserTicketsGrantDialog),
       content: DropdownButtonFormField<String>(
         initialValue: _selectedTierId,
-        decoration: const InputDecoration(labelText: 'Hạng vé'),
+        decoration: InputDecoration(labelText: l10n.adminUserTicketsTierLabel),
         items: [
           for (final tier in widget.tiers)
             DropdownMenuItem(
@@ -598,13 +609,13 @@ class _GrantTicketDialogState extends State<_GrantTicketDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Hủy'),
+          child: Text(l10n.adminCancel),
         ),
         FilledButton(
           onPressed: _selectedTierId == null
               ? null
               : () => Navigator.pop(context, _selectedTierId),
-          child: const Text('Cấp vé'),
+          child: Text(l10n.adminUserTicketsGrant),
         ),
       ],
     );
@@ -669,6 +680,7 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
   }
 
   Future<void> _save() async {
+    final l10n = context.l10n;
     setState(() => _saving = true);
     try {
       await widget.onSave(
@@ -688,11 +700,7 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -701,6 +709,7 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Padding(
       padding: EdgeInsets.only(
         left: 20,
@@ -725,7 +734,7 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Chỉnh sửa vé',
+              l10n.adminUserTicketsEditTitle,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: FuvekonColors.darkText,
                     fontWeight: FontWeight.w700,
@@ -736,12 +745,12 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
               initialValue: _editableStatuses.contains(_status)
                   ? _status
                   : TicketStatus.approved,
-              decoration: const InputDecoration(labelText: 'Trạng thái'),
+              decoration: InputDecoration(labelText: l10n.adminFieldStatus),
               items: [
                 for (final status in _editableStatuses)
                   DropdownMenuItem(
                     value: status,
-                    child: Text(ticketStatusLabelVi(status)),
+                    child: Text(ticketStatusLabel(l10n, status)),
                   ),
               ],
               onChanged: (value) {
@@ -752,7 +761,9 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
             if (widget.tiers.isNotEmpty)
               DropdownButtonFormField<String>(
                 initialValue: _tierId,
-                decoration: const InputDecoration(labelText: 'Hạng vé'),
+                decoration: InputDecoration(
+                  labelText: l10n.adminUserTicketsTierLabel,
+                ),
                 items: [
                   for (final tier in widget.tiers)
                     DropdownMenuItem(
@@ -765,14 +776,17 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
             const SizedBox(height: 12),
             TextField(
               controller: _badgeNameController,
-              decoration: const InputDecoration(labelText: 'Tên badge'),
+              decoration: InputDecoration(labelText: l10n.adminFieldBadgeName),
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String?>(
               initialValue: _tshirtSize,
-              decoration: const InputDecoration(labelText: 'Size áo'),
+              decoration: InputDecoration(labelText: l10n.adminFieldTshirtSize),
               items: [
-                const DropdownMenuItem(value: null, child: Text('Chưa chọn')),
+                DropdownMenuItem(
+                  value: null,
+                  child: Text(l10n.adminUserTicketsNotSelected),
+                ),
                 for (final size in _tshirtSizes)
                   DropdownMenuItem(value: size, child: Text(size)),
               ],
@@ -781,26 +795,26 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
             const SizedBox(height: 8),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Fursuiter'),
+              title: Text(l10n.adminFieldFursuiter),
               value: _isFursuiter,
               onChanged: (value) => setState(() => _isFursuiter = value),
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Fursuit staff'),
+              title: Text(l10n.adminFieldFursuitStaff),
               value: _isFursuitStaff,
               onChanged: (value) => setState(() => _isFursuitStaff = value),
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Đã check-in'),
+              title: Text(l10n.adminCheckedIn),
               value: _isCheckedIn,
               onChanged: (value) => setState(() => _isCheckedIn = value),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: _denialReasonController,
-              decoration: const InputDecoration(labelText: 'Lý do từ chối'),
+              decoration: InputDecoration(labelText: l10n.adminDenyReason),
               maxLines: 2,
             ),
             const SizedBox(height: 20),
@@ -812,7 +826,7 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Lưu thay đổi'),
+                  : Text(l10n.adminSaveChanges),
             ),
           ],
         ),

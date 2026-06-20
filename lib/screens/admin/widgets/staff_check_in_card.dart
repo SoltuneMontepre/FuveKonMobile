@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/staff_dashboard_colors.dart';
 
@@ -14,6 +15,7 @@ class StaffCheckInCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return DecoratedBox(
@@ -40,7 +42,7 @@ class StaffCheckInCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              isReady ? 'Sẵn sàng check-in' : 'Đang kết nối...',
+              isReady ? l10n.adminQrReadyCheckIn : l10n.adminQrConnecting,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: FuvekonColors.darkCardText,
                 fontWeight: FontWeight.w700,
@@ -50,8 +52,8 @@ class StaffCheckInCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               isReady
-                  ? 'Hệ thống đã kết nối và sẵn sàng quét vé.'
-                  : 'Vui lòng chờ trong giây lát.',
+                  ? l10n.adminStaffReadyConnected
+                  : l10n.adminStaffConnectingHint,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: FuvekonColors.textSecondary,
               ),
@@ -71,9 +73,9 @@ class StaffCheckInCard extends StatelessWidget {
                   ),
                 ),
                 icon: const Icon(Icons.qr_code_scanner_rounded),
-                label: const Text(
-                  'QUÉT VÉ NGAY',
-                  style: TextStyle(
+                label: Text(
+                  l10n.adminQrScanNow,
+                  style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.5,
                   ),

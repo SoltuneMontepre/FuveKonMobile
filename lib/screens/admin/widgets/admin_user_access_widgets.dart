@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_submission_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
 
@@ -162,7 +165,9 @@ class AdminUserProfileHeader extends StatelessWidget {
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Text(
-                        '${adminRoleTitle(role!)} Hiện tại',
+                        context.l10n.adminRoleCurrent(
+                          adminRoleTitle(context.l10n, role!),
+                        ),
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                               color: FuvekonColors.secondary,
                               fontWeight: FontWeight.w600,
@@ -206,6 +211,7 @@ class _DetailProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Column(
       children: [
@@ -294,12 +300,12 @@ class _DetailProfileHeader extends StatelessWidget {
             children: [
               _StatusPill(
                 icon: Icons.person_outline_rounded,
-                label: adminRoleSubtitle(role!),
+                label: adminRoleSubtitle(l10n, role!),
                 background: FuvekonColors.darkSurfaceElevated,
                 foreground: FuvekonColors.darkTextSecondary,
               ),
               _StatusPill(
-                label: _statusLabel,
+                label: _statusLabel(l10n),
                 background: _statusBackground,
                 foreground: _statusForeground,
                 leading: Container(
@@ -322,10 +328,10 @@ class _DetailProfileHeader extends StatelessWidget {
     );
   }
 
-  String get _statusLabel {
-    if (isDeleted) return 'Đã xóa';
-    if (isBlacklisted) return 'Bị cấm';
-    return 'Hoạt động';
+  String _statusLabel(AppLocalizations l10n) {
+    if (isDeleted) return l10n.adminStatusPillDeleted;
+    if (isBlacklisted) return l10n.adminStatusPillBlacklisted;
+    return l10n.adminStatusPillActive;
   }
 
   Color get _statusBackground {
@@ -438,6 +444,7 @@ class _RoleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     final borderColor = selected
         ? FuvekonColors.darkPrimary
         : FuvekonColors.darkBorder.withValues(alpha: 0.7);
@@ -465,7 +472,7 @@ class _RoleCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        adminRoleTitle(role),
+                        adminRoleTitle(l10n, role),
                         style: theme.textTheme.titleSmall?.copyWith(
                           color: FuvekonColors.darkText,
                           fontWeight: FontWeight.w700,
@@ -477,7 +484,7 @@ class _RoleCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  adminRoleSubtitle(role),
+                  adminRoleSubtitle(l10n, role),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: FuvekonColors.darkTextSecondary,
                   ),
@@ -583,6 +590,7 @@ class _PermissionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Material(
       color: Colors.transparent,
@@ -595,7 +603,7 @@ class _PermissionTile extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  adminPermissionLabel(code),
+                  adminPermissionLabel(l10n, code),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: FuvekonColors.darkText,
                   ),
@@ -641,9 +649,4 @@ class _PermissionCheckbox extends StatelessWidget {
           : null,
     );
   }
-}
-
-String formatAdminPermissionsSummary(List<String> permissions) {
-  if (permissions.isEmpty) return 'Không có';
-  return permissions.map(adminPermissionLabel).join(' • ');
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_schedule_models.dart';
@@ -21,6 +22,7 @@ class EventManagementSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Column(
@@ -33,7 +35,7 @@ class EventManagementSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Quản lý lịch trình',
+                    l10n.adminEventSchedulesTitle,
                     style: theme.textTheme.headlineSmall?.copyWith(
                       color: FuvekonColors.darkAppBarTitle,
                       fontWeight: FontWeight.w700,
@@ -41,7 +43,7 @@ class EventManagementSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Lịch trình theo ngày và khung giờ.',
+                    l10n.adminEventSchedulesSubtitle,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                     ),
@@ -51,7 +53,7 @@ class EventManagementSection extends StatelessWidget {
             ),
             TextButton(
               onPressed: onViewAll ?? () => context.push(Routes.adminSchedules),
-              child: const Text('Xem tất cả'),
+              child: Text(l10n.adminViewAll),
             ),
           ],
         ),
@@ -80,7 +82,7 @@ class EventManagementSection extends StatelessWidget {
             child: OutlinedButton.icon(
               onPressed: onCreate ?? () => context.push(Routes.adminSchedules),
               icon: const Icon(Icons.add_rounded, size: 20),
-              label: const Text('Tạo lịch trình mới'),
+              label: Text(l10n.adminEventSchedulesCreate),
             ),
           ),
       ],
@@ -95,6 +97,7 @@ class _EmptyEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return DecoratedBox(
       decoration: BoxDecoration(
         color: FuvekonColors.darkSurfaceElevated,
@@ -111,7 +114,7 @@ class _EmptyEventCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'Chưa có lịch trình',
+              l10n.adminEventSchedulesEmpty,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 color: FuvekonColors.darkText,
                 fontWeight: FontWeight.w600,
@@ -121,7 +124,7 @@ class _EmptyEventCard extends StatelessWidget {
             FilledButton.icon(
               onPressed: onCreate ?? () => context.push(Routes.adminSchedules),
               icon: const Icon(Icons.add_rounded, size: 20),
-              label: const Text('Tạo lịch trình'),
+              label: Text(l10n.adminEventSchedulesCreateShort),
             ),
           ],
         ),
@@ -135,20 +138,22 @@ class _EventScheduleCard extends StatelessWidget {
 
   final AdminScheduleItem schedule;
 
-  String _formatRange() {
+  String _formatRange(BuildContext context) {
+    final l10n = context.l10n;
     final fmt = DateFormat('dd/MM/yyyy');
     final start = schedule.startAt;
     final end = schedule.endAt;
-    if (start == null && end == null) return 'Chưa đặt thời gian';
+    if (start == null && end == null) return l10n.adminEventSchedulesNoTime;
     if (start != null && end != null) {
       return '${fmt.format(start)} – ${fmt.format(end)}';
     }
-    if (start != null) return 'Từ ${fmt.format(start)}';
-    return 'Đến ${fmt.format(end!)}';
+    if (start != null) return '${l10n.adminEventSchedulesFrom} ${fmt.format(start)}';
+    return '${l10n.adminEventSchedulesTo} ${fmt.format(end!)}';
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Material(
@@ -189,14 +194,17 @@ class _EventScheduleCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      _formatRange(),
+                      _formatRange(context),
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: FuvekonColors.darkTextSecondary,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                    '${schedule.dayCount} ngày · ${schedule.timelineItemCount} mục',
+                      l10n.adminEventSchedulesDaysItems(
+                        schedule.dayCount,
+                        schedule.timelineItemCount,
+                      ),
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: FuvekonColors.available,
                         fontWeight: FontWeight.w500,

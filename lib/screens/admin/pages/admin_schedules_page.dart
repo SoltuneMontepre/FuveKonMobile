@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_schedule_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_schedule_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/datetime_field.dart';
@@ -66,18 +68,20 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
     if (created == true) await _load();
   }
 
-  String _formatRange(AdminScheduleItem item) {
+  String _formatRange(BuildContext context, AdminScheduleItem item) {
+    final l10n = context.l10n;
     final fmt = DateFormat('dd/MM/yyyy HH:mm');
-    if (item.startAt == null && item.endAt == null) return 'Chưa đặt thời gian';
+    if (item.startAt == null && item.endAt == null) return l10n.adminEventSchedulesNoTime;
     if (item.startAt != null && item.endAt != null) {
       return '${fmt.format(item.startAt!)} – ${fmt.format(item.endAt!)}';
     }
-    if (item.startAt != null) return 'Từ ${fmt.format(item.startAt!)}';
-    return 'Đến ${fmt.format(item.endAt!)}';
+    if (item.startAt != null) return '${l10n.adminEventSchedulesFrom} ${fmt.format(item.startAt!)}';
+    return '${l10n.adminEventSchedulesTo} ${fmt.format(item.endAt!)}';
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
       floatingActionButton: FloatingActionButton(
@@ -103,7 +107,7 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
                   ),
                   Expanded(
                     child: Text(
-                      'Quản lý lịch trình',
+                      l10n.adminSchedulesTitle,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: FuvekonColors.darkAppBarTitle,
                         fontWeight: FontWeight.w700,
@@ -134,14 +138,14 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _error!,
+                formatAdminError(context.l10n, _error!),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: FuvekonColors.darkTextSecondary,
                 ),
               ),
               const SizedBox(height: 16),
-              FilledButton(onPressed: _load, child: const Text('Thử lại')),
+              FilledButton(onPressed: _load, child: Text(context.l10n.adminRetry)),
             ],
           ),
         ),
@@ -155,16 +159,16 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const EmptyState(
+              EmptyState(
                 icon: Icons.calendar_month_outlined,
-                title: 'Chưa có lịch trình',
-                subtitle: 'Tạo lịch trình theo ngày và khung giờ.',
+                title: context.l10n.adminSchedulesEmpty,
+                subtitle: context.l10n.adminSchedulesEmptySubtitle,
               ),
               const SizedBox(height: 16),
               FilledButton.icon(
                 onPressed: _openCreateSheet,
                 icon: const Icon(Icons.add_rounded),
-                label: const Text('Tạo lịch'),
+                label: Text(context.l10n.adminSchedulesCreate),
               ),
             ],
           ),
@@ -187,7 +191,7 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
           final item = _items[index];
           return _ScheduleCard(
             name: item.name,
-            dateRange: _formatRange(item),
+            dateRange: _formatRange(context, item),
             dayCount: item.dayCount,
             timelineItemCount: item.timelineItemCount,
             onTap: () => context.push(Routes.adminScheduleDetail(item.id)),
@@ -215,6 +219,7 @@ class _ScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Material(
       color: FuvekonColors.darkCard,
       borderRadius: BorderRadius.circular(16),
@@ -256,14 +261,14 @@ class _ScheduleCard extends StatelessWidget {
                   if (dayCount > 0)
                     _MetaChip(
                       icon: Icons.calendar_today_outlined,
-                      label: '$dayCount ngày',
+                      label: l10n.adminSchedulesDaysCount(dayCount),
                     ),
                   if (dayCount > 0 && timelineItemCount > 0)
                     const SizedBox(width: 8),
                   if (timelineItemCount > 0)
                     _MetaChip(
                       icon: Icons.timeline_outlined,
-                      label: '$timelineItemCount mục',
+                      label: l10n.adminSchedulesItemsCount(timelineItemCount),
                     ),
                 ],
               ),
@@ -369,9 +374,7 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
     if (!_formKey.currentState!.validate()) return;
     if (!_endAt.isAfter(_startAt)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Thời gian kết thúc phải sau thời gian bắt đầu.'),
-        ),
+        SnackBar(content: Text(context.l10n.adminScheduleEndAfterStart)),
       );
       return;
     }
@@ -393,11 +396,7 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(context.l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _submitting = false);
@@ -409,6 +408,7 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     final isEdit = widget.initial != null;
 
@@ -432,7 +432,7 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
             ),
             const SizedBox(height: 16),
             Text(
-              isEdit ? 'Chỉnh sửa lịch trình' : 'Tạo lịch trình mới',
+              isEdit ? l10n.adminSchedulesEdit : l10n.adminSchedulesCreateNew,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: FuvekonColors.darkText,
                 fontWeight: FontWeight.w700,
@@ -441,17 +441,17 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Tên lịch trình'),
+              decoration: InputDecoration(labelText: l10n.adminSchedulesNameLabel),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Vui lòng nhập tên.';
+                  return l10n.adminSchedulesNameRequired;
                 }
                 return null;
               },
             ),
             const SizedBox(height: 12),
             DateTimeField(
-              label: 'Bắt đầu',
+              label: l10n.adminScheduleStartLabel,
               value: _formatDateTime(_startAt),
               icon: Icons.calendar_today_outlined,
               onTap: () => _pickDateTime(
@@ -461,7 +461,7 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
             ),
             const SizedBox(height: 12),
             DateTimeField(
-              label: 'Kết thúc',
+              label: l10n.adminScheduleEndLabel,
               value: _formatDateTime(_endAt),
               icon: Icons.calendar_today_outlined,
               onTap: () => _pickDateTime(
@@ -478,7 +478,7 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : Text(isEdit ? 'Lưu' : 'Tạo'),
+                  : Text(isEdit ? l10n.adminSave : l10n.adminCreate),
             ),
           ],
         ),

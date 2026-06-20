@@ -260,13 +260,6 @@ List<String> _parsePermissionCodes(dynamic value) {
   return value.whereType<String>().toList();
 }
 
-String adminRoleLabel(String role) => switch (role.toLowerCase()) {
-      'admin' => 'Quản trị viên',
-      'dealer' => 'Dealer',
-      'staff' => 'Nhân viên',
-      _ => 'Người dùng',
-    };
-
 const adminRoleOptions = ['User', 'Dealer', 'Staff', 'Admin'];
 
 const adminPermissionCodes = [
@@ -277,30 +270,6 @@ const adminPermissionCodes = [
   'view_dashboard',
   'manage_users',
 ];
-
-String adminRoleTitle(String role) => switch (role.toLowerCase()) {
-      'admin' => 'Admin',
-      'dealer' => 'Dealer',
-      'staff' => 'Staff',
-      _ => 'Attendee',
-    };
-
-String adminRoleSubtitle(String role) => switch (role.toLowerCase()) {
-      'admin' => 'Quản trị viên',
-      'dealer' => 'Nhà triển lãm',
-      'staff' => 'Nhân viên hỗ trợ',
-      _ => 'Khách tham quan',
-    };
-
-String adminPermissionLabel(String code) => switch (code) {
-      'manage_tickets' => 'Quản lý vé',
-      'scan_tickets' => 'Quét vé',
-      'approve_profiles' => 'Duyệt hồ sơ',
-      'send_notifications' => 'Gửi thông báo',
-      'view_dashboard' => 'Xem dashboard',
-      'manage_users' => 'Quản lý người dùng',
-      _ => code,
-    };
 
 List<String> defaultPermissionsForRole(String role) => switch (role.toLowerCase()) {
       'admin' => List<String>.from(adminPermissionCodes),
@@ -428,9 +397,15 @@ class AdminUserItem implements AdminListItem {
 
   @override
   String? get subtitle {
+    final roleLabel = switch (role.toLowerCase()) {
+      'admin' => 'Quản trị viên',
+      'dealer' => 'Dealer',
+      'staff' => 'Nhân viên',
+      _ => 'Người dùng',
+    };
     final parts = <String>[
       email,
-      adminRoleLabel(role),
+      roleLabel,
       if (isVerified) 'Đã xác minh' else 'Chưa xác minh',
       if (isBlacklisted) 'Bị cấm',
     ];
@@ -447,7 +422,15 @@ class AdminUserItem implements AdminListItem {
           AdminDetailField(label: 'Họ', value: firstName!),
         if (lastName?.isNotEmpty == true)
           AdminDetailField(label: 'Tên', value: lastName!),
-        AdminDetailField(label: 'Vai trò', value: adminRoleLabel(role)),
+        AdminDetailField(
+          label: 'Vai trò',
+          value: switch (role.toLowerCase()) {
+            'admin' => 'Quản trị viên',
+            'dealer' => 'Dealer',
+            'staff' => 'Nhân viên',
+            _ => 'Người dùng',
+          },
+        ),
         AdminDetailField(
           label: 'Xác minh',
           value: isVerified ? 'Đã xác minh' : 'Chưa xác minh',
@@ -547,14 +530,6 @@ class AdminConbookItem implements AdminListItem {
         ),
       ];
 }
-
-String ticketStatusLabelVi(TicketStatus status) => switch (status) {
-      TicketStatus.pending => 'Chờ thanh toán',
-      TicketStatus.selfConfirmed => 'Chờ duyệt',
-      TicketStatus.approved => 'Đã duyệt',
-      TicketStatus.denied => 'Từ chối',
-      TicketStatus.adminGranted => 'Cấp bởi admin',
-    };
 
 Color ticketStatusColor(TicketStatus status) => switch (status) {
       TicketStatus.pending => const Color(0xFFFBBF24),
@@ -692,10 +667,17 @@ class AdminTicketItem implements AdminListItem {
 
   @override
   String? get subtitle {
+    final statusLabel = switch (status) {
+      TicketStatus.pending => 'Chờ thanh toán',
+      TicketStatus.selfConfirmed => 'Chờ duyệt',
+      TicketStatus.approved => 'Đã duyệt',
+      TicketStatus.denied => 'Từ chối',
+      TicketStatus.adminGranted => 'Cấp bởi admin',
+    };
     final parts = <String>[
       referenceCode,
       if (tierName != null && tierName!.isNotEmpty) tierName!,
-      ticketStatusLabelVi(status),
+      statusLabel,
       if (isCheckedIn) 'Đã check-in',
     ];
     return parts.join(' • ');
@@ -707,7 +689,13 @@ class AdminTicketItem implements AdminListItem {
         AdminDetailField(label: 'Số vé', value: '#$ticketNumber'),
         AdminDetailField(
           label: 'Trạng thái',
-          value: ticketStatusLabelVi(status),
+          value: switch (status) {
+            TicketStatus.pending => 'Chờ thanh toán',
+            TicketStatus.selfConfirmed => 'Chờ duyệt',
+            TicketStatus.approved => 'Đã duyệt',
+            TicketStatus.denied => 'Từ chối',
+            TicketStatus.adminGranted => 'Cấp bởi admin',
+          },
         ),
         if (tierName?.isNotEmpty == true)
           AdminDetailField(label: 'Hạng vé', value: tierName!),

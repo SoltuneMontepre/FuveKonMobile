@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/screens/admin/pages/admin_conbook_page.dart';
-import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';export 'admin_conbook_page.dart';
+import 'package:fuvekonmobile/shared/widgets/placeholder_page.dart';
+
+export 'admin_conbook_page.dart';
+export 'admin_dashboard_users_page.dart';
 export 'admin_lost_found_detail_page.dart';
 export 'admin_lost_found_page.dart';
 export 'admin_lost_found_return_page.dart';
@@ -19,19 +23,6 @@ export 'admin_tickets_page.dart';
 export 'admin_users_page.dart';
 export 'admin_system_page.dart';
 
-class AdminDashboardUsersPage extends StatelessWidget {
-  const AdminDashboardUsersPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'Dashboard Users',
-      subtitle: 'User analytics and breakdowns.',
-      icon: Icons.people_outline,
-    );
-  }
-}
-
 class AdminArtSubmitPage extends StatelessWidget {
   const AdminArtSubmitPage({super.key});
 
@@ -44,9 +35,10 @@ class AdminTalentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const PlaceholderPage(
-      title: 'Talent Management',
-      subtitle: 'Review and manage talent applications.',
+    final l10n = context.l10n;
+    return PlaceholderPage(
+      title: l10n.adminPlaceholderTalent,
+      subtitle: l10n.adminPlaceholderTalentSubtitle,
       icon: Icons.mic_external_on_outlined,
     );
   }

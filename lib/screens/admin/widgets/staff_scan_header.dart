@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/notification/presentation/pages/notifications_page.dart';
 import 'package:fuvekonmobile/features/profile/domain/entities/account.dart';
@@ -33,7 +34,7 @@ class StaffScanHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                staffGreeting(),
+                staffGreeting(context.l10n),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: FuvekonColors.darkTextSecondary,
                 ),

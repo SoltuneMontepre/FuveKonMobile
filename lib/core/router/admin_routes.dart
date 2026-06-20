@@ -88,7 +88,12 @@ abstract final class AdminRoutes {
                           parentNavigatorKey: rootNavigatorKey,
                           builder: (context, state) {
                             final userId = state.pathParameters['id']!;
-                            return AdminUserEditPage(userId: userId);
+                            final section =
+                                state.uri.queryParameters['section'];
+                            return AdminUserEditPage(
+                              userId: userId,
+                              focusPermissions: section == 'permissions',
+                            );
                           },
                         ),
                       ],

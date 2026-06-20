@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
+import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_dashboard_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/sales_timeline_chart.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/staff_tab_scaffold.dart';
+import 'package:fuvekonmobile/screens/admin/widgets/users_by_country_chart.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class AdminDashboardPage extends StatefulWidget {
@@ -50,6 +54,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return StaffTabScaffold(
       child: _loading
           ? const Center(child: CircularProgressIndicator())
@@ -60,15 +65,15 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const EmptyState(
-                          title: 'Không tải được thống kê',
-                          subtitle: 'Vui lòng thử lại sau.',
+                        EmptyState(
+                          title: l10n.adminDashboardLoadFailed,
+                          subtitle: l10n.adminDashboardLoadFailedSubtitle,
                           icon: Icons.error_outline,
                         ),
                         const SizedBox(height: 16),
                         FilledButton(
                           onPressed: _load,
-                          child: const Text('Thử lại'),
+                          child: Text(l10n.adminRetry),
                         ),
                       ],
                     ),
@@ -80,18 +85,18 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                     padding: const EdgeInsets.all(FuvekonSpacing.page),
                     children: [
                       _SectionHeader(
-                        title: 'Tổng quan sự kiện',
-                        subtitle: 'Dữ liệu 90 ngày gần nhất',
+                        title: l10n.adminDashboardTitle,
+                        subtitle: l10n.adminDashboardSubtitle,
                       ),
                       const SizedBox(height: 16),
                       _OverviewGrid(data: _data!),
                       const SizedBox(height: 24),
-                      _SectionHeader(title: 'Vé'),
+                      _SectionHeader(title: l10n.adminDashboardTickets),
                       const SizedBox(height: 12),
                       _TicketStatsSection(data: _data!),
                       if (_data!.tierStats.isNotEmpty) ...[
                         const SizedBox(height: 24),
-                        _SectionHeader(title: 'Theo hạng vé'),
+                        _SectionHeader(title: l10n.adminDashboardByTier),
                         const SizedBox(height: 12),
                         ..._data!.tierStats.map(
                           (tier) => Padding(
@@ -103,6 +108,13 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                       if (_data!.salesTimeline.isNotEmpty) ...[
                         const SizedBox(height: 24),
                         SalesTimelineChart(points: _data!.salesTimeline),
+                      ],
+                      if (_data!.usersByCountry.isNotEmpty) ...[
+                        const SizedBox(height: 24),
+                        UsersByCountryChart(
+                          items: _data!.usersByCountry,
+                          maxVisible: 6,
+                        ),
                       ],
                       const SizedBox(height: 16),
                     ],
@@ -152,6 +164,7 @@ class _OverviewGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final currency = NumberFormat.currency(
       locale: 'vi_VN',
       symbol: '₫',
@@ -165,7 +178,7 @@ class _OverviewGrid extends StatelessWidget {
           children: [
             Expanded(
               child: _MetricCard(
-                label: 'Doanh thu',
+                label: l10n.adminDashboardRevenue,
                 value: currency.format(data.totalRevenue),
                 icon: Icons.payments_outlined,
                 valueColor: FuvekonColors.available,
@@ -174,9 +187,10 @@ class _OverviewGrid extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _MetricCard(
-                label: 'Người dùng',
+                label: l10n.adminDashboardUsers,
                 value: count.format(data.userCount),
                 icon: Icons.people_outline,
+                onTap: () => context.push(Routes.adminDashboardUsers),
               ),
             ),
           ],
@@ -186,7 +200,7 @@ class _OverviewGrid extends StatelessWidget {
           children: [
             Expanded(
               child: _MetricCard(
-                label: 'Dealer',
+                label: l10n.adminDashboardDealers,
                 value: count.format(data.dealerCount),
                 icon: Icons.storefront_outlined,
               ),
@@ -194,7 +208,7 @@ class _OverviewGrid extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _MetricCard(
-                label: 'Tổng vé',
+                label: l10n.adminDashboardTotalTickets,
                 value: count.format(data.totalTickets),
                 icon: Icons.confirmation_number_outlined,
               ),
@@ -213,13 +227,14 @@ class _TicketStatsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final count = NumberFormat.decimalPattern('vi');
 
     return Row(
       children: [
         Expanded(
           child: _MetricCard(
-            label: 'Đã duyệt',
+            label: l10n.adminDashboardApproved,
             value: count.format(data.approvedCount),
             icon: Icons.check_circle_outline,
             valueColor: FuvekonColors.available,
@@ -229,7 +244,7 @@ class _TicketStatsSection extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: _MetricCard(
-            label: 'Chờ duyệt',
+            label: l10n.adminDashboardPending,
             value: count.format(data.pendingCount),
             icon: Icons.hourglass_empty_rounded,
             valueColor: const Color(0xFFFBBF24),
@@ -239,7 +254,7 @@ class _TicketStatsSection extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: _MetricCard(
-            label: 'Từ chối',
+            label: l10n.adminDashboardDenied,
             value: count.format(data.deniedCount),
             icon: Icons.cancel_outlined,
             valueColor: const Color(0xFFF0A0A8),
@@ -258,6 +273,7 @@ class _MetricCard extends StatelessWidget {
     required this.icon,
     this.valueColor,
     this.compact = false,
+    this.onTap,
   });
 
   final String label;
@@ -265,12 +281,13 @@ class _MetricCard extends StatelessWidget {
   final IconData icon;
   final Color? valueColor;
   final bool compact;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DecoratedBox(
+    final card = DecoratedBox(
       decoration: BoxDecoration(
         color: FuvekonColors.darkSurfaceElevated,
         borderRadius: BorderRadius.circular(20),
@@ -292,6 +309,14 @@ class _MetricCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (onTap != null) ...[
+                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    size: 18,
+                    color: FuvekonColors.darkTextSecondary,
+                  ),
+                ],
               ],
             ),
             SizedBox(height: compact ? 8 : 12),
@@ -309,6 +334,17 @@ class _MetricCard extends StatelessWidget {
         ),
       ),
     );
+
+    if (onTap == null) return card;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: card,
+      ),
+    );
   }
 }
 
@@ -319,8 +355,8 @@ class _TierTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
-    final count = NumberFormat.decimalPattern('vi');
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -336,13 +372,13 @@ class _TierTile extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          'Đã bán ${count.format(tier.sold)} / ${count.format(tier.totalStock)}',
+          l10n.adminDashboardSold(tier.sold, tier.totalStock),
           style: theme.textTheme.bodySmall?.copyWith(
             color: FuvekonColors.darkTextSecondary,
           ),
         ),
         trailing: Text(
-          'Còn ${count.format(tier.available)}',
+          l10n.adminDashboardRemaining(tier.available),
           style: theme.textTheme.labelMedium?.copyWith(
             color: FuvekonColors.available,
             fontWeight: FontWeight.w600,

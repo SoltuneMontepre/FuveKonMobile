@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_schedule_models.dart';
 import 'package:fuvekonmobile/screens/admin/pages/admin_schedules_page.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/datetime_field.dart';
@@ -20,13 +22,15 @@ class AdminScheduleDetailPage extends StatefulWidget {
 }
 
 class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
+  static const _allCategories = '';
+
   late final AdminScheduleService _service;
   AdminScheduleItem? _schedule;
   bool _loading = true;
   String? _error;
   bool _actionInProgress = false;
   String? _selectedDate;
-  String _selectedCategory = 'Tất cả';
+  String _selectedCategory = _allCategories;
 
   @override
   void initState() {
@@ -86,7 +90,7 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
     if (day == null) return const [];
 
     final entries = day.timeline
-        .where((item) => _selectedCategory == 'Tất cả' || item.category == _selectedCategory)
+        .where((item) => _selectedCategory == _allCategories || item.category == _selectedCategory)
         .map((item) => _TimelineEntry(item: item))
         .toList();
 
@@ -112,11 +116,12 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
     return a.startAt.isBefore(b.endAt) && b.startAt.isBefore(a.endAt);
   }
 
-  String _dayAbbrev(String date) {
+  String _dayAbbrev(BuildContext context, String date) {
     final parsed = DateTime.tryParse(date);
     if (parsed == null) return '';
-    const labels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
-    return labels[parsed.weekday - 1];
+    return DateFormat('E', Localizations.localeOf(context).toString())
+        .format(parsed)
+        .replaceAll('.', '');
   }
 
   String _dayNumber(String date) {
@@ -131,17 +136,13 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
       await action();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cập nhật thành công.')),
+        SnackBar(content: Text(context.l10n.adminUpdateSuccess)),
       );
       await _load();
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(context.l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _actionInProgress = false);
@@ -175,22 +176,23 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
   }
 
   Future<void> _confirmDeleteSchedule() async {
+    final l10n = context.l10n;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Xóa lịch trình?'),
-        content: const Text('Tất cả mục trong lịch sẽ bị xóa.'),
+        title: Text(l10n.adminScheduleDeleteTitle),
+        content: Text(l10n.adminScheduleDeleteBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Hủy'),
+            child: Text(l10n.adminCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
             style: FilledButton.styleFrom(
               backgroundColor: const Color(0xFFF0A0A8),
             ),
-            child: const Text('Xóa'),
+            child: Text(l10n.adminDelete),
           ),
         ],
       ),
@@ -243,19 +245,20 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
   }
 
   Future<void> _confirmDeleteItem(AdminTimelineItem item) async {
+    final l10n = context.l10n;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Xóa mục lịch trình?'),
-        content: Text('Xóa "${item.title}"?'),
+        title: Text(l10n.adminScheduleDeleteItemTitle),
+        content: Text(l10n.adminScheduleDeleteItemBody(item.title)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Hủy'),
+            child: Text(l10n.adminCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Xóa'),
+            child: Text(l10n.adminDelete),
           ),
         ],
       ),
@@ -303,14 +306,14 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _error!,
+                formatAdminError(context.l10n, _error!),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                     ),
               ),
               const SizedBox(height: 16),
-              FilledButton(onPressed: _load, child: const Text('Thử lại')),
+              FilledButton(onPressed: _load, child: Text(context.l10n.adminRetry)),
             ],
           ),
         ),
@@ -326,7 +329,9 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _ScheduleHeaderBar(
-          title: schedule.name.isNotEmpty ? schedule.name : 'Lịch trình',
+          title: schedule.name.isNotEmpty
+              ? schedule.name
+              : context.l10n.adminScheduleDefaultTitle,
           onBack: () => context.pop(),
           onEdit: _openEditSchedule,
           onDelete: _confirmDeleteSchedule,
@@ -345,7 +350,7 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
                 final day = schedule.days[index];
                 final selected = _selectedDate == day.date;
                 return _DateChip(
-                  dayLabel: _dayAbbrev(day.date),
+                  dayLabel: _dayAbbrev(context, day.date),
                   dateLabel: _dayNumber(day.date),
                   selected: selected,
                   onTap: () => setState(() => _selectedDate = day.date),
@@ -366,9 +371,9 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return _CategoryChip(
-                    label: 'Tất cả',
-                    selected: _selectedCategory == 'Tất cả',
-                    onTap: () => setState(() => _selectedCategory = 'Tất cả'),
+                    label: context.l10n.adminAll,
+                    selected: _selectedCategory == _allCategories,
+                    onTap: () => setState(() => _selectedCategory = _allCategories),
                   );
                 }
                 final category = categories[index - 1];
@@ -413,16 +418,19 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
   }
 
   Widget _buildEmptyDay() {
+    final l10n = context.l10n;
     final selected = _selectedDate;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(FuvekonSpacing.page),
         child: EmptyState(
           icon: Icons.event_busy_outlined,
-          title: 'Chưa có mục lịch trình',
+          title: l10n.adminScheduleNoItems,
           subtitle: selected == null
-              ? 'Chọn ngày để xem lịch trình.'
-              : 'Chưa có mục nào vào ngày ${DateFormat('dd/MM').format(DateTime.parse(selected))}.',
+              ? l10n.adminScheduleSelectDay
+              : l10n.adminScheduleEmptyDayOnDate(
+                  DateFormat('dd/MM').format(DateTime.parse(selected)),
+                ),
         ),
       ),
     );
@@ -483,11 +491,17 @@ class _ScheduleHeaderBar extends StatelessWidget {
                   onDelete();
               }
             },
-            itemBuilder: (context) => const [
-              PopupMenuItem(value: 'edit', child: Text('Chỉnh sửa lịch')),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'edit',
+                child: Text(context.l10n.adminScheduleEditMenu),
+              ),
               PopupMenuItem(
                 value: 'delete',
-                child: Text('Xóa lịch trình', style: TextStyle(color: Color(0xFFF0A0A8))),
+                child: Text(
+                  context.l10n.adminScheduleDeleteMenu,
+                  style: const TextStyle(color: Color(0xFFF0A0A8)),
+                ),
               ),
             ],
           ),
@@ -611,6 +625,7 @@ class _TimelineItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final timeFmt = DateFormat('HH:mm');
     final item = entry.item;
     final conflict = entry.hasLocationConflict;
@@ -667,10 +682,10 @@ class _TimelineItemTile extends StatelessWidget {
                       ],
                       if (conflict) ...[
                         const SizedBox(width: 6),
-                        const _TagChip(
-                          label: 'Trùng địa điểm',
+                        _TagChip(
+                          label: l10n.adminScheduleOverlapBadge,
                           icon: Icons.warning_amber_rounded,
-                          backgroundColor: Color(0xFF3D2020),
+                          backgroundColor: const Color(0xFF3D2020),
                           foregroundColor: _conflictColor,
                         ),
                       ],
@@ -717,7 +732,9 @@ class _TimelineItemTile extends StatelessWidget {
                                   const SizedBox(width: 6),
                                   Expanded(
                                     child: Text(
-                                      conflict ? '${item.location} (Trùng lịch)' : item.location,
+                                      conflict
+                                          ? '${item.location}${l10n.adminScheduleOverlapSchedule}'
+                                          : item.location,
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                             color: conflict
                                                 ? _conflictColor
@@ -881,7 +898,7 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
     if (!_formKey.currentState!.validate()) return;
     if (!_endAt.isAfter(_startAt)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Thời gian kết thúc phải sau thời gian bắt đầu.')),
+        SnackBar(content: Text(context.l10n.adminScheduleEndAfterStart)),
       );
       return;
     }
@@ -903,9 +920,7 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString().replaceFirst('ServerException: ', 'Lỗi: ')),
-        ),
+        SnackBar(content: Text(formatAdminError(context.l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _submitting = false);
@@ -916,6 +931,7 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     final isEdit = widget.initial != null;
 
@@ -941,7 +957,7 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
               ),
               const SizedBox(height: 16),
               Text(
-                isEdit ? 'Chỉnh sửa mục' : 'Thêm mục lịch trình',
+                isEdit ? l10n.adminScheduleEditItem : l10n.adminScheduleAddItem,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: FuvekonColors.darkText,
                     fontWeight: FontWeight.w700,
@@ -950,10 +966,10 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Tiêu đề'),
+              decoration: InputDecoration(labelText: l10n.adminScheduleItemTitleLabel),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Vui lòng nhập tiêu đề.';
+                  return l10n.adminScheduleTitleRequired;
                 }
                 return null;
               },
@@ -961,30 +977,30 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
             const SizedBox(height: 12),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Diễn giả / mô tả (tuỳ chọn)',
+              decoration: InputDecoration(
+                labelText: l10n.adminScheduleItemDescriptionLabel,
               ),
               maxLines: 3,
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _categoryController,
-              decoration: const InputDecoration(
-                labelText: 'Hạng mục (tuỳ chọn)',
-                hintText: 'Panel, Workshop...',
+              decoration: InputDecoration(
+                labelText: l10n.adminScheduleItemCategoryLabel,
+                hintText: l10n.adminScheduleItemCategoryHint,
               ),
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _locationController,
-              decoration: const InputDecoration(
-                labelText: 'Địa điểm (tuỳ chọn)',
-                hintText: 'Hall A, Sân khấu chính...',
+              decoration: InputDecoration(
+                labelText: l10n.adminScheduleItemLocationLabel,
+                hintText: l10n.adminScheduleItemLocationHint,
               ),
             ),
             const SizedBox(height: 12),
             DateTimeField(
-              label: 'Bắt đầu',
+              label: l10n.adminScheduleStartLabel,
               value: _formatDateTime(_startAt),
               icon: Icons.schedule_outlined,
               onTap: () => _pickDateTime(
@@ -994,7 +1010,7 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
             ),
             const SizedBox(height: 12),
             DateTimeField(
-              label: 'Kết thúc',
+              label: l10n.adminScheduleEndLabel,
               value: _formatDateTime(_endAt),
               icon: Icons.schedule_outlined,
               onTap: () => _pickDateTime(
@@ -1011,7 +1027,7 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : Text(isEdit ? 'Lưu' : 'Thêm'),
+                  : Text(isEdit ? l10n.adminSave : l10n.adminAdd),
               ),
             ],
           ),

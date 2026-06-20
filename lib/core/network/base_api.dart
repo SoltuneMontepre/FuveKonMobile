@@ -146,6 +146,14 @@ abstract class BaseApi {
     final response = await request;
     final body = response.data as JsonMap?;
     if (body == null) {
+      final statusCode = response.statusCode as int?;
+      if (statusCode != null && statusCode >= 200 && statusCode < 300) {
+        return ApiResponse<T>(
+          isSuccess: true,
+          message: 'Success',
+          statusCode: statusCode,
+        );
+      }
       throw const ServerException('Empty response');
     }
 

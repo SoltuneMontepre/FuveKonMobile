@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/auth/user_permissions.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/notification/presentation/pages/notifications_page.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/shared/widgets/home/fuvekon_home_layout.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,9 +24,10 @@ class AdminHomeSections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final sections = switch (variant) {
-      AdminHomeVariant.admin => _adminSections(context),
-      AdminHomeVariant.staff => _staffSections(context),
+      AdminHomeVariant.admin => _adminSections(context, l10n),
+      AdminHomeVariant.staff => _staffSections(context, l10n),
     };
 
     if (sections.isEmpty) return const SizedBox.shrink();
@@ -40,32 +43,32 @@ class AdminHomeSections extends StatelessWidget {
     );
   }
 
-  List<Widget> _adminSections(BuildContext context) {
+  List<Widget> _adminSections(BuildContext context, AppLocalizations l10n) {
     return [
       _section(
         context,
-        title: 'Vận hành tại chỗ',
-        subtitle: 'Check-in, lịch sử quét và đồ thất lạc.',
+        title: l10n.adminSectionOnSite,
+        subtitle: l10n.adminSectionOnSiteSubtitle,
         icon: Icons.qr_code_scanner_outlined,
         items: [
           if (auth.hasPermission(UserPermissions.scanTickets))
             _item(
               context,
-              label: 'Quét vé',
+              label: l10n.adminMenuScanTicket,
               icon: Icons.qr_code_scanner_outlined,
               onTap: () => context.go(Routes.adminScanTicket),
             ),
           if (auth.hasPermission(UserPermissions.scanTickets))
             _item(
               context,
-              label: 'Lịch sử quét',
+              label: l10n.adminMenuScanHistory,
               icon: Icons.history_rounded,
               onTap: () => context.go(Routes.adminHistory),
             ),
           if (auth.hasPermission(UserPermissions.approveProfiles))
             _item(
               context,
-              label: 'Thất lạc',
+              label: l10n.adminMenuLostFound,
               icon: Icons.inventory_2_outlined,
               onTap: () => context.go(Routes.adminLostFound),
             ),
@@ -73,14 +76,14 @@ class AdminHomeSections extends StatelessWidget {
       ),
       _section(
         context,
-        title: 'Quản lý sự kiện',
-        subtitle: 'Vé, cấu hình và vận hành sự kiện.',
+        title: l10n.adminSectionEvent,
+        subtitle: l10n.adminSectionEventSubtitle,
         icon: Icons.event_outlined,
         items: [
           if (auth.hasPermission(UserPermissions.manageTickets))
             _item(
               context,
-              label: 'Quản lý vé',
+              label: l10n.adminMenuTickets,
               icon: Icons.confirmation_number_outlined,
               onTap: () => context.push(Routes.adminTickets),
             ),
@@ -88,26 +91,26 @@ class AdminHomeSections extends StatelessWidget {
       ),
       _section(
         context,
-        title: 'Duyệt nội dung',
-        subtitle: 'Conbook, panel và gian hàng dealer.',
+        title: l10n.adminSectionContent,
+        subtitle: l10n.adminSectionContentSubtitle,
         icon: Icons.fact_check_outlined,
         permission: UserPermissions.approveProfiles,
         items: [
           _item(
             context,
-            label: 'Duyệt Conbook',
+            label: l10n.adminMenuConbook,
             icon: Icons.menu_book_outlined,
             onTap: () => context.push(Routes.adminArtSubmit),
           ),
           _item(
             context,
-            label: 'Quản lý Panel',
+            label: l10n.adminMenuPanels,
             icon: Icons.groups_outlined,
             onTap: () => context.push(Routes.adminPanels),
           ),
           _item(
             context,
-            label: 'Quản lý Dealer',
+            label: l10n.adminMenuDealers,
             icon: Icons.storefront_outlined,
             onTap: () => context.push(Routes.adminDealers),
           ),
@@ -115,21 +118,21 @@ class AdminHomeSections extends StatelessWidget {
       ),
       _section(
         context,
-        title: 'Người dùng & báo cáo',
-        subtitle: 'Tài khoản và số liệu bán vé.',
+        title: l10n.adminSectionUsersReports,
+        subtitle: l10n.adminSectionUsersReportsSubtitle,
         icon: Icons.insights_outlined,
         items: [
           if (auth.hasPermission(UserPermissions.manageUsers))
             _item(
               context,
-              label: 'Người dùng',
+              label: l10n.adminMenuUsers,
               icon: Icons.people_outline,
               onTap: () => context.push(Routes.adminUsers),
             ),
           if (auth.hasPermission(UserPermissions.viewDashboard))
             _item(
               context,
-              label: 'Thống kê',
+              label: l10n.adminMenuStats,
               icon: Icons.analytics_outlined,
               onTap: () => context.go(Routes.adminDashboard),
             ),
@@ -138,25 +141,25 @@ class AdminHomeSections extends StatelessWidget {
     ].whereType<Widget>().toList();
   }
 
-  List<Widget> _staffSections(BuildContext context) {
+  List<Widget> _staffSections(BuildContext context, AppLocalizations l10n) {
     return [
       _section(
         context,
-        title: 'Vận hành tại chỗ',
-        subtitle: 'Công cụ phục vụ khách tại sự kiện.',
+        title: l10n.adminSectionOnSite,
+        subtitle: l10n.adminStaffReadySubtitle,
         icon: Icons.qr_code_scanner_outlined,
         items: [
           if (auth.hasPermission(UserPermissions.scanTickets))
             _item(
               context,
-              label: 'Lịch sử quét',
+              label: l10n.adminMenuScanHistory,
               icon: Icons.history_rounded,
               onTap: () => context.go(Routes.adminHistory),
             ),
           if (auth.hasPermission(UserPermissions.approveProfiles))
             _item(
               context,
-              label: 'Thất lạc',
+              label: l10n.adminMenuLostFound,
               icon: Icons.inventory_2_outlined,
               onTap: () => context.go(Routes.adminLostFound),
             ),
@@ -164,28 +167,28 @@ class AdminHomeSections extends StatelessWidget {
       ),
       _section(
         context,
-        title: 'Quản lý',
-        subtitle: 'Vé, người dùng và thống kê.',
+        title: l10n.adminSectionUsersReports,
+        subtitle: l10n.adminSectionUsersReportsSubtitle,
         icon: Icons.tune_outlined,
         items: [
           if (auth.hasPermission(UserPermissions.manageTickets))
             _item(
               context,
-              label: 'Quản lý vé',
+              label: l10n.adminMenuTickets,
               icon: Icons.confirmation_number_outlined,
               onTap: () => context.push(Routes.adminTickets),
             ),
           if (auth.hasPermission(UserPermissions.viewDashboard))
             _item(
               context,
-              label: 'Thống kê',
+              label: l10n.adminMenuStats,
               icon: Icons.analytics_outlined,
               onTap: () => context.go(Routes.adminDashboard),
             ),
           if (auth.hasPermission(UserPermissions.manageUsers))
             _item(
               context,
-              label: 'Người dùng',
+              label: l10n.adminMenuUsers,
               icon: Icons.people_outline,
               onTap: () => context.push(Routes.adminUsers),
             ),
@@ -193,13 +196,13 @@ class AdminHomeSections extends StatelessWidget {
       ),
       _section(
         context,
-        title: 'Khác',
-        subtitle: 'Thông báo và lịch trình công khai.',
+        title: l10n.adminSectionOther,
+        subtitle: l10n.adminSectionOtherSubtitle,
         icon: Icons.more_horiz_rounded,
         items: [
           _item(
             context,
-            label: 'Thông báo',
+            label: l10n.adminMenuNotifications,
             icon: Icons.notifications_outlined,
             onTap: () {
               Navigator.of(context).push(
@@ -213,7 +216,7 @@ class AdminHomeSections extends StatelessWidget {
               !auth.hasPermission(UserPermissions.approveProfiles))
             _item(
               context,
-              label: 'Lịch trình',
+              label: l10n.adminMenuSchedules,
               icon: Icons.calendar_month_outlined,
               onTap: () => context.push(Routes.schedule),
             ),

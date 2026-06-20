@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
@@ -19,6 +20,7 @@ class AdminHomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       child: Row(
@@ -30,7 +32,7 @@ class AdminHomeAppBar extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              'FUVEKON Admin',
+              l10n.adminBrandTitle,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: FuvekonColors.darkText,

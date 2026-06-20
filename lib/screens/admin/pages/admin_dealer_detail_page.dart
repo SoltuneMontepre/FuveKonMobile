@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_dealer_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
@@ -47,29 +50,26 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = formatAdminError(context.l10n, e);
         _loading = false;
       });
     }
   }
 
   Future<void> _runAction(Future<void> Function() action) async {
+    final l10n = context.l10n;
     setState(() => _actionInProgress = true);
     try {
       await action();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cập nhật thành công.')),
+        SnackBar(content: Text(l10n.adminUpdateSuccess)),
       );
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString().replaceFirst('ServerException: ', 'Lỗi: '),
-          ),
-        ),
+        SnackBar(content: Text(formatAdminError(l10n, e))),
       );
     } finally {
       if (mounted) setState(() => _actionInProgress = false);
@@ -78,19 +78,20 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final dealer = _dealer;
     return Scaffold(
       backgroundColor: FuvekonColors.darkBg,
       appBar: AppBar(
         backgroundColor: FuvekonColors.darkBg,
         foregroundColor: FuvekonColors.darkText,
-        title: Text(dealer?.boothName ?? 'Chi tiết gian hàng'),
+        title: Text(dealer?.boothName ?? l10n.adminDealerDetailTitle),
       ),
-      body: _buildBody(),
+      body: _buildBody(l10n),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AppLocalizations l10n) {
     if (_loading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -112,7 +113,7 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: _load,
-                child: const Text('Thử lại'),
+                child: Text(l10n.adminRetry),
               ),
             ],
           ),
@@ -133,33 +134,34 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
         if (!dealer.isVerified) ...[
           const SizedBox(height: FuvekonSpacing.section),
           _ApprovalActions(
+            l10n: l10n,
             loading: _actionInProgress,
             onApprove: () => _runAction(() => _service.verifyDealer(dealer.id)),
             onDeny: () => _runAction(() => _service.denyDealer(dealer.id)),
           ),
         ],
         const SizedBox(height: FuvekonSpacing.section),
-        const AdminUserSectionTitle(title: 'Thông tin gian hàng'),
+        AdminUserSectionTitle(title: l10n.adminDealerInfo),
         const SizedBox(height: 12),
         _InfoCard(
           children: [
             if (dealer.boothNumber?.isNotEmpty == true)
               _InfoRow(
-                label: 'Mã gian',
+                label: l10n.adminFieldBoothCode,
                 value: dealer.boothNumber!,
               ),
             if (dealer.description.isNotEmpty)
               _InfoRow(
-                label: 'Mô tả',
+                label: l10n.adminFieldDescription,
                 value: dealer.description,
               ),
             _InfoRow(
-              label: 'Ngày đăng ký',
+              label: l10n.adminFieldRegisteredAt,
               value: formatAdminDate(dealer.createdAt),
             ),
             if (dealer.modifiedAt != null)
               _InfoRow(
-                label: 'Cập nhật lần cuối',
+                label: l10n.adminFieldLastUpdated,
                 value: formatAdminDate(dealer.modifiedAt),
               ),
           ],
@@ -168,8 +170,8 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
           const SizedBox(height: FuvekonSpacing.section),
           AdminUserSectionTitle(
             title: dealer.priceSheets.length == 1
-                ? 'Bảng giá'
-                : 'Bảng giá (${dealer.priceSheets.length})',
+                ? l10n.adminDealerPriceSheets
+                : l10n.adminDealerPriceSheetsCount(dealer.priceSheets.length),
           ),
           const SizedBox(height: 12),
           for (var i = 0; i < dealer.priceSheets.length; i++) ...[
@@ -188,14 +190,14 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
         ],
         const SizedBox(height: FuvekonSpacing.section),
         AdminUserSectionTitle(
-          title: 'Nhân viên gian hàng (${dealer.staff.length})',
+          title: l10n.adminDealerStaffCount(dealer.staff.length),
         ),
         const SizedBox(height: 12),
         if (dealer.staff.isEmpty)
           _InfoCard(
             children: [
               Text(
-                'Chưa có nhân viên nào.',
+                l10n.adminDealerNoStaff,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: FuvekonColors.darkTextSecondary,
                     ),
@@ -208,7 +210,7 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
               for (var i = 0; i < dealer.staff.length; i++) ...[
                 if (i > 0)
                   const Divider(height: 24, color: FuvekonColors.darkBorder),
-                _StaffRow(member: dealer.staff[i]),
+                _StaffRow(l10n: l10n, member: dealer.staff[i]),
               ],
             ],
           ),
@@ -224,6 +226,7 @@ class _DealerHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -249,7 +252,9 @@ class _DealerHeaderCard extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               FuveStatusBadge(
-                label: dealer.isVerified ? 'Đã duyệt' : 'Chờ duyệt',
+                label: dealer.isVerified
+                    ? l10n.adminStatusApproved
+                    : l10n.adminStatusPending,
                 variant: dealer.isVerified
                     ? FuveStatusBadgeVariant.success
                     : FuveStatusBadgeVariant.pending,
@@ -259,7 +264,7 @@ class _DealerHeaderCard extends StatelessWidget {
           if (dealer.boothNumber?.isNotEmpty == true) ...[
             const SizedBox(height: 8),
             Text(
-              'Mã gian: ${dealer.boothNumber}',
+              l10n.adminDealerBoothCode(dealer.boothNumber!),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: FuvekonColors.darkTextSecondary,
                   ),
@@ -273,11 +278,13 @@ class _DealerHeaderCard extends StatelessWidget {
 
 class _ApprovalActions extends StatelessWidget {
   const _ApprovalActions({
+    required this.l10n,
     required this.loading,
     required this.onApprove,
     required this.onDeny,
   });
 
+  final AppLocalizations l10n;
   final bool loading;
   final VoidCallback onApprove;
   final VoidCallback onDeny;
@@ -287,7 +294,7 @@ class _ApprovalActions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const AdminUserSectionTitle(title: 'Thao tác'),
+        AdminUserSectionTitle(title: l10n.adminDealerActions),
         const SizedBox(height: 12),
         FilledButton(
           onPressed: loading ? null : onApprove,
@@ -301,7 +308,7 @@ class _ApprovalActions extends StatelessWidget {
                   height: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Duyệt gian hàng'),
+              : Text(l10n.adminDealersApprove),
         ),
         const SizedBox(height: 8),
         FilledButton(
@@ -310,7 +317,7 @@ class _ApprovalActions extends StatelessWidget {
             backgroundColor: const Color(0xFFF0A0A8),
             foregroundColor: FuvekonColors.darkCardText,
           ),
-          child: const Text('Từ chối đăng ký'),
+          child: Text(l10n.adminDealersDeny),
         ),
       ],
     );
@@ -373,8 +380,9 @@ class _InfoRow extends StatelessWidget {
 }
 
 class _StaffRow extends StatelessWidget {
-  const _StaffRow({required this.member});
+  const _StaffRow({required this.l10n, required this.member});
 
+  final AppLocalizations l10n;
   final AdminDealerStaffMember member;
 
   @override
@@ -414,8 +422,8 @@ class _StaffRow extends StatelessWidget {
                     ),
                   ),
                   if (member.isOwner)
-                    const FuveStatusBadge(
-                      label: 'Chủ gian',
+                    FuveStatusBadge(
+                      label: l10n.adminDealerOwner,
                       variant: FuveStatusBadgeVariant.success,
                     ),
                 ],
@@ -432,7 +440,7 @@ class _StaffRow extends StatelessWidget {
               if (member.createdAt != null) ...[
                 const SizedBox(height: 4),
                 Text(
-                  'Tham gia: ${formatAdminDate(member.createdAt)}',
+                  '${l10n.adminDealerJoined} ${formatAdminDate(member.createdAt)}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: FuvekonColors.darkTextSecondary,
                       ),

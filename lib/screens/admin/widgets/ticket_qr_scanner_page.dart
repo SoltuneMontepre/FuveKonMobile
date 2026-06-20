@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/utils/s3_url.dart';
 import 'package:fuvekonmobile/core/utils/ticket/render_namecard.dart';
+import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/services/scan_ticket_service.dart';
 import 'package:fuvekonmobile/shared/services/scan_session_store.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -178,6 +180,7 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) {
+        final l10n = context.l10n;
         return Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.viewPaddingOf(context).bottom,
@@ -207,7 +210,7 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
               ),
               const SizedBox(height: 12),
               Text(
-                result.message,
+                formatAdminMessage(l10n, result.message),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: FuvekonColors.darkText,
                       fontWeight: FontWeight.w700,
@@ -247,7 +250,7 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
                 width: double.infinity,
                 child: FilledButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Tiếp tục quét'),
+                  child: Text(l10n.adminQrContinueScan),
                 ),
               ),
             ],
@@ -260,6 +263,7 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _syncScannerVisibility();
     });
@@ -272,7 +276,7 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
           MobileScanner(
             controller: _controller,
             errorBuilder: (context, error) => _ScannerError(
-              message: _errorMessage(error),
+              message: _errorMessage(context, error),
               onManualEntry: _showManualEntry,
               onRetry: () => _controller.start(),
             ),
@@ -330,8 +334,8 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
                       const SizedBox(height: 16),
                       Text(
                         _isProcessing
-                            ? 'Đang xử lý vé...'
-                            : 'Đưa mã QR vé vào khung hình',
+                            ? l10n.adminQrProcessing
+                            : l10n.adminQrAlignFrame,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Colors.white,
                             ),
@@ -345,7 +349,7 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
                           side: const BorderSide(color: Colors.white54),
                         ),
                         icon: const Icon(Icons.keyboard_outlined),
-                        label: const Text('Nhập mã thủ công'),
+                        label: Text(l10n.adminQrManualEntry),
                       ),
                     ],
                   ),
@@ -364,13 +368,12 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
     );
   }
 
-  String _errorMessage(MobileScannerException error) {
+  String _errorMessage(BuildContext context, MobileScannerException error) {
+    final l10n = context.l10n;
     return switch (error.errorCode) {
-      MobileScannerErrorCode.permissionDenied =>
-        'Cần quyền camera để quét vé. Hãy bật trong Cài đặt.',
-      MobileScannerErrorCode.unsupported =>
-        'Thiết bị không hỗ trợ quét mã QR.',
-      _ => error.errorDetails?.message ?? 'Không thể mở camera.',
+      MobileScannerErrorCode.permissionDenied => l10n.adminQrCameraPermission,
+      MobileScannerErrorCode.unsupported => l10n.adminQrUnsupported,
+      _ => error.errorDetails?.message ?? l10n.adminQrCameraOpenFailed,
     };
   }
 }
@@ -440,6 +443,7 @@ class _TicketPreviewSheetState extends State<_TicketPreviewSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final preview = widget.preview;
     final idCard = preview.idCard?.trim();
 
@@ -460,7 +464,7 @@ class _TicketPreviewSheetState extends State<_TicketPreviewSheet> {
           ),
           const SizedBox(height: 20),
           Text(
-            'Thông tin vé',
+            l10n.adminQrTicketInfo,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: FuvekonColors.darkText,
                   fontWeight: FontWeight.w700,
@@ -469,25 +473,25 @@ class _TicketPreviewSheetState extends State<_TicketPreviewSheet> {
           ),
           const SizedBox(height: 20),
           _TicketInfoRow(
-            label: 'Mã vé',
+            label: l10n.adminFieldTicketCode,
             value: preview.referenceCode ?? preview.code,
           ),
           if (preview.holderName != null) ...[
             const SizedBox(height: 12),
-            _TicketInfoRow(label: 'Khách', value: preview.holderName!),
+            _TicketInfoRow(label: l10n.adminQrGuestLabel, value: preview.holderName!),
           ],
           if (preview.tierName != null) ...[
             const SizedBox(height: 12),
-            _TicketInfoRow(label: 'Hạng vé', value: preview.tierName!),
+            _TicketInfoRow(label: l10n.adminFieldTier, value: preview.tierName!),
           ],
           const SizedBox(height: 12),
           _TicketInfoRow(
-            label: 'CCCD/PP',
+            label: l10n.adminFieldIdCard,
             value: idCard != null && idCard.isNotEmpty ? idCard : '—',
           ),
           const SizedBox(height: 20),
           Text(
-            'Vé',
+            l10n.adminQrTicketLabel,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: FuvekonColors.darkTextSecondary,
                   fontWeight: FontWeight.w600,
@@ -505,12 +509,12 @@ class _TicketPreviewSheetState extends State<_TicketPreviewSheet> {
           FilledButton.icon(
             onPressed: widget.onCheckIn,
             icon: const Icon(Icons.how_to_reg_rounded),
-            label: const Text('Check-in'),
+            label: Text(l10n.adminQrCheckIn),
           ),
           const SizedBox(height: 12),
           OutlinedButton(
             onPressed: widget.onCancel,
-            child: const Text('Hủy'),
+            child: Text(l10n.adminCancel),
           ),
         ],
       ),
@@ -583,7 +587,7 @@ class _TicketImagePlaceholder extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        'Không có ảnh vé',
+        context.l10n.adminQrNoTicketImage,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: FuvekonColors.darkTextSecondary,
             ),
@@ -639,6 +643,7 @@ class _ScannerError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return ColoredBox(
       color: Colors.black,
       child: Center(
@@ -664,7 +669,7 @@ class _ScannerError extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onManualEntry,
                 icon: const Icon(Icons.keyboard_outlined),
-                label: const Text('Nhập mã thủ công'),
+                label: Text(l10n.adminQrManualEntry),
               ),
               const SizedBox(height: 12),
               OutlinedButton(
@@ -673,7 +678,7 @@ class _ScannerError extends StatelessWidget {
                   foregroundColor: Colors.white,
                   side: const BorderSide(color: Colors.white54),
                 ),
-                child: const Text('Thử lại'),
+                child: Text(l10n.adminRetry),
               ),
             ],
           ),
@@ -701,8 +706,9 @@ class _ManualEntryDialogState extends State<_ManualEntryDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return AlertDialog(
-      title: const Text('Nhập mã vé'),
+      title: Text(l10n.adminQrEnterCodeTitle),
       content: TextField(
         controller: _controller,
         autofocus: true,
@@ -715,11 +721,11 @@ class _ManualEntryDialogState extends State<_ManualEntryDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Hủy'),
+          child: Text(l10n.adminCancel),
         ),
         FilledButton(
           onPressed: () => Navigator.of(context).pop(_controller.text),
-          child: const Text('Xác nhận'),
+          child: Text(l10n.adminConfirm),
         ),
       ],
     );
