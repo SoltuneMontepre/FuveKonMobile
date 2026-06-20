@@ -7,8 +7,8 @@ import 'package:fuvekonmobile/features/notification/presentation/bloc/notificati
 
 class NotificationDetailCubit extends Cubit<NotificationDetailState> {
   NotificationDetailCubit({required NotificationRepository repository})
-      : _repository = repository,
-        super(const NotificationDetailInitial());
+    : _repository = repository,
+      super(const NotificationDetailInitial());
 
   final NotificationRepository _repository;
 

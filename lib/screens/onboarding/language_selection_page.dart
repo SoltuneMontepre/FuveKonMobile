@@ -82,16 +82,16 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
                 Text(
                   l10n.languageTitle,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                      ),
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   l10n.languageSubtitle,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.65),
-                      ),
+                    color: Colors.white.withValues(alpha: 0.65),
+                  ),
                 ),
                 const Spacer(),
                 FuvekonIllustratedContentPanel(
@@ -171,18 +171,15 @@ class _LanguageOption extends StatelessWidget {
                 child: Text(
                   label,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: selected
-                            ? FuvekonColors.darkButtonText
-                            : Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: selected
+                        ? FuvekonColors.darkButtonText
+                        : Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               if (selected)
-                Icon(
-                  Icons.check_circle,
-                  color: FuvekonColors.darkButtonText,
-                )
+                Icon(Icons.check_circle, color: FuvekonColors.darkButtonText)
               else
                 Container(
                   width: 22,

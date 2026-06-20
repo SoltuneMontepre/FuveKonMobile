@@ -37,10 +37,7 @@ class AdminScheduleItem {
 }
 
 class AdminScheduleDay {
-  const AdminScheduleDay({
-    required this.date,
-    this.timeline = const [],
-  });
+  const AdminScheduleDay({required this.date, this.timeline = const []});
 
   final String date;
   final List<AdminTimelineItem> timeline;

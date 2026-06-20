@@ -322,10 +322,7 @@ class _HeroMetaRow extends StatelessWidget {
 }
 
 class _QuickActionsBar extends StatelessWidget {
-  const _QuickActionsBar({
-    required this.event,
-    required this.viewTicketsLabel,
-  });
+  const _QuickActionsBar({required this.event, required this.viewTicketsLabel});
 
   final ScheduleEvent event;
   final String viewTicketsLabel;
@@ -349,56 +346,56 @@ class _QuickActionsBar extends StatelessWidget {
         ],
       ),
       child: Row(
-          children: [
-            Expanded(
-              child: Material(
-                color: FuvekonColors.sageGreen,
+        children: [
+          Expanded(
+            child: Material(
+              color: FuvekonColors.sageGreen,
+              borderRadius: BorderRadius.circular(8),
+              child: InkWell(
+                onTap: () {
+                  if (event.isPast) {
+                    context.push(Routes.accountTicket);
+                  } else {
+                    context.push(Routes.ticket);
+                  }
+                },
                 borderRadius: BorderRadius.circular(8),
-                child: InkWell(
-                  onTap: () {
-                    if (event.isPast) {
-                      context.push(Routes.accountTicket);
-                    } else {
-                      context.push(Routes.ticket);
-                    }
-                  },
-                  borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.confirmation_number_outlined,
-                          size: 20,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.confirmation_number_outlined,
+                        size: 20,
+                        color: FuvekonColors.onSageGreen,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        viewTicketsLabel,
+                        style: const TextStyle(
                           color: FuvekonColors.onSageGreen,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          viewTicketsLabel,
-                          style: const TextStyle(
-                            color: FuvekonColors.onSageGreen,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 16),
-            _IconActionButton(
-              icon: Icons.calendar_month_outlined,
-              onTap: () => context.push(ScheduleRouteContext.list(context)),
-            ),
-            const SizedBox(width: 8),
-            _IconActionButton(
-              icon: Icons.map_outlined,
-              onTap: () => context.push(ScheduleRouteContext.map(context)),
-            ),
-          ],
+          ),
+          const SizedBox(width: 16),
+          _IconActionButton(
+            icon: Icons.calendar_month_outlined,
+            onTap: () => context.push(ScheduleRouteContext.list(context)),
+          ),
+          const SizedBox(width: 8),
+          _IconActionButton(
+            icon: Icons.map_outlined,
+            onTap: () => context.push(ScheduleRouteContext.map(context)),
+          ),
+        ],
       ),
     );
   }

@@ -22,22 +22,19 @@ class _RegisterPageState extends State<RegisterPage> {
   final _registerUseCase = sl<RegisterUseCase>();
   bool _isLoading = false;
 
-  String _deriveNickname(String fullName, String phone) {
+  String _deriveNickname(String fullName) {
     final trimmed = fullName.trim();
     if (trimmed.isNotEmpty) {
       final firstWord = trimmed.split(RegExp(r'\s+')).first;
       final slug = firstWord.replaceAll(RegExp(r'[^\w]'), '');
       if (slug.isNotEmpty) return slug;
     }
-    final digits = phone.replaceAll(RegExp(r'\D'), '');
-    if (digits.isNotEmpty) return 'user$digits';
     return 'user${DateTime.now().millisecondsSinceEpoch % 10000}';
   }
 
   Future<void> _onSubmit({
     required String fullName,
     required String email,
-    required String phone,
     required String password,
     required String confirmPassword,
   }) async {
@@ -46,7 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final result = await _registerUseCase(
       RegisterInput(
         fullName: fullName,
-        nickname: _deriveNickname(fullName, phone),
+        nickname: _deriveNickname(fullName),
         email: email,
         dateOfBirth: '2000-01-01',
         country: 'Vietnam',

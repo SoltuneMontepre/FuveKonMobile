@@ -56,7 +56,10 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
     _service = sl<AdminTicketService>();
     _searchController = TextEditingController();
     _mainTabController = TabController(length: 2, vsync: this);
-    _ticketTabController = TabController(length: _ticketTabs.length, vsync: this);
+    _ticketTabController = TabController(
+      length: _ticketTabs.length,
+      vsync: this,
+    );
     _ticketTabController.addListener(_onTicketTabChanged);
     _mainTabController.addListener(_onMainTabChanged);
     _loadTiers();
@@ -99,8 +102,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
       return;
     }
 
-    final currentPage =
-        refresh ? 1 : (_metaByTab[index]?.currentPage ?? 0) + 1;
+    final currentPage = refresh ? 1 : (_metaByTab[index]?.currentPage ?? 0) + 1;
     if (!refresh && !(_metaByTab[index]?.hasMore ?? false)) return;
 
     setState(() {
@@ -123,8 +125,9 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
 
       if (!mounted) return;
       setState(() {
-        final existing =
-            refresh ? <AdminTicketItem>[] : _itemsByTab[index] ?? [];
+        final existing = refresh
+            ? <AdminTicketItem>[]
+            : _itemsByTab[index] ?? [];
         _itemsByTab[index] = [...existing, ...result.items];
         _metaByTab[index] = result.meta;
         _errorByTab[index] = null;
@@ -134,8 +137,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _errorByTab[index] =
-            e.toString().replaceFirst('ServerException: ', '');
+        _errorByTab[index] = e.toString().replaceFirst('ServerException: ', '');
         _loadingByTab[index] = false;
         _loadingMoreByTab[index] = false;
       });
@@ -194,9 +196,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
           title: Text(l10n.adminDenyReason),
           content: TextField(
             controller: controller,
-            decoration: InputDecoration(
-              hintText: l10n.adminDenyReasonHint,
-            ),
+            decoration: InputDecoration(hintText: l10n.adminDenyReasonHint),
             maxLines: 3,
           ),
           actions: [
@@ -223,9 +223,9 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
     try {
       await action();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(successMessage)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(successMessage)));
       Navigator.of(context).maybePop();
       await _refreshTickets();
     } catch (e) {
@@ -260,9 +260,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
 
   Future<void> _openTierEditor({AdminTicketTierItem? tier}) async {
     final saved = await Navigator.of(context).push<bool>(
-      MaterialPageRoute(
-        builder: (_) => AdminTierEditPage(tier: tier),
-      ),
+      MaterialPageRoute(builder: (_) => AdminTierEditPage(tier: tier)),
     );
     if (saved == true) {
       await _loadTiers();
@@ -337,11 +335,11 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                       Expanded(
                         child: Text(
                           item.title,
-                          style:
-                              Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: FuvekonColors.darkText,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(
+                                color: FuvekonColors.darkText,
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
                       ),
                       _StatusChip(status: item.status),
@@ -360,9 +358,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                               children: [
                                 Text(
                                   field.label,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium
+                                  style: Theme.of(context).textTheme.labelMedium
                                       ?.copyWith(
                                         color: FuvekonColors.darkTextSecondary,
                                       ),
@@ -487,17 +483,17 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                   Text(
                     tier.ticketName,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: FuvekonColors.darkText,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: FuvekonColors.darkText,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     '${tier.tierCode} • ${currency.format(tier.price)}'
                     '${tier.priceUsd != null ? ' • \$${tier.priceUsd!.toStringAsFixed(2)}' : ''}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: FuvekonColors.darkTextSecondary,
-                        ),
+                      color: FuvekonColors.darkTextSecondary,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Expanded(
@@ -518,17 +514,21 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                         _TierDetailRow(
                           label: l10n.adminFieldStatus,
                           value: [
-                            if (tier.isActive) l10n.adminTicketsSelling else l10n.adminTicketsSalesOff,
-                            if (tier.isVisible) l10n.adminTicketsStoreVisible else l10n.adminTicketsStoreHidden,
+                            if (tier.isActive)
+                              l10n.adminTicketsSelling
+                            else
+                              l10n.adminTicketsSalesOff,
+                            if (tier.isVisible)
+                              l10n.adminTicketsStoreVisible
+                            else
+                              l10n.adminTicketsStoreHidden,
                           ].join(' • '),
                         ),
                         if (tier.benefits.isNotEmpty) ...[
                           const SizedBox(height: 8),
                           Text(
                             l10n.adminTicketsBenefits,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
+                            style: Theme.of(context).textTheme.labelMedium
                                 ?.copyWith(
                                   color: FuvekonColors.darkTextSecondary,
                                 ),
@@ -540,10 +540,12 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('• ',
-                                      style: TextStyle(
-                                        color: FuvekonColors.darkText,
-                                      )),
+                                  const Text(
+                                    '• ',
+                                    style: TextStyle(
+                                      color: FuvekonColors.darkText,
+                                    ),
+                                  ),
                                   Expanded(
                                     child: Text(
                                       benefit,
@@ -628,10 +630,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
       ),
       body: TabBarView(
         controller: _mainTabController,
-        children: [
-          _buildTiersSection(),
-          _buildTicketsSection(),
-        ],
+        children: [_buildTiersSection(), _buildTicketsSection()],
       ),
       floatingActionButton: _mainTabController.index == 0
           ? FloatingActionButton.extended(
@@ -737,8 +736,8 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                 formatAdminError(context.l10n, error),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
               const SizedBox(height: 16),
               FilledButton(
@@ -811,8 +810,8 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                 formatAdminError(l10n, _tiersError!),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
               const SizedBox(height: 16),
               FilledButton(
@@ -873,9 +872,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
               padding: const EdgeInsets.symmetric(vertical: 48),
               child: EmptyState(
                 title: l10n.adminTicketsEmptyTiers,
-                subtitle: l10n.adminTicketsEmptyFilter(
-                  _tierFilter.label(l10n),
-                ),
+                subtitle: l10n.adminTicketsEmptyFilter(_tierFilter.label(l10n)),
                 icon: Icons.filter_list_off_rounded,
               ),
             )
@@ -961,9 +958,9 @@ class _StatusChip extends StatelessWidget {
       child: Text(
         ticketStatusLabel(context.l10n, status),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w600,
-            ),
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -985,15 +982,15 @@ class _TierDetailRow extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: FuvekonColors.darkText,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: FuvekonColors.darkText),
           ),
         ],
       ),

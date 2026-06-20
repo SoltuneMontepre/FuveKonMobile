@@ -9,18 +9,18 @@ enum AdminTierFilter { all, selling, paused, soldOut }
 
 extension AdminTierFilterX on AdminTierFilter {
   String label(AppLocalizations l10n) => switch (this) {
-        AdminTierFilter.all => l10n.adminTierFilterAll,
-        AdminTierFilter.selling => l10n.adminTierFilterSelling,
-        AdminTierFilter.paused => l10n.adminTierFilterPaused,
-        AdminTierFilter.soldOut => l10n.adminTierFilterSoldOut,
-      };
+    AdminTierFilter.all => l10n.adminTierFilterAll,
+    AdminTierFilter.selling => l10n.adminTierFilterSelling,
+    AdminTierFilter.paused => l10n.adminTierFilterPaused,
+    AdminTierFilter.soldOut => l10n.adminTierFilterSoldOut,
+  };
 
   bool matches(AdminTicketTierItem tier) => switch (this) {
-        AdminTierFilter.all => true,
-        AdminTierFilter.selling => tier.isActive && !tier.isSoldOut,
-        AdminTierFilter.paused => !tier.isActive && !tier.isSoldOut,
-        AdminTierFilter.soldOut => tier.isSoldOut,
-      };
+    AdminTierFilter.all => true,
+    AdminTierFilter.selling => tier.isActive && !tier.isSoldOut,
+    AdminTierFilter.paused => !tier.isActive && !tier.isSoldOut,
+    AdminTierFilter.soldOut => tier.isSoldOut,
+  };
 }
 
 class AdminTierStockStat {
@@ -180,10 +180,15 @@ class _StatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bg = highlighted ? FuvekonColors.darkCard : FuvekonColors.darkSurfaceElevated;
-    final labelColor =
-        highlighted ? FuvekonColors.textSecondary : FuvekonColors.darkTextSecondary;
-    final valueColor = highlighted ? FuvekonColors.darkCardText : FuvekonColors.darkText;
+    final bg = highlighted
+        ? FuvekonColors.darkCard
+        : FuvekonColors.darkSurfaceElevated;
+    final labelColor = highlighted
+        ? FuvekonColors.textSecondary
+        : FuvekonColors.darkTextSecondary;
+    final valueColor = highlighted
+        ? FuvekonColors.darkCardText
+        : FuvekonColors.darkText;
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -191,7 +196,9 @@ class _StatTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: highlighted
             ? null
-            : Border.all(color: FuvekonColors.darkBorder.withValues(alpha: 0.6)),
+            : Border.all(
+                color: FuvekonColors.darkBorder.withValues(alpha: 0.6),
+              ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
@@ -292,11 +299,11 @@ class _FilterChip extends StatelessWidget {
             child: Text(
               label,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: selected
-                        ? FuvekonColors.darkCardText
-                        : FuvekonColors.darkText,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: selected
+                    ? FuvekonColors.darkCardText
+                    : FuvekonColors.darkText,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),
@@ -355,7 +362,8 @@ class AdminTierCard extends StatelessWidget {
 
     final sold = stockStat?.sold ?? 0;
     final total = stockStat?.totalStock ?? tier.stock ?? 0;
-    final percent = stockStat?.soldPercent ??
+    final percent =
+        stockStat?.soldPercent ??
         (total > 0 ? (sold / total).clamp(0.0, 1.0) : 0.0);
     final pct = percent * 100;
     final percentLabel = pct == pct.roundToDouble()
@@ -363,7 +371,9 @@ class AdminTierCard extends StatelessWidget {
         : '${pct.toStringAsFixed(1)}%';
 
     final isActiveCard = _variant == _TierCardVariant.active;
-    final bg = isActiveCard ? FuvekonColors.darkCard : FuvekonColors.darkSurfaceElevated;
+    final bg = isActiveCard
+        ? FuvekonColors.darkCard
+        : FuvekonColors.darkSurfaceElevated;
     final titleColor = isActiveCard ? _accentColor : FuvekonColors.darkText;
     final priceColor = isActiveCard ? _accentColor : FuvekonColors.darkText;
     final subtleColor = isActiveCard
@@ -394,10 +404,7 @@ class AdminTierCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  _StatusBadge(
-                    label: _statusLabel(l10n),
-                    muted: !isActiveCard,
-                  ),
+                  _StatusBadge(label: _statusLabel(l10n), muted: !isActiveCard),
                 ],
               ),
               const SizedBox(height: 12),
@@ -439,7 +446,9 @@ class AdminTierCard extends StatelessWidget {
                   backgroundColor: isActiveCard
                       ? FuvekonColors.button.withValues(alpha: 0.45)
                       : FuvekonColors.darkBorder,
-                  color: isActiveCard ? _accentColor : FuvekonColors.darkTextSecondary,
+                  color: isActiveCard
+                      ? _accentColor
+                      : FuvekonColors.darkTextSecondary,
                 ),
               ),
               const SizedBox(height: 16),
@@ -476,12 +485,12 @@ class _StatusBadge extends StatelessWidget {
         child: Text(
           label,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: muted
-                    ? FuvekonColors.darkTextSecondary
-                    : FuvekonColors.darkCardText,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.4,
-              ),
+            color: muted
+                ? FuvekonColors.darkTextSecondary
+                : FuvekonColors.darkCardText,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.4,
+          ),
         ),
       ),
     );
@@ -503,9 +512,9 @@ class _DetailsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final label = l10n.adminTierViewDetails;
-    final style = Theme.of(context).textTheme.labelLarge?.copyWith(
-          fontWeight: FontWeight.w600,
-        );
+    final style = Theme.of(
+      context,
+    ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600);
 
     if (filled) {
       return FilledButton(
@@ -518,22 +527,24 @@ class _DetailsButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
           ),
         ),
-        child: Text(label, style: style?.copyWith(color: FuvekonColors.darkCard)),
+        child: Text(
+          label,
+          style: style?.copyWith(color: FuvekonColors.darkCard),
+        ),
       );
     }
 
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-        foregroundColor:
-            muted ? FuvekonColors.darkTextSecondary : FuvekonColors.darkCardText,
+        foregroundColor: muted
+            ? FuvekonColors.darkTextSecondary
+            : FuvekonColors.darkCardText,
         side: BorderSide(
           color: muted ? FuvekonColors.darkBorder : FuvekonColors.darkCardText,
         ),
         padding: const EdgeInsets.symmetric(vertical: 14),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       child: Text(label, style: style),
     );
@@ -586,7 +597,9 @@ class AdminTierFormPreview extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    ticketName.isNotEmpty ? ticketName : l10n.adminTierPreviewNamePlaceholder,
+                    ticketName.isNotEmpty
+                        ? ticketName
+                        : l10n.adminTierPreviewNamePlaceholder,
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: FuvekonColors.darkCardText,
                       fontWeight: FontWeight.w700,
@@ -688,9 +701,9 @@ class AdminTierFormField extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: FuvekonColors.darkTextSecondary,
-                fontWeight: FontWeight.w600,
-              ),
+            color: FuvekonColors.darkTextSecondary,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         const SizedBox(height: 8),
         child,

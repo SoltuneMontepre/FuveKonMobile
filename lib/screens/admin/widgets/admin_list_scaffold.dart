@@ -79,9 +79,9 @@ class _EmbeddedTitle extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: FuvekonColors.darkAppBarTitle,
-              fontWeight: FontWeight.w700,
-            ),
+          color: FuvekonColors.darkAppBarTitle,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -272,14 +272,11 @@ class AdminListErrorState extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: FuvekonColors.darkTextSecondary,
-                  ),
+                color: FuvekonColors.darkTextSecondary,
+              ),
             ),
             const SizedBox(height: 16),
-            FilledButton(
-              onPressed: onRetry,
-              child: Text(l10n.adminRetry),
-            ),
+            FilledButton(onPressed: onRetry, child: Text(l10n.adminRetry)),
           ],
         ),
       ),

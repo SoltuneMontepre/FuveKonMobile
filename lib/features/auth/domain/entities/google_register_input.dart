@@ -14,10 +14,10 @@ class GoogleRegisterInput {
   final String country;
 
   Map<String, dynamic> toJson() => {
-        'credential': credential,
-        'fullName': fullName.trim(),
-        'nickname': nickname.trim(),
-        'dateOfBirth': dateOfBirth,
-        'country': country.trim(),
-      };
+    'credential': credential,
+    'fullName': fullName.trim(),
+    'nickname': nickname.trim(),
+    'dateOfBirth': dateOfBirth,
+    'country': country.trim(),
+  };
 }

@@ -75,29 +75,25 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       parent: _entranceController,
       curve: const Interval(0.18, 0.62, curve: Curves.easeOut),
     );
-    _titleSlide = Tween<Offset>(
-      begin: const Offset(0, 0.18),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _entranceController,
-        curve: const Interval(0.18, 0.62, curve: Curves.easeOutCubic),
-      ),
-    );
+    _titleSlide = Tween<Offset>(begin: const Offset(0, 0.18), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _entranceController,
+            curve: const Interval(0.18, 0.62, curve: Curves.easeOutCubic),
+          ),
+        );
 
     _taglineFade = CurvedAnimation(
       parent: _entranceController,
       curve: const Interval(0.32, 0.78, curve: Curves.easeOut),
     );
-    _taglineSlide = Tween<Offset>(
-      begin: const Offset(0, 0.14),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _entranceController,
-        curve: const Interval(0.32, 0.78, curve: Curves.easeOutCubic),
-      ),
-    );
+    _taglineSlide =
+        Tween<Offset>(begin: const Offset(0, 0.14), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _entranceController,
+            curve: const Interval(0.32, 0.78, curve: Curves.easeOutCubic),
+          ),
+        );
 
     _footerFade = CurvedAnimation(
       parent: _entranceController,
@@ -236,7 +232,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
             children: [
               const Spacer(flex: 3),
               AnimatedBuilder(
-                animation: Listenable.merge([_logoFade, _logoScale, _pulseController]),
+                animation: Listenable.merge([
+                  _logoFade,
+                  _logoScale,
+                  _pulseController,
+                ]),
                 builder: (context, child) {
                   final breathe = 1 + (_pulseController.value * 0.035);
                   return Opacity(
@@ -275,9 +275,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   child: Text(
                     context.l10n.splashTagline,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: FuvekonColors.darkText.withValues(alpha: 0.85),
-                          fontWeight: FontWeight.w300,
-                        ),
+                      color: FuvekonColors.darkText.withValues(alpha: 0.85),
+                      fontWeight: FontWeight.w300,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -303,10 +303,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         const SizedBox(height: 16),
                         Text(
                           _version,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: FuvekonColors.darkTextSecondary.withValues(
-                                  alpha: 0.6,
-                                ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: FuvekonColors.darkTextSecondary
+                                    .withValues(alpha: 0.6),
                               ),
                         ),
                       ],
@@ -350,17 +350,17 @@ class _StartupErrorPanel extends StatelessWidget {
           l10n.startupHydrationFailedTitle,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: FuvekonColors.darkText,
-                fontWeight: FontWeight.w700,
-              ),
+            color: FuvekonColors.darkText,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         const SizedBox(height: 8),
         Text(
           message.isEmpty ? l10n.startupHydrationFailedBody : message,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.9),
-              ),
+            color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.9),
+          ),
         ),
         const SizedBox(height: 16),
         FilledButton(
@@ -441,29 +441,21 @@ class _BrandTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseStyle = Theme.of(context).textTheme.displaySmall?.copyWith(
-          fontWeight: FontWeight.w800,
-          letterSpacing: 3,
-          fontSize: 34,
-          color: Colors.white,
-        );
+      fontWeight: FontWeight.w800,
+      letterSpacing: 3,
+      fontSize: 34,
+      color: Colors.white,
+    );
 
     return ShaderMask(
       blendMode: BlendMode.srcIn,
       shaderCallback: (bounds) => const LinearGradient(
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
-        colors: [
-          Colors.white,
-          Color(0xFFE8D5A8),
-          FuvekonColors.tier3,
-        ],
+        colors: [Colors.white, Color(0xFFE8D5A8), FuvekonColors.tier3],
         stops: [0.0, 0.55, 1.0],
       ).createShader(bounds),
-      child: Text(
-        'FUVEKON',
-        style: baseStyle,
-        textAlign: TextAlign.center,
-      ),
+      child: Text('FUVEKON', style: baseStyle, textAlign: TextAlign.center),
     );
   }
 }

@@ -53,10 +53,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void _submit() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    widget.onSubmit(
-      _emailController.text.trim(),
-      _passwordController.text,
-    );
+    widget.onSubmit(_emailController.text.trim(), _passwordController.text);
   }
 
   InputDecoration _inputDecoration({
@@ -145,10 +142,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 child: Text(
                   l10n.loginForgotPassword,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 13,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
                 ),
               ),
             ],
@@ -171,7 +165,8 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 onPressed: widget.isLoading
                     ? null
-                    : () => setState(() => _obscurePassword = !_obscurePassword),
+                    : () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
               ),
             ),
             validator: (value) {
@@ -192,10 +187,12 @@ class _LoginFormState extends State<LoginForm> {
             style: FilledButton.styleFrom(
               backgroundColor: _LoginFormColors.buttonBg,
               foregroundColor: _LoginFormColors.buttonFg,
-              disabledBackgroundColor:
-                  _LoginFormColors.buttonBg.withValues(alpha: 0.35),
-              disabledForegroundColor:
-                  _LoginFormColors.buttonFg.withValues(alpha: 0.55),
+              disabledBackgroundColor: _LoginFormColors.buttonBg.withValues(
+                alpha: 0.35,
+              ),
+              disabledForegroundColor: _LoginFormColors.buttonFg.withValues(
+                alpha: 0.55,
+              ),
               minimumSize: const Size.fromHeight(52),
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -231,9 +228,7 @@ class _LoginFormState extends State<LoginForm> {
             Row(
               children: [
                 Expanded(
-                  child: Divider(
-                    color: Colors.white.withValues(alpha: 0.2),
-                  ),
+                  child: Divider(color: Colors.white.withValues(alpha: 0.2)),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -248,9 +243,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 Expanded(
-                  child: Divider(
-                    color: Colors.white.withValues(alpha: 0.2),
-                  ),
+                  child: Divider(color: Colors.white.withValues(alpha: 0.2)),
                 ),
               ],
             ),

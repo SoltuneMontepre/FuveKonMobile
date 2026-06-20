@@ -17,8 +17,8 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   ScheduleRepositoryImpl({
     required ScheduleApi scheduleApi,
     required ScheduleRepository venueDelegate,
-  })  : _scheduleApi = scheduleApi,
-        _venueDelegate = venueDelegate;
+  }) : _scheduleApi = scheduleApi,
+       _venueDelegate = venueDelegate;
 
   final ScheduleApi _scheduleApi;
   final ScheduleRepository _venueDelegate;
@@ -82,7 +82,10 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     }
   }
 
-  Result<ScheduleEvent> _resolveScheduleEventFailure(String id, Failure failure) {
+  Result<ScheduleEvent> _resolveScheduleEventFailure(
+    String id,
+    Failure failure,
+  ) {
     if (id == kHomeFeaturedEvent.id) {
       return Success(scheduleEventFromFeaturedSummary(kHomeFeaturedEvent));
     }
@@ -183,8 +186,9 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       case Success(:final data):
         final activity = data;
         if (_itinerary.any((i) => i.activityId == activityId)) {
-          final existing =
-              _itinerary.firstWhere((i) => i.activityId == activityId);
+          final existing = _itinerary.firstWhere(
+            (i) => i.activityId == activityId,
+          );
           return Success(existing);
         }
 

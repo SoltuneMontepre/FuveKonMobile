@@ -86,13 +86,7 @@ class _GoogleLogoPainter extends CustomPainter {
       ..strokeCap = StrokeCap.butt;
 
     void arc(Color color, double start, double sweep) {
-      canvas.drawArc(
-        bounds,
-        start,
-        sweep,
-        false,
-        arcPaint..color = color,
-      );
+      canvas.drawArc(bounds, start, sweep, false, arcPaint..color = color);
     }
 
     // Official Google "G" segment layout (clockwise from top).

@@ -17,11 +17,11 @@ class MyTicketBloc extends Bloc<MyTicketEvent, MyTicketState> {
     required GetMeUseCase getMeUseCase,
     required SaveNameCardUseCase saveNameCardUseCase,
     required NamecardRenderer namecardRenderer,
-  })  : _getMyTicketUseCase = getMyTicketUseCase,
-        _getMeUseCase = getMeUseCase,
-        _saveNameCardUseCase = saveNameCardUseCase,
-        _namecardRenderer = namecardRenderer,
-        super(const MyTicketState.initial()) {
+  }) : _getMyTicketUseCase = getMyTicketUseCase,
+       _getMeUseCase = getMeUseCase,
+       _saveNameCardUseCase = saveNameCardUseCase,
+       _namecardRenderer = namecardRenderer,
+       super(const MyTicketState.initial()) {
     on<MyTicketStarted>(_onLoad);
     on<MyTicketRefreshRequested>(_onLoad);
     on<MyTicketBadgeNameChanged>(_onBadgeNameChanged);

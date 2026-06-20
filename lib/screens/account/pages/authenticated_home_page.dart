@@ -102,10 +102,7 @@ class _AuthenticatedHomeView extends StatelessWidget {
                     onActionTap: () => context.go(Routes.ticket),
                   ),
                   const SizedBox(height: 16),
-                  _FeaturedEventCard(
-                    l10n: l10n,
-                    event: kHomeFeaturedEvent,
-                  ),
+                  _FeaturedEventCard(l10n: l10n, event: kHomeFeaturedEvent),
                 ],
               ),
             ),
@@ -142,14 +139,18 @@ class _BentoGrid extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.confirmation_number_outlined,
-                        color: exploreTicketTextColors(ExploreTierStyle.premium).title,
+                        color: exploreTicketTextColors(
+                          ExploreTierStyle.premium,
+                        ).title,
                         size: 28,
                       ),
                       const SizedBox(height: 12),
                       Text(
                         l10n.authHomeMyTicketTitle,
                         style: TextStyle(
-                          color: exploreTicketTextColors(ExploreTierStyle.premium).title,
+                          color: exploreTicketTextColors(
+                            ExploreTierStyle.premium,
+                          ).title,
                           fontWeight: FontWeight.w800,
                           fontSize: 16,
                         ),
@@ -158,7 +159,9 @@ class _BentoGrid extends StatelessWidget {
                       Text(
                         l10n.authHomeMyTicketSubtitle,
                         style: TextStyle(
-                          color: exploreTicketTextColors(ExploreTierStyle.premium).muted,
+                          color: exploreTicketTextColors(
+                            ExploreTierStyle.premium,
+                          ).muted,
                           fontSize: 12,
                         ),
                         maxLines: 2,
@@ -169,9 +172,7 @@ class _BentoGrid extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              Expanded(
-                child: _ScheduleOverviewCard(l10n: l10n),
-              ),
+              Expanded(child: _ScheduleOverviewCard(l10n: l10n)),
             ],
           ),
         ),
@@ -190,7 +191,9 @@ class _BentoGrid extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.local_activity_outlined,
-                  color: exploreTicketTextColors(ExploreTierStyle.standard).title,
+                  color: exploreTicketTextColors(
+                    ExploreTierStyle.standard,
+                  ).title,
                 ),
               ),
               const SizedBox(width: 14),
@@ -201,7 +204,9 @@ class _BentoGrid extends StatelessWidget {
                     Text(
                       l10n.authHomeBuyTicketBanner,
                       style: TextStyle(
-                        color: exploreTicketTextColors(ExploreTierStyle.standard).title,
+                        color: exploreTicketTextColors(
+                          ExploreTierStyle.standard,
+                        ).title,
                         fontWeight: FontWeight.w800,
                         fontSize: 15,
                       ),
@@ -209,7 +214,9 @@ class _BentoGrid extends StatelessWidget {
                     Text(
                       l10n.authHomeBuyTicketBannerSubtitle,
                       style: TextStyle(
-                        color: exploreTicketTextColors(ExploreTierStyle.standard).muted,
+                        color: exploreTicketTextColors(
+                          ExploreTierStyle.standard,
+                        ).muted,
                         fontSize: 12,
                       ),
                     ),
@@ -412,11 +419,7 @@ class _ShortcutRow extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Icon(
-                      item.icon,
-                      color: FuvekonColors.sageGreen,
-                      size: 22,
-                    ),
+                    Icon(item.icon, color: FuvekonColors.sageGreen, size: 22),
                     const SizedBox(height: 6),
                     Text(
                       item.label,
@@ -456,9 +459,8 @@ class _HeroSection extends StatelessWidget {
             AuthenticatedHomePage.heroBackgroundAsset,
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
-            errorBuilder: (context, error, stackTrace) => ColoredBox(
-              color: FuvekonColors.surfaceContainer,
-            ),
+            errorBuilder: (context, error, stackTrace) =>
+                ColoredBox(color: FuvekonColors.surfaceContainer),
           ),
           DecoratedBox(
             decoration: BoxDecoration(
@@ -502,8 +504,6 @@ class _HeroSection extends StatelessWidget {
                       height: 1.5,
                     ),
                   ),
-                  const SizedBox(height: 18),
-                  _SearchField(hint: l10n.authHomeSearchHint),
                 ],
               ),
             ),
@@ -540,54 +540,8 @@ class _StatusBadge extends StatelessWidget {
   }
 }
 
-class _SearchField extends StatelessWidget {
-  const _SearchField({required this.hint});
-
-  final String hint;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 48,
-      decoration: BoxDecoration(
-        color: FuvekonColors.deepNavy.withValues(alpha: 0.85),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: Row(
-        children: [
-          Icon(
-            Icons.search,
-            size: 20,
-            color: Colors.white.withValues(alpha: 0.45),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              hint,
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.45),
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Icon(
-            Icons.tune,
-            size: 20,
-            color: Colors.white.withValues(alpha: 0.45),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _FeaturedEventCard extends StatelessWidget {
-  const _FeaturedEventCard({
-    required this.l10n,
-    required this.event,
-  });
+  const _FeaturedEventCard({required this.l10n, required this.event});
 
   final AppLocalizations l10n;
   final FeaturedEventSummary event;
@@ -699,7 +653,9 @@ class _FeaturedEventCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 FuvePillButton(
-                  label: isPast ? l10n.authHomeViewDetails : l10n.authHomeBuyTicket,
+                  label: isPast
+                      ? l10n.authHomeViewDetails
+                      : l10n.authHomeBuyTicket,
                   onPressed: () {
                     if (isPast) {
                       _openEventDetail(context);

@@ -122,7 +122,9 @@ class _LostFoundPageState extends State<LostFoundPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: FuvekonSpacing.page),
+            padding: const EdgeInsets.symmetric(
+              horizontal: FuvekonSpacing.page,
+            ),
             child: TextField(
               controller: _searchController,
               onSubmitted: _onSearchChanged,
@@ -191,7 +193,8 @@ class _LostFoundPageState extends State<LostFoundPage> {
     if (_items.isEmpty) {
       return const EmptyState(
         title: 'Chưa có vật phẩm nào',
-        subtitle: 'Danh sách sẽ được cập nhật khi ban tổ chức ghi nhận đồ nhặt được.',
+        subtitle:
+            'Danh sách sẽ được cập nhật khi ban tổ chức ghi nhận đồ nhặt được.',
         icon: Icons.inventory_2_outlined,
       );
     }
@@ -257,8 +260,9 @@ class _LostFoundPublicTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               )
             : CircleAvatar(
-                backgroundColor:
-                    FuvekonColors.darkPrimary.withValues(alpha: 0.15),
+                backgroundColor: FuvekonColors.darkPrimary.withValues(
+                  alpha: 0.15,
+                ),
                 child: const Icon(
                   Icons.inventory_2_outlined,
                   color: FuvekonColors.darkPrimary,

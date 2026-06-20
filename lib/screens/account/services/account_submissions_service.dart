@@ -9,9 +9,9 @@ class AccountSubmissionsService {
     required PanelApi panelApi,
     required TalentApi talentApi,
     required ConbookApi conbookApi,
-  })  : _panelApi = panelApi,
-        _talentApi = talentApi,
-        _conbookApi = conbookApi;
+  }) : _panelApi = panelApi,
+       _talentApi = talentApi,
+       _conbookApi = conbookApi;
 
   final PanelApi _panelApi;
   final TalentApi _talentApi;
@@ -38,30 +38,42 @@ class AccountSubmissionsService {
     }
   }
 
-  Future<List<SubmissionSummary>> getPanels({bool useMockFallback = true}) async {
+  Future<List<SubmissionSummary>> getPanels({
+    bool useMockFallback = true,
+  }) async {
     try {
       return await _loadPanels();
     } catch (_) {
       if (!useMockFallback) rethrow;
-      return _mockSubmissions.where((s) => s.type == SubmissionType.panel).toList();
+      return _mockSubmissions
+          .where((s) => s.type == SubmissionType.panel)
+          .toList();
     }
   }
 
-  Future<List<SubmissionSummary>> getTalents({bool useMockFallback = true}) async {
+  Future<List<SubmissionSummary>> getTalents({
+    bool useMockFallback = true,
+  }) async {
     try {
       return await _loadTalents();
     } catch (_) {
       if (!useMockFallback) rethrow;
-      return _mockSubmissions.where((s) => s.type == SubmissionType.talent).toList();
+      return _mockSubmissions
+          .where((s) => s.type == SubmissionType.talent)
+          .toList();
     }
   }
 
-  Future<List<SubmissionSummary>> getConbooks({bool useMockFallback = true}) async {
+  Future<List<SubmissionSummary>> getConbooks({
+    bool useMockFallback = true,
+  }) async {
     try {
       return await _loadConbooks();
     } catch (_) {
       if (!useMockFallback) rethrow;
-      return _mockSubmissions.where((s) => s.type == SubmissionType.conbook).toList();
+      return _mockSubmissions
+          .where((s) => s.type == SubmissionType.conbook)
+          .toList();
     }
   }
 

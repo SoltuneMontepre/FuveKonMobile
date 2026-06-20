@@ -66,15 +66,15 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
     try {
       await action();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.adminUpdateSuccess)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.adminUpdateSuccess)));
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _actionInProgress = false);
     }
@@ -171,14 +171,11 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
                 _error!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
               const SizedBox(height: 16),
-              FilledButton(
-                onPressed: _load,
-                child: Text(l10n.adminRetry),
-              ),
+              FilledButton(onPressed: _load, child: Text(l10n.adminRetry)),
             ],
           ),
         ),
@@ -208,8 +205,8 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
           Text(
             l10n.adminLostFoundNoClaim,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
           ),
         ],
         const SizedBox(height: FuvekonSpacing.section),
@@ -240,9 +237,8 @@ class _AdminLostFoundDetailPageState extends State<AdminLostFoundDetailPage> {
             label: l10n.adminLostFoundMarkResolved,
             color: FuvekonColors.available,
             loading: _actionInProgress,
-            onPressed: () => _runAction(
-              () => _service.updateStatus(item.id, 'resolved'),
-            ),
+            onPressed: () =>
+                _runAction(() => _service.updateStatus(item.id, 'resolved')),
           ),
         _ActionButton(
           label: l10n.adminEdit,
@@ -295,23 +291,23 @@ class _HeaderCard extends StatelessWidget {
                 Text(
                   item.title,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: FuvekonColors.darkText,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: FuvekonColors.darkText,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   item.itemCode,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: FuvekonColors.darkTextSecondary,
-                      ),
+                    color: FuvekonColors.darkTextSecondary,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   '${lostFoundTypeLabel(l10n, item.itemType)} • ${lostFoundStatusLabel(l10n, item.status)}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: FuvekonColors.darkTextSecondary,
-                      ),
+                    color: FuvekonColors.darkTextSecondary,
+                  ),
                 ),
               ],
             ),
@@ -351,31 +347,31 @@ class _ClaimCard extends StatelessWidget {
           Text(
             claimer.displayName,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: FuvekonColors.darkCardText,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: FuvekonColors.darkCardText,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             '${l10n.adminFieldIdCard}: ${AdminLostFoundClaimUser.maskSensitive(claimer.idCard)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: FuvekonColors.textSecondary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: FuvekonColors.textSecondary),
           ),
           const SizedBox(height: 4),
           Text(
             '${l10n.adminFieldEmail}: ${AdminLostFoundClaimUser.maskSensitive(claimer.email)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: FuvekonColors.textSecondary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: FuvekonColors.textSecondary),
           ),
           if (claim.message.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
               claim.message,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: FuvekonColors.darkCardText,
-                  ),
+                color: FuvekonColors.darkCardText,
+              ),
             ),
           ],
         ],
@@ -408,11 +404,7 @@ class _InfoCard extends StatelessWidget {
 }
 
 class _InfoField extends StatelessWidget {
-  const _InfoField({
-    required this.label,
-    required this.value,
-    this.imageUrl,
-  });
+  const _InfoField({required this.label, required this.value, this.imageUrl});
 
   final String label;
   final String value;
@@ -428,8 +420,8 @@ class _InfoField extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
           ),
           const SizedBox(height: 4),
           if (imageUrl != null)
@@ -444,9 +436,9 @@ class _InfoField extends StatelessWidget {
           else if (value.isNotEmpty)
             Text(
               value,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: FuvekonColors.darkText,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: FuvekonColors.darkText),
             ),
         ],
       ),
@@ -472,9 +464,9 @@ class _StatusChip extends StatelessWidget {
       child: Text(
         lostFoundStatusLabel(l10n, status),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w600,
-            ),
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

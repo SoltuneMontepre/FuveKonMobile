@@ -59,32 +59,32 @@ class _AdminDashboardUsersPageState extends State<AdminDashboardUsersPage> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? AdminListErrorState(
-                  message: l10n.adminDashboardLoadFailed,
-                  onRetry: _load,
-                )
-              : _items == null || _items!.isEmpty
-                  ? EmptyState(
-                      title: l10n.adminDashboardUsersByCountryEmpty,
-                      subtitle: l10n.adminPlaceholderDashboardUsersSubtitle,
-                      icon: Icons.public_outlined,
-                    )
-                  : RefreshIndicator(
-                      onRefresh: _load,
-                      child: ListView(
-                        padding: const EdgeInsets.all(FuvekonSpacing.page),
-                        children: [
-                          Text(
-                            l10n.adminPlaceholderDashboardUsersSubtitle,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: FuvekonColors.darkTextSecondary,
-                                ),
-                          ),
-                          const SizedBox(height: 16),
-                          UsersByCountryChart(items: _items!),
-                        ],
-                      ),
+          ? AdminListErrorState(
+              message: l10n.adminDashboardLoadFailed,
+              onRetry: _load,
+            )
+          : _items == null || _items!.isEmpty
+          ? EmptyState(
+              title: l10n.adminDashboardUsersByCountryEmpty,
+              subtitle: l10n.adminPlaceholderDashboardUsersSubtitle,
+              icon: Icons.public_outlined,
+            )
+          : RefreshIndicator(
+              onRefresh: _load,
+              child: ListView(
+                padding: const EdgeInsets.all(FuvekonSpacing.page),
+                children: [
+                  Text(
+                    l10n.adminPlaceholderDashboardUsersSubtitle,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: FuvekonColors.darkTextSecondary,
                     ),
+                  ),
+                  const SizedBox(height: 16),
+                  UsersByCountryChart(items: _items!),
+                ],
+              ),
+            ),
     );
   }
 }

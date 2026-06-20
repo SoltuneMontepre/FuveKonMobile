@@ -40,8 +40,7 @@ final class ActivityDetailLoaded extends ActivityDetailState {
       activity: activity ?? this.activity,
       isBookmarked: isBookmarked ?? this.isBookmarked,
       isBookmarking: isBookmarking ?? this.isBookmarking,
-      conflictWith:
-          clearConflict ? null : (conflictWith ?? this.conflictWith),
+      conflictWith: clearConflict ? null : (conflictWith ?? this.conflictWith),
       bookmarkError: clearBookmarkError
           ? null
           : (bookmarkError ?? this.bookmarkError),

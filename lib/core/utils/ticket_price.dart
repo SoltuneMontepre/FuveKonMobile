@@ -15,7 +15,10 @@ String formatTierPriceDiff(double diff) {
 }
 
 String formatTicketPriceUsd(double price) {
-  return NumberFormat.simpleCurrency(locale: 'en_US', name: 'USD').format(price);
+  return NumberFormat.simpleCurrency(
+    locale: 'en_US',
+    name: 'USD',
+  ).format(price);
 }
 
 String formatTierPrice(TicketTier tier, {Locale? locale}) {

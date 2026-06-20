@@ -5,8 +5,8 @@ import 'package:fuvekonmobile/features/schedule/presentation/bloc/activity_detai
 
 class ActivityDetailCubit extends Cubit<ActivityDetailState> {
   ActivityDetailCubit({required ScheduleRepository repository})
-      : _repository = repository,
-        super(const ActivityDetailInitial());
+    : _repository = repository,
+      super(const ActivityDetailInitial());
 
   final ScheduleRepository _repository;
 
@@ -48,8 +48,7 @@ class ActivityDetailCubit extends Cubit<ActivityDetailState> {
 
     if (current.isBookmarked) {
       emit(current.copyWith(isBookmarking: true, clearBookmarkError: true));
-      final result =
-          await _repository.removeFromItinerary(current.activity.id);
+      final result = await _repository.removeFromItinerary(current.activity.id);
       switch (result) {
         case Error(:final failure):
           emit(
@@ -70,20 +69,16 @@ class ActivityDetailCubit extends Cubit<ActivityDetailState> {
       return;
     }
 
-    final conflictResult =
-        await _repository.findItineraryConflict(current.activity.id);
+    final conflictResult = await _repository.findItineraryConflict(
+      current.activity.id,
+    );
     switch (conflictResult) {
       case Error(:final failure):
         emit(ActivityDetailFailure(failure.message));
         return;
       case Success(:final data):
         if (data != null) {
-          emit(
-            current.copyWith(
-              isBookmarking: false,
-              conflictWith: data,
-            ),
-          );
+          emit(current.copyWith(isBookmarking: false, conflictWith: data));
           return;
         }
     }

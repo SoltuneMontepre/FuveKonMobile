@@ -4,7 +4,7 @@ import 'package:fuvekonmobile/shared/services/token_storage.dart';
 /// Refresh is a no-op unless the backend adds a refresh endpoint and issues refresh tokens.
 class TokenRefreshService {
   TokenRefreshService({required TokenStorage tokenStorage})
-      : _tokenStorage = tokenStorage;
+    : _tokenStorage = tokenStorage;
 
   final TokenStorage _tokenStorage;
 

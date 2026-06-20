@@ -5,8 +5,8 @@ import 'package:fuvekonmobile/features/schedule/presentation/bloc/itinerary_stat
 
 class ItineraryCubit extends Cubit<ItineraryState> {
   ItineraryCubit({required ScheduleRepository repository})
-      : _repository = repository,
-        super(const ItineraryInitial());
+    : _repository = repository,
+      super(const ItineraryInitial());
 
   final ScheduleRepository _repository;
 

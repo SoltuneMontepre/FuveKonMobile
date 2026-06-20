@@ -16,9 +16,9 @@ class AdminUserSectionTitle extends StatelessWidget {
     return Text(
       title,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: FuvekonColors.darkAppBarTitle,
-            fontWeight: FontWeight.w600,
-          ),
+        color: FuvekonColors.darkAppBarTitle,
+        fontWeight: FontWeight.w600,
+      ),
     );
   }
 }
@@ -128,11 +128,7 @@ class AdminUserProfileHeader extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Row(
           children: [
-            S3Avatar(
-              imageUrl: avatarUrl,
-              initials: initials,
-              radius: 32,
-            ),
+            S3Avatar(imageUrl: avatarUrl, initials: initials, radius: 32),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -141,16 +137,16 @@ class AdminUserProfileHeader extends StatelessWidget {
                   Text(
                     displayName,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: FuvekonColors.darkCardText,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: FuvekonColors.darkCardText,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     email,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: FuvekonColors.textSecondary,
-                        ),
+                      color: FuvekonColors.textSecondary,
+                    ),
                   ),
                   if (role != null) ...[
                     const SizedBox(height: 10),
@@ -160,8 +156,9 @@ class AdminUserProfileHeader extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color:
-                            FuvekonColors.darkPrimary.withValues(alpha: 0.25),
+                        color: FuvekonColors.darkPrimary.withValues(
+                          alpha: 0.25,
+                        ),
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Text(
@@ -169,9 +166,9 @@ class AdminUserProfileHeader extends StatelessWidget {
                           adminRoleTitle(context.l10n, role!),
                         ),
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: FuvekonColors.secondary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          color: FuvekonColors.secondary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -250,10 +247,7 @@ class _DetailProfileHeader extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: FuvekonColors.available,
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: FuvekonColors.darkBg,
-                      width: 2,
-                    ),
+                    border: Border.all(color: FuvekonColors.darkBg, width: 2),
                   ),
                   child: const Icon(
                     Icons.check_rounded,
@@ -315,8 +309,8 @@ class _DetailProfileHeader extends StatelessWidget {
                     color: isDeleted
                         ? FuvekonColors.darkTextSecondary
                         : isBlacklisted
-                            ? const Color(0xFFFBBF24)
-                            : FuvekonColors.available,
+                        ? const Color(0xFFFBBF24)
+                        : FuvekonColors.available,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -384,9 +378,9 @@ class _StatusPill extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: foreground,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: foreground,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),

@@ -85,16 +85,16 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
     try {
       await action();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(successMessage)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(successMessage)));
       await _load();
       widget.onTicketChanged?.call();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _actionInProgress = false);
     }
@@ -103,9 +103,9 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
   Future<void> _grantTicket() async {
     final l10n = context.l10n;
     if (_tiers.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.adminUserTicketsNoTiers)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.adminUserTicketsNoTiers)));
       return;
     }
 
@@ -133,9 +133,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
         title: Text(l10n.adminDenyReason),
         content: TextField(
           controller: controller,
-          decoration: InputDecoration(
-            hintText: l10n.adminDenyReasonHint,
-          ),
+          decoration: InputDecoration(hintText: l10n.adminDenyReasonHint),
           maxLines: 3,
         ),
         actions: [
@@ -239,9 +237,7 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
                       Expanded(
                         child: Text(
                           ticket.referenceCode,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge
+                          style: Theme.of(context).textTheme.titleLarge
                               ?.copyWith(
                                 color: FuvekonColors.darkText,
                                 fontWeight: FontWeight.w700,
@@ -302,7 +298,8 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
                           Navigator.pop(context);
                           await _runAction(
                             () => _ticketService.resendQrEmail(ticket.id),
-                            successMessage: l10n.adminUserTicketsResendQrSuccess,
+                            successMessage:
+                                l10n.adminUserTicketsResendQrSuccess,
                           );
                         },
                       ),
@@ -358,14 +355,11 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
           Text(
             _error!,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
           ),
           const SizedBox(height: 12),
-          FilledButton(
-            onPressed: _load,
-            child: Text(l10n.adminRetry),
-          ),
+          FilledButton(onPressed: _load, child: Text(l10n.adminRetry)),
         ],
       );
     }
@@ -377,8 +371,8 @@ class _AdminUserTicketSectionState extends State<AdminUserTicketSection> {
           Text(
             l10n.adminUserTicketsEmpty,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
           ),
           if (!widget.isDeleted) ...[
             const SizedBox(height: 12),
@@ -446,9 +440,9 @@ class AdminTicketStatusChip extends StatelessWidget {
       child: Text(
         ticketStatusLabel(l10n, status),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w600,
-            ),
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -472,16 +466,16 @@ class _TicketSummaryRow extends StatelessWidget {
             child: Text(
               label,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: FuvekonColors.darkTextSecondary,
-                  ),
+                color: FuvekonColors.darkTextSecondary,
+              ),
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: FuvekonColors.darkText,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: FuvekonColors.darkText),
             ),
           ),
         ],
@@ -505,8 +499,8 @@ class _TicketDetailField extends StatelessWidget {
           Text(
             field.label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
           ),
           const SizedBox(height: 4),
           if (field.imageUrl != null)
@@ -521,9 +515,9 @@ class _TicketDetailField extends StatelessWidget {
           else if (field.value.isNotEmpty)
             Text(
               field.value,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: FuvekonColors.darkText,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: FuvekonColors.darkText),
             ),
         ],
       ),
@@ -661,9 +655,12 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
     final ticket = widget.ticket;
     _status = ticket.status;
     _tierId = ticket.tierId;
-    _badgeNameController = TextEditingController(text: ticket.conBadgeName ?? '');
-    _denialReasonController =
-        TextEditingController(text: ticket.denialReason ?? '');
+    _badgeNameController = TextEditingController(
+      text: ticket.conBadgeName ?? '',
+    );
+    _denialReasonController = TextEditingController(
+      text: ticket.denialReason ?? '',
+    );
     _isFursuiter = ticket.isFursuiter;
     _isFursuitStaff = ticket.isFursuitStaff;
     _isCheckedIn = ticket.isCheckedIn;
@@ -699,9 +696,9 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
       Navigator.pop(context, true);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -736,9 +733,9 @@ class _EditTicketSheetState extends State<_EditTicketSheet> {
             Text(
               l10n.adminUserTicketsEditTitle,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: FuvekonColors.darkText,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: FuvekonColors.darkText,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<TicketStatus>(

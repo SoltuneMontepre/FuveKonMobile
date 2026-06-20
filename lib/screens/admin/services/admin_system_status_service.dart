@@ -33,7 +33,8 @@ class AdminSystemStatusSnapshot {
 }
 
 class AdminSystemStatusService {
-  AdminSystemStatusService({required HealthApi healthApi}) : _healthApi = healthApi;
+  AdminSystemStatusService({required HealthApi healthApi})
+    : _healthApi = healthApi;
 
   final HealthApi _healthApi;
 
@@ -41,7 +42,9 @@ class AdminSystemStatusService {
     final response = await _healthApi.getSystemHealth();
     if (!response.isSuccess || response.data == null) {
       throw ServerException(
-        response.message.isNotEmpty ? response.message : 'Không tải được trạng thái hệ thống',
+        response.message.isNotEmpty
+            ? response.message
+            : 'Không tải được trạng thái hệ thống',
       );
     }
 
@@ -51,9 +54,9 @@ class AdminSystemStatusService {
 
     final services = servicesRaw is List
         ? servicesRaw
-            .whereType<Map<String, dynamic>>()
-            .map(_parseService)
-            .toList()
+              .whereType<Map<String, dynamic>>()
+              .map(_parseService)
+              .toList()
         : <SystemServiceHealth>[];
 
     return AdminSystemStatusSnapshot(

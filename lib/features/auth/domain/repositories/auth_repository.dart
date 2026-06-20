@@ -4,10 +4,7 @@ import 'package:fuvekonmobile/features/auth/domain/entities/register_input.dart'
 import 'package:fuvekonmobile/features/auth/domain/entities/user.dart';
 
 abstract interface class AuthRepository {
-  Future<Result<User>> login({
-    required String email,
-    required String password,
-  });
+  Future<Result<User>> login({required String email, required String password});
 
   Future<Result<User>> loginWithGoogle({required String credential});
 

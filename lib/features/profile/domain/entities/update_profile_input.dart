@@ -36,11 +36,11 @@ class UpdateProfileInput extends Equatable {
 
   @override
   List<Object?> get props => [
-        fursonaName,
-        firstName,
-        lastName,
-        country,
-        idCard,
-        dateOfBirth,
-      ];
+    fursonaName,
+    firstName,
+    lastName,
+    country,
+    idCard,
+    dateOfBirth,
+  ];
 }

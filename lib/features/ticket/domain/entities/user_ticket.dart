@@ -37,25 +37,24 @@ class UserTicket extends Equatable {
   final String? previousReferenceCode;
   final TicketTier? tier;
 
-  bool get needsPayment =>
-      status == TicketStatus.pending;
+  bool get needsPayment => status == TicketStatus.pending;
 
   @override
   List<Object?> get props => [
-        id,
-        referenceCode,
-        status,
-        ticketNumber,
-        conBadgeName,
-        badgeImage,
-        namecardUrl,
-        isFursuiter,
-        isFursuitStaff,
-        isCheckedIn,
-        tshirtSize,
-        denialReason,
-        createdAt,
-        previousReferenceCode,
-        tier,
-      ];
+    id,
+    referenceCode,
+    status,
+    ticketNumber,
+    conBadgeName,
+    badgeImage,
+    namecardUrl,
+    isFursuiter,
+    isFursuitStaff,
+    isCheckedIn,
+    tshirtSize,
+    denialReason,
+    createdAt,
+    previousReferenceCode,
+    tier,
+  ];
 }

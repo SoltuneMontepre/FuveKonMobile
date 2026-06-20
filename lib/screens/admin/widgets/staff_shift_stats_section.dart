@@ -6,10 +6,7 @@ import 'package:fuvekonmobile/shared/services/scan_session_store.dart';
 import 'package:intl/intl.dart';
 
 class StaffShiftStatsSection extends StatelessWidget {
-  const StaffShiftStatsSection({
-    super.key,
-    required this.stats,
-  });
+  const StaffShiftStatsSection({super.key, required this.stats});
 
   final ScanShiftStats stats;
 
@@ -183,7 +180,9 @@ class _StatTile extends StatelessWidget {
               )
             : Row(
                 children: [
-                  Expanded(child: _Header(icon: icon, label: label, theme: theme)),
+                  Expanded(
+                    child: _Header(icon: icon, label: label, theme: theme),
+                  ),
                   Text(
                     formatted,
                     style: theme.textTheme.titleLarge?.copyWith(
@@ -199,11 +198,7 @@ class _StatTile extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({
-    required this.icon,
-    required this.label,
-    required this.theme,
-  });
+  const _Header({required this.icon, required this.label, required this.theme});
 
   final IconData icon;
   final String label;

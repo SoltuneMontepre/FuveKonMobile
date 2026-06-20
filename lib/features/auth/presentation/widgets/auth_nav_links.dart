@@ -6,11 +6,7 @@ import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:go_router/go_router.dart';
 
 class AuthNavLinks extends StatelessWidget {
-  const AuthNavLinks({
-    super.key,
-    this.leading,
-    this.trailing,
-  });
+  const AuthNavLinks({super.key, this.leading, this.trailing});
 
   final AuthNavLink? leading;
   final AuthNavLink? trailing;
@@ -121,10 +117,7 @@ class RegisterNavLinks extends StatelessWidget {
           ),
           child: Text(
             l10n.registerLoginLink,
-            style: const TextStyle(
-              fontWeight: FontWeight.w800,
-              fontSize: 14.5,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14.5),
           ),
         ),
       ],

@@ -190,70 +190,70 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: FuvekonColors.darkBorder,
-                  borderRadius: BorderRadius.circular(999),
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: FuvekonColors.darkBorder,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Icon(
-                switch (result.outcome) {
-                  ScanOutcome.valid => Icons.check_circle_rounded,
-                  ScanOutcome.reused => Icons.history_rounded,
-                  ScanOutcome.rejected => Icons.cancel_rounded,
-                },
-                color: color,
-                size: 48,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                formatAdminMessage(l10n, result.message),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: FuvekonColors.darkText,
-                      fontWeight: FontWeight.w700,
+                const SizedBox(height: 20),
+                Icon(
+                  switch (result.outcome) {
+                    ScanOutcome.valid => Icons.check_circle_rounded,
+                    ScanOutcome.reused => Icons.history_rounded,
+                    ScanOutcome.rejected => Icons.cancel_rounded,
+                  },
+                  color: color,
+                  size: 48,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  formatAdminMessage(l10n, result.message),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: FuvekonColors.darkText,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                if (result.referenceCode != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    result.referenceCode!,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: FuvekonColors.darkPrimary,
+                      fontWeight: FontWeight.w600,
                     ),
-                textAlign: TextAlign.center,
-              ),
-              if (result.referenceCode != null) ...[
-                const SizedBox(height: 8),
-                Text(
-                  result.referenceCode!,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: FuvekonColors.darkPrimary,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  ),
+                ],
+                if (result.holderName != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    result.holderName!,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: FuvekonColors.darkTextSecondary,
+                    ),
+                  ),
+                ],
+                if (result.tierName != null) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    result.tierName!,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: FuvekonColors.darkTextSecondary,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(l10n.adminQrContinueScan),
+                  ),
                 ),
               ],
-              if (result.holderName != null) ...[
-                const SizedBox(height: 4),
-                Text(
-                  result.holderName!,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: FuvekonColors.darkTextSecondary,
-                      ),
-                ),
-              ],
-              if (result.tierName != null) ...[
-                const SizedBox(height: 2),
-                Text(
-                  result.tierName!,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: FuvekonColors.darkTextSecondary,
-                      ),
-                ),
-              ],
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text(l10n.adminQrContinueScan),
-                ),
-              ),
-            ],
             ),
           ),
         );
@@ -290,73 +290,73 @@ class _TicketQrScannerPageState extends State<TicketQrScannerPage>
             child: SafeArea(
               child: Column(
                 children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Row(
-                    children: [
-                      if (!widget.embeddedInTab)
-                        IconButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: const Icon(
-                            Icons.close_rounded,
-                            color: Colors.white,
-                          ),
-                        )
-                      else
-                        const SizedBox(width: 48),
-                      const Spacer(),
-                      IconButton(
-                        onPressed: () => _controller.toggleTorch(),
-                        icon: const Icon(
-                          Icons.flash_on_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 240,
-                        height: 240,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: FuvekonColors.darkPrimary,
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        _isProcessing
-                            ? l10n.adminQrProcessing
-                            : l10n.adminQrAlignFrame,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      children: [
+                        if (!widget.embeddedInTab)
+                          IconButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            icon: const Icon(
+                              Icons.close_rounded,
                               color: Colors.white,
                             ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 20),
-                      OutlinedButton.icon(
-                        onPressed: _isProcessing ? null : _showManualEntry,
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          side: const BorderSide(color: Colors.white54),
+                          )
+                        else
+                          const SizedBox(width: 48),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () => _controller.toggleTorch(),
+                          icon: const Icon(
+                            Icons.flash_on_rounded,
+                            color: Colors.white,
+                          ),
                         ),
-                        icon: const Icon(Icons.keyboard_outlined),
-                        label: Text(l10n.adminQrManualEntry),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 240,
+                          height: 240,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: FuvekonColors.darkPrimary,
+                              width: 3,
+                            ),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          _isProcessing
+                              ? l10n.adminQrProcessing
+                              : l10n.adminQrAlignFrame,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 20),
+                        OutlinedButton.icon(
+                          onPressed: _isProcessing ? null : _showManualEntry,
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            side: const BorderSide(color: Colors.white54),
+                          ),
+                          icon: const Icon(Icons.keyboard_outlined),
+                          label: Text(l10n.adminQrManualEntry),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
           ),
           if (_isProcessing)
             const ColoredBox(
@@ -422,8 +422,7 @@ class _TicketPreviewSheetState extends State<_TicketPreviewSheet> {
         RenderNamecardOptions(
           tierCodeNumber: tierCode,
           avatarUrl: preview.avatarUrl ?? preview.badgeImage,
-          previewName:
-              preview.badgeName ?? preview.holderName ?? 'Guest',
+          previewName: preview.badgeName ?? preview.holderName ?? 'Guest',
           referenceCode: preview.referenceCode ?? preview.code,
           isFursuiter: preview.isFursuiter,
           isFursuitStaff: preview.isFursuitStaff,
@@ -466,9 +465,9 @@ class _TicketPreviewSheetState extends State<_TicketPreviewSheet> {
           Text(
             l10n.adminQrTicketInfo,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: FuvekonColors.darkText,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: FuvekonColors.darkText,
+              fontWeight: FontWeight.w700,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
@@ -478,11 +477,17 @@ class _TicketPreviewSheetState extends State<_TicketPreviewSheet> {
           ),
           if (preview.holderName != null) ...[
             const SizedBox(height: 12),
-            _TicketInfoRow(label: l10n.adminQrGuestLabel, value: preview.holderName!),
+            _TicketInfoRow(
+              label: l10n.adminQrGuestLabel,
+              value: preview.holderName!,
+            ),
           ],
           if (preview.tierName != null) ...[
             const SizedBox(height: 12),
-            _TicketInfoRow(label: l10n.adminFieldTier, value: preview.tierName!),
+            _TicketInfoRow(
+              label: l10n.adminFieldTier,
+              value: preview.tierName!,
+            ),
           ],
           const SizedBox(height: 12),
           _TicketInfoRow(
@@ -493,9 +498,9 @@ class _TicketPreviewSheetState extends State<_TicketPreviewSheet> {
           Text(
             l10n.adminQrTicketLabel,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 8),
           Center(
@@ -548,11 +553,7 @@ class _ScannedTicketImage extends StatelessWidget {
     if (namecardBytes != null) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: Image.memory(
-          namecardBytes!,
-          width: width,
-          fit: BoxFit.contain,
-        ),
+        child: Image.memory(namecardBytes!, width: width, fit: BoxFit.contain),
       );
     }
 
@@ -588,9 +589,9 @@ class _TicketImagePlaceholder extends StatelessWidget {
       ),
       child: Text(
         context.l10n.adminQrNoTicketImage,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: FuvekonColors.darkTextSecondary,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodySmall?.copyWith(color: FuvekonColors.darkTextSecondary),
       ),
     );
   }
@@ -612,17 +613,17 @@ class _TicketInfoRow extends StatelessWidget {
           child: Text(
             label,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
           ),
         ),
         Expanded(
           child: Text(
             value,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: FuvekonColors.darkText,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: FuvekonColors.darkText,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],
@@ -660,9 +661,9 @@ class _ScannerError extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 message,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.white,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
@@ -713,9 +714,7 @@ class _ManualEntryDialogState extends State<_ManualEntryDialog> {
         controller: _controller,
         autofocus: true,
         textCapitalization: TextCapitalization.characters,
-        decoration: const InputDecoration(
-          hintText: 'VD: T1-0042',
-        ),
+        decoration: const InputDecoration(hintText: 'VD: T1-0042'),
         onSubmitted: (value) => Navigator.of(context).pop(value),
       ),
       actions: [

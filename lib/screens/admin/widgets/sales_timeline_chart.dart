@@ -17,10 +17,10 @@ enum DashboardChartPeriod {
   final int days;
 
   String label(AppLocalizations l10n) => switch (this) {
-        DashboardChartPeriod.days7 => l10n.adminChartPeriod7Days,
-        DashboardChartPeriod.days30 => l10n.adminChartPeriod30Days,
-        DashboardChartPeriod.days90 => l10n.adminChartPeriod90Days,
-      };
+    DashboardChartPeriod.days7 => l10n.adminChartPeriod7Days,
+    DashboardChartPeriod.days30 => l10n.adminChartPeriod30Days,
+    DashboardChartPeriod.days90 => l10n.adminChartPeriod90Days,
+  };
 }
 
 /// Bar chart for ticket sales over a selectable date range.
@@ -47,11 +47,7 @@ class _SalesTimelineChartState extends State<SalesTimelineChart> {
 
   @override
   Widget build(BuildContext context) {
-    final data = _chartData(
-      widget.points,
-      _period,
-      barCount: widget.barCount,
-    );
+    final data = _chartData(widget.points, _period, barCount: widget.barCount);
     if (data.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -303,11 +299,7 @@ class _BarColumn extends StatelessWidget {
       return const Color(0xFF2E3A34);
     }
     final ratio = maxCount > 0 ? count / maxCount : 0.0;
-    return Color.lerp(
-      const Color(0xFF3A5240),
-      const Color(0xFF5C7A62),
-      ratio,
-    )!;
+    return Color.lerp(const Color(0xFF3A5240), const Color(0xFF5C7A62), ratio)!;
   }
 }
 

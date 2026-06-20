@@ -21,8 +21,8 @@ class TicketTierDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<TicketTierDetailBloc>()
-        ..add(TicketTierDetailStarted(tierId)),
+      create: (_) =>
+          sl<TicketTierDetailBloc>()..add(TicketTierDetailStarted(tierId)),
       child: const _TicketTierDetailView(),
     );
   }
@@ -42,9 +42,9 @@ class _TicketTierDetailView extends StatelessWidget {
         final actionError = bloc.lastActionError;
         if (actionError != null) {
           bloc.lastActionError = null;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(actionError)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(actionError)));
         }
 
         final purchase = bloc.lastPurchaseResult;
@@ -52,8 +52,9 @@ class _TicketTierDetailView extends StatelessWidget {
         bloc.lastPurchaseResult = null;
 
         final loaded = bloc.state;
-        final fallbackTierId =
-            loaded is TicketTierDetailLoaded ? loaded.tier.id : null;
+        final fallbackTierId = loaded is TicketTierDetailLoaded
+            ? loaded.tier.id
+            : null;
         final tierId = purchase.ticket?.tier?.id ?? fallbackTierId;
         if (tierId == null || tierId.isEmpty) return;
 
@@ -73,29 +74,32 @@ class _TicketTierDetailView extends StatelessWidget {
                 Expanded(
                   child:
                       BlocBuilder<TicketTierDetailBloc, TicketTierDetailState>(
-                    builder: (context, state) {
-                      return switch (state) {
-                        TicketTierDetailInitial() ||
-                        TicketTierDetailLoading() =>
-                          const Center(child: CircularProgressIndicator()),
-                        TicketTierDetailLoaded(
-                          :final tier,
-                          :final allTiers,
-                        ) =>
-                          _DetailBody(tier: tier, allTiers: allTiers),
-                        TicketTierDetailFailure(:final message) => _ErrorBody(
-                            message: message,
-                            onRetry: () =>
-                                context.read<TicketTierDetailBloc>().add(
+                        builder: (context, state) {
+                          return switch (state) {
+                            TicketTierDetailInitial() ||
+                            TicketTierDetailLoading() => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            TicketTierDetailLoaded(
+                              :final tier,
+                              :final allTiers,
+                            ) =>
+                              _DetailBody(tier: tier, allTiers: allTiers),
+                            TicketTierDetailFailure(:final message) =>
+                              _ErrorBody(
+                                message: message,
+                                onRetry: () =>
+                                    context.read<TicketTierDetailBloc>().add(
                                       TicketTierDetailStarted(
-                                        GoRouterState.of(context)
-                                            .pathParameters['id']!,
+                                        GoRouterState.of(
+                                          context,
+                                        ).pathParameters['id']!,
                                       ),
                                     ),
-                          ),
-                      };
-                    },
-                  ),
+                              ),
+                          };
+                        },
+                      ),
                 ),
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, authState) {
@@ -169,7 +173,10 @@ class _DetailBodyState extends State<_DetailBody> {
   @override
   Widget build(BuildContext context) {
     final compareOptions = _compareOptions(widget.allTiers, widget.tier);
-    final selectedCompareTier = _selectedCompareTier(compareOptions, widget.tier);
+    final selectedCompareTier = _selectedCompareTier(
+      compareOptions,
+      widget.tier,
+    );
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 14, 20, 24),
@@ -313,7 +320,10 @@ class _TicketHeroCard extends StatelessWidget {
                   for (final benefit in tier.benefits)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: _BenefitRow(benefit: benefit, textColor: colors.body),
+                      child: _BenefitRow(
+                        benefit: benefit,
+                        textColor: colors.body,
+                      ),
                     ),
                 ],
               ),
@@ -486,8 +496,9 @@ class _ComparisonCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    context.l10n
-                        .ticketDetailCompareTitle(selectedCompareTier.ticketName),
+                    context.l10n.ticketDetailCompareTitle(
+                      selectedCompareTier.ticketName,
+                    ),
                     style: const TextStyle(
                       color: FuvekonColors.darkPrimary,
                       fontSize: 18,
@@ -555,10 +566,7 @@ class _CompareTierDropdown extends StatelessWidget {
             ),
             items: [
               for (final tier in options)
-                DropdownMenuItem(
-                  value: tier.id,
-                  child: Text(tier.ticketName),
-                ),
+                DropdownMenuItem(value: tier.id, child: Text(tier.ticketName)),
             ],
             onChanged: options.length > 1 ? onChanged : null,
           ),
@@ -726,8 +734,8 @@ class _BottomCta extends StatelessWidget {
                       : () {
                           if (isAuthenticated) {
                             context.read<TicketTierDetailBloc>().add(
-                                  const TicketTierDetailPurchaseRequested(),
-                                );
+                              const TicketTierDetailPurchaseRequested(),
+                            );
                           } else {
                             context.go(Routes.register);
                           }
@@ -747,8 +755,8 @@ class _BottomCta extends StatelessWidget {
                         isPurchasing
                             ? '...'
                             : isAuthenticated
-                                ? l10n.exploreTicketsBuyCta
-                                : l10n.exploreTicketsRegisterCta,
+                            ? l10n.exploreTicketsBuyCta
+                            : l10n.exploreTicketsRegisterCta,
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w800,
@@ -900,7 +908,9 @@ List<_Comparison> _comparisonRows(
   TicketTier tier,
 ) {
   final l10n = context.l10n;
-  final standardBenefits = standard.benefits.map((e) => e.toLowerCase()).toList();
+  final standardBenefits = standard.benefits
+      .map((e) => e.toLowerCase())
+      .toList();
   final tierBenefits = tier.benefits.map((e) => e.toLowerCase()).toList();
 
   final standardMerch = _extraMerchCount(standardBenefits);

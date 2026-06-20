@@ -6,8 +6,8 @@ import 'package:fuvekonmobile/features/schedule/presentation/bloc/schedule_list_
 
 class ScheduleListCubit extends Cubit<ScheduleListState> {
   ScheduleListCubit({required ScheduleRepository repository})
-      : _repository = repository,
-        super(const ScheduleListInitial());
+    : _repository = repository,
+      super(const ScheduleListInitial());
 
   final ScheduleRepository _repository;
 

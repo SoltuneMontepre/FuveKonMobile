@@ -10,10 +10,10 @@ class AdminUserFilter {
   final String? search;
 
   Map<String, dynamic> toQuery() => buildQuery({
-        if (page != null) 'page': page,
-        if (pageSize != null) 'page_size': pageSize,
-        if (search != null) 'search': search,
-      });
+    if (page != null) 'page': page,
+    if (pageSize != null) 'page_size': pageSize,
+    if (search != null) 'search': search,
+  });
 }
 
 /// Admin user endpoints from `useAdminUser.ts`.
@@ -31,10 +31,7 @@ class AdminUserApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getUserById(String userId) {
-    return get(
-      ApiConstants.adminUser(userId),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminUser(userId), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> updateUser(
@@ -49,17 +46,11 @@ class AdminUserApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getCountByCountry() {
-    return get(
-      ApiConstants.adminUsersCountByCountry,
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminUsersCountByCountry, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getCountByAgeRange() {
-    return get(
-      ApiConstants.adminUsersCountByAgeRange,
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminUsersCountByAgeRange, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<void>> deleteUser(String userId) {
@@ -67,10 +58,7 @@ class AdminUserApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> verifyUser(String userId) {
-    return patch(
-      ApiConstants.adminUserVerify(userId),
-      mapData: mapJsonObject,
-    );
+    return patch(ApiConstants.adminUserVerify(userId), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<List<dynamic>>> getBlacklistedUsers({
@@ -79,10 +67,7 @@ class AdminUserApi extends BaseApi {
   }) {
     return get(
       ApiConstants.adminUsersBlacklisted,
-      queryParameters: buildQuery({
-        'page': page,
-        'page_size': pageSize,
-      }),
+      queryParameters: buildQuery({'page': page, 'page_size': pageSize}),
       mapData: mapJsonList,
     );
   }

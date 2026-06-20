@@ -59,16 +59,16 @@ class AdminUpdateUserInput {
   final List<String>? permissions;
 
   Map<String, dynamic> toJson() => {
-        if (fursonaName != null) 'fursona_name': fursonaName,
-        if (firstName != null) 'first_name': firstName,
-        if (lastName != null) 'last_name': lastName,
-        if (country != null) 'country': country,
-        if (avatar != null) 'avatar': avatar,
-        if (role != null) 'role': role,
-        if (idCard != null) 'id_card': idCard,
-        if (isVerified != null) 'is_verified': isVerified,
-        if (permissions != null) 'permissions': permissions,
-      };
+    if (fursonaName != null) 'fursona_name': fursonaName,
+    if (firstName != null) 'first_name': firstName,
+    if (lastName != null) 'last_name': lastName,
+    if (country != null) 'country': country,
+    if (avatar != null) 'avatar': avatar,
+    if (role != null) 'role': role,
+    if (idCard != null) 'id_card': idCard,
+    if (isVerified != null) 'is_verified': isVerified,
+    if (permissions != null) 'permissions': permissions,
+  };
 }
 
 class AdminUserService {
@@ -154,7 +154,10 @@ class AdminUserService {
     return AdminUserItem.fromJson(response.data!);
   }
 
-  Future<AdminUserItem> updateUser(String id, AdminUpdateUserInput input) async {
+  Future<AdminUserItem> updateUser(
+    String id,
+    AdminUpdateUserInput input,
+  ) async {
     final response = await _api.updateUser(id, input.toJson());
     if (!response.isSuccess || response.data == null) {
       throw ServerException(response.errorMessage ?? response.message);

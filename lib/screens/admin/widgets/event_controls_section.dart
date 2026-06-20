@@ -20,42 +20,45 @@ class EventControlsSection extends StatelessWidget {
   final Future<void> Function(AdminEventToggle toggle, bool enabled)? onToggle;
   final VoidCallback? onRefresh;
 
-  static final _controls = <({
-    AdminEventToggle toggle,
-    String Function(AppLocalizations l10n) title,
-    String Function(AppLocalizations l10n) subtitle,
-    IconData icon,
-    bool Function(AdminEventSettings settings) isEnabled,
-  })>[
-    (
-      toggle: AdminEventToggle.ticketSales,
-      title: (l10n) => l10n.adminEventToggleTicketSales,
-      subtitle: (l10n) => l10n.adminEventToggleTicketSalesSubtitle,
-      icon: Icons.confirmation_number_outlined,
-      isEnabled: _ticketSalesEnabled,
-    ),
-    (
-      toggle: AdminEventToggle.panelRegistration,
-      title: (l10n) => l10n.adminEventTogglePanelRegistration,
-      subtitle: (l10n) => l10n.adminEventTogglePanelRegistrationSubtitle,
-      icon: Icons.groups_outlined,
-      isEnabled: _panelRegistrationEnabled,
-    ),
-    (
-      toggle: AdminEventToggle.talentRegistration,
-      title: (l10n) => l10n.adminEventToggleTalentRegistration,
-      subtitle: (l10n) => l10n.adminEventToggleTalentRegistrationSubtitle,
-      icon: Icons.mic_external_on_outlined,
-      isEnabled: _talentRegistrationEnabled,
-    ),
-    (
-      toggle: AdminEventToggle.dealerRegistration,
-      title: (l10n) => l10n.adminEventToggleDealerRegistration,
-      subtitle: (l10n) => l10n.adminEventToggleDealerRegistrationSubtitle,
-      icon: Icons.storefront_outlined,
-      isEnabled: _dealerRegistrationEnabled,
-    ),
-  ];
+  static final _controls =
+      <
+        ({
+          AdminEventToggle toggle,
+          String Function(AppLocalizations l10n) title,
+          String Function(AppLocalizations l10n) subtitle,
+          IconData icon,
+          bool Function(AdminEventSettings settings) isEnabled,
+        })
+      >[
+        (
+          toggle: AdminEventToggle.ticketSales,
+          title: (l10n) => l10n.adminEventToggleTicketSales,
+          subtitle: (l10n) => l10n.adminEventToggleTicketSalesSubtitle,
+          icon: Icons.confirmation_number_outlined,
+          isEnabled: _ticketSalesEnabled,
+        ),
+        (
+          toggle: AdminEventToggle.panelRegistration,
+          title: (l10n) => l10n.adminEventTogglePanelRegistration,
+          subtitle: (l10n) => l10n.adminEventTogglePanelRegistrationSubtitle,
+          icon: Icons.groups_outlined,
+          isEnabled: _panelRegistrationEnabled,
+        ),
+        (
+          toggle: AdminEventToggle.talentRegistration,
+          title: (l10n) => l10n.adminEventToggleTalentRegistration,
+          subtitle: (l10n) => l10n.adminEventToggleTalentRegistrationSubtitle,
+          icon: Icons.mic_external_on_outlined,
+          isEnabled: _talentRegistrationEnabled,
+        ),
+        (
+          toggle: AdminEventToggle.dealerRegistration,
+          title: (l10n) => l10n.adminEventToggleDealerRegistration,
+          subtitle: (l10n) => l10n.adminEventToggleDealerRegistrationSubtitle,
+          icon: Icons.storefront_outlined,
+          isEnabled: _dealerRegistrationEnabled,
+        ),
+      ];
 
   static bool _ticketSalesEnabled(AdminEventSettings settings) =>
       settings.ticketSalesEnabled;
@@ -163,7 +166,9 @@ class _EventToggleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final accent = value ? FuvekonColors.available : FuvekonColors.darkTextSecondary;
+    final accent = value
+        ? FuvekonColors.available
+        : FuvekonColors.darkTextSecondary;
 
     return DecoratedBox(
       decoration: BoxDecoration(

@@ -46,9 +46,7 @@ void registerTicketModule(GetIt sl) {
         namecardRenderer: sl(),
       ),
     )
-    ..registerFactory(
-      () => TicketTiersBloc(getTicketTiersUseCase: sl()),
-    )
+    ..registerFactory(() => TicketTiersBloc(getTicketTiersUseCase: sl()))
     ..registerFactory(
       () => TicketTierDetailBloc(
         getTicketTierUseCase: sl(),
@@ -63,10 +61,12 @@ void registerTicketModule(GetIt sl) {
         upgradeTicketUseCase: sl(),
       ),
     )
-    ..registerFactory(() => TicketPurchaseBloc(
-          confirmTicketPaymentUseCase: sl(),
-          getMyTicketUseCase: sl(),
-          getMeUseCase: sl(),
-          updateMeUseCase: sl(),
-        ));
+    ..registerFactory(
+      () => TicketPurchaseBloc(
+        confirmTicketPaymentUseCase: sl(),
+        getMyTicketUseCase: sl(),
+        getMeUseCase: sl(),
+        updateMeUseCase: sl(),
+      ),
+    );
 }

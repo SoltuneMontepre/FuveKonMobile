@@ -51,9 +51,7 @@ class _EventRulesPageState extends State<EventRulesPage> {
     if (widget.onboarding) {
       return Scaffold(
         backgroundColor: FuvekonColors.darkBg,
-        body: FuvekonIllustratedPageStack(
-          child: SafeArea(child: body),
-        ),
+        body: FuvekonIllustratedPageStack(child: SafeArea(child: body)),
       );
     }
 
@@ -79,110 +77,110 @@ class _RulesBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  l10n.rulesTitle,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: _RulesColors.title,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  l10n.rulesIntro,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.75),
+                    fontSize: 14,
+                    height: 1.55,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                ..._ruleCards(l10n),
+              ],
+            ),
+          ),
+        ),
+        if (showAcceptance)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+            child: FuvekonIllustratedContentPanel(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    l10n.rulesTitle,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: _RulesColors.title,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
+                  InkWell(
+                    onTap: () => onAgreedChanged(!agreed),
+                    borderRadius: BorderRadius.circular(8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: Checkbox(
+                              value: agreed,
+                              onChanged: (value) =>
+                                  onAgreedChanged(value ?? false),
+                              activeColor: _RulesColors.accentGreen,
+                              side: BorderSide(
+                                color: Colors.white.withValues(alpha: 0.45),
+                              ),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              l10n.rulesAgreeCheckbox,
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.85),
+                                fontSize: 13.5,
+                                height: 1.45,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Text(
-                    l10n.rulesIntro,
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.75),
-                      fontSize: 14,
-                      height: 1.55,
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    onPressed: onConfirm,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: _RulesColors.accentGreen,
+                      disabledBackgroundColor: const Color(0xFF3A3A3A),
+                      disabledForegroundColor: const Color(0xFF888888),
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size.fromHeight(52),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
+                      ),
                     ),
-                    textAlign: TextAlign.center,
+                    child: Text(
+                      l10n.rulesConfirmButton,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 24),
-                  ..._ruleCards(l10n),
                 ],
               ),
             ),
           ),
-          if (showAcceptance)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-              child: FuvekonIllustratedContentPanel(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    InkWell(
-                      onTap: () => onAgreedChanged(!agreed),
-                      borderRadius: BorderRadius.circular(8),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 22,
-                              height: 22,
-                              child: Checkbox(
-                                value: agreed,
-                                onChanged: (value) =>
-                                    onAgreedChanged(value ?? false),
-                                activeColor: _RulesColors.accentGreen,
-                                side: BorderSide(
-                                  color: Colors.white.withValues(alpha: 0.45),
-                                ),
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                l10n.rulesAgreeCheckbox,
-                                style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.85),
-                                  fontSize: 13.5,
-                                  height: 1.45,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    FilledButton(
-                      onPressed: onConfirm,
-                      style: FilledButton.styleFrom(
-                        backgroundColor: _RulesColors.accentGreen,
-                        disabledBackgroundColor: const Color(0xFF3A3A3A),
-                        disabledForegroundColor: const Color(0xFF888888),
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size.fromHeight(52),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                      ),
-                      child: Text(
-                        l10n.rulesConfirmButton,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-        ],
+      ],
     );
   }
 
@@ -192,7 +190,11 @@ class _RulesBody extends StatelessWidget {
         icon: Icons.badge_outlined,
         iconBg: const Color(0xFF3D6B52),
         title: l10n.rulesAttendanceTitle,
-        items: [l10n.rulesAttendance1, l10n.rulesAttendance2, l10n.rulesAttendance3],
+        items: [
+          l10n.rulesAttendance1,
+          l10n.rulesAttendance2,
+          l10n.rulesAttendance3,
+        ],
       ),
       (
         icon: Icons.checkroom_outlined,

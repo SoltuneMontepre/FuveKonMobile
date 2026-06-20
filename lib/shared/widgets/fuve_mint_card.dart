@@ -43,8 +43,9 @@ class FuveMintCard extends StatelessWidget {
                 height: 32,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: FuvekonColors.premiumDecorativeGold
-                        .withValues(alpha: 0.35),
+                    color: FuvekonColors.premiumDecorativeGold.withValues(
+                      alpha: 0.35,
+                    ),
                     width: 1,
                   ),
                   borderRadius: BorderRadius.circular(6),

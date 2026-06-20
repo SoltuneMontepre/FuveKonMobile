@@ -15,19 +15,14 @@ class AuthApi extends BaseApi {
   }) async {
     final response = await apiClient.postWithResponse(
       ApiConstants.login,
-      data: {
-        'email': email.trim().toLowerCase(),
-        'password': password,
-      },
+      data: {'email': email.trim().toLowerCase(), 'password': password},
     );
 
     final body = response.data;
     if (body != null) {
       final envelope = ApiResponse<dynamic>.fromJson(body);
       if (!envelope.isSuccess) {
-        throw ServerException(
-          envelope.errorMessage ?? envelope.message,
-        );
+        throw ServerException(envelope.errorMessage ?? envelope.message);
       }
     }
 
@@ -49,15 +44,15 @@ class AuthApi extends BaseApi {
     if (responseBody != null) {
       final envelope = ApiResponse<dynamic>.fromJson(responseBody);
       if (!envelope.isSuccess) {
-        throw ServerException(
-          envelope.errorMessage ?? envelope.message,
-        );
+        throw ServerException(envelope.errorMessage ?? envelope.message);
       }
     }
 
     final token = AuthTokenExtractor.fromResponse(response);
     if (token == null || token.isEmpty) {
-      throw const ServerException('Google sign-in did not return an access token.');
+      throw const ServerException(
+        'Google sign-in did not return an access token.',
+      );
     }
     return token;
   }
@@ -69,11 +64,7 @@ class AuthApi extends BaseApi {
   Future<ApiResponse<Map<String, dynamic>?>> register(
     Map<String, dynamic> payload,
   ) {
-    return post(
-      ApiConstants.register,
-      data: payload,
-      mapData: mapJsonObject,
-    );
+    return post(ApiConstants.register, data: payload, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<void>> verifyOtp({
@@ -87,17 +78,11 @@ class AuthApi extends BaseApi {
   }
 
   Future<ApiResponse<void>> resendOtp({required String email}) {
-    return post<void>(
-      ApiConstants.resendOtp,
-      data: {'email': email},
-    );
+    return post<void>(ApiConstants.resendOtp, data: {'email': email});
   }
 
   Future<ApiResponse<void>> forgotPassword({required String email}) {
-    return post<void>(
-      ApiConstants.forgotPassword,
-      data: {'email': email},
-    );
+    return post<void>(ApiConstants.forgotPassword, data: {'email': email});
   }
 
   Future<ApiResponse<void>> changePassword(Map<String, dynamic> payload) {
@@ -139,9 +124,7 @@ class AccountApi extends BaseApi {
     );
   }
 
-  Future<ApiResponse<AccountJson>> updateAvatar(
-    Map<String, dynamic> payload,
-  ) {
+  Future<ApiResponse<AccountJson>> updateAvatar(Map<String, dynamic> payload) {
     return patch(
       ApiConstants.usersMeAvatar,
       data: payload,
@@ -213,17 +196,18 @@ class AccountJson {
       role: json['role'] as String?,
       isVerified: json['is_verified'] as bool?,
       isDealer: json['is_dealer'] as bool?,
-      isBlacklisted: json['is_blacklisted'] as bool? ??
-          json['is_banned'] as bool?,
+      isBlacklisted:
+          json['is_blacklisted'] as bool? ?? json['is_banned'] as bool?,
       isHasTicket: json['is_has_ticket'] as bool?,
     );
   }
 
   String? get displayName {
     if (fursonaName != null && fursonaName!.isNotEmpty) return fursonaName;
-    final parts = [firstName, lastName].whereType<String>().where(
-          (s) => s.isNotEmpty,
-        );
+    final parts = [
+      firstName,
+      lastName,
+    ].whereType<String>().where((s) => s.isNotEmpty);
     final joined = parts.join(' ').trim();
     return joined.isEmpty ? null : joined;
   }

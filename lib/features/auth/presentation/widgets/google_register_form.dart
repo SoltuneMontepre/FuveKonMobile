@@ -17,7 +17,8 @@ class GoogleRegisterForm extends StatefulWidget {
     required String nickname,
     required String dateOfBirth,
     required String country,
-  }) onSubmit;
+  })
+  onSubmit;
 
   @override
   State<GoogleRegisterForm> createState() => _GoogleRegisterFormState();
@@ -58,8 +59,9 @@ class _GoogleRegisterFormState extends State<GoogleRegisterForm> {
 
   void _submit() {
     setState(() {
-      _dateOfBirthError =
-          _dateOfBirth == null ? 'Date of birth is required' : null;
+      _dateOfBirthError = _dateOfBirth == null
+          ? 'Date of birth is required'
+          : null;
     });
     if (!(_formKey.currentState?.validate() ?? false)) return;
     if (_dateOfBirthError != null) return;
@@ -152,9 +154,7 @@ class _GoogleRegisterFormState extends State<GoogleRegisterForm> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.send_rounded),
-            label: Text(
-              widget.isLoading ? 'Saving…' : 'Complete registration',
-            ),
+            label: Text(widget.isLoading ? 'Saving…' : 'Complete registration'),
           ),
         ],
       ),

@@ -11,11 +11,10 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {
-    return _request(() => _dio.get<T>(
-          path,
-          queryParameters: queryParameters,
-          options: options,
-        ));
+    return _request(
+      () =>
+          _dio.get<T>(path, queryParameters: queryParameters, options: options),
+    );
   }
 
   Future<Response<T>> post<T>(
@@ -24,12 +23,14 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {
-    return _request(() => _dio.post<T>(
-          path,
-          data: data,
-          queryParameters: queryParameters,
-          options: options,
-        ));
+    return _request(
+      () => _dio.post<T>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+      ),
+    );
   }
 
   Future<Response<T>> put<T>(
@@ -38,12 +39,14 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {
-    return _request(() => _dio.put<T>(
-          path,
-          data: data,
-          queryParameters: queryParameters,
-          options: options,
-        ));
+    return _request(
+      () => _dio.put<T>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+      ),
+    );
   }
 
   Future<Response<T>> patch<T>(
@@ -52,12 +55,14 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {
-    return _request(() => _dio.patch<T>(
-          path,
-          data: data,
-          queryParameters: queryParameters,
-          options: options,
-        ));
+    return _request(
+      () => _dio.patch<T>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+      ),
+    );
   }
 
   Future<Response<T>> delete<T>(
@@ -66,12 +71,14 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {
-    return _request(() => _dio.delete<T>(
-          path,
-          data: data,
-          queryParameters: queryParameters,
-          options: options,
-        ));
+    return _request(
+      () => _dio.delete<T>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+      ),
+    );
   }
 
   /// Full [Response] (headers + body) for auth flows that set cookies.

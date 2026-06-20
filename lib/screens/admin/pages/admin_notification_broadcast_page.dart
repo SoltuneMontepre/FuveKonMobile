@@ -59,9 +59,9 @@ class _AdminNotificationBroadcastPageState
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -79,9 +79,9 @@ class _AdminNotificationBroadcastPageState
       buffer.write('\n${result.error}');
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(buffer.toString())),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(buffer.toString())));
   }
 
   InputDecoration _fieldDecoration({String? hint, String? label}) {
@@ -212,8 +212,9 @@ class _AdminNotificationBroadcastPageState
                 ),
               ),
               value: _sendPush,
-              onChanged:
-                  _saving ? null : (value) => setState(() => _sendPush = value),
+              onChanged: _saving
+                  ? null
+                  : (value) => setState(() => _sendPush = value),
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
@@ -225,8 +226,9 @@ class _AdminNotificationBroadcastPageState
                 ),
               ),
               value: _sendEmail,
-              onChanged:
-                  _saving ? null : (value) => setState(() => _sendEmail = value),
+              onChanged: _saving
+                  ? null
+                  : (value) => setState(() => _sendEmail = value),
             ),
             const SizedBox(height: 24),
             FilledButton(

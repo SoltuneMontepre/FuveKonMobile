@@ -58,8 +58,7 @@ class FuvekonThemeExtension extends ThemeExtension<FuvekonThemeExtension> {
       contentOnCard: contentOnCard ?? this.contentOnCard,
       contentOnCardMuted: contentOnCardMuted ?? this.contentOnCardMuted,
       appBarTitle: appBarTitle ?? this.appBarTitle,
-      uploadZoneBackground:
-          uploadZoneBackground ?? this.uploadZoneBackground,
+      uploadZoneBackground: uploadZoneBackground ?? this.uploadZoneBackground,
       uploadZoneBorder: uploadZoneBorder ?? this.uploadZoneBorder,
       infoAccent: infoAccent ?? this.infoAccent,
       infoTitle: infoTitle ?? this.infoTitle,
@@ -77,13 +76,22 @@ class FuvekonThemeExtension extends ThemeExtension<FuvekonThemeExtension> {
     return FuvekonThemeExtension(
       contentCard: Color.lerp(contentCard, other.contentCard, t)!,
       contentOnCard: Color.lerp(contentOnCard, other.contentOnCard, t)!,
-      contentOnCardMuted:
-          Color.lerp(contentOnCardMuted, other.contentOnCardMuted, t)!,
+      contentOnCardMuted: Color.lerp(
+        contentOnCardMuted,
+        other.contentOnCardMuted,
+        t,
+      )!,
       appBarTitle: Color.lerp(appBarTitle, other.appBarTitle, t)!,
-      uploadZoneBackground:
-          Color.lerp(uploadZoneBackground, other.uploadZoneBackground, t)!,
-      uploadZoneBorder:
-          Color.lerp(uploadZoneBorder, other.uploadZoneBorder, t)!,
+      uploadZoneBackground: Color.lerp(
+        uploadZoneBackground,
+        other.uploadZoneBackground,
+        t,
+      )!,
+      uploadZoneBorder: Color.lerp(
+        uploadZoneBorder,
+        other.uploadZoneBorder,
+        t,
+      )!,
       infoAccent: Color.lerp(infoAccent, other.infoAccent, t)!,
       infoTitle: Color.lerp(infoTitle, other.infoTitle, t)!,
       notesSurface: Color.lerp(notesSurface, other.notesSurface, t)!,

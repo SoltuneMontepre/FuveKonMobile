@@ -57,70 +57,70 @@ class _VenueDetailPageState extends State<VenueDetailPage> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(child: Text(_error!))
-              : ListView(
-                  padding: const EdgeInsets.all(FuvekonSpacing.page),
-                  children: [
-                    FuveMintCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _venue!.name,
-                            style: TextStyle(
-                              color: context.fuvekonTheme.contentOnCard,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            _venue!.description,
-                            style: TextStyle(
-                              color: context.fuvekonTheme.contentOnCardMuted,
-                              height: 1.5,
-                            ),
-                          ),
-                        ],
+          ? Center(child: Text(_error!))
+          : ListView(
+              padding: const EdgeInsets.all(FuvekonSpacing.page),
+              children: [
+                FuveMintCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _venue!.name,
+                        style: TextStyle(
+                          color: context.fuvekonTheme.contentOnCard,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                    if (_venue!.locations.isNotEmpty) ...[
-                      const SizedBox(height: FuvekonSpacing.section),
-                      FuveSectionHeader(title: l10n.scheduleLocations),
-                      const SizedBox(height: 12),
-                      ..._venue!.locations.map(
-                        (location) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: FuveMintCard(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  location.name,
-                                  style: TextStyle(
-                                    color: context.fuvekonTheme.contentOnCard,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                if (location.description.isNotEmpty) ...[
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    location.description,
-                                    style: TextStyle(
-                                      color: context
-                                          .fuvekonTheme.contentOnCardMuted,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
+                      const SizedBox(height: 10),
+                      Text(
+                        _venue!.description,
+                        style: TextStyle(
+                          color: context.fuvekonTheme.contentOnCardMuted,
+                          height: 1.5,
                         ),
                       ),
                     ],
-                  ],
+                  ),
                 ),
+                if (_venue!.locations.isNotEmpty) ...[
+                  const SizedBox(height: FuvekonSpacing.section),
+                  FuveSectionHeader(title: l10n.scheduleLocations),
+                  const SizedBox(height: 12),
+                  ..._venue!.locations.map(
+                    (location) => Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: FuveMintCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              location.name,
+                              style: TextStyle(
+                                color: context.fuvekonTheme.contentOnCard,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            if (location.description.isNotEmpty) ...[
+                              const SizedBox(height: 6),
+                              Text(
+                                location.description,
+                                style: TextStyle(
+                                  color:
+                                      context.fuvekonTheme.contentOnCardMuted,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
     );
   }
 }

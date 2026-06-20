@@ -99,10 +99,10 @@ class TicketUpgradeBloc extends Bloc<TicketUpgradeEvent, TicketUpgradeState> {
     required GetMyTicketUseCase getMyTicketUseCase,
     required GetTicketTiersUseCase getTicketTiersUseCase,
     required UpgradeTicketUseCase upgradeTicketUseCase,
-  })  : _getMyTicketUseCase = getMyTicketUseCase,
-        _getTicketTiersUseCase = getTicketTiersUseCase,
-        _upgradeTicketUseCase = upgradeTicketUseCase,
-        super(const TicketUpgradeInitial()) {
+  }) : _getMyTicketUseCase = getMyTicketUseCase,
+       _getTicketTiersUseCase = getTicketTiersUseCase,
+       _upgradeTicketUseCase = upgradeTicketUseCase,
+       super(const TicketUpgradeInitial()) {
     on<TicketUpgradeStarted>(_onStarted);
     on<TicketUpgradeTierSelected>(_onTierSelected);
     on<TicketUpgradeSubmitted>(_onSubmitted);
@@ -140,23 +140,17 @@ class TicketUpgradeBloc extends Bloc<TicketUpgradeEvent, TicketUpgradeState> {
 
     if (ticket.status != TicketStatus.approved &&
         ticket.status != TicketStatus.adminGranted) {
-      emit(TicketUpgradeFailure(
-        'Chỉ vé đã duyệt mới được nâng cấp.',
-      ));
+      emit(TicketUpgradeFailure('Chỉ vé đã duyệt mới được nâng cấp.'));
       return;
     }
 
     final allTiers = (tiersResult as Success<List<TicketTier>>).data;
     final currentPrice = ticket.tier!.price;
-    final options = allTiers
-        .where(
-          (t) =>
-              t.isActive &&
-              !t.isSoldOut &&
-              t.price > currentPrice,
-        )
-        .toList()
-      ..sort((a, b) => a.price.compareTo(b.price));
+    final options =
+        allTiers
+            .where((t) => t.isActive && !t.isSoldOut && t.price > currentPrice)
+            .toList()
+          ..sort((a, b) => a.price.compareTo(b.price));
 
     if (options.isEmpty) {
       emit(TicketUpgradeNoOptions(ticket));

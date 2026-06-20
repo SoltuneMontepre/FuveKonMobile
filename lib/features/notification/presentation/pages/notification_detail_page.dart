@@ -12,18 +12,14 @@ import 'package:intl/intl.dart';
 
 /// Màn 32 — notification detail at `/account/notifications/:id`.
 class NotificationDetailPage extends StatelessWidget {
-  const NotificationDetailPage({
-    super.key,
-    required this.notificationId,
-  });
+  const NotificationDetailPage({super.key, required this.notificationId});
 
   final String notificationId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          sl<NotificationDetailCubit>()..load(notificationId),
+      create: (_) => sl<NotificationDetailCubit>()..load(notificationId),
       child: _NotificationDetailView(notificationId: notificationId),
     );
   }
@@ -45,75 +41,68 @@ class _NotificationDetailView extends StatelessWidget {
             NotificationDetailInitial() || NotificationDetailLoading() =>
               const Center(child: CircularProgressIndicator()),
             NotificationDetailLoaded(:final item) => SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FuveMintCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              NotificationKindBadge(kind: item.kind),
-                              const Spacer(),
-                              Text(
-                                DateFormat('HH:mm dd/MM/yyyy')
-                                    .format(item.createdAt),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall
-                                    ?.copyWith(
-                                      color: context
-                                          .fuvekonTheme.contentOnCardMuted,
-                                    ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  FuveMintCard(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            NotificationKindBadge(kind: item.kind),
+                            const Spacer(),
+                            Text(
+                              DateFormat(
+                                'HH:mm dd/MM/yyyy',
+                              ).format(item.createdAt),
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    color:
+                                        context.fuvekonTheme.contentOnCardMuted,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: FuvekonSpacing.stackGapMd),
+                        Text(
+                          item.title,
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(
+                                color: context.fuvekonTheme.contentOnCard,
+                                fontWeight: FontWeight.w700,
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: FuvekonSpacing.stackGapMd),
-                          Text(
-                            item.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(
-                                  color:
-                                      context.fuvekonTheme.contentOnCard,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                          const SizedBox(height: FuvekonSpacing.stackGapMd),
-                          Text(
-                            item.body,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: context
-                                      .fuvekonTheme.contentOnCardMuted,
-                                  height: 1.5,
-                                ),
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: FuvekonSpacing.stackGapMd),
+                        Text(
+                          item.body,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: context.fuvekonTheme.contentOnCardMuted,
+                                height: 1.5,
+                              ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
             NotificationDetailFailure(:final message) => Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(message, textAlign: TextAlign.center),
-                    const SizedBox(height: FuvekonSpacing.field),
-                    FilledButton(
-                      onPressed: () => context
-                          .read<NotificationDetailCubit>()
-                          .load(notificationId),
-                      child: const Text('Thử lại'),
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(message, textAlign: TextAlign.center),
+                  const SizedBox(height: FuvekonSpacing.field),
+                  FilledButton(
+                    onPressed: () => context
+                        .read<NotificationDetailCubit>()
+                        .load(notificationId),
+                    child: const Text('Thử lại'),
+                  ),
+                ],
               ),
+            ),
           };
         },
       ),

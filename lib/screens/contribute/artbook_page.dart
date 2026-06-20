@@ -32,10 +32,7 @@ class ArtbookPage extends StatelessWidget {
                   children: [
                     const Padding(
                       padding: EdgeInsets.fromLTRB(20, 8, 20, 0),
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: _CoverImage(),
-                      ),
+                      child: AspectRatio(aspectRatio: 1, child: _CoverImage()),
                     ),
                     Positioned(
                       left: 20,
@@ -160,7 +157,9 @@ class _ArtbookInfoCard extends StatelessWidget {
               Text(
                 l10n.artbookDescription,
                 style: TextStyle(
-                  color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.95),
+                  color: FuvekonColors.darkTextSecondary.withValues(
+                    alpha: 0.95,
+                  ),
                   fontSize: 14,
                   height: 1.6,
                   fontWeight: FontWeight.w400,
@@ -207,7 +206,11 @@ class _ArtbookInfoCard extends StatelessWidget {
           ),
         ),
         const Positioned(top: 12, left: 12, child: _CornerAccent(flip: false)),
-        const Positioned(bottom: 12, right: 12, child: _CornerAccent(flip: true)),
+        const Positioned(
+          bottom: 12,
+          right: 12,
+          child: _CornerAccent(flip: true),
+        ),
       ],
     );
   }
@@ -223,9 +226,7 @@ class _CornerAccent extends StatelessWidget {
     return SizedBox(
       width: 18,
       height: 18,
-      child: CustomPaint(
-        painter: _CornerAccentPainter(flip: flip),
-      ),
+      child: CustomPaint(painter: _CornerAccentPainter(flip: flip)),
     );
   }
 }
@@ -243,8 +244,16 @@ class _CornerAccentPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     if (flip) {
-      canvas.drawLine(Offset(size.width, 0), Offset(size.width, size.height), paint);
-      canvas.drawLine(Offset(0, size.height), Offset(size.width, size.height), paint);
+      canvas.drawLine(
+        Offset(size.width, 0),
+        Offset(size.width, size.height),
+        paint,
+      );
+      canvas.drawLine(
+        Offset(0, size.height),
+        Offset(size.width, size.height),
+        paint,
+      );
     } else {
       canvas.drawLine(Offset.zero, const Offset(0, 18), paint);
       canvas.drawLine(Offset.zero, const Offset(18, 0), paint);
@@ -265,7 +274,11 @@ class _SpecItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 22, color: FuvekonColors.darkPrimary.withValues(alpha: 0.75)),
+        Icon(
+          icon,
+          size: 22,
+          color: FuvekonColors.darkPrimary.withValues(alpha: 0.75),
+        ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(

@@ -18,12 +18,12 @@ class AdminLostFoundFilter {
   final int pageSize;
 
   Map<String, dynamic> toQuery() => buildQuery({
-        if (itemType != null) 'item_type': itemType,
-        if (status != null) 'status': status,
-        if (search != null) 'search': search,
-        'page': page,
-        'page_size': pageSize,
-      });
+    if (itemType != null) 'item_type': itemType,
+    if (status != null) 'status': status,
+    if (search != null) 'search': search,
+    'page': page,
+    'page_size': pageSize,
+  });
 }
 
 /// Admin lost & found endpoints.
@@ -41,10 +41,7 @@ class AdminLostFoundApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
-    return get(
-      ApiConstants.adminLostFoundItem(id),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminLostFoundItem(id), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> create(
@@ -96,21 +93,17 @@ class AdminLostFoundApi extends BaseApi {
 }
 
 class LostFoundFilter {
-  const LostFoundFilter({
-    this.search,
-    this.page = 1,
-    this.pageSize = 20,
-  });
+  const LostFoundFilter({this.search, this.page = 1, this.pageSize = 20});
 
   final String? search;
   final int page;
   final int pageSize;
 
   Map<String, dynamic> toQuery() => buildQuery({
-        if (search != null) 'search': search,
-        'page': page,
-        'page_size': pageSize,
-      });
+    if (search != null) 'search': search,
+    'page': page,
+    'page_size': pageSize,
+  });
 }
 
 /// User lost & found endpoints (ticket holders).
@@ -128,10 +121,7 @@ class LostFoundApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
-    return get(
-      ApiConstants.lostFoundItem(id),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.lostFoundItem(id), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> claim(
@@ -156,9 +146,6 @@ class LostFoundApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getRequest(String id) {
-    return get(
-      ApiConstants.lostFoundRequest(id),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.lostFoundRequest(id), mapData: mapJsonObject);
   }
 }

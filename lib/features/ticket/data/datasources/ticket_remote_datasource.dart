@@ -25,7 +25,7 @@ abstract interface class TicketRemoteDataSource {
 
 class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
   TicketRemoteDataSourceImpl({required TicketApi ticketApi})
-      : _ticketApi = ticketApi;
+    : _ticketApi = ticketApi;
 
   final TicketApi _ticketApi;
 
@@ -158,8 +158,8 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
 
   UserTicket _mapUserTicket(Map<String, dynamic> json) {
     final tierJson = json['tier'];
-    final status = TicketStatus.fromApi(json['status'] as String?) ??
-        TicketStatus.pending;
+    final status =
+        TicketStatus.fromApi(json['status'] as String?) ?? TicketStatus.pending;
 
     return UserTicket(
       id: json['id']?.toString() ?? '',
@@ -174,7 +174,8 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
       isCheckedIn: json['is_checked_in'] as bool? ?? false,
       tshirtSize: json['tshirt_size'] as String?,
       denialReason: json['denial_reason'] as String?,
-      createdAt: DateTime.tryParse(json['created_at'] as String? ?? '') ??
+      createdAt:
+          DateTime.tryParse(json['created_at'] as String? ?? '') ??
           DateTime.now(),
       previousReferenceCode: json['previous_reference_code'] as String?,
       tier: tierJson is Map

@@ -22,13 +22,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required GoogleSignInService googleSignInService,
     required LogoutUseCase logoutUseCase,
     required CheckAuthStatusUseCase checkAuthStatusUseCase,
-  })  : _loginUseCase = loginUseCase,
-        _googleLoginUseCase = googleLoginUseCase,
-        _googleRegisterUseCase = googleRegisterUseCase,
-        _googleSignInService = googleSignInService,
-        _logoutUseCase = logoutUseCase,
-        _checkAuthStatusUseCase = checkAuthStatusUseCase,
-        super(const AuthState.initial()) {
+  }) : _loginUseCase = loginUseCase,
+       _googleLoginUseCase = googleLoginUseCase,
+       _googleRegisterUseCase = googleRegisterUseCase,
+       _googleSignInService = googleSignInService,
+       _logoutUseCase = logoutUseCase,
+       _checkAuthStatusUseCase = checkAuthStatusUseCase,
+       super(const AuthState.initial()) {
     on<AuthStarted>(_onStarted);
     on<AuthLoginSubmitted>(_onLoginSubmitted);
     on<AuthGoogleSignInRequested>(_onGoogleSignInRequested);

@@ -132,16 +132,16 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
           await widget.onMarkPending?.call(item);
       }
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.adminUpdateSuccess)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.adminUpdateSuccess)));
       Navigator.of(context).maybePop();
       await _refresh();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _actionInProgress = null);
     }
@@ -165,13 +165,16 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
     final showDeny = widget.showDeny && widget.onDeny != null;
     final showMarkPending =
         widget.showMarkPending && widget.onMarkPending != null;
-    final approveLabel =
-        _resolveLabel(widget.approveLabel, l10n.adminApprove);
-    final requireChangesLabel =
-        _resolveLabel(widget.requireChangesLabel, l10n.adminRequireChanges);
+    final approveLabel = _resolveLabel(widget.approveLabel, l10n.adminApprove);
+    final requireChangesLabel = _resolveLabel(
+      widget.requireChangesLabel,
+      l10n.adminRequireChanges,
+    );
     final denyLabel = _resolveLabel(widget.denyLabel, l10n.adminDeny);
-    final markPendingLabel =
-        _resolveLabel(widget.markPendingLabel, l10n.adminMarkPendingReturn);
+    final markPendingLabel = _resolveLabel(
+      widget.markPendingLabel,
+      l10n.adminMarkPendingReturn,
+    );
     final details = _localizedDetails(l10n, item);
 
     showModalBottomSheet<void>(
@@ -207,9 +210,9 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                   Text(
                     item.title,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: FuvekonColors.darkText,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: FuvekonColors.darkText,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Expanded(
@@ -224,9 +227,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                               children: [
                                 Text(
                                   field.label,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium
+                                  style: Theme.of(context).textTheme.labelMedium
                                       ?.copyWith(
                                         color: FuvekonColors.darkTextSecondary,
                                       ),
@@ -296,10 +297,8 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
                         label: markPendingLabel,
                         color: const Color(0xFFFBBF24),
                         loading: _actionInProgress == item.id,
-                        onPressed: () => _runAction(
-                          item,
-                          AdminApprovalAction.markPending,
-                        ),
+                        onPressed: () =>
+                            _runAction(item, AdminApprovalAction.markPending),
                       ),
                   ],
                 ],
@@ -314,16 +313,15 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
   List<AdminDetailField> _localizedDetails(
     AppLocalizations l10n,
     AdminListItem item,
-  ) =>
-      switch (item) {
-        AdminDealerItem i => i.localizedDetails(l10n),
-        AdminPanelItem i => i.localizedDetails(l10n),
-        AdminUserItem i => i.localizedDetails(l10n),
-        AdminConbookItem i => i.localizedDetails(l10n),
-        AdminTicketItem i => i.localizedDetails(l10n),
-        AdminLostFoundItem i => i.localizedDetails(l10n),
-        _ => item.details,
-      };
+  ) => switch (item) {
+    AdminDealerItem i => i.localizedDetails(l10n),
+    AdminPanelItem i => i.localizedDetails(l10n),
+    AdminUserItem i => i.localizedDetails(l10n),
+    AdminConbookItem i => i.localizedDetails(l10n),
+    AdminTicketItem i => i.localizedDetails(l10n),
+    AdminLostFoundItem i => i.localizedDetails(l10n),
+    _ => item.details,
+  };
 
   String? _localizedSubtitle(AppLocalizations l10n, AdminListItem item) =>
       switch (item) {
@@ -343,9 +341,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
       tabController: _tabController,
       body: TabBarView(
         controller: _tabController,
-        children: [
-          for (final tab in widget.tabs) _buildTabBody(tab.index),
-        ],
+        children: [for (final tab in widget.tabs) _buildTabBody(tab.index)],
       ),
     );
   }

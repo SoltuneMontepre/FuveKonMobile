@@ -5,16 +5,17 @@ import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart'
 enum AdminApprovalTab { pending, approved, requireChanges, denied }
 
 class AdminPanelService {
-  AdminPanelService({required AdminPanelApi adminPanelApi}) : _api = adminPanelApi;
+  AdminPanelService({required AdminPanelApi adminPanelApi})
+    : _api = adminPanelApi;
 
   final AdminPanelApi _api;
 
   AdminPanelListFilter _filter(AdminApprovalTab tab) => switch (tab) {
-        AdminApprovalTab.pending => AdminPanelListFilter.pending,
-        AdminApprovalTab.approved => AdminPanelListFilter.approved,
-        AdminApprovalTab.requireChanges => AdminPanelListFilter.requireChanges,
-        AdminApprovalTab.denied => AdminPanelListFilter.denied,
-      };
+    AdminApprovalTab.pending => AdminPanelListFilter.pending,
+    AdminApprovalTab.approved => AdminPanelListFilter.approved,
+    AdminApprovalTab.requireChanges => AdminPanelListFilter.requireChanges,
+    AdminApprovalTab.denied => AdminPanelListFilter.denied,
+  };
 
   Future<List<AdminPanelItem>> getPanels(AdminApprovalTab tab) async {
     try {

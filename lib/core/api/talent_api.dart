@@ -9,43 +9,26 @@ class TalentApi extends BaseApi {
   Future<ApiResponse<Map<String, dynamic>>> createTalent(
     Map<String, dynamic> payload,
   ) {
-    return post(
-      ApiConstants.talents,
-      data: payload,
-      mapData: mapJsonObject,
-    );
+    return post(ApiConstants.talents, data: payload, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<List<dynamic>>> getMyTalents() {
-    return get(
-      ApiConstants.talents,
-      mapData: mapJsonList,
-    );
+    return get(ApiConstants.talents, mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
-    return get(
-      ApiConstants.talent(id),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.talent(id), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> updateTalent(
     String id,
     Map<String, dynamic> payload,
   ) {
-    return put(
-      ApiConstants.talent(id),
-      data: payload,
-      mapData: mapJsonObject,
-    );
+    return put(ApiConstants.talent(id), data: payload, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> deleteTalent(String id) {
-    return delete(
-      ApiConstants.talent(id),
-      mapData: mapJsonObject,
-    );
+    return delete(ApiConstants.talent(id), mapData: mapJsonObject);
   }
 }
 
@@ -56,16 +39,13 @@ class AdminTalentApi extends BaseApi {
   AdminTalentApi(super.client);
 
   static String _listPath(AdminTalentListFilter filter) => switch (filter) {
-        AdminTalentListFilter.pending => ApiConstants.adminTalentsPending,
-        AdminTalentListFilter.approved => ApiConstants.adminTalentsApproved,
-        AdminTalentListFilter.denied => ApiConstants.adminTalentsDenied,
-      };
+    AdminTalentListFilter.pending => ApiConstants.adminTalentsPending,
+    AdminTalentListFilter.approved => ApiConstants.adminTalentsApproved,
+    AdminTalentListFilter.denied => ApiConstants.adminTalentsDenied,
+  };
 
   Future<ApiResponse<List<dynamic>>> getList(AdminTalentListFilter filter) {
-    return get(
-      _listPath(filter),
-      mapData: mapJsonList,
-    );
+    return get(_listPath(filter), mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> approve(String talentId) {

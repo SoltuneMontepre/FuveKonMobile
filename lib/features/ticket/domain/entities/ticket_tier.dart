@@ -27,15 +27,15 @@ class TicketTier extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        tierCode,
-        ticketName,
-        description,
-        benefits,
-        price,
-        priceUsd,
-        isSoldOut,
-        isActive,
-        isVisible,
-      ];
+    id,
+    tierCode,
+    ticketName,
+    description,
+    benefits,
+    price,
+    priceUsd,
+    isSoldOut,
+    isActive,
+    isVisible,
+  ];
 }

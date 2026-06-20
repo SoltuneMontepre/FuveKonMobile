@@ -23,30 +23,19 @@ import 'package:get_it/get_it.dart';
 
 import 'package:go_router/go_router.dart';
 
-
-
 class AppRouter {
-
   AppRouter({required AuthSessionNotifier authSessionNotifier})
+    : _authSessionNotifier = authSessionNotifier,
 
-      : _authSessionNotifier = authSessionNotifier,
-
-        _routerRefresh = RouterRefreshNotifier(authSessionNotifier);
-
-
+      _routerRefresh = RouterRefreshNotifier(authSessionNotifier);
 
   final AuthSessionNotifier _authSessionNotifier;
 
   final RouterRefreshNotifier _routerRefresh;
 
-
-
   final rootNavigatorKey = GlobalKey<NavigatorState>();
 
-
-
   late final GoRouter router = GoRouter(
-
     navigatorKey: rootNavigatorKey,
 
     initialLocation: Routes.splash,
@@ -56,7 +45,6 @@ class AppRouter {
     redirect: _redirect,
 
     routes: [
-
       ...OnboardingRoutes.routes(),
 
       ...PublicRoutes.routes(rootNavigatorKey: rootNavigatorKey),
@@ -66,15 +54,10 @@ class AppRouter {
       AccountRoutes.shell(rootNavigatorKey: rootNavigatorKey),
 
       AdminRoutes.shell(rootNavigatorKey: rootNavigatorKey),
-
     ],
-
   );
 
-
-
   String? _redirect(BuildContext context, GoRouterState state) {
-
     final uri = state.uri;
     if (uri.scheme == 'fuvekon' && uri.host == 'reset-password') {
       final token = uri.queryParameters['token'];
@@ -94,44 +77,26 @@ class AppRouter {
 
     final isOnboardingRoute = Routes.isOnboardingRoute(location);
 
-
-
     if (isAuthenticated && isOnboardingRoute) {
-
       return _authSessionNotifier.homeRoute;
-
     }
 
-
-
     if (!isAuthenticated) {
-
       if (isGuestRoute || isPublicRoute || isOnboardingRoute) return null;
 
       return Routes.login;
-
     }
-
-
 
     if (isGuestRoute) {
       if (location == Routes.resetPassword) return null;
       return _authSessionNotifier.homeRoute;
     }
 
-
-
     if (Routes.isAccountRoute(location) &&
-
         _authSessionNotifier.isVerified == false &&
-
         !Routes.isUnverifiedAccountRoute(location)) {
-
       return Routes.accountProfile;
-
     }
-
-
 
     if (Routes.isAdminRoute(location)) {
       final role = _authSessionNotifier.role;
@@ -152,64 +117,38 @@ class AppRouter {
       return Routes.admin;
     }
 
-
-
     final roleHome = _authSessionNotifier.homeRoute;
 
     if (location == Routes.home && roleHome != Routes.home) {
-
       return roleHome;
-
     }
 
-
-
     return null;
-
   }
 
-
-
   static GoRouter get instance => GetIt.I<AppRouter>().router;
-
 }
-
-
 
 /// Loads the signed-in account role and keeps [AuthSessionNotifier] in sync.
 
 class RoleSessionSync extends StatefulWidget {
-
   const RoleSessionSync({super.key, required this.child});
-
-
 
   final Widget child;
 
-
-
   @override
-
   State<RoleSessionSync> createState() => _RoleSessionSyncState();
-
 }
 
-
-
 class _RoleSessionSyncState extends State<RoleSessionSync> {
-
   final _notifier = sl<AuthSessionNotifier>();
 
   final _hydrationService = sl<SessionHydrationService>();
 
   late AuthState _lastAuthState;
 
-
-
   @override
-
   void initState() {
-
     super.initState();
 
     _lastAuthState = _notifier.state;
@@ -217,25 +156,16 @@ class _RoleSessionSyncState extends State<RoleSessionSync> {
     _notifier.addListener(_onSessionChanged);
 
     _hydrateIfNeeded();
-
   }
 
-
-
   @override
-
   void dispose() {
-
     _notifier.removeListener(_onSessionChanged);
 
     super.dispose();
-
   }
 
-
-
   void _onSessionChanged() {
-
     final current = _notifier.state;
 
     if (current == _lastAuthState) return;
@@ -243,18 +173,10 @@ class _RoleSessionSyncState extends State<RoleSessionSync> {
     _lastAuthState = current;
 
     _hydrateIfNeeded();
-
   }
-
-
 
   Future<void> _hydrateIfNeeded() => _hydrationService.hydrate();
 
-
-
   @override
-
   Widget build(BuildContext context) => widget.child;
-
 }
-

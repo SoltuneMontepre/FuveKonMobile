@@ -44,7 +44,8 @@ class MockNotificationRepository implements NotificationRepository {
   late List<NotificationItem> _items;
 
   List<NotificationItem> _filtered({bool unreadOnly = false}) {
-    final sorted = [..._items]..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    final sorted = [..._items]
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
     if (!unreadOnly) return sorted;
     return sorted.where((item) => !item.isRead).toList();
   }

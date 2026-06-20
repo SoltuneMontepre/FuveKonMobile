@@ -9,11 +9,11 @@ enum AdminTicketTab { all, pendingReview, approved, denied }
 
 extension AdminTicketTabX on AdminTicketTab {
   String? get statusFilter => switch (this) {
-        AdminTicketTab.all => null,
-        AdminTicketTab.pendingReview => TicketStatus.selfConfirmed.apiValue,
-        AdminTicketTab.approved => TicketStatus.approved.apiValue,
-        AdminTicketTab.denied => TicketStatus.denied.apiValue,
-      };
+    AdminTicketTab.all => null,
+    AdminTicketTab.pendingReview => TicketStatus.selfConfirmed.apiValue,
+    AdminTicketTab.approved => TicketStatus.approved.apiValue,
+    AdminTicketTab.denied => TicketStatus.denied.apiValue,
+  };
 }
 
 class AdminTicketPageResult {
@@ -49,17 +49,17 @@ class AdminTicketUpdateInput {
   final String? denialReason;
 
   Map<String, dynamic> toJson() => {
-        if (status != null) 'status': status,
-        if (tierId != null) 'tier_id': tierId,
-        if (conBadgeName != null) 'con_badge_name': conBadgeName,
-        if (badgeImage != null) 'badge_image': badgeImage,
-        if (namecardUrl != null) 'namecard_url': namecardUrl,
-        if (isFursuiter != null) 'is_fursuiter': isFursuiter,
-        if (isFursuitStaff != null) 'is_fursuit_staff': isFursuitStaff,
-        if (isCheckedIn != null) 'is_checked_in': isCheckedIn,
-        if (tshirtSize != null) 'tshirt_size': tshirtSize,
-        if (denialReason != null) 'denial_reason': denialReason,
-      };
+    if (status != null) 'status': status,
+    if (tierId != null) 'tier_id': tierId,
+    if (conBadgeName != null) 'con_badge_name': conBadgeName,
+    if (badgeImage != null) 'badge_image': badgeImage,
+    if (namecardUrl != null) 'namecard_url': namecardUrl,
+    if (isFursuiter != null) 'is_fursuiter': isFursuiter,
+    if (isFursuitStaff != null) 'is_fursuit_staff': isFursuitStaff,
+    if (isCheckedIn != null) 'is_checked_in': isCheckedIn,
+    if (tshirtSize != null) 'tshirt_size': tshirtSize,
+    if (denialReason != null) 'denial_reason': denialReason,
+  };
 }
 
 class AdminTicketTierInput {
@@ -82,29 +82,29 @@ class AdminTicketTierInput {
   final bool isActive;
 
   Map<String, dynamic> toCreateJson() => {
-        'ticket_name': ticketName,
-        'description': description,
-        'benefits': benefits,
-        'price': price,
-        if (priceUsd != null) 'price_usd': priceUsd,
-        'stock': stock,
-        'is_active': isActive,
-      };
+    'ticket_name': ticketName,
+    'description': description,
+    'benefits': benefits,
+    'price': price,
+    if (priceUsd != null) 'price_usd': priceUsd,
+    'stock': stock,
+    'is_active': isActive,
+  };
 
   Map<String, dynamic> toUpdateJson() => {
-        'ticket_name': ticketName,
-        'description': description,
-        'benefits': benefits,
-        'price': price,
-        if (priceUsd != null) 'price_usd': priceUsd,
-        'stock': stock,
-        'is_active': isActive,
-      };
+    'ticket_name': ticketName,
+    'description': description,
+    'benefits': benefits,
+    'price': price,
+    if (priceUsd != null) 'price_usd': priceUsd,
+    'stock': stock,
+    'is_active': isActive,
+  };
 }
 
 class AdminTicketService {
   AdminTicketService({required AdminTicketApi adminTicketApi})
-      : _api = adminTicketApi;
+    : _api = adminTicketApi;
 
   final AdminTicketApi _api;
 
@@ -226,10 +226,7 @@ class AdminTicketService {
     required String userId,
     required String tierId,
   }) async {
-    final response = await _api.createTicket(
-      userId: userId,
-      tierId: tierId,
-    );
+    final response = await _api.createTicket(userId: userId, tierId: tierId);
     if (!response.isSuccess || response.data == null) {
       throw ServerException(response.errorMessage ?? response.message);
     }

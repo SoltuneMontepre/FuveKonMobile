@@ -22,11 +22,7 @@ class ForgotPasswordPageLayout extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                form,
-                const SizedBox(height: 20),
-                footer,
-              ],
+              children: [form, const SizedBox(height: 20), footer],
             ),
           ),
         ),

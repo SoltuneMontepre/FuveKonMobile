@@ -18,12 +18,12 @@ class RegisterInput {
   final String confirmPassword;
 
   Map<String, dynamic> toJson() => {
-        'fullName': fullName.trim(),
-        'nickname': nickname.trim(),
-        'email': email.trim().toLowerCase(),
-        'dateOfBirth': dateOfBirth,
-        'country': country.trim(),
-        'password': password,
-        'confirmPassword': confirmPassword,
-      };
+    'fullName': fullName.trim(),
+    'nickname': nickname.trim(),
+    'email': email.trim().toLowerCase(),
+    'dateOfBirth': dateOfBirth,
+    'country': country.trim(),
+    'password': password,
+    'confirmPassword': confirmPassword,
+  };
 }

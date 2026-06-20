@@ -40,8 +40,9 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
     _service = sl<AdminTicketService>();
     final tier = widget.tier;
     _nameController = TextEditingController(text: tier?.ticketName ?? '');
-    _descriptionController =
-        TextEditingController(text: tier?.description ?? '');
+    _descriptionController = TextEditingController(
+      text: tier?.description ?? '',
+    );
     _priceController = TextEditingController(
       text: tier != null && tier.price > 0 ? tier.price.toStringAsFixed(0) : '',
     );
@@ -66,12 +67,12 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
   }
 
   Iterable<TextEditingController> get _allControllers => [
-        _nameController,
-        _descriptionController,
-        _priceController,
-        _stockController,
-        ..._benefitControllers,
-      ];
+    _nameController,
+    _descriptionController,
+    _priceController,
+    _stockController,
+    ..._benefitControllers,
+  ];
 
   void _onFormChanged() => setState(() {});
 
@@ -199,7 +200,9 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.isCreate ? l10n.adminTierEditCreate : l10n.adminTierEditEdit),
+        title: Text(
+          widget.isCreate ? l10n.adminTierEditCreate : l10n.adminTierEditEdit,
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -355,8 +358,9 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
                 value: _isActive,
                 activeThumbColor: FuvekonColors.darkCardText,
                 activeTrackColor: FuvekonColors.available,
-                onChanged:
-                    _saving ? null : (value) => setState(() => _isActive = value),
+                onChanged: _saving
+                    ? null
+                    : (value) => setState(() => _isActive = value),
               ),
             ),
             const SizedBox(height: 24),
@@ -392,7 +396,9 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
               label: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  widget.isCreate ? l10n.adminTierSaveCreate : l10n.adminTierSaveEdit,
+                  widget.isCreate
+                      ? l10n.adminTierSaveCreate
+                      : l10n.adminTierSaveEdit,
                 ),
               ),
               style: FilledButton.styleFrom(

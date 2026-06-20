@@ -169,9 +169,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -225,10 +225,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              FilledButton(
-                onPressed: _load,
-                child: Text(l10n.adminRetry),
-              ),
+              FilledButton(onPressed: _load, child: Text(l10n.adminRetry)),
             ],
           ),
         ),
@@ -239,9 +236,9 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
     final effectivePermissions = isAdminRole(_role)
         ? adminPermissionCodes
         : _permissions;
-    final inputTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: Colors.white,
-        );
+    final inputTextStyle = Theme.of(
+      context,
+    ).textTheme.bodyMedium?.copyWith(color: Colors.white);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(FuvekonSpacing.page),

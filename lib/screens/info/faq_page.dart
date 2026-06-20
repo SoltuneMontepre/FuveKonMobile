@@ -157,8 +157,7 @@ class _FaqPageState extends State<FaqPage> {
                         expanded: expanded,
                         onTap: () {
                           setState(() {
-                            _expandedIndex =
-                                expanded ? null : originalIndex;
+                            _expandedIndex = expanded ? null : originalIndex;
                           });
                         },
                       );
@@ -312,8 +311,9 @@ class _FaqCategoryTile extends StatelessWidget {
               ],
             ),
           ),
-          crossFadeState:
-              expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          crossFadeState: expanded
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 200),
         ),
       ],

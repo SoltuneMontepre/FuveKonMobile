@@ -37,8 +37,7 @@ class FuvekonApp extends StatelessWidget {
                   localizationsDelegates:
                       AppLocalizations.localizationsDelegates,
                   routerConfig: sl<AppRouter>().router,
-                  builder: (context, child) =>
-                      child ?? const SizedBox.shrink(),
+                  builder: (context, child) => child ?? const SizedBox.shrink(),
                 );
               },
             ),

@@ -6,8 +6,8 @@ import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_state.d
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc({required GetMeUseCase getMeUseCase})
-      : _getMeUseCase = getMeUseCase,
-        super(const ProfileState.initial()) {
+    : _getMeUseCase = getMeUseCase,
+      super(const ProfileState.initial()) {
     on<ProfileStarted>(_onLoad);
     on<ProfileRefreshRequested>(_onLoad);
   }

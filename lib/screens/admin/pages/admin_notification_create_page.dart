@@ -79,7 +79,11 @@ class _AdminNotificationCreatePageState
 
     setState(() => _searching = true);
     try {
-      final result = await _userService.getUsers(page: 1, pageSize: 20, search: trimmed);
+      final result = await _userService.getUsers(
+        page: 1,
+        pageSize: 20,
+        search: trimmed,
+      );
       if (!mounted) return;
       setState(() {
         _searchResults = result.items;
@@ -133,9 +137,9 @@ class _AdminNotificationCreatePageState
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -153,7 +157,9 @@ class _AdminNotificationCreatePageState
           '\n${l10n.adminNotificationPushSent(result.devicesNotified)}',
         );
       } else if (result.pushError != null && result.pushError!.isNotEmpty) {
-        buffer.write('\n${l10n.adminNotificationPushFailed(result.pushError!)}');
+        buffer.write(
+          '\n${l10n.adminNotificationPushFailed(result.pushError!)}',
+        );
       }
     }
 
@@ -167,9 +173,9 @@ class _AdminNotificationCreatePageState
       }
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(buffer.toString())),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(buffer.toString())));
   }
 
   InputDecoration _fieldDecoration({String? hint, String? label}) {
@@ -333,7 +339,9 @@ class _AdminNotificationCreatePageState
                 ),
               ),
               value: _sendPush,
-              onChanged: _saving ? null : (value) => setState(() => _sendPush = value),
+              onChanged: _saving
+                  ? null
+                  : (value) => setState(() => _sendPush = value),
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
@@ -345,8 +353,9 @@ class _AdminNotificationCreatePageState
                 ),
               ),
               value: _sendEmail,
-              onChanged:
-                  _saving ? null : (value) => setState(() => _sendEmail = value),
+              onChanged: _saving
+                  ? null
+                  : (value) => setState(() => _sendEmail = value),
             ),
             const SizedBox(height: 24),
             FilledButton(
@@ -387,16 +396,16 @@ class _SelectedUserCard extends StatelessWidget {
           Text(
             user.displayName,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: FuvekonColors.darkText,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: FuvekonColors.darkText,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             user.email,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
           ),
         ],
       ),
@@ -436,21 +445,24 @@ class _UserSearchResultTile extends StatelessWidget {
                     Text(
                       user.displayName,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: FuvekonColors.darkText,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: FuvekonColors.darkText,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     Text(
                       user.email,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: FuvekonColors.darkTextSecondary,
-                          ),
+                        color: FuvekonColors.darkTextSecondary,
+                      ),
                     ),
                   ],
                 ),
               ),
               if (selected)
-                const Icon(Icons.check_circle, color: FuvekonColors.darkPrimary),
+                const Icon(
+                  Icons.check_circle,
+                  color: FuvekonColors.darkPrimary,
+                ),
             ],
           ),
         ),

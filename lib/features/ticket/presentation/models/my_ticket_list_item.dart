@@ -37,7 +37,8 @@ class MyTicketListItem {
     String imageAsset = 'assets/images/event.png',
   }) {
     final tierName = ticket.tier?.ticketName ?? 'Standard';
-    final isListedActive = ticket.status != TicketStatus.denied &&
+    final isListedActive =
+        ticket.status != TicketStatus.denied &&
         !ticket.isCheckedIn &&
         (ticket.status == TicketStatus.approved ||
             ticket.status == TicketStatus.adminGranted ||

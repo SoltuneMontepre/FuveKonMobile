@@ -49,9 +49,9 @@ class _VerifyOtpFormState extends State<VerifyOtpForm> {
         children: [
           Text(
             'We sent a verification code to ${widget.email}. Enter it below.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: ext.contentOnCardMuted,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: ext.contentOnCardMuted),
           ),
           const SizedBox(height: 20),
           AppLabeledField(

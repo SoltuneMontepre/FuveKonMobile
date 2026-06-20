@@ -17,12 +17,12 @@ enum TicketStatus {
   }
 
   String get apiValue => switch (this) {
-        TicketStatus.pending => 'pending',
-        TicketStatus.selfConfirmed => 'self_confirmed',
-        TicketStatus.approved => 'approved',
-        TicketStatus.denied => 'denied',
-        TicketStatus.adminGranted => 'admin_granted',
-      };
+    TicketStatus.pending => 'pending',
+    TicketStatus.selfConfirmed => 'self_confirmed',
+    TicketStatus.approved => 'approved',
+    TicketStatus.denied => 'denied',
+    TicketStatus.adminGranted => 'admin_granted',
+  };
 
   bool get isActive => this != TicketStatus.denied;
 }

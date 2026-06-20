@@ -60,9 +60,15 @@ class ConbookInfoPage extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('• ', style: TextStyle(color: ext.contentOnCardMuted)),
+                        Text(
+                          '• ',
+                          style: TextStyle(color: ext.contentOnCardMuted),
+                        ),
                         Expanded(
-                          child: Text(rule, style: TextStyle(color: ext.contentOnCard)),
+                          child: Text(
+                            rule,
+                            style: TextStyle(color: ext.contentOnCard),
+                          ),
                         ),
                       ],
                     ),

@@ -124,7 +124,8 @@ class _NotificationsViewState extends State<_NotificationsView> {
             ),
             NotificationListLoaded(:final items, :final isLoadingMore) =>
               RefreshIndicator(
-                onRefresh: () => context.read<NotificationListCubit>().refresh(),
+                onRefresh: () =>
+                    context.read<NotificationListCubit>().refresh(),
                 child: ListView.separated(
                   controller: _scrollController,
                   padding: const EdgeInsets.all(FuvekonSpacing.page),

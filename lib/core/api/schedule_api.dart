@@ -7,17 +7,11 @@ class ScheduleApi extends BaseApi {
   ScheduleApi(super.client);
 
   Future<ApiResponse<List<dynamic>>> listSchedules() {
-    return get(
-      ApiConstants.schedules,
-      mapData: mapJsonList,
-    );
+    return get(ApiConstants.schedules, mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getSchedule(String id) {
-    return get(
-      ApiConstants.schedule(id),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.schedule(id), mapData: mapJsonObject);
   }
 }
 
@@ -47,10 +41,7 @@ class AdminScheduleApi extends BaseApi {
   }
 
   Future<ApiResponse<void>> deleteSchedule(String id) {
-    return delete(
-      ApiConstants.adminSchedule(id),
-      throwOnFailure: true,
-    );
+    return delete(ApiConstants.adminSchedule(id), throwOnFailure: true);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> createTimelineItem(
@@ -92,24 +83,15 @@ class AdminVenueApi extends BaseApi {
   AdminVenueApi(super.client);
 
   Future<ApiResponse<List<dynamic>>> listVenues() {
-    return get(
-      ApiConstants.adminVenues,
-      mapData: mapJsonList,
-    );
+    return get(ApiConstants.adminVenues, mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getVenue(String venueId) {
-    return get(
-      ApiConstants.adminVenue(venueId),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminVenue(venueId), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<List<dynamic>>> listLocations(String venueId) {
-    return get(
-      ApiConstants.adminVenueLocations(venueId),
-      mapData: mapJsonList,
-    );
+    return get(ApiConstants.adminVenueLocations(venueId), mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> createVenue(

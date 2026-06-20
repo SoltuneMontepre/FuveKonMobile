@@ -348,8 +348,8 @@ class _ActionTile extends StatelessWidget {
               Text(
                 item.label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
               ),

@@ -71,11 +71,13 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
   String _formatRange(BuildContext context, AdminScheduleItem item) {
     final l10n = context.l10n;
     final fmt = DateFormat('dd/MM/yyyy HH:mm');
-    if (item.startAt == null && item.endAt == null) return l10n.adminEventSchedulesNoTime;
+    if (item.startAt == null && item.endAt == null)
+      return l10n.adminEventSchedulesNoTime;
     if (item.startAt != null && item.endAt != null) {
       return '${fmt.format(item.startAt!)} – ${fmt.format(item.endAt!)}';
     }
-    if (item.startAt != null) return '${l10n.adminEventSchedulesFrom} ${fmt.format(item.startAt!)}';
+    if (item.startAt != null)
+      return '${l10n.adminEventSchedulesFrom} ${fmt.format(item.startAt!)}';
     return '${l10n.adminEventSchedulesTo} ${fmt.format(item.endAt!)}';
   }
 
@@ -145,7 +147,10 @@ class _AdminSchedulesPageState extends State<AdminSchedulesPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              FilledButton(onPressed: _load, child: Text(context.l10n.adminRetry)),
+              FilledButton(
+                onPressed: _load,
+                child: Text(context.l10n.adminRetry),
+              ),
             ],
           ),
         ),
@@ -441,7 +446,9 @@ class _AdminScheduleFormSheetState extends State<AdminScheduleFormSheet> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: l10n.adminSchedulesNameLabel),
+              decoration: InputDecoration(
+                labelText: l10n.adminSchedulesNameLabel,
+              ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
                   return l10n.adminSchedulesNameRequired;

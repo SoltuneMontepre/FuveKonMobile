@@ -21,13 +21,13 @@ class DashboardAnalyticsParams {
   final String revenueGranularity;
 
   Map<String, dynamic> toQuery() => {
-        'timeline_from': timelineFrom,
-        'timeline_to': timelineTo,
-        'timeline_granularity': timelineGranularity,
-        'revenue_from': revenueFrom,
-        'revenue_to': revenueTo,
-        'revenue_granularity': revenueGranularity,
-      };
+    'timeline_from': timelineFrom,
+    'timeline_to': timelineTo,
+    'timeline_granularity': timelineGranularity,
+    'revenue_from': revenueFrom,
+    'revenue_to': revenueTo,
+    'revenue_granularity': revenueGranularity,
+  };
 }
 
 /// Analytics endpoints from `useDashboardAnalytics.ts`.

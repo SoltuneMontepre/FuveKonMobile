@@ -25,7 +25,11 @@ class VerifyIdentityPage extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.verified_user_outlined, color: ext.infoAccent, size: 28),
+                    Icon(
+                      Icons.verified_user_outlined,
+                      color: ext.infoAccent,
+                      size: 28,
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -55,7 +59,11 @@ class VerifyIdentityPage extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.info_outline, color: ext.infoAccent, size: 18),
+                        Icon(
+                          Icons.info_outline,
+                          color: ext.infoAccent,
+                          size: 18,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -98,7 +106,10 @@ class VerifyIdentityPage extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('• ', style: TextStyle(color: ext.contentOnCardMuted)),
+                        Text(
+                          '• ',
+                          style: TextStyle(color: ext.contentOnCardMuted),
+                        ),
                         Expanded(
                           child: Text(
                             item,

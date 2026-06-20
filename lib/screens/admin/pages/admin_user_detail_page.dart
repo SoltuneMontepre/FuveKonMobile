@@ -66,15 +66,15 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     try {
       await action();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.adminUpdateSuccess)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.adminUpdateSuccess)));
       await _load();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _actionInProgress = false);
     }
@@ -143,9 +143,9 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     final reason = reasonController.text.trim();
     if (reason.isEmpty) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.adminBanReasonRequired)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.adminBanReasonRequired)));
       return;
     }
 
@@ -155,7 +155,9 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
   }
 
   Future<void> _openEdit() async {
-    final updated = await context.push<bool>(Routes.adminUserEdit(widget.userId));
+    final updated = await context.push<bool>(
+      Routes.adminUserEdit(widget.userId),
+    );
     if (updated == true) await _load();
   }
 
@@ -205,14 +207,11 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
                 _error!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
               const SizedBox(height: 16),
-              FilledButton(
-                onPressed: _load,
-                child: Text(l10n.adminRetry),
-              ),
+              FilledButton(onPressed: _load, child: Text(l10n.adminRetry)),
             ],
           ),
         ),
@@ -223,8 +222,9 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     final effectivePermissions = isAdminRole(user.role)
         ? adminPermissionCodes
         : user.permissions;
-    final canSendNotification =
-        sl<AuthSessionNotifier>().hasPermission(UserPermissions.sendNotifications);
+    final canSendNotification = sl<AuthSessionNotifier>().hasPermission(
+      UserPermissions.sendNotifications,
+    );
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(
@@ -262,8 +262,8 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
             onDelete: _confirmDelete,
             onSendNotification: canSendNotification
                 ? () => context.push(
-                      Routes.adminNotificationCreateForUser(userId: user.id),
-                    )
+                    Routes.adminNotificationCreateForUser(userId: user.id),
+                  )
                 : null,
           ),
           const SizedBox(height: FuvekonSpacing.section),
@@ -273,8 +273,10 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
         _UserDetailsSection(
           l10n: l10n,
           user: user,
-          permissionsSummary:
-              formatAdminPermissionsSummary(l10n, effectivePermissions),
+          permissionsSummary: formatAdminPermissionsSummary(
+            l10n,
+            effectivePermissions,
+          ),
         ),
       ],
     );
@@ -408,8 +410,8 @@ class _QuickActionCard extends StatelessWidget {
     final fg = isDestructive
         ? const Color(0xFFF0A0A8)
         : isPrimary
-            ? FuvekonColors.darkCardText
-            : FuvekonColors.darkText;
+        ? FuvekonColors.darkCardText
+        : FuvekonColors.darkText;
 
     final card = Material(
       color: bg,
@@ -510,8 +512,8 @@ class _UserActivitySection extends StatelessWidget {
             Text(
               l10n.adminEventCount(events.length),
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: FuvekonColors.darkTextSecondary,
-                  ),
+                color: FuvekonColors.darkTextSecondary,
+              ),
             ),
           ],
         ),
@@ -616,10 +618,7 @@ class _ActivityEvent {
 }
 
 class _ActivityTimelineTile extends StatelessWidget {
-  const _ActivityTimelineTile({
-    required this.event,
-    required this.isLast,
-  });
+  const _ActivityTimelineTile({required this.event, required this.isLast});
 
   final _ActivityEvent event;
   final bool isLast;
@@ -772,8 +771,8 @@ class _UserDetailsSection extends StatelessWidget {
               child: Text(
                 l10n.adminFieldAvatar,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
             ),
             const SizedBox(height: 8),
@@ -810,16 +809,16 @@ class _DetailInfoRow extends StatelessWidget {
             child: Text(
               label,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: FuvekonColors.darkTextSecondary,
-                  ),
+                color: FuvekonColors.darkTextSecondary,
+              ),
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: FuvekonColors.darkText,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: FuvekonColors.darkText),
             ),
           ),
         ],

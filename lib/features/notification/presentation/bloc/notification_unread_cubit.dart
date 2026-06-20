@@ -5,8 +5,8 @@ import 'package:fuvekonmobile/features/notification/domain/repositories/notifica
 /// Tracks unread notification count for nav badges.
 class NotificationUnreadCubit extends Cubit<int> {
   NotificationUnreadCubit({required NotificationRepository repository})
-      : _repository = repository,
-        super(0);
+    : _repository = repository,
+      super(0);
 
   final NotificationRepository _repository;
 

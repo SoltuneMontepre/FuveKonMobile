@@ -9,11 +9,7 @@ abstract final class _LoginColors {
 }
 
 class LoginPageLayout extends StatelessWidget {
-  const LoginPageLayout({
-    super.key,
-    required this.form,
-    required this.footer,
-  });
+  const LoginPageLayout({super.key, required this.form, required this.footer});
 
   final Widget form;
   final Widget footer;
@@ -52,7 +48,10 @@ class LoginPageLayout extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               FuvekonIllustratedContentPanel(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
                 child: footer,
               ),
             ],

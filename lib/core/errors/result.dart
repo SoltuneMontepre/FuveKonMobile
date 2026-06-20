@@ -31,11 +31,11 @@ extension ResultX<T> on Result<T> {
 
 Failure mapExceptionToFailure(Object error) {
   return switch (error) {
-  NetworkException(:final message) => NetworkFailure(message),
-  ServerException(:final message) => ServerFailure(message),
-  CacheException(:final message) => CacheFailure(message),
-  AuthException(:final message) => AuthFailure(message),
-  UnauthorizedException(:final message) => AuthFailure(message),
-  _ => UnknownFailure(error.toString()),
+    NetworkException(:final message) => NetworkFailure(message),
+    ServerException(:final message) => ServerFailure(message),
+    CacheException(:final message) => CacheFailure(message),
+    AuthException(:final message) => AuthFailure(message),
+    UnauthorizedException(:final message) => AuthFailure(message),
+    _ => UnknownFailure(error.toString()),
   };
 }

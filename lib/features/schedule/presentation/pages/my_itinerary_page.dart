@@ -38,28 +38,28 @@ class _MyItineraryView extends StatelessWidget {
         builder: (context, state) {
           return switch (state) {
             ItineraryInitial() || ItineraryLoading() => const Center(
-                child: CircularProgressIndicator(),
-              ),
+              child: CircularProgressIndicator(),
+            ),
             ItineraryFailure(:final message) => Center(child: Text(message)),
             ItineraryEmpty() => EmptyState(
-                title: l10n.scheduleEmptyItinerary,
-                subtitle: l10n.scheduleEmptyItineraryHint,
-                icon: Icons.bookmark_border,
-              ),
+              title: l10n.scheduleEmptyItinerary,
+              subtitle: l10n.scheduleEmptyItineraryHint,
+              icon: Icons.bookmark_border,
+            ),
             ItineraryLoaded(:final items) => RefreshIndicator(
-                onRefresh: () => context.read<ItineraryCubit>().refresh(),
-                child: ListView(
-                  padding: const EdgeInsets.all(FuvekonSpacing.page),
-                  children: items
-                      .map(
-                        (item) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: _ItineraryCard(item: item),
-                        ),
-                      )
-                      .toList(),
-                ),
+              onRefresh: () => context.read<ItineraryCubit>().refresh(),
+              child: ListView(
+                padding: const EdgeInsets.all(FuvekonSpacing.page),
+                children: items
+                    .map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _ItineraryCard(item: item),
+                      ),
+                    )
+                    .toList(),
               ),
+            ),
           };
         },
       ),
@@ -78,9 +78,8 @@ class _ItineraryCard extends StatelessWidget {
     final timeFormat = DateFormat('EEE d/M, HH:mm', locale);
 
     return FuveMintCard(
-      onTap: () => context.push(
-        ScheduleRouteContext.activity(context, item.activityId),
-      ),
+      onTap: () =>
+          context.push(ScheduleRouteContext.activity(context, item.activityId)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

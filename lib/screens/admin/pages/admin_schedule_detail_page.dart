@@ -83,14 +83,23 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
 
   List<String> _categoriesForDay(AdminScheduleDay? day) {
     if (day == null) return const [];
-    return day.timeline.map((item) => item.category).where((c) => c.isNotEmpty).toSet().toList()..sort();
+    return day.timeline
+        .map((item) => item.category)
+        .where((c) => c.isNotEmpty)
+        .toSet()
+        .toList()
+      ..sort();
   }
 
   List<_TimelineEntry> _timelineEntries(AdminScheduleDay? day) {
     if (day == null) return const [];
 
     final entries = day.timeline
-        .where((item) => _selectedCategory == _allCategories || item.category == _selectedCategory)
+        .where(
+          (item) =>
+              _selectedCategory == _allCategories ||
+              item.category == _selectedCategory,
+        )
         .map((item) => _TimelineEntry(item: item))
         .toList();
 
@@ -105,7 +114,8 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
         final a = entries[i];
         final b = entries[j];
         if (!_itemsOverlap(a.item, b.item)) continue;
-        if (a.item.location.isEmpty || a.item.location != b.item.location) continue;
+        if (a.item.location.isEmpty || a.item.location != b.item.location)
+          continue;
         a.hasLocationConflict = true;
         b.hasLocationConflict = true;
       }
@@ -119,9 +129,10 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
   String _dayAbbrev(BuildContext context, String date) {
     final parsed = DateTime.tryParse(date);
     if (parsed == null) return '';
-    return DateFormat('E', Localizations.localeOf(context).toString())
-        .format(parsed)
-        .replaceAll('.', '');
+    return DateFormat(
+      'E',
+      Localizations.localeOf(context).toString(),
+    ).format(parsed).replaceAll('.', '');
   }
 
   String _dayNumber(String date) {
@@ -135,9 +146,9 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
     try {
       await action();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.adminUpdateSuccess)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.l10n.adminUpdateSuccess)));
       await _load();
     } catch (e) {
       if (!mounted) return;
@@ -223,7 +234,8 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
       builder: (context) => _TimelineItemFormSheet(
         initial: item,
         defaultStart: item?.startAt ?? _defaultStartForSelectedDay(),
-        defaultEnd: item?.endAt ??
+        defaultEnd:
+            item?.endAt ??
             _defaultStartForSelectedDay().add(const Duration(hours: 1)),
         onSubmit: (input) async {
           if (item == null) {
@@ -309,11 +321,14 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
                 formatAdminError(context.l10n, _error!),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
               const SizedBox(height: 16),
-              FilledButton(onPressed: _load, child: Text(context.l10n.adminRetry)),
+              FilledButton(
+                onPressed: _load,
+                child: Text(context.l10n.adminRetry),
+              ),
             ],
           ),
         ),
@@ -343,7 +358,9 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
             height: 72,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: FuvekonSpacing.page),
+              padding: const EdgeInsets.symmetric(
+                horizontal: FuvekonSpacing.page,
+              ),
               itemCount: schedule.days.length,
               separatorBuilder: (_, _) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
@@ -365,7 +382,9 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
             height: 36,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: FuvekonSpacing.page),
+              padding: const EdgeInsets.symmetric(
+                horizontal: FuvekonSpacing.page,
+              ),
               itemCount: categories.length + 1,
               separatorBuilder: (_, _) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
@@ -373,7 +392,8 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
                   return _CategoryChip(
                     label: context.l10n.adminAll,
                     selected: _selectedCategory == _allCategories,
-                    onTap: () => setState(() => _selectedCategory = _allCategories),
+                    onTap: () =>
+                        setState(() => _selectedCategory = _allCategories),
                   );
                 }
                 final category = categories[index - 1];
@@ -474,9 +494,9 @@ class _ScheduleHeaderBar extends StatelessWidget {
             child: Text(
               title,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: FuvekonColors.darkAppBarTitle,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: FuvekonColors.darkAppBarTitle,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
           PopupMenuButton<String>(
@@ -536,7 +556,9 @@ class _DateChip extends StatelessWidget {
           width: 56,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            border: selected ? null : Border.all(color: FuvekonColors.darkBorder),
+            border: selected
+                ? null
+                : Border.all(color: FuvekonColors.darkBorder),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -544,21 +566,21 @@ class _DateChip extends StatelessWidget {
               Text(
                 dayLabel,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: selected
-                          ? FuvekonColors.darkButtonText
-                          : FuvekonColors.darkTextSecondary,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: selected
+                      ? FuvekonColors.darkButtonText
+                      : FuvekonColors.darkTextSecondary,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 2),
               Text(
                 dateLabel,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: selected
-                          ? FuvekonColors.darkButtonText
-                          : FuvekonColors.darkText,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: selected
+                      ? FuvekonColors.darkButtonText
+                      : FuvekonColors.darkText,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ],
           ),
@@ -592,15 +614,19 @@ class _CategoryChip extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: selected ? FuvekonColors.darkPrimary : FuvekonColors.darkBorder,
+              color: selected
+                  ? FuvekonColors.darkPrimary
+                  : FuvekonColors.darkBorder,
             ),
           ),
           child: Text(
             label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: selected ? FuvekonColors.darkPrimary : FuvekonColors.darkTextSecondary,
-                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-                ),
+              color: selected
+                  ? FuvekonColors.darkPrimary
+                  : FuvekonColors.darkTextSecondary,
+              fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+            ),
           ),
         ),
       ),
@@ -629,7 +655,8 @@ class _TimelineItemTile extends StatelessWidget {
     final timeFmt = DateFormat('HH:mm');
     final item = entry.item;
     final conflict = entry.hasLocationConflict;
-    final timeRange = '${timeFmt.format(item.startAt)} - ${timeFmt.format(item.endAt)}';
+    final timeRange =
+        '${timeFmt.format(item.startAt)} - ${timeFmt.format(item.endAt)}';
 
     return IntrinsicHeight(
       child: Row(
@@ -644,7 +671,9 @@ class _TimelineItemTile extends StatelessWidget {
                   height: 10,
                   margin: const EdgeInsets.only(top: 6),
                   decoration: BoxDecoration(
-                    color: conflict ? _conflictColor : FuvekonColors.darkPrimary,
+                    color: conflict
+                        ? _conflictColor
+                        : FuvekonColors.darkPrimary,
                     shape: BoxShape.circle,
                     border: Border.all(color: FuvekonColors.darkBg, width: 2),
                   ),
@@ -672,9 +701,11 @@ class _TimelineItemTile extends StatelessWidget {
                       Text(
                         timeRange,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: conflict ? FuvekonColors.darkText : const Color(0xFFFBBF24),
-                              fontWeight: FontWeight.w700,
-                            ),
+                          color: conflict
+                              ? FuvekonColors.darkText
+                              : const Color(0xFFFBBF24),
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       if (item.category.isNotEmpty) ...[
                         const SizedBox(width: 8),
@@ -693,7 +724,9 @@ class _TimelineItemTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Material(
-                    color: conflict ? FuvekonColors.darkSurfaceElevated : FuvekonColors.darkCard,
+                    color: conflict
+                        ? FuvekonColors.darkSurfaceElevated
+                        : FuvekonColors.darkCard,
                     borderRadius: BorderRadius.circular(16),
                     child: InkWell(
                       onTap: onTap,
@@ -705,7 +738,9 @@ class _TimelineItemTile extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           border: conflict
-                              ? Border.all(color: _conflictColor.withValues(alpha: 0.6))
+                              ? Border.all(
+                                  color: _conflictColor.withValues(alpha: 0.6),
+                                )
                               : null,
                         ),
                         child: Column(
@@ -713,7 +748,8 @@ class _TimelineItemTile extends StatelessWidget {
                           children: [
                             Text(
                               item.title,
-                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(
                                     color: conflict
                                         ? FuvekonColors.darkText
                                         : FuvekonColors.darkCardText,
@@ -727,7 +763,9 @@ class _TimelineItemTile extends StatelessWidget {
                                   Icon(
                                     Icons.place_outlined,
                                     size: 16,
-                                    color: conflict ? _conflictColor : FuvekonColors.textSecondary,
+                                    color: conflict
+                                        ? _conflictColor
+                                        : FuvekonColors.textSecondary,
                                   ),
                                   const SizedBox(width: 6),
                                   Expanded(
@@ -735,7 +773,10 @@ class _TimelineItemTile extends StatelessWidget {
                                       conflict
                                           ? '${item.location}${l10n.adminScheduleOverlapSchedule}'
                                           : item.location,
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
                                             color: conflict
                                                 ? _conflictColor
                                                 : FuvekonColors.textSecondary,
@@ -758,7 +799,10 @@ class _TimelineItemTile extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       item.description,
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
                                             color: FuvekonColors.textSecondary,
                                           ),
                                     ),
@@ -802,7 +846,9 @@ class _TagChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? FuvekonColors.darkSurface,
         borderRadius: BorderRadius.circular(6),
-        border: backgroundColor == null ? Border.all(color: FuvekonColors.darkBorder) : null,
+        border: backgroundColor == null
+            ? Border.all(color: FuvekonColors.darkBorder)
+            : null,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -814,9 +860,9 @@ class _TagChip extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: fg,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: fg,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -856,7 +902,9 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
     super.initState();
     final initial = widget.initial;
     _titleController = TextEditingController(text: initial?.title ?? '');
-    _descriptionController = TextEditingController(text: initial?.description ?? '');
+    _descriptionController = TextEditingController(
+      text: initial?.description ?? '',
+    );
     _categoryController = TextEditingController(text: initial?.category ?? '');
     _locationController = TextEditingController(text: initial?.location ?? '');
     _startAt = initial?.startAt ?? widget.defaultStart;
@@ -890,7 +938,9 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
     );
     if (time == null || !mounted) return;
 
-    onChanged(DateTime(date.year, date.month, date.day, time.hour, time.minute));
+    onChanged(
+      DateTime(date.year, date.month, date.day, time.hour, time.minute),
+    );
     setState(() {});
   }
 
@@ -927,7 +977,8 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
     }
   }
 
-  String _formatDateTime(DateTime value) => DateFormat('dd/MM/yyyy HH:mm').format(value);
+  String _formatDateTime(DateTime value) =>
+      DateFormat('dd/MM/yyyy HH:mm').format(value);
 
   @override
   Widget build(BuildContext context) {
@@ -958,76 +1009,78 @@ class _TimelineItemFormSheetState extends State<_TimelineItemFormSheet> {
               const SizedBox(height: 16),
               Text(
                 isEdit ? l10n.adminScheduleEditItem : l10n.adminScheduleAddItem,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: FuvekonColors.darkText,
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _titleController,
-              decoration: InputDecoration(labelText: l10n.adminScheduleItemTitleLabel),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return l10n.adminScheduleTitleRequired;
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: InputDecoration(
-                labelText: l10n.adminScheduleItemDescriptionLabel,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: FuvekonColors.darkText,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-              maxLines: 3,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _categoryController,
-              decoration: InputDecoration(
-                labelText: l10n.adminScheduleItemCategoryLabel,
-                hintText: l10n.adminScheduleItemCategoryHint,
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: l10n.adminScheduleItemTitleLabel,
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return l10n.adminScheduleTitleRequired;
+                  }
+                  return null;
+                },
               ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _locationController,
-              decoration: InputDecoration(
-                labelText: l10n.adminScheduleItemLocationLabel,
-                hintText: l10n.adminScheduleItemLocationHint,
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: InputDecoration(
+                  labelText: l10n.adminScheduleItemDescriptionLabel,
+                ),
+                maxLines: 3,
               ),
-            ),
-            const SizedBox(height: 12),
-            DateTimeField(
-              label: l10n.adminScheduleStartLabel,
-              value: _formatDateTime(_startAt),
-              icon: Icons.schedule_outlined,
-              onTap: () => _pickDateTime(
-                initial: _startAt,
-                onChanged: (value) => _startAt = value,
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _categoryController,
+                decoration: InputDecoration(
+                  labelText: l10n.adminScheduleItemCategoryLabel,
+                  hintText: l10n.adminScheduleItemCategoryHint,
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            DateTimeField(
-              label: l10n.adminScheduleEndLabel,
-              value: _formatDateTime(_endAt),
-              icon: Icons.schedule_outlined,
-              onTap: () => _pickDateTime(
-                initial: _endAt,
-                onChanged: (value) => _endAt = value,
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _locationController,
+                decoration: InputDecoration(
+                  labelText: l10n.adminScheduleItemLocationLabel,
+                  hintText: l10n.adminScheduleItemLocationHint,
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: _submitting ? null : _submit,
-              child: _submitting
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(isEdit ? l10n.adminSave : l10n.adminAdd),
+              const SizedBox(height: 12),
+              DateTimeField(
+                label: l10n.adminScheduleStartLabel,
+                value: _formatDateTime(_startAt),
+                icon: Icons.schedule_outlined,
+                onTap: () => _pickDateTime(
+                  initial: _startAt,
+                  onChanged: (value) => _startAt = value,
+                ),
+              ),
+              const SizedBox(height: 12),
+              DateTimeField(
+                label: l10n.adminScheduleEndLabel,
+                value: _formatDateTime(_endAt),
+                icon: Icons.schedule_outlined,
+                onTap: () => _pickDateTime(
+                  initial: _endAt,
+                  onChanged: (value) => _endAt = value,
+                ),
+              ),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: _submitting ? null : _submit,
+                child: _submitting
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(isEdit ? l10n.adminSave : l10n.adminAdd),
               ),
             ],
           ),

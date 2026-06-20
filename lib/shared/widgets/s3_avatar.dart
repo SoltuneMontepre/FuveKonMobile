@@ -36,15 +36,15 @@ class _S3AvatarState extends State<S3Avatar> {
 
     final rawUrl = widget.imageUrl;
     final hasUrl = rawUrl != null && rawUrl.isNotEmpty;
-    final resolvedUrl =
-        hasUrl && !_loadFailed ? S3Url.resolveImageUrl(rawUrl) : null;
+    final resolvedUrl = hasUrl && !_loadFailed
+        ? S3Url.resolveImageUrl(rawUrl)
+        : null;
 
     return CircleAvatar(
       radius: widget.radius,
       backgroundColor: colorScheme.primaryContainer,
       foregroundColor: colorScheme.onPrimaryContainer,
-      backgroundImage:
-          resolvedUrl != null ? NetworkImage(resolvedUrl) : null,
+      backgroundImage: resolvedUrl != null ? NetworkImage(resolvedUrl) : null,
       onBackgroundImageError: resolvedUrl != null
           ? (_, _) {
               if (!_loadFailed) {
@@ -53,10 +53,7 @@ class _S3AvatarState extends State<S3Avatar> {
             }
           : null,
       child: resolvedUrl == null
-          ? Text(
-              widget.initials,
-              style: theme.textTheme.headlineMedium,
-            )
+          ? Text(widget.initials, style: theme.textTheme.headlineMedium)
           : null,
     );
   }

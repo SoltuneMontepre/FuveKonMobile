@@ -48,8 +48,8 @@ class ScanTicketService {
   ScanTicketService({
     required AdminTicketApi adminTicketApi,
     required ScanSessionStore sessionStore,
-  })  : _adminTicketApi = adminTicketApi,
-        _sessionStore = sessionStore;
+  }) : _adminTicketApi = adminTicketApi,
+       _sessionStore = sessionStore;
 
   final AdminTicketApi _adminTicketApi;
   final ScanSessionStore _sessionStore;
@@ -217,11 +217,13 @@ class ScanTicketService {
     required String fallbackCode,
   }) {
     final user = ticket['user'];
-    final userMap =
-        user is Map ? Map<String, dynamic>.from(user) : <String, dynamic>{};
+    final userMap = user is Map
+        ? Map<String, dynamic>.from(user)
+        : <String, dynamic>{};
     final tier = ticket['ticket'];
-    final tierMap =
-        tier is Map ? Map<String, dynamic>.from(tier) : <String, dynamic>{};
+    final tierMap = tier is Map
+        ? Map<String, dynamic>.from(tier)
+        : <String, dynamic>{};
 
     final holderName = _holderName(ticket);
     final badgeName = (ticket['con_badge_name'] as String?)?.trim();
@@ -262,6 +264,7 @@ class ScanTicketService {
       isDealer: result.isDealer,
     );
   }
+
   String? _holderName(Map<String, dynamic> ticket) {
     final user = ticket['user'];
     if (user is! Map) return ticket['con_badge_name'] as String?;

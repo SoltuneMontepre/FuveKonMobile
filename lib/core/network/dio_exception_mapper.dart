@@ -6,8 +6,7 @@ Never throwMappedDioException(DioException error) {
     DioExceptionType.connectionTimeout ||
     DioExceptionType.sendTimeout ||
     DioExceptionType.receiveTimeout ||
-    DioExceptionType.connectionError =>
-      const NetworkException(),
+    DioExceptionType.connectionError => const NetworkException(),
     DioExceptionType.badResponse => _mapBadResponse(error),
     DioExceptionType.cancel => const ServerException('Request cancelled.'),
     _ => const ServerException(),
@@ -40,9 +39,7 @@ AppException _mapBadResponse(DioException error) {
 
   if (statusCode == 401) {
     if (_isLoginRequest(error)) {
-      return AuthException(
-        _loginErrorLabel(apiMessage),
-      );
+      return AuthException(_loginErrorLabel(apiMessage));
     }
     return UnauthorizedException(apiMessage ?? 'Session expired.');
   }
@@ -55,7 +52,9 @@ AppException _mapBadResponse(DioException error) {
   if (statusCode != null && statusCode >= 500 && statusCode < 600) {
     return const ServerException();
   }
-  return ServerException(apiMessage ?? error.response?.statusMessage ?? 'Request failed.');
+  return ServerException(
+    apiMessage ?? error.response?.statusMessage ?? 'Request failed.',
+  );
 }
 
 String _loginErrorLabel(String? errorMessage) {
@@ -70,8 +69,7 @@ String _loginErrorLabel(String? errorMessage) {
 
 String _forbiddenErrorLabel(String? errorMessage) {
   return switch (errorMessage) {
-    'userNotVerified' =>
-      'Session is no longer valid. Please sign in again.',
+    'userNotVerified' => 'Session is no longer valid. Please sign in again.',
     'accountBanned' => 'This account has been banned.',
     _ => errorMessage ?? 'Access denied.',
   };

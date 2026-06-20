@@ -74,9 +74,9 @@ class _LostFoundReportPageState extends State<LostFoundReportPage> {
       if (message.contains('ticket')) {
         _showTicketRequiredDialog();
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
       }
     } finally {
       if (mounted) setState(() => _submitting = false);

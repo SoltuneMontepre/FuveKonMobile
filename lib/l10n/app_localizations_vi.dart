@@ -191,12 +191,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get registerEmailHint => 'example@domain.com';
 
   @override
-  String get registerPhoneLabel => 'Số điện thoại';
-
-  @override
-  String get registerPhoneHint => 'Nhập số điện thoại';
-
-  @override
   String get registerPasswordLabel => 'Mật khẩu';
 
   @override
@@ -256,12 +250,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get validationFullNameMin => 'Họ và tên phải có ít nhất 2 ký tự';
-
-  @override
-  String get validationPhoneRequired => 'Vui lòng nhập số điện thoại';
-
-  @override
-  String get validationPhoneInvalid => 'Số điện thoại không hợp lệ';
 
   @override
   String get validationConfirmPasswordRequired => 'Vui lòng xác nhận mật khẩu';
@@ -560,9 +548,6 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get authHomeHeroSubtitle =>
       'Khám phá không gian nghệ thuật và trải nghiệm độc đáo.';
-
-  @override
-  String get authHomeSearchHint => 'Tìm kiếm sự kiện, nghệ sĩ...';
 
   @override
   String get authHomeFeaturedTitle => 'Sự kiện nổi bật';

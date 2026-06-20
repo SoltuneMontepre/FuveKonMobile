@@ -190,12 +190,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registerEmailHint => 'example@domain.com';
 
   @override
-  String get registerPhoneLabel => 'Phone number';
-
-  @override
-  String get registerPhoneHint => 'Enter phone number';
-
-  @override
   String get registerPasswordLabel => 'Password';
 
   @override
@@ -255,12 +249,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validationFullNameMin => 'Full name must be at least 2 characters';
-
-  @override
-  String get validationPhoneRequired => 'Please enter your phone number';
-
-  @override
-  String get validationPhoneInvalid => 'Invalid phone number';
 
   @override
   String get validationConfirmPasswordRequired =>
@@ -559,9 +547,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authHomeHeroSubtitle =>
       'Discover art spaces and unique experiences.';
-
-  @override
-  String get authHomeSearchHint => 'Search events, artists...';
 
   @override
   String get authHomeFeaturedTitle => 'Featured events';

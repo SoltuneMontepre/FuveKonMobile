@@ -28,14 +28,14 @@ class ScheduleEvent extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        description,
-        startAt,
-        endAt,
-        venues,
-        locationLabel,
-        tags,
-        heroImageAsset,
-      ];
+    id,
+    name,
+    description,
+    startAt,
+    endAt,
+    venues,
+    locationLabel,
+    tags,
+    heroImageAsset,
+  ];
 }

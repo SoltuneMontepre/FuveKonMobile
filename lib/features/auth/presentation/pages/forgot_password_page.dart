@@ -79,10 +79,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             const SizedBox(width: 6),
             Text(
               l10n.forgotPasswordBackToLogin,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
             ),
           ],
         ),

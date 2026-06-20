@@ -96,8 +96,8 @@ class _SystemStatusCard extends StatelessWidget {
     final accent = isWarning
         ? _warningColor
         : isError
-            ? const Color(0xFFF0A0A8)
-            : FuvekonColors.available;
+        ? const Color(0xFFF0A0A8)
+        : FuvekonColors.available;
 
     final statusLabel = switch (service.status) {
       SystemServiceStatus.healthy => l10n.adminSystemHealthy,
@@ -111,9 +111,7 @@ class _SystemStatusCard extends StatelessWidget {
         color: FuvekonColors.darkSurfaceElevated,
         borderRadius: BorderRadius.circular(16),
         border: isWarning
-            ? Border(
-                left: BorderSide(color: accent, width: 3),
-              )
+            ? Border(left: BorderSide(color: accent, width: 3))
             : null,
       ),
       child: Padding(

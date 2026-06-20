@@ -16,10 +16,10 @@ class AuthRepositoryImpl implements AuthRepository {
     required TokenStorage tokenStorage,
     required TokenRefreshService tokenRefreshService,
     PushNotificationService? pushNotificationService,
-  })  : _remoteDataSource = remoteDataSource,
-        _tokenStorage = tokenStorage,
-        _tokenRefreshService = tokenRefreshService,
-        _pushNotificationService = pushNotificationService;
+  }) : _remoteDataSource = remoteDataSource,
+       _tokenStorage = tokenStorage,
+       _tokenRefreshService = tokenRefreshService,
+       _pushNotificationService = pushNotificationService;
 
   final AuthRemoteDataSource _remoteDataSource;
   final TokenStorage _tokenStorage;
