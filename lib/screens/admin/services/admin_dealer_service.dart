@@ -6,7 +6,7 @@ enum AdminDealerTab { pending, verified }
 
 class AdminDealerService {
   AdminDealerService({required AdminDealerApi adminDealerApi})
-      : _api = adminDealerApi;
+    : _api = adminDealerApi;
 
   final AdminDealerApi _api;
 

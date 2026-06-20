@@ -6,10 +6,7 @@ class EventApi extends BaseApi {
   EventApi(super.client);
 
   Future<ApiResponse<Map<String, dynamic>>> getAdminSettings() {
-    return get(
-      ApiConstants.adminEventSettings,
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminEventSettings, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> setTicketSalesOpen(bool open) {

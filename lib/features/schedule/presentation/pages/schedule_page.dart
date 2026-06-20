@@ -55,65 +55,63 @@ class _ScheduleView extends StatelessWidget {
         builder: (context, state) {
           return switch (state) {
             ScheduleListInitial() || ScheduleListLoading() => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ScheduleListFailure(:final message) => Center(
-                child: Text(message),
-              ),
+              child: CircularProgressIndicator(),
+            ),
+            ScheduleListFailure(:final message) => Center(child: Text(message)),
             ScheduleListLoaded() => RefreshIndicator(
-                onRefresh: () => context.read<ScheduleListCubit>().load(),
-                child: ListView(
-                  padding: const EdgeInsets.all(FuvekonSpacing.page),
-                  children: [
-                    FuveMintCard(
-                      onTap: () => context.push(
-                        ScheduleRouteContext.event(context, state.event.id),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            state.event.name,
-                            style: TextStyle(
-                              color: context.fuvekonTheme.contentOnCard,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                            ),
+              onRefresh: () => context.read<ScheduleListCubit>().load(),
+              child: ListView(
+                padding: const EdgeInsets.all(FuvekonSpacing.page),
+                children: [
+                  FuveMintCard(
+                    onTap: () => context.push(
+                      ScheduleRouteContext.event(context, state.event.id),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          state.event.name,
+                          style: TextStyle(
+                            color: context.fuvekonTheme.contentOnCard,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            state.event.description,
-                            style: TextStyle(
-                              color: context.fuvekonTheme.contentOnCardMuted,
-                              fontSize: 13,
-                              height: 1.45,
-                            ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          state.event.description,
+                          style: TextStyle(
+                            color: context.fuvekonTheme.contentOnCardMuted,
+                            fontSize: 13,
+                            height: 1.45,
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: FuvekonSpacing.section),
+                  FuveSectionHeader(title: l10n.scheduleDayFilter),
+                  const SizedBox(height: 12),
+                  _DayChips(state: state),
+                  const SizedBox(height: FuvekonSpacing.section),
+                  FuveSectionHeader(title: l10n.scheduleActivities),
+                  const SizedBox(height: 12),
+                  if (state.activities.isEmpty)
+                    EmptyState(
+                      title: l10n.scheduleNoActivities,
+                      icon: Icons.event_busy_outlined,
+                    )
+                  else
+                    ...state.activities.map(
+                      (activity) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _ActivityCard(activity: activity),
                       ),
                     ),
-                    const SizedBox(height: FuvekonSpacing.section),
-                    FuveSectionHeader(title: l10n.scheduleDayFilter),
-                    const SizedBox(height: 12),
-                    _DayChips(state: state),
-                    const SizedBox(height: FuvekonSpacing.section),
-                    FuveSectionHeader(title: l10n.scheduleActivities),
-                    const SizedBox(height: 12),
-                    if (state.activities.isEmpty)
-                      EmptyState(
-                        title: l10n.scheduleNoActivities,
-                        icon: Icons.event_busy_outlined,
-                      )
-                    else
-                      ...state.activities.map(
-                        (activity) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: _ActivityCard(activity: activity),
-                        ),
-                      ),
-                  ],
-                ),
+                ],
               ),
+            ),
           };
         },
       ),
@@ -155,7 +153,8 @@ class _DayChips extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: _days().map((day) {
-          final selected = day.year == state.selectedDay.year &&
+          final selected =
+              day.year == state.selectedDay.year &&
               day.month == state.selectedDay.month &&
               day.day == state.selectedDay.day;
           return Padding(
@@ -165,7 +164,9 @@ class _DayChips extends StatelessWidget {
               selected: selected,
               onSelected: (_) =>
                   context.read<ScheduleListCubit>().selectDay(day),
-              selectedColor: FuvekonColors.premiumPrimary.withValues(alpha: 0.35),
+              selectedColor: FuvekonColors.premiumPrimary.withValues(
+                alpha: 0.35,
+              ),
               checkmarkColor: FuvekonColors.premiumOnPrimary,
             ),
           );

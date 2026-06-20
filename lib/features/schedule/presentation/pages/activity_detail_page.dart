@@ -56,9 +56,9 @@ class _ActivityDetailViewState extends State<_ActivityDetailView> {
       },
       listener: (context, state) {
         if (state is ActivityDetailLoaded && state.bookmarkError != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.bookmarkError!)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.bookmarkError!)));
           context.read<ActivityDetailCubit>().clearBookmarkError();
           return;
         }
@@ -98,11 +98,11 @@ class _ActivityDetailViewState extends State<_ActivityDetailView> {
           appBar: AppBar(title: Text(l10n.scheduleActivityDetail)),
           body: switch (state) {
             ActivityDetailInitial() || ActivityDetailLoading() => const Center(
-                child: CircularProgressIndicator(),
-              ),
+              child: CircularProgressIndicator(),
+            ),
             ActivityDetailFailure(:final message) => Center(
-                child: Text(message),
-              ),
+              child: Text(message),
+            ),
             ActivityDetailLoaded(:final activity, :final isBookmarked) =>
               ListView(
                 padding: const EdgeInsets.all(FuvekonSpacing.page),
@@ -139,7 +139,8 @@ class _ActivityDetailViewState extends State<_ActivityDetailView> {
                         _DetailRow(
                           icon: Icons.place_outlined,
                           label: l10n.scheduleLocation,
-                          value: '${activity.venueName} · ${activity.locationName}',
+                          value:
+                              '${activity.venueName} · ${activity.locationName}',
                           onTap: () => context.push(
                             ScheduleRouteContext.venue(
                               context,
@@ -187,8 +188,9 @@ class _ActivityDetailViewState extends State<_ActivityDetailView> {
                                 .read<ActivityDetailCubit>()
                                 .toggleBookmark();
                             if (!context.mounted) return;
-                            final current =
-                                context.read<ActivityDetailCubit>().state;
+                            final current = context
+                                .read<ActivityDetailCubit>()
+                                .state;
                             if (current is ActivityDetailLoaded &&
                                 current.isBookmarked &&
                                 current.conflictWith == null) {

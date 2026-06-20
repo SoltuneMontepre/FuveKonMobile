@@ -6,8 +6,8 @@ import 'package:fuvekonmobile/features/profile/presentation/bloc/edit_profile_st
 
 class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   EditProfileBloc({required UpdateMeUseCase updateMeUseCase})
-      : _updateMeUseCase = updateMeUseCase,
-        super(const EditProfileState.idle()) {
+    : _updateMeUseCase = updateMeUseCase,
+      super(const EditProfileState.idle()) {
     on<EditProfileSubmitted>(_onSubmitted);
   }
 

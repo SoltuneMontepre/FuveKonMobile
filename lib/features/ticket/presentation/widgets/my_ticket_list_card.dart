@@ -26,7 +26,8 @@ class MyTicketListCard extends StatelessWidget {
     final colors = exploreTicketTextColors(ExploreTierStyle.standard);
     final ticket = item.userTicket;
     final ctaLabel = _ctaLabel(l10n, ticket);
-    final canOpen = ticket == null ||
+    final canOpen =
+        ticket == null ||
         ticket.status != TicketStatus.denied ||
         ticket.needsPayment;
 
@@ -71,7 +72,10 @@ class MyTicketListCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 if (item.isCheckedIn)
-                  _UsedStatusChip(label: l10n.myTicketsStatusUsed, colors: colors)
+                  _UsedStatusChip(
+                    label: l10n.myTicketsStatusUsed,
+                    colors: colors,
+                  )
                 else if (ticket != null)
                   TicketStatusLabel(status: ticket.status)
                 else
@@ -90,10 +94,7 @@ class MyTicketListCard extends StatelessWidget {
                     const SizedBox(width: 6),
                     Text(
                       item.dateLabel,
-                      style: TextStyle(
-                        color: colors.body,
-                        fontSize: 13,
-                      ),
+                      style: TextStyle(color: colors.body, fontSize: 13),
                     ),
                   ],
                 ),

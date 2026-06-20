@@ -10,7 +10,7 @@ import 'package:fuvekonmobile/features/ticket/domain/repositories/ticket_reposit
 
 class TicketRepositoryImpl implements TicketRepository {
   TicketRepositoryImpl({required TicketRemoteDataSource remoteDataSource})
-      : _remoteDataSource = remoteDataSource;
+    : _remoteDataSource = remoteDataSource;
 
   final TicketRemoteDataSource _remoteDataSource;
 

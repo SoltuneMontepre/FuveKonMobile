@@ -21,8 +21,8 @@ enum UserRole {
   bool get isPrivileged => this == UserRole.admin || this == UserRole.staff;
 
   String get homeRoute => switch (this) {
-        UserRole.admin => Routes.admin,
-        UserRole.staff => Routes.admin,
-        UserRole.user || UserRole.dealer => Routes.account,
-      };
+    UserRole.admin => Routes.admin,
+    UserRole.staff => Routes.admin,
+    UserRole.user || UserRole.dealer => Routes.account,
+  };
 }

@@ -5,12 +5,7 @@ abstract final class Routes {
   static const language = '/language';
   static const introduction = '/introduction';
 
-  static const onboardingRoutes = {
-    splash,
-    onboarding,
-    language,
-    introduction,
-  };
+  static const onboardingRoutes = {splash, onboarding, language, introduction};
 
   // —— Public ——
   static const home = '/';
@@ -61,7 +56,8 @@ abstract final class Routes {
   static const accountVerifyIdentity = '/account/profile/verify-identity';
   static const accountSubmissions = '/account/profile/submissions';
   static const accountConbook = '/account/profile/conbook';
-  static String accountConbookDetail(String id) => '/account/profile/conbook/$id';
+  static String accountConbookDetail(String id) =>
+      '/account/profile/conbook/$id';
   static const accountTalent = '/account/profile/talent';
   static String accountTalentDetail(String id) => '/account/profile/talent/$id';
   static const accountPanel = '/account/profile/panel';
@@ -111,7 +107,8 @@ abstract final class Routes {
   static const adminHistory = '/admin/history';
   static const adminLostFound = '/admin/lost-found';
   static String adminLostFoundDetail(String id) => '/admin/lost-found/$id';
-  static String adminLostFoundReturn(String id) => '/admin/lost-found/$id/return';
+  static String adminLostFoundReturn(String id) =>
+      '/admin/lost-found/$id/return';
   static const adminSystem = '/admin/system';
   static const adminAccount = '/admin/account';
   static const adminArtSubmit = '/admin/art-submit';
@@ -128,6 +125,7 @@ abstract final class Routes {
     if (section == null || section.isEmpty) return path;
     return '$path?section=$section';
   }
+
   static const adminNotifications = '/admin/notifications';
   static const adminNotificationCreate = '/admin/notifications/create';
   static const adminNotificationBroadcast = '/admin/notifications/broadcast';
@@ -166,7 +164,8 @@ abstract final class Routes {
     if (location == ticketPurchase || location.startsWith('$ticketPurchase/')) {
       return true;
     }
-    if (location.startsWith('$ticket/') && !location.startsWith(ticketPurchase)) {
+    if (location.startsWith('$ticket/') &&
+        !location.startsWith(ticketPurchase)) {
       return true;
     }
     if (location.startsWith('$artbook/')) return true;

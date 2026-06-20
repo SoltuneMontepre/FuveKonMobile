@@ -99,8 +99,8 @@ class _NameCardSectionState extends State<NameCardSection> {
               maxLength: 255,
               enabled: state.canSaveNameCard && !state.isSavingNameCard,
               onChanged: (value) => context.read<MyTicketBloc>().add(
-                    MyTicketEvent.badgeNameChanged(value),
-                  ),
+                MyTicketEvent.badgeNameChanged(value),
+              ),
             ),
             CheckboxListTile(
               contentPadding: EdgeInsets.zero,
@@ -108,8 +108,8 @@ class _NameCardSectionState extends State<NameCardSection> {
               value: state.isFursuiter,
               onChanged: state.canSaveNameCard && !state.isSavingNameCard
                   ? (v) => context.read<MyTicketBloc>().add(
-                        MyTicketEvent.fursuiterChanged(v ?? false),
-                      )
+                      MyTicketEvent.fursuiterChanged(v ?? false),
+                    )
                   : null,
             ),
             CheckboxListTile(
@@ -118,16 +118,16 @@ class _NameCardSectionState extends State<NameCardSection> {
               value: state.isFursuitStaff,
               onChanged: state.canSaveNameCard && !state.isSavingNameCard
                   ? (v) => context.read<MyTicketBloc>().add(
-                        MyTicketEvent.fursuitStaffChanged(v ?? false),
-                      )
+                      MyTicketEvent.fursuitStaffChanged(v ?? false),
+                    )
                   : null,
             ),
             const SizedBox(height: 8),
             FilledButton(
               onPressed: state.canSaveNameCard && !state.isSavingNameCard
                   ? () => context.read<MyTicketBloc>().add(
-                        const MyTicketEvent.saveNameCardRequested(),
-                      )
+                      const MyTicketEvent.saveNameCardRequested(),
+                    )
                   : null,
               style: FilledButton.styleFrom(
                 backgroundColor: FuvekonColors.darkButton,
@@ -140,9 +140,7 @@ class _NameCardSectionState extends State<NameCardSection> {
           ] else
             Text(
               'Name card editing is available on higher tiers after approval.',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: colors.muted,
-              ),
+              style: theme.textTheme.bodyMedium?.copyWith(color: colors.muted),
             ),
           const SizedBox(height: 20),
           Text(
@@ -192,11 +190,7 @@ class _NameCardPreviewImage extends StatelessWidget {
     if (previewBytes != null) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: Image.memory(
-          previewBytes!,
-          width: width,
-          fit: BoxFit.contain,
-        ),
+        child: Image.memory(previewBytes!, width: width, fit: BoxFit.contain),
       );
     }
 
@@ -231,9 +225,9 @@ class _PreviewPlaceholder extends StatelessWidget {
       ),
       child: Text(
         'Preview will appear here',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: FuvekonColors.darkTextSecondary,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodySmall?.copyWith(color: FuvekonColors.darkTextSecondary),
       ),
     );
   }

@@ -57,17 +57,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     context.read<EditProfileBloc>().add(
-          EditProfileEvent.submitted(
-            UpdateProfileInput(
-              fursonaName: _fursonaController.text,
-              firstName: _firstNameController.text,
-              lastName: _lastNameController.text,
-              country: _countryController.text,
-              idCard: _idCardController.text,
-              dateOfBirth: _dobController.text,
-            ),
-          ),
-        );
+      EditProfileEvent.submitted(
+        UpdateProfileInput(
+          fursonaName: _fursonaController.text,
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+          country: _countryController.text,
+          idCard: _idCardController.text,
+          dateOfBirth: _dobController.text,
+        ),
+      ),
+    );
   }
 
   InputDecoration _decoration(String label, {IconData? icon}) {
@@ -100,9 +100,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
               );
               Navigator.of(context).pop(true);
             case EditProfileFailure(:final message):
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(message)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(message)));
             default:
               break;
           }
@@ -128,15 +128,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 DecoratedBox(
                                   decoration: BoxDecoration(
                                     color: ext.notesSurface,
-                                    borderRadius:
-                                        BorderRadius.circular(FuvekonRadii.notes),
+                                    borderRadius: BorderRadius.circular(
+                                      FuvekonRadii.notes,
+                                    ),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(14),
                                     child: Row(
                                       children: [
-                                        Icon(Icons.info_outline,
-                                            color: ext.infoAccent, size: 20),
+                                        Icon(
+                                          Icons.info_outline,
+                                          color: ext.infoAccent,
+                                          size: 20,
+                                        ),
                                         const SizedBox(width: 10),
                                         Expanded(
                                           child: Text(
@@ -230,8 +234,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   FuvePillButton(
                     label: isSaving ? 'Đang lưu...' : 'Lưu thay đổi',
                     icon: Icons.save_outlined,
-                    onPressed:
-                        isVerified && !isSaving ? () => _submit(context) : null,
+                    onPressed: isVerified && !isSaving
+                        ? () => _submit(context)
+                        : null,
                   ),
                 ],
               );

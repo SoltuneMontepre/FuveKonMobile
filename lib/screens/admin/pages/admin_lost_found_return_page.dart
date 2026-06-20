@@ -96,15 +96,15 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
         ),
       );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.adminLostFoundReturnSuccess)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.adminLostFoundReturnSuccess)));
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -222,8 +222,9 @@ class _AdminLostFoundReturnPageState extends State<AdminLostFoundReturnPage> {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: FuvekonColors.darkSurfaceElevated
-                            .withValues(alpha: 0.35),
+                        color: FuvekonColors.darkSurfaceElevated.withValues(
+                          alpha: 0.35,
+                        ),
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Text(
@@ -371,9 +372,9 @@ class _SectionTitle extends StatelessWidget {
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: FuvekonColors.darkAppBarTitle,
-                fontWeight: FontWeight.w600,
-              ),
+            color: FuvekonColors.darkAppBarTitle,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -392,10 +393,7 @@ class _LostFoundLightCard extends StatelessWidget {
         color: FuvekonColors.darkCard,
         borderRadius: BorderRadius.circular(FuvekonRadii.card),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: child,
-      ),
+      child: Padding(padding: const EdgeInsets.all(20), child: child),
     );
   }
 }
@@ -510,9 +508,9 @@ class _ChecklistTile extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 8),
       title: Text(
         label,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: FuvekonColors.darkText,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyLarge?.copyWith(color: FuvekonColors.darkText),
       ),
     );
   }

@@ -33,7 +33,9 @@ class GoogleSignInService {
       );
     }
     if (!isPlatformSupported) {
-      throw UnsupportedError('Google Sign-In is not supported on this platform.');
+      throw UnsupportedError(
+        'Google Sign-In is not supported on this platform.',
+      );
     }
 
     return _instance;
@@ -42,7 +44,8 @@ class GoogleSignInService {
   Future<void> _ensureInitialized() {
     return _initializeFuture ??= _googleSignIn.initialize(
       // Web + Apple need [clientId]; Android uses [serverClientId] for ID tokens.
-      clientId: kIsWeb ||
+      clientId:
+          kIsWeb ||
               defaultTargetPlatform == TargetPlatform.iOS ||
               defaultTargetPlatform == TargetPlatform.macOS
           ? AppConfig.googleClientId
@@ -58,7 +61,9 @@ class GoogleSignInService {
     await _ensureInitialized();
     final GoogleSignInAccount account;
     try {
-      account = await _googleSignIn.authenticate(scopeHint: const ['email', 'profile']);
+      account = await _googleSignIn.authenticate(
+        scopeHint: const ['email', 'profile'],
+      );
     } on GoogleSignInException catch (e) {
       final mapped = _mapGoogleSignInException(e);
       if (mapped == null) {
@@ -90,9 +95,10 @@ class GoogleSignInService {
       if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
         return PlatformException(
           code: GoogleSignInExceptionCode.clientConfigurationError.name,
-          message: e.description ??
+          message:
+              e.description ??
               'Android Credential Manager sign-in failed. Verify GOOGLE_CLIENT_ID '
-              '(Web client) and Android OAuth client (package + SHA-1).',
+                  '(Web client) and Android OAuth client (package + SHA-1).',
         );
       }
       return null;
@@ -108,10 +114,7 @@ class GoogleSignInService {
       );
     }
 
-    return PlatformException(
-      code: e.code.name,
-      message: e.description,
-    );
+    return PlatformException(code: e.code.name, message: e.description);
   }
 
   /// Maps [PlatformException] from Google Sign-In to app error keys.

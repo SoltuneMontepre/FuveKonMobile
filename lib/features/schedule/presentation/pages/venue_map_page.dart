@@ -56,69 +56,71 @@ class _VenueMapPageState extends State<VenueMapPage> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(child: Text(_error!))
-              : Padding(
-                  padding: const EdgeInsets.all(FuvekonSpacing.page),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: FuvekonColors.premiumSurfaceContainer,
-                            borderRadius:
-                                BorderRadius.circular(FuvekonRadii.card),
-                            border: Border.all(
-                              color: FuvekonColors.premiumOutline
+          ? Center(child: Text(_error!))
+          : Padding(
+              padding: const EdgeInsets.all(FuvekonSpacing.page),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: FuvekonColors.premiumSurfaceContainer,
+                        borderRadius: BorderRadius.circular(FuvekonRadii.card),
+                        border: Border.all(
+                          color: FuvekonColors.premiumOutline.withValues(
+                            alpha: 0.35,
+                          ),
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Icon(
+                              Icons.map_outlined,
+                              size: 72,
+                              color: FuvekonColors.premiumOnSurfaceVariant
                                   .withValues(alpha: 0.35),
                             ),
                           ),
-                          child: Stack(
-                            children: [
-                              Center(
-                                child: Icon(
-                                  Icons.map_outlined,
-                                  size: 72,
-                                  color: FuvekonColors.premiumOnSurfaceVariant
-                                      .withValues(alpha: 0.35),
-                                ),
-                              ),
-                              ..._venues.where((v) => v.mapX != null).map(
-                                    (venue) => _VenuePin(
-                                      venue: venue,
-                                      onTap: () => context.push(
-                                        ScheduleRouteContext.venue(
-                                          context,
-                                          venue.id,
-                                        ),
-                                      ),
+                          ..._venues
+                              .where((v) => v.mapX != null)
+                              .map(
+                                (venue) => _VenuePin(
+                                  venue: venue,
+                                  onTap: () => context.push(
+                                    ScheduleRouteContext.venue(
+                                      context,
+                                      venue.id,
                                     ),
                                   ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ..._venues.map(
-                        (venue) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: FuveMintCard(
-                            onTap: () => context.push(
-                              ScheduleRouteContext.venue(context, venue.id),
-                            ),
-                            child: Text(
-                              venue.name,
-                              style: TextStyle(
-                                color: context.fuvekonTheme.contentOnCard,
-                                fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ..._venues.map(
+                    (venue) => Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: FuveMintCard(
+                        onTap: () => context.push(
+                          ScheduleRouteContext.venue(context, venue.id),
+                        ),
+                        child: Text(
+                          venue.name,
+                          style: TextStyle(
+                            color: context.fuvekonTheme.contentOnCard,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
+              ),
+            ),
     );
   }
 }

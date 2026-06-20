@@ -46,10 +46,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
     widget.onSubmit(_newController.text, _confirmController.text);
   }
 
-  InputDecoration _inputDecoration({
-    required String hint,
-    Widget? suffix,
-  }) {
+  InputDecoration _inputDecoration({required String hint, Widget? suffix}) {
     return InputDecoration(
       hintText: hint,
       hintStyle: const TextStyle(color: _ResetFormColors.inputHint),
@@ -218,8 +215,9 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
             style: FilledButton.styleFrom(
               backgroundColor: _ResetFormColors.accentGreen,
               foregroundColor: Colors.white,
-              disabledBackgroundColor:
-                  _ResetFormColors.accentGreen.withValues(alpha: 0.45),
+              disabledBackgroundColor: _ResetFormColors.accentGreen.withValues(
+                alpha: 0.45,
+              ),
               minimumSize: const Size.fromHeight(52),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),

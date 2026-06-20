@@ -98,8 +98,16 @@ class _LanguageRow extends StatelessWidget {
       onTap: onTap,
       showDivider: showDivider,
       trailing: selected
-          ? Icon(Icons.check_circle, color: FuvekonColors.premiumPrimary, size: 22)
-          : Icon(Icons.circle_outlined, color: FuvekonColors.premiumOutline, size: 22),
+          ? Icon(
+              Icons.check_circle,
+              color: FuvekonColors.premiumPrimary,
+              size: 22,
+            )
+          : Icon(
+              Icons.circle_outlined,
+              color: FuvekonColors.premiumOutline,
+              size: 22,
+            ),
     );
   }
 }

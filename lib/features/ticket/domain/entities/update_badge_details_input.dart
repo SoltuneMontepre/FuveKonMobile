@@ -14,17 +14,17 @@ class UpdateBadgeDetailsInput extends Equatable {
   final bool isFursuitStaff;
 
   Map<String, dynamic> toPayload() => {
-        'con_badge_name': conBadgeName,
-        if (namecardUrl != null) 'namecard_url': namecardUrl,
-        'is_fursuiter': isFursuiter,
-        'is_fursuit_staff': isFursuitStaff,
-      };
+    'con_badge_name': conBadgeName,
+    if (namecardUrl != null) 'namecard_url': namecardUrl,
+    'is_fursuiter': isFursuiter,
+    'is_fursuit_staff': isFursuitStaff,
+  };
 
   @override
   List<Object?> get props => [
-        conBadgeName,
-        namecardUrl,
-        isFursuiter,
-        isFursuitStaff,
-      ];
+    conBadgeName,
+    namecardUrl,
+    isFursuiter,
+    isFursuitStaff,
+  ];
 }

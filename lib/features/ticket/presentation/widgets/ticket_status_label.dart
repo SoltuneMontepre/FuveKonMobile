@@ -4,10 +4,10 @@ import 'package:fuvekonmobile/shared/widgets/fuve_status_badge.dart';
 
 FuveStatusBadgeVariant statusBadgeVariant(TicketStatus status) {
   return switch (status) {
-    TicketStatus.approved || TicketStatus.adminGranted =>
-      FuveStatusBadgeVariant.success,
-    TicketStatus.pending || TicketStatus.selfConfirmed =>
-      FuveStatusBadgeVariant.pending,
+    TicketStatus.approved ||
+    TicketStatus.adminGranted => FuveStatusBadgeVariant.success,
+    TicketStatus.pending ||
+    TicketStatus.selfConfirmed => FuveStatusBadgeVariant.pending,
     TicketStatus.denied => FuveStatusBadgeVariant.denied,
   };
 }

@@ -90,12 +90,12 @@ class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
             child: switch (state) {
               TicketPurchaseInitial() ||
               TicketPurchaseLoading() => const _QueueProcessingBody(),
-            TicketPurchasePolling(:final attempt, :final maxAttempts) =>
-              _QueueProcessingBody(
-                attempt: attempt,
-                maxAttempts: maxAttempts,
-              ),
-            TicketPurchaseQueueTimedOut() => const _QueueProcessingBody(),
+              TicketPurchasePolling(:final attempt, :final maxAttempts) =>
+                _QueueProcessingBody(
+                  attempt: attempt,
+                  maxAttempts: maxAttempts,
+                ),
+              TicketPurchaseQueueTimedOut() => const _QueueProcessingBody(),
               TicketPurchaseNotFound(:final queued) => _NotFoundBody(
                 queued: queued,
                 onRetry: () => context.read<TicketPurchaseBloc>().add(
@@ -1460,10 +1460,7 @@ IconData _methodIcon(_PaymentMethod method) {
 }
 
 class _QueueProcessingBody extends StatelessWidget {
-  const _QueueProcessingBody({
-    this.attempt,
-    this.maxAttempts,
-  });
+  const _QueueProcessingBody({this.attempt, this.maxAttempts});
 
   final int? attempt;
   final int? maxAttempts;
@@ -1481,9 +1478,7 @@ class _QueueProcessingBody extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircularProgressIndicator(
-                color: FuvekonColors.darkPrimary,
-              ),
+              const CircularProgressIndicator(color: FuvekonColors.darkPrimary),
               const SizedBox(height: 24),
               const Text(
                 'Đang xử lý đơn hàng...',
@@ -1513,8 +1508,9 @@ class _QueueProcessingBody extends StatelessWidget {
                   child: LinearProgressIndicator(
                     value: progress,
                     minHeight: 4,
-                    backgroundColor: FuvekonColors.darkTextSecondary
-                        .withValues(alpha: 0.2),
+                    backgroundColor: FuvekonColors.darkTextSecondary.withValues(
+                      alpha: 0.2,
+                    ),
                     color: FuvekonColors.darkPrimary,
                   ),
                 ),

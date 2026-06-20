@@ -428,18 +428,6 @@ abstract class AppLocalizations {
   /// **'example@domain.com'**
   String get registerEmailHint;
 
-  /// No description provided for @registerPhoneLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Phone number'**
-  String get registerPhoneLabel;
-
-  /// No description provided for @registerPhoneHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter phone number'**
-  String get registerPhoneHint;
-
   /// No description provided for @registerPasswordLabel.
   ///
   /// In en, this message translates to:
@@ -559,18 +547,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Full name must be at least 2 characters'**
   String get validationFullNameMin;
-
-  /// No description provided for @validationPhoneRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter your phone number'**
-  String get validationPhoneRequired;
-
-  /// No description provided for @validationPhoneInvalid.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid phone number'**
-  String get validationPhoneInvalid;
 
   /// No description provided for @validationConfirmPasswordRequired.
   ///
@@ -1141,12 +1117,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Discover art spaces and unique experiences.'**
   String get authHomeHeroSubtitle;
-
-  /// No description provided for @authHomeSearchHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Search events, artists...'**
-  String get authHomeSearchHint;
 
   /// No description provided for @authHomeFeaturedTitle.
   ///

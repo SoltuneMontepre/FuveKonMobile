@@ -7,7 +7,7 @@ import 'package:fuvekonmobile/features/profile/domain/repositories/profile_repos
 
 class ProfileRepositoryImpl implements ProfileRepository {
   ProfileRepositoryImpl({required ProfileRemoteDataSource remoteDataSource})
-      : _remoteDataSource = remoteDataSource;
+    : _remoteDataSource = remoteDataSource;
 
   final ProfileRemoteDataSource _remoteDataSource;
 

@@ -32,9 +32,12 @@ class AppIllustratedInteractiveSection extends StatelessWidget {
 
     return Theme(
       data: theme.copyWith(
-        extensions: theme.extensions.values
-            .map<ThemeExtension<dynamic>>((extension) {
-          return extension is FuvekonThemeExtension ? illustratedExt : extension;
+        extensions: theme.extensions.values.map<ThemeExtension<dynamic>>((
+          extension,
+        ) {
+          return extension is FuvekonThemeExtension
+              ? illustratedExt
+              : extension;
         }).toList(),
       ),
       child: FuvekonIllustratedContentPanel(
@@ -75,23 +78,22 @@ class AppPageScaffold extends StatelessWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: illustratedBackground,
-      backgroundColor:
-          illustratedBackground ? FuvekonColors.darkBg : null,
+      backgroundColor: illustratedBackground ? FuvekonColors.darkBg : null,
       appBar: AppBar(
         title: Text(title),
         automaticallyImplyLeading: showBackButton && canPop,
         actions: actions,
-        backgroundColor:
-            illustratedBackground ? Colors.transparent : null,
+        backgroundColor: illustratedBackground ? Colors.transparent : null,
         elevation: illustratedBackground ? 0 : null,
         scrolledUnderElevation: illustratedBackground ? 0 : null,
-        surfaceTintColor:
-            illustratedBackground ? Colors.transparent : null,
+        surfaceTintColor: illustratedBackground ? Colors.transparent : null,
       ),
       floatingActionButton: floatingActionButton,
       body: illustratedBackground
           ? FuvekonIllustratedPageStack(
-              child: SafeArea(child: Padding(padding: padding, child: content)),
+              child: SafeArea(
+                child: Padding(padding: padding, child: content),
+              ),
             )
           : content,
     );
@@ -154,24 +156,23 @@ class AppScrollPage extends StatelessWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: illustratedBackground,
-      backgroundColor:
-          illustratedBackground ? FuvekonColors.darkBg : null,
+      backgroundColor: illustratedBackground ? FuvekonColors.darkBg : null,
       appBar: title == null
           ? null
           : AppBar(
               title: Text(title!),
               automaticallyImplyLeading: showBackButton && canPop,
-              backgroundColor:
-                  illustratedBackground ? Colors.transparent : null,
+              backgroundColor: illustratedBackground
+                  ? Colors.transparent
+                  : null,
               elevation: illustratedBackground ? 0 : null,
               scrolledUnderElevation: illustratedBackground ? 0 : null,
-              surfaceTintColor:
-                  illustratedBackground ? Colors.transparent : null,
+              surfaceTintColor: illustratedBackground
+                  ? Colors.transparent
+                  : null,
             ),
       body: illustratedBackground
-          ? FuvekonIllustratedPageStack(
-              child: SafeArea(child: scrollContent),
-            )
+          ? FuvekonIllustratedPageStack(child: SafeArea(child: scrollContent))
           : SafeArea(child: scrollContent),
     );
   }
@@ -196,21 +197,14 @@ class AppContentCard extends StatelessWidget {
       color: ext.contentCard,
       borderRadius: BorderRadius.circular(FuvekonRadii.card),
       clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: padding,
-        child: child,
-      ),
+      child: Padding(padding: padding, child: child),
     );
   }
 }
 
 /// Section heading inside a content card.
 class AppSectionHeader extends StatelessWidget {
-  const AppSectionHeader({
-    super.key,
-    required this.title,
-    this.subtitle,
-  });
+  const AppSectionHeader({super.key, required this.title, this.subtitle});
 
   final String title;
   final String? subtitle;
@@ -224,17 +218,17 @@ class AppSectionHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: ext.contentOnCard,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(color: ext.contentOnCard),
         ),
         if (subtitle != null) ...[
           const SizedBox(height: 4),
           Text(
             subtitle!,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ext.contentOnCardMuted,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: ext.contentOnCardMuted),
           ),
         ],
       ],
@@ -244,11 +238,7 @@ class AppSectionHeader extends StatelessWidget {
 
 /// Form field label with optional required asterisk.
 class AppFormLabel extends StatelessWidget {
-  const AppFormLabel({
-    super.key,
-    required this.text,
-    this.required = false,
-  });
+  const AppFormLabel({super.key, required this.text, this.required = false});
 
   final String text;
   final bool required;
@@ -256,9 +246,9 @@ class AppFormLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ext = context.fuvekonTheme;
-    final style = Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: ext.contentOnCard,
-        );
+    final style = Theme.of(
+      context,
+    ).textTheme.labelMedium?.copyWith(color: ext.contentOnCard);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -306,12 +296,7 @@ class AppLabeledField extends StatelessWidget {
 
 /// Dashed upload zone for images and files.
 class AppUploadZone extends StatelessWidget {
-  const AppUploadZone({
-    super.key,
-    required this.label,
-    this.hint,
-    this.onTap,
-  });
+  const AppUploadZone({super.key, required this.label, this.hint, this.onTap});
 
   final String label;
   final String? hint;
@@ -346,9 +331,9 @@ class AppUploadZone extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 label,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ext.contentOnCardMuted,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: ext.contentOnCardMuted),
                 textAlign: TextAlign.center,
               ),
               if (hint != null) ...[
@@ -356,8 +341,8 @@ class AppUploadZone extends StatelessWidget {
                 Text(
                   hint!,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: ext.contentOnCardMuted.withValues(alpha: 0.8),
-                      ),
+                    color: ext.contentOnCardMuted.withValues(alpha: 0.8),
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -371,11 +356,7 @@ class AppUploadZone extends StatelessWidget {
 
 /// Notes / conditions block shown below forms on the dark background.
 class AppInfoSection extends StatelessWidget {
-  const AppInfoSection({
-    super.key,
-    required this.title,
-    required this.items,
-  });
+  const AppInfoSection({super.key, required this.title, required this.items});
 
   final String title;
   final List<String> items;
@@ -411,10 +392,7 @@ class AppInfoSection extends StatelessWidget {
             ...items.map(
               (item) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  '• $item',
-                  style: theme.textTheme.bodySmall,
-                ),
+                child: Text('• $item', style: theme.textTheme.bodySmall),
               ),
             ),
           ],

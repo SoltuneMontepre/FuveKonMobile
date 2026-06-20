@@ -6,9 +6,6 @@ class HealthApi extends BaseApi {
   HealthApi(super.client);
 
   Future<ApiResponse<Map<String, dynamic>>> getSystemHealth() {
-    return get(
-      ApiConstants.adminHealth,
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminHealth, mapData: mapJsonObject);
   }
 }

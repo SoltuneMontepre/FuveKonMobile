@@ -48,7 +48,8 @@ class ETicketDetailPage extends StatelessWidget {
                 children: [
                   if (args.listItem.userTicket != null) ...[
                     OutlinedButton.icon(
-                      onPressed: () => context.push(Routes.accountTicketUpgrade),
+                      onPressed: () =>
+                          context.push(Routes.accountTicketUpgrade),
                       icon: const Icon(Icons.north_east, size: 18),
                       label: Text(l10n.eTicketUpgrade),
                       style: OutlinedButton.styleFrom(
@@ -68,7 +69,10 @@ class ETicketDetailPage extends StatelessWidget {
                         SnackBar(content: Text(l10n.eTicketWalletSoon)),
                       );
                     },
-                    icon: const Icon(Icons.account_balance_wallet_outlined, size: 18),
+                    icon: const Icon(
+                      Icons.account_balance_wallet_outlined,
+                      size: 18,
+                    ),
                     label: Text(l10n.eTicketSaveWallet),
                     style: FilledButton.styleFrom(
                       backgroundColor: FuvekonColors.darkSurfaceElevated,
@@ -179,7 +183,11 @@ class _TicketPassCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              _InfoLine(label: l10n.eTicketOwner, value: args.ownerName, colors: colors),
+              _InfoLine(
+                label: l10n.eTicketOwner,
+                value: args.ownerName,
+                colors: colors,
+              ),
               const SizedBox(height: 10),
               _InfoLine(
                 label: l10n.eTicketTier,
@@ -192,20 +200,18 @@ class _TicketPassCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              _InfoLine(label: l10n.eTicketDay, value: args.eventDayLabel, colors: colors),
-              const SizedBox(height: 18),
-              Divider(
-                color: colors.muted.withValues(alpha: 0.25),
-                height: 1,
+              _InfoLine(
+                label: l10n.eTicketDay,
+                value: args.eventDayLabel,
+                colors: colors,
               ),
+              const SizedBox(height: 18),
+              Divider(color: colors.muted.withValues(alpha: 0.25), height: 1),
               const SizedBox(height: 18),
               Text(
                 l10n.eTicketScanHint,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colors.muted,
-                  fontSize: 13,
-                ),
+                style: TextStyle(color: colors.muted, fontSize: 13),
               ),
               const SizedBox(height: 16),
               Center(
@@ -239,15 +245,15 @@ class _TicketPassCard extends StatelessWidget {
               Text(
                 l10n.eTicketCodeLabel,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: colors.muted,
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: colors.muted, fontSize: 12),
               ),
               const SizedBox(height: 8),
               Center(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.06),
                     borderRadius: BorderRadius.circular(10),
@@ -287,7 +293,11 @@ class _ValidBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.check_circle, size: 14, color: FuvekonColors.available),
+          const Icon(
+            Icons.check_circle,
+            size: 14,
+            color: FuvekonColors.available,
+          ),
           const SizedBox(width: 4),
           Text(
             label,
@@ -325,10 +335,7 @@ class _InfoLine extends StatelessWidget {
           width: 88,
           child: Text(
             label,
-            style: TextStyle(
-              color: colors.muted,
-              fontSize: 13,
-            ),
+            style: TextStyle(color: colors.muted, fontSize: 13),
           ),
         ),
         Expanded(
@@ -359,7 +366,9 @@ class _BenefitsSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: FuvekonColors.darkSurfaceElevated,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: FuvekonColors.darkBorder.withValues(alpha: 0.45)),
+        border: Border.all(
+          color: FuvekonColors.darkBorder.withValues(alpha: 0.45),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(18),
@@ -368,7 +377,11 @@ class _BenefitsSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.local_offer_outlined, color: FuvekonColors.lightGold, size: 18),
+                const Icon(
+                  Icons.local_offer_outlined,
+                  color: FuvekonColors.lightGold,
+                  size: 18,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   title,
@@ -397,7 +410,9 @@ class _BenefitsSection extends StatelessWidget {
                       child: Text(
                         benefit,
                         style: TextStyle(
-                          color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.95),
+                          color: FuvekonColors.darkTextSecondary.withValues(
+                            alpha: 0.95,
+                          ),
                           fontSize: 13,
                           height: 1.45,
                         ),

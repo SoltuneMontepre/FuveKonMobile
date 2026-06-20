@@ -21,7 +21,9 @@ BoxDecoration exploreTicketSurfaceDecoration(
 }) {
   final isPremium = style == ExploreTierStyle.premium;
   return BoxDecoration(
-    color: isPremium ? FuvekonColors.surfaceContainerLow : FuvekonColors.darkCard,
+    color: isPremium
+        ? FuvekonColors.surfaceContainerLow
+        : FuvekonColors.darkCard,
     borderRadius: BorderRadius.circular(FuvekonRadii.card),
     border: isPremium || highlighted
         ? Border.all(
@@ -38,7 +40,9 @@ BoxDecoration exploreTicketSurfaceDecoration(
   final isPremium = style == ExploreTierStyle.premium;
   return (
     title: isPremium ? _exploreGoldLight : FuvekonColors.darkCardText,
-    body: isPremium ? FuvekonColors.darkTextSecondary : FuvekonColors.textSecondary,
+    body: isPremium
+        ? FuvekonColors.darkTextSecondary
+        : FuvekonColors.textSecondary,
     muted: isPremium
         ? FuvekonColors.darkTextSecondary
         : FuvekonColors.textSecondary.withValues(alpha: 0.85),
@@ -79,10 +83,7 @@ class TicketExploreSurface extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: radius,
-        child: DecoratedBox(
-          decoration: decoration,
-          child: content,
-        ),
+        child: DecoratedBox(decoration: decoration, child: content),
       ),
     );
   }
@@ -111,7 +112,9 @@ class ExploreTicketTierCard extends StatelessWidget {
     final isPopular = style == ExploreTierStyle.popular;
 
     final colors = exploreTicketTextColors(style);
-    final checkColor = isPremium ? _exploreGold : FuvekonColors.sageGreenContainer;
+    final checkColor = isPremium
+        ? _exploreGold
+        : FuvekonColors.sageGreenContainer;
 
     return GestureDetector(
       onTap: onTap,
@@ -125,77 +128,85 @@ class ExploreTicketTierCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          tier.ticketName,
-                          style: TextStyle(
-                            color: colors.title,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          price,
-                          style: TextStyle(
-                            color: isPremium ? Colors.white : colors.title,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: -0.3,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (isPopular)
-                    _PopularBadge(label: l10n.exploreTicketsPopularBadge)
-                  else if (isPremium)
-                    Icon(Icons.diamond_outlined, color: _exploreGold, size: 22)
-                  else if (tier.isSoldOut)
-                    _SoldOutBadge(label: l10n.exploreTicketsSoldOut),
-                ],
-              ),
-              if (tier.description.isNotEmpty) ...[
-                const SizedBox(height: 10),
-                Text(
-                  tier.description,
-                  style: TextStyle(
-                    color: colors.body,
-                    fontSize: 13,
-                    height: 1.4,
-                  ),
-                ),
-              ],
-              if (tier.benefits.isNotEmpty) ...[
-                const SizedBox(height: 14),
-                for (final benefit in tier.benefits)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(Icons.check_rounded, size: 18, color: checkColor),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            benefit,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            tier.ticketName,
                             style: TextStyle(
-                              color: colors.body,
-                              fontSize: 14,
-                              height: 1.45,
+                              color: colors.title,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 6),
+                          Text(
+                            price,
+                            style: TextStyle(
+                              color: isPremium ? Colors.white : colors.title,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: -0.3,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (isPopular)
+                      _PopularBadge(label: l10n.exploreTicketsPopularBadge)
+                    else if (isPremium)
+                      Icon(
+                        Icons.diamond_outlined,
+                        color: _exploreGold,
+                        size: 22,
+                      )
+                    else if (tier.isSoldOut)
+                      _SoldOutBadge(label: l10n.exploreTicketsSoldOut),
+                  ],
+                ),
+                if (tier.description.isNotEmpty) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    tier.description,
+                    style: TextStyle(
+                      color: colors.body,
+                      fontSize: 13,
+                      height: 1.4,
                     ),
                   ),
-              ],
+                ],
+                if (tier.benefits.isNotEmpty) ...[
+                  const SizedBox(height: 14),
+                  for (final benefit in tier.benefits)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.check_rounded,
+                            size: 18,
+                            color: checkColor,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              benefit,
+                              style: TextStyle(
+                                color: colors.body,
+                                fontSize: 14,
+                                height: 1.45,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
               ],
             ),
           ),

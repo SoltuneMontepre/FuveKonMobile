@@ -6,8 +6,8 @@ class AdminScheduleService {
   AdminScheduleService({
     required ScheduleApi scheduleApi,
     required AdminScheduleApi adminScheduleApi,
-  })  : _scheduleApi = scheduleApi,
-        _adminScheduleApi = adminScheduleApi;
+  }) : _scheduleApi = scheduleApi,
+       _adminScheduleApi = adminScheduleApi;
 
   final ScheduleApi _scheduleApi;
   final AdminScheduleApi _adminScheduleApi;

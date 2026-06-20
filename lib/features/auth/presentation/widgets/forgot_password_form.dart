@@ -187,8 +187,9 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
             style: FilledButton.styleFrom(
               backgroundColor: _ForgotFormColors.accentGreen,
               foregroundColor: Colors.white,
-              disabledBackgroundColor:
-                  _ForgotFormColors.accentGreen.withValues(alpha: 0.45),
+              disabledBackgroundColor: _ForgotFormColors.accentGreen.withValues(
+                alpha: 0.45,
+              ),
               minimumSize: const Size.fromHeight(52),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),

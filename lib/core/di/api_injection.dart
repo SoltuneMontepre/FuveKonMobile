@@ -48,50 +48,26 @@ void registerApiModule(GetIt sl) {
     ..registerLazySingleton(() => sl<FuvekonApis>().health)
     ..registerLazySingleton(() => sl<FuvekonApis>().event)
     ..registerLazySingleton(
-      () => ScanTicketService(
-        adminTicketApi: sl(),
-        sessionStore: sl(),
-      ),
+      () => ScanTicketService(adminTicketApi: sl(), sessionStore: sl()),
     )
-    ..registerLazySingleton(
-      () => AdminDealerService(adminDealerApi: sl()),
-    )
-    ..registerLazySingleton(
-      () => AdminPanelService(adminPanelApi: sl()),
-    )
-    ..registerLazySingleton(
-      () => AdminConbookService(conbookApi: sl()),
-    )
-    ..registerLazySingleton(
-      () => AdminTicketService(adminTicketApi: sl()),
-    )
-    ..registerLazySingleton(
-      () => AdminUserService(adminUserApi: sl()),
-    )
-    ..registerLazySingleton(
-      () => AdminNotificationService(api: sl()),
-    )
+    ..registerLazySingleton(() => AdminDealerService(adminDealerApi: sl()))
+    ..registerLazySingleton(() => AdminPanelService(adminPanelApi: sl()))
+    ..registerLazySingleton(() => AdminConbookService(conbookApi: sl()))
+    ..registerLazySingleton(() => AdminTicketService(adminTicketApi: sl()))
+    ..registerLazySingleton(() => AdminUserService(adminUserApi: sl()))
+    ..registerLazySingleton(() => AdminNotificationService(api: sl()))
     ..registerLazySingleton(
       () => AdminLostFoundService(api: sl<AdminLostFoundApi>()),
     )
-    ..registerLazySingleton(
-      () => LostFoundService(api: sl<LostFoundApi>()),
-    )
+    ..registerLazySingleton(() => LostFoundService(api: sl<LostFoundApi>()))
     ..registerLazySingleton(
       () => AdminDashboardService(analyticsApi: sl<AnalyticsApi>()),
     )
     ..registerLazySingleton(
-      () => AdminScheduleService(
-        scheduleApi: sl(),
-        adminScheduleApi: sl(),
-      ),
+      () => AdminScheduleService(scheduleApi: sl(), adminScheduleApi: sl()),
     )
-    ..registerLazySingleton(
-      () => AdminSystemStatusService(healthApi: sl()),
-    )
-    ..registerLazySingleton(
-      () => AdminEventSettingsService(eventApi: sl()),
-    )
+    ..registerLazySingleton(() => AdminSystemStatusService(healthApi: sl()))
+    ..registerLazySingleton(() => AdminEventSettingsService(eventApi: sl()))
     ..registerLazySingleton(
       () => AccountSubmissionsService(
         panelApi: sl(),
@@ -99,7 +75,5 @@ void registerApiModule(GetIt sl) {
         conbookApi: sl(),
       ),
     )
-    ..registerLazySingleton(
-      () => AccountDealerService(dealerApi: sl()),
-    );
+    ..registerLazySingleton(() => AccountDealerService(dealerApi: sl()));
 }

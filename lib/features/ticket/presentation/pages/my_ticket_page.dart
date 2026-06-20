@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
@@ -48,9 +48,13 @@ class _MyTicketViewState extends State<_MyTicketView> {
   void _onViewTicket(MyTicketListItem item) {
     final ticket = item.userTicket;
     if (ticket != null && ticket.needsPayment && ticket.tier?.id != null) {
-      context.push<bool>(Routes.ticketPurchaseStep(ticket.tier!.id)).then((confirmed) {
+      context.push<bool>(Routes.ticketPurchaseStep(ticket.tier!.id)).then((
+        confirmed,
+      ) {
         if (confirmed == true && mounted) {
-          context.read<MyTicketBloc>().add(const MyTicketEvent.refreshRequested());
+          context.read<MyTicketBloc>().add(
+            const MyTicketEvent.refreshRequested(),
+          );
         }
       });
       return;
@@ -69,44 +73,44 @@ class _MyTicketViewState extends State<_MyTicketView> {
           if (bloc.lastActionError != null) {
             final message = bloc.lastActionError!;
             bloc.lastActionError = null;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(message)));
           }
         },
         builder: (context, state) {
           return switch (state) {
             MyTicketInitial() || MyTicketLoading() => const Center(
-                child: CircularProgressIndicator(),
-              ),
+              child: CircularProgressIndicator(),
+            ),
             MyTicketLoaded() => RefreshIndicator(
-                onRefresh: () async {
-                  context
-                      .read<MyTicketBloc>()
-                      .add(const MyTicketEvent.refreshRequested());
-                  await context.read<MyTicketBloc>().stream.firstWhere(
-                        (s) =>
-                            s is MyTicketLoaded ||
-                            s is MyTicketEmpty ||
-                            s is MyTicketFailure,
-                      );
-                },
-                child: _LoadedBody(
-                  items: _filter.apply(_buildItems(state)),
-                  filter: _filter,
-                  onFilterChanged: (value) => setState(() => _filter = value),
-                  onViewTicket: _onViewTicket,
-                ),
+              onRefresh: () async {
+                context.read<MyTicketBloc>().add(
+                  const MyTicketEvent.refreshRequested(),
+                );
+                await context.read<MyTicketBloc>().stream.firstWhere(
+                  (s) =>
+                      s is MyTicketLoaded ||
+                      s is MyTicketEmpty ||
+                      s is MyTicketFailure,
+                );
+              },
+              child: _LoadedBody(
+                items: _filter.apply(_buildItems(state)),
+                filter: _filter,
+                onFilterChanged: (value) => setState(() => _filter = value),
+                onViewTicket: _onViewTicket,
               ),
+            ),
             MyTicketEmpty() => _EmptyBody(
-                onBrowse: () => context.go(Routes.ticket),
-              ),
+              onBrowse: () => context.go(Routes.ticket),
+            ),
             MyTicketFailure(:final message) => _MyTicketError(
-                message: message,
-                onRetry: () => context.read<MyTicketBloc>().add(
-                      const MyTicketEvent.refreshRequested(),
-                    ),
+              message: message,
+              onRetry: () => context.read<MyTicketBloc>().add(
+                const MyTicketEvent.refreshRequested(),
               ),
+            ),
           };
         },
       ),
@@ -144,10 +148,7 @@ class _LoadedBody extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        MyTicketFilterTabs(
-          selected: filter,
-          onChanged: onFilterChanged,
-        ),
+        MyTicketFilterTabs(selected: filter, onChanged: onFilterChanged),
         const SizedBox(height: 20),
         if (items.isEmpty)
           Padding(

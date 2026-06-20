@@ -2,11 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum ScanOutcome {
-  valid,
-  rejected,
-  reused,
-}
+enum ScanOutcome { valid, rejected, reused }
 
 class ScanRecord {
   const ScanRecord({
@@ -28,14 +24,14 @@ class ScanRecord {
   final String? message;
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'code': code,
-        'outcome': outcome.name,
-        'scanned_at': scannedAt.toIso8601String(),
-        'holder_name': holderName,
-        'tier_name': tierName,
-        'message': message,
-      };
+    'id': id,
+    'code': code,
+    'outcome': outcome.name,
+    'scanned_at': scannedAt.toIso8601String(),
+    'holder_name': holderName,
+    'tier_name': tierName,
+    'message': message,
+  };
 
   factory ScanRecord.fromJson(Map<String, dynamic> json) {
     return ScanRecord(
@@ -45,7 +41,8 @@ class ScanRecord {
         (e) => e.name == json['outcome'],
         orElse: () => ScanOutcome.rejected,
       ),
-      scannedAt: DateTime.tryParse(json['scanned_at'] as String? ?? '') ??
+      scannedAt:
+          DateTime.tryParse(json['scanned_at'] as String? ?? '') ??
           DateTime.now(),
       holderName: json['holder_name'] as String?,
       tierName: json['tier_name'] as String?,
@@ -136,7 +133,10 @@ class ScanSessionStore {
       jsonEncode(history.map((e) => e.toJson()).toList()),
     );
 
-    await _prefs.setInt(_statsTotalKey, (_prefs.getInt(_statsTotalKey) ?? 0) + 1);
+    await _prefs.setInt(
+      _statsTotalKey,
+      (_prefs.getInt(_statsTotalKey) ?? 0) + 1,
+    );
     switch (record.outcome) {
       case ScanOutcome.valid:
         await _prefs.setInt(
@@ -154,10 +154,7 @@ class ScanSessionStore {
           (_prefs.getInt(_statsReusedKey) ?? 0) + 1,
         );
     }
-    await _prefs.setString(
-      _statsUpdatedKey,
-      DateTime.now().toIso8601String(),
-    );
+    await _prefs.setString(_statsUpdatedKey, DateTime.now().toIso8601String());
   }
 
   Future<void> _resetIfNewDay() async {

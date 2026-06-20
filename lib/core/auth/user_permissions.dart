@@ -34,10 +34,7 @@ abstract final class UserPermissions {
       requiredPermission: approveProfiles,
       showInBottomNav: false,
     ),
-    AdminShellBranch(
-      branchIndex: 5,
-      route: Routes.adminSystem,
-    ),
+    AdminShellBranch(branchIndex: 5, route: Routes.adminSystem),
   ];
 
   static AdminShellBranch? branchForIndex(int branchIndex) {

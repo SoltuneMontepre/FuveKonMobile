@@ -11,7 +11,7 @@ abstract interface class ProfileRemoteDataSource {
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   ProfileRemoteDataSourceImpl({required AccountApi accountApi})
-      : _accountApi = accountApi;
+    : _accountApi = accountApi;
 
   final AccountApi _accountApi;
 

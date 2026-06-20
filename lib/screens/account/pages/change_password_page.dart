@@ -44,9 +44,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       });
       if (!mounted) return;
       if (response.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đã đổi mật khẩu')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Đã đổi mật khẩu')));
         Navigator.of(context).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -55,9 +55,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       }
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Không thể đổi mật khẩu: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Không thể đổi mật khẩu: $e')));
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -107,14 +107,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       'Mật khẩu hiện tại',
                       suffix: IconButton(
                         icon: Icon(
-                          _obscureCurrent ? Icons.visibility_off : Icons.visibility,
+                          _obscureCurrent
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                         ),
                         onPressed: () =>
                             setState(() => _obscureCurrent = !_obscureCurrent),
                       ),
                     ),
-                    validator: (v) =>
-                        (v == null || v.isEmpty) ? 'Nhập mật khẩu hiện tại' : null,
+                    validator: (v) => (v == null || v.isEmpty)
+                        ? 'Nhập mật khẩu hiện tại'
+                        : null,
                   ),
                   const SizedBox(height: FuvekonSpacing.field),
                   TextFormField(
@@ -127,7 +130,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         icon: Icon(
                           _obscureNew ? Icons.visibility_off : Icons.visibility,
                         ),
-                        onPressed: () => setState(() => _obscureNew = !_obscureNew),
+                        onPressed: () =>
+                            setState(() => _obscureNew = !_obscureNew),
                       ),
                     ),
                     validator: (v) {
@@ -146,7 +150,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       'Xác nhận mật khẩu mới',
                       suffix: IconButton(
                         icon: Icon(
-                          _obscureConfirm ? Icons.visibility_off : Icons.visibility,
+                          _obscureConfirm
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                         ),
                         onPressed: () =>
                             setState(() => _obscureConfirm = !_obscureConfirm),

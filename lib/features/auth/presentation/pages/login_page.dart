@@ -34,8 +34,8 @@ class LoginPage extends StatelessWidget {
         if (state is AuthGoogleRegistrationRequired) {
           context.push(Routes.googleRegister, extra: state.credential);
           context.read<AuthBloc>().add(
-                const AuthEvent.googleRegistrationNavigated(),
-              );
+            const AuthEvent.googleRegistrationNavigated(),
+          );
         }
       },
       builder: (context, state) {
@@ -47,15 +47,12 @@ class LoginPage extends StatelessWidget {
             isLoading: isLoading,
             onSubmit: (email, password) {
               context.read<AuthBloc>().add(
-                    AuthEvent.loginSubmitted(
-                      email: email,
-                      password: password,
-                    ),
-                  );
+                AuthEvent.loginSubmitted(email: email, password: password),
+              );
             },
             onGoogleSignIn: () => context.read<AuthBloc>().add(
-                  const AuthEvent.googleSignInRequested(),
-                ),
+              const AuthEvent.googleSignInRequested(),
+            ),
           ),
         );
       },

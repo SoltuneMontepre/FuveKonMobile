@@ -107,7 +107,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
                 ),
                 child: Text(
                   l10n.continueButton,
-                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                  ),
                 ),
               ),
             ),
@@ -421,9 +424,7 @@ class _OutlineActionButton extends StatelessWidget {
         foregroundColor: Colors.white,
         side: BorderSide(color: Colors.white.withValues(alpha: 0.35)),
         minimumSize: const Size.fromHeight(52),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -432,10 +433,7 @@ class _OutlineActionButton extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             label,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
           ),
         ],
       ),

@@ -3,11 +3,7 @@ import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 
 class AuthHero extends StatelessWidget {
-  const AuthHero({
-    super.key,
-    required this.title,
-    required this.subtitle,
-  });
+  const AuthHero({super.key, required this.title, required this.subtitle});
 
   static const _logoAsset = 'assets/images/logo/logo_2026.webp';
 
@@ -27,9 +23,8 @@ class AuthHero extends StatelessWidget {
           width: 220,
           fit: BoxFit.contain,
           semanticLabel: AppConfig.appName,
-          errorBuilder: (context, error, stackTrace) => _LogoFallback(
-            color: ext.appBarTitle,
-          ),
+          errorBuilder: (context, error, stackTrace) =>
+              _LogoFallback(color: ext.appBarTitle),
         ),
         const SizedBox(height: 24),
         Text(
@@ -60,10 +55,10 @@ class _LogoFallback extends StatelessWidget {
     return Text(
       AppConfig.appName.toUpperCase(),
       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            color: color,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 2,
-          ),
+        color: color,
+        fontWeight: FontWeight.w800,
+        letterSpacing: 2,
+      ),
       textAlign: TextAlign.center,
     );
   }

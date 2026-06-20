@@ -32,22 +32,22 @@ class _SubmissionsHubPageState extends State<SubmissionsHubPage> {
   }
 
   String _routeFor(SubmissionSummary item) => switch (item.type) {
-        SubmissionType.panel => Routes.accountPanelDetail(item.id),
-        SubmissionType.talent => Routes.accountTalentDetail(item.id),
-        SubmissionType.conbook => Routes.accountConbookDetail(item.id),
-      };
+    SubmissionType.panel => Routes.accountPanelDetail(item.id),
+    SubmissionType.talent => Routes.accountTalentDetail(item.id),
+    SubmissionType.conbook => Routes.accountConbookDetail(item.id),
+  };
 
   IconData _iconFor(SubmissionType type) => switch (type) {
-        SubmissionType.panel => Icons.groups_outlined,
-        SubmissionType.talent => Icons.mic_external_on_outlined,
-        SubmissionType.conbook => Icons.collections_bookmark_outlined,
-      };
+    SubmissionType.panel => Icons.groups_outlined,
+    SubmissionType.talent => Icons.mic_external_on_outlined,
+    SubmissionType.conbook => Icons.collections_bookmark_outlined,
+  };
 
   String _typeLabel(SubmissionType type) => switch (type) {
-        SubmissionType.panel => 'Panel',
-        SubmissionType.talent => 'Talent',
-        SubmissionType.conbook => 'Conbook',
-      };
+    SubmissionType.panel => 'Panel',
+    SubmissionType.talent => 'Talent',
+    SubmissionType.conbook => 'Conbook',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,8 @@ class _SubmissionsHubPageState extends State<SubmissionsHubPage> {
                 children: [
                   const EmptyState(
                     title: 'Chưa có hồ sơ',
-                    subtitle: 'Gửi panel, talent hoặc conbook để theo dõi tại đây.',
+                    subtitle:
+                        'Gửi panel, talent hoặc conbook để theo dõi tại đây.',
                     icon: Icons.folder_open_outlined,
                   ),
                   const SizedBox(height: FuvekonSpacing.stackGapLg),
@@ -93,7 +94,9 @@ class _SubmissionsHubPageState extends State<SubmissionsHubPage> {
                 const SizedBox(height: FuvekonSpacing.stackGapMd),
                 ...items.map(
                   (item) => Padding(
-                    padding: const EdgeInsets.only(bottom: FuvekonSpacing.stackGapMd),
+                    padding: const EdgeInsets.only(
+                      bottom: FuvekonSpacing.stackGapMd,
+                    ),
                     child: _SubmissionCard(
                       item: item,
                       icon: _iconFor(item.type),
@@ -220,7 +223,10 @@ class _SubmissionCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     item.subtitle!,
-                    style: TextStyle(color: ext.contentOnCardMuted, fontSize: 12),
+                    style: TextStyle(
+                      color: ext.contentOnCardMuted,
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ],

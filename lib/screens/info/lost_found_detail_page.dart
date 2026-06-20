@@ -83,9 +83,9 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
       if (message.contains('ticket')) {
         _showTicketRequiredDialog();
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
       }
     } finally {
       if (mounted) setState(() => _claiming = false);
@@ -151,10 +151,7 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
                 child: const Text('Đăng nhập'),
               )
             else
-              FilledButton(
-                onPressed: _load,
-                child: const Text('Thử lại'),
-              ),
+              FilledButton(onPressed: _load, child: const Text('Thử lại')),
           ],
         ),
       );
@@ -195,16 +192,16 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
                 Text(
                   item.title,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: theme.contentOnCard,
-                        fontWeight: FontWeight.w800,
-                      ),
+                    color: theme.contentOnCard,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '# ${item.itemCode}',
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: theme.contentOnCardMuted,
-                      ),
+                    color: theme.contentOnCardMuted,
+                  ),
                 ),
                 if (item.imageUrl.isNotEmpty) ...[
                   const SizedBox(height: FuvekonSpacing.stackGapMd),
@@ -223,9 +220,9 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
                   Text(
                     item.description,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: theme.contentOnCardMuted,
-                          height: 1.5,
-                        ),
+                      color: theme.contentOnCardMuted,
+                      height: 1.5,
+                    ),
                   ),
                 ],
                 if (item.location.isNotEmpty) ...[
@@ -241,7 +238,9 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
                   _DetailRow(
                     icon: Icons.schedule_outlined,
                     label: 'Ghi nhận',
-                    value: DateFormat('HH:mm dd/MM/yyyy').format(item.createdAt!),
+                    value: DateFormat(
+                      'HH:mm dd/MM/yyyy',
+                    ).format(item.createdAt!),
                   ),
                 ],
               ],
@@ -253,8 +252,7 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
               label: 'Theo dõi yêu cầu',
               icon: Icons.timeline_outlined,
               variant: FuvePillButtonVariant.secondary,
-              onPressed: () =>
-                  context.push(Routes.lostFoundRequest(item.id)),
+              onPressed: () => context.push(Routes.lostFoundRequest(item.id)),
             )
           else if (item.canClaim)
             FuvePillButton(
@@ -301,14 +299,14 @@ class _DetailRow extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: theme.contentOnCardMuted,
-                    ),
+                  color: theme.contentOnCardMuted,
+                ),
               ),
               Text(
                 value,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: theme.contentOnCard,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: theme.contentOnCard),
               ),
             ],
           ),

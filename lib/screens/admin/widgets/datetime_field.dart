@@ -39,16 +39,16 @@ class DateTimeField extends StatelessWidget {
                     Text(
                       label,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: FuvekonColors.textOnCard,
-                          ),
+                        color: FuvekonColors.textOnCard,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       value,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: FuvekonColors.textPrimary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: FuvekonColors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),

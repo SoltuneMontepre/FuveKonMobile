@@ -35,9 +35,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required AuthApi authApi,
     required AccountApi accountApi,
     required TokenStorage tokenStorage,
-  })  : _authApi = authApi,
-        _accountApi = accountApi,
-        _tokenStorage = tokenStorage;
+  }) : _authApi = authApi,
+       _accountApi = accountApi,
+       _tokenStorage = tokenStorage;
 
   final AuthApi _authApi;
   final AccountApi _accountApi;
@@ -91,7 +91,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final meResponse = await _accountApi.getMe();
     final account = meResponse.data;
     if (account == null) {
-      throw const FormatException('Failed to load user profile after Google sign-in');
+      throw const FormatException(
+        'Failed to load user profile after Google sign-in',
+      );
     }
 
     final user = UserModel(
@@ -137,7 +139,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<void> verifyOtp({required String email, required String otp}) async {
-    await _authApi.verifyOtp(email: email.trim().toLowerCase(), otp: otp.trim());
+    await _authApi.verifyOtp(
+      email: email.trim().toLowerCase(),
+      otp: otp.trim(),
+    );
   }
 
   @override

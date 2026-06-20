@@ -77,7 +77,7 @@ class SessionHydrationService {
             success: true,
           );
           unawaited(_syncPushNotifications());
-      unawaited(_refreshNotificationUnreadCount());
+          unawaited(_refreshNotificationUnreadCount());
         case Error(:final failure):
           if (failure is AuthFailure) {
             // Stale token (e.g. after DB reseed) or revoked session.

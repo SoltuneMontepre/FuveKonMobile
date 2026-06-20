@@ -41,8 +41,8 @@ final class TicketTiersFailure extends TicketTiersState {
 
 class TicketTiersBloc extends Bloc<TicketTiersEvent, TicketTiersState> {
   TicketTiersBloc({required GetTicketTiersUseCase getTicketTiersUseCase})
-      : _getTicketTiersUseCase = getTicketTiersUseCase,
-        super(const TicketTiersInitial()) {
+    : _getTicketTiersUseCase = getTicketTiersUseCase,
+      super(const TicketTiersInitial()) {
     on<TicketTiersStarted>(_onLoad);
     on<TicketTiersRefreshRequested>(_onLoad);
   }

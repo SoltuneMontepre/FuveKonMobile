@@ -30,8 +30,9 @@ class MyTicketCard extends StatelessWidget {
     final locale = Localizations.localeOf(context);
     final tier = ticket.tier;
     final dateFormat = DateFormat.yMMMd(locale.toString());
-    final style =
-        _showQrCode ? ExploreTierStyle.premium : ExploreTierStyle.standard;
+    final style = _showQrCode
+        ? ExploreTierStyle.premium
+        : ExploreTierStyle.standard;
     final colors = exploreTicketTextColors(style);
 
     return TicketExploreSurface(
@@ -167,9 +168,7 @@ class _ExploreActionButton extends StatelessWidget {
         foregroundColor: Colors.white,
         side: const BorderSide(color: Colors.white54),
         minimumSize: const Size.fromHeight(48),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(999),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       ),
     );
   }
@@ -226,9 +225,7 @@ class _EticketQrSection extends StatelessWidget {
         Text(
           'Xuất trình mã QR tại cổng check-in',
           textAlign: TextAlign.center,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: colors.muted,
-          ),
+          style: theme.textTheme.bodySmall?.copyWith(color: colors.muted),
         ),
       ],
     );
@@ -255,9 +252,10 @@ class _StatusMessage extends StatelessWidget {
         'Vui lòng hoàn tất thanh toán để xác nhận vé của bạn.',
       TicketStatus.selfConfirmed =>
         'Chúng tôi đã nhận xác nhận thanh toán. Thời gian xác minh: 3–5 ngày làm việc.',
-      TicketStatus.denied => denialReason?.isNotEmpty == true
-          ? 'Từ chối: $denialReason'
-          : 'Vé của bạn đã bị từ chối.',
+      TicketStatus.denied =>
+        denialReason?.isNotEmpty == true
+            ? 'Từ chối: $denialReason'
+            : 'Vé của bạn đã bị từ chối.',
       TicketStatus.approved => 'Vé đã được xác nhận. Hẹn gặp bạn tại sự kiện!',
       TicketStatus.adminGranted => 'Vé này được cấp bởi ban tổ chức.',
     };

@@ -56,8 +56,7 @@ class NotificationListCard extends StatelessWidget {
                   item.title,
                   style: theme.textTheme.titleSmall?.copyWith(
                     color: ext.contentOnCard,
-                    fontWeight:
-                        item.isRead ? FontWeight.w600 : FontWeight.w700,
+                    fontWeight: item.isRead ? FontWeight.w600 : FontWeight.w700,
                   ),
                 ),
               ),

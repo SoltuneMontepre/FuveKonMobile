@@ -54,14 +54,14 @@ class CreateLostFoundInput {
   final String staffNotes;
 
   Map<String, dynamic> toJson() => {
-        'item_type': itemType,
-        'title': title,
-        if (description.isNotEmpty) 'description': description,
-        if (location.isNotEmpty) 'location': location,
-        if (imageUrl.isNotEmpty) 'image_url': imageUrl,
-        if (contactInfo.isNotEmpty) 'contact_info': contactInfo,
-        if (staffNotes.isNotEmpty) 'staff_notes': staffNotes,
-      };
+    'item_type': itemType,
+    'title': title,
+    if (description.isNotEmpty) 'description': description,
+    if (location.isNotEmpty) 'location': location,
+    if (imageUrl.isNotEmpty) 'image_url': imageUrl,
+    if (contactInfo.isNotEmpty) 'contact_info': contactInfo,
+    if (staffNotes.isNotEmpty) 'staff_notes': staffNotes,
+  };
 }
 
 class UpdateLostFoundInput {
@@ -84,14 +84,14 @@ class UpdateLostFoundInput {
   final String? staffNotes;
 
   Map<String, dynamic> toJson() => {
-        if (itemType != null) 'item_type': itemType,
-        if (title != null) 'title': title,
-        if (description != null) 'description': description,
-        if (location != null) 'location': location,
-        if (imageUrl != null) 'image_url': imageUrl,
-        if (contactInfo != null) 'contact_info': contactInfo,
-        if (staffNotes != null) 'staff_notes': staffNotes,
-      };
+    if (itemType != null) 'item_type': itemType,
+    if (title != null) 'title': title,
+    if (description != null) 'description': description,
+    if (location != null) 'location': location,
+    if (imageUrl != null) 'image_url': imageUrl,
+    if (contactInfo != null) 'contact_info': contactInfo,
+    if (staffNotes != null) 'staff_notes': staffNotes,
+  };
 }
 
 class ConfirmLostFoundReturnInput {
@@ -106,10 +106,10 @@ class ConfirmLostFoundReturnInput {
   final bool verifiedIdentity;
 
   Map<String, dynamic> toJson() => {
-        'verified_description': verifiedDescription,
-        'verified_ownership': verifiedOwnership,
-        'verified_identity': verifiedIdentity,
-      };
+    'verified_description': verifiedDescription,
+    'verified_ownership': verifiedOwnership,
+    'verified_identity': verifiedIdentity,
+  };
 }
 
 class AdminLostFoundService {
@@ -142,9 +142,9 @@ class AdminLostFoundService {
       final rawItems = data['items'];
       final items = rawItems is List
           ? rawItems
-              .whereType<Map<String, dynamic>>()
-              .map(AdminLostFoundItem.fromJson)
-              .toList()
+                .whereType<Map<String, dynamic>>()
+                .map(AdminLostFoundItem.fromJson)
+                .toList()
           : <AdminLostFoundItem>[];
 
       final meta = LostFoundPageMeta.fromJson(data);
@@ -172,7 +172,10 @@ class AdminLostFoundService {
     return AdminLostFoundItem.fromJson(response.data!);
   }
 
-  Future<AdminLostFoundItem> update(String id, UpdateLostFoundInput input) async {
+  Future<AdminLostFoundItem> update(
+    String id,
+    UpdateLostFoundInput input,
+  ) async {
     final response = await _api.update(id, input.toJson());
     if (!response.isSuccess || response.data == null) {
       throw ServerException(response.errorMessage ?? response.message);

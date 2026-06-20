@@ -144,10 +144,7 @@ class _AdminUsersPageState extends State<AdminUsersPage>
           : null,
       body: TabBarView(
         controller: _tabController,
-        children: [
-          _buildTabBody(0),
-          _buildTabBody(1),
-        ],
+        children: [_buildTabBody(0), _buildTabBody(1)],
       ),
     );
   }

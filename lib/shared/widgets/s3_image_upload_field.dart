@@ -64,8 +64,7 @@ class _S3ImageUploadFieldState extends State<S3ImageUploadField> {
     try {
       final bytes = await picked.readAsBytes();
       final fileName = picked.name.isNotEmpty ? picked.name : 'image.jpg';
-      final contentType =
-          picked.mimeType ?? imageContentTypeFromName(fileName);
+      final contentType = picked.mimeType ?? imageContentTypeFromName(fileName);
 
       final uploaded = await sl<S3UploadService>().uploadBytes(
         bytes: bytes,
@@ -82,9 +81,9 @@ class _S3ImageUploadFieldState extends State<S3ImageUploadField> {
       widget.onChanged(uploaded.fileUrl);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_uploadErrorMessage(e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_uploadErrorMessage(e))));
     } finally {
       if (mounted) {
         setState(() {
@@ -141,7 +140,9 @@ class _S3ImageUploadFieldState extends State<S3ImageUploadField> {
           Row(
             children: [
               TextButton.icon(
-                onPressed: widget.enabled && !_uploading ? _pickAndUpload : null,
+                onPressed: widget.enabled && !_uploading
+                    ? _pickAndUpload
+                    : null,
                 icon: const Icon(Icons.swap_horiz_rounded, size: 18),
                 label: const Text('Đổi ảnh'),
               ),
@@ -169,7 +170,10 @@ class _S3ImageUploadFieldState extends State<S3ImageUploadField> {
               onTap: widget.enabled && !_uploading ? _pickAndUpload : null,
               borderRadius: BorderRadius.circular(FuvekonRadii.upload),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 16),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 28,
+                  horizontal: 16,
+                ),
                 child: Column(
                   children: [
                     if (_uploading) ...[
@@ -209,8 +213,9 @@ class _S3ImageUploadFieldState extends State<S3ImageUploadField> {
                       Text(
                         'JPEG, PNG, WebP (tối đa 50MB)',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: FuvekonColors.darkTextSecondary
-                              .withValues(alpha: 0.8),
+                          color: FuvekonColors.darkTextSecondary.withValues(
+                            alpha: 0.8,
+                          ),
                         ),
                         textAlign: TextAlign.center,
                       ),

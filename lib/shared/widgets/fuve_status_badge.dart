@@ -19,21 +19,21 @@ class FuveStatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bg, fg) = switch (variant) {
       FuveStatusBadgeVariant.success => (
-          FuvekonColors.statusSuccessBg,
-          FuvekonColors.premiumOnPrimary,
-        ),
+        FuvekonColors.statusSuccessBg,
+        FuvekonColors.premiumOnPrimary,
+      ),
       FuveStatusBadgeVariant.pending => (
-          FuvekonColors.statusPendingBg,
-          Colors.white,
-        ),
+        FuvekonColors.statusPendingBg,
+        Colors.white,
+      ),
       FuveStatusBadgeVariant.denied => (
-          FuvekonColors.statusDeniedBg,
-          FuvekonColors.statusDeniedText,
-        ),
+        FuvekonColors.statusDeniedBg,
+        FuvekonColors.statusDeniedText,
+      ),
       FuveStatusBadgeVariant.neutral => (
-          FuvekonColors.premiumSurfaceContainerHigh,
-          FuvekonColors.premiumOnSurface,
-        ),
+        FuvekonColors.premiumSurfaceContainerHigh,
+        FuvekonColors.premiumOnSurface,
+      ),
     };
 
     return Container(

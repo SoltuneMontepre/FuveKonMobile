@@ -67,7 +67,11 @@ class _FuvekonDrawerBody extends StatelessWidget {
         route: Routes.artbook,
       ),
       (icon: Icons.help_outline, label: l10n.navFaq, route: Routes.faq),
-      (icon: Icons.description_outlined, label: l10n.navRules, route: Routes.tos),
+      (
+        icon: Icons.description_outlined,
+        label: l10n.navRules,
+        route: Routes.tos,
+      ),
     ];
 
     return Drawer(
@@ -189,9 +193,9 @@ class _FuvekonDrawerBody extends StatelessWidget {
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
-                        context
-                            .read<AuthBloc>()
-                            .add(const AuthEvent.logoutRequested());
+                        context.read<AuthBloc>().add(
+                          const AuthEvent.logoutRequested(),
+                        );
                       },
                     ),
                 ],

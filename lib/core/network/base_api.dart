@@ -36,11 +36,7 @@ abstract class BaseApi {
     bool throwOnFailure = true,
   }) {
     return _envelope(
-      _client.post<JsonMap>(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-      ),
+      _client.post<JsonMap>(path, data: data, queryParameters: queryParameters),
       mapData: mapData,
       throwOnFailure: throwOnFailure,
     );
@@ -54,11 +50,7 @@ abstract class BaseApi {
     bool throwOnFailure = true,
   }) {
     return _envelope(
-      _client.put<JsonMap>(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-      ),
+      _client.put<JsonMap>(path, data: data, queryParameters: queryParameters),
       mapData: mapData,
       throwOnFailure: throwOnFailure,
     );
@@ -169,9 +161,7 @@ abstract class BaseApi {
 
     final parsed = ApiResponse<T>.fromJson(body, mapData: mapData);
     if (throwOnFailure && !parsed.isSuccess) {
-      throw ServerException(
-        parsed.errorMessage ?? parsed.message,
-      );
+      throw ServerException(parsed.errorMessage ?? parsed.message);
     }
     return parsed;
   }

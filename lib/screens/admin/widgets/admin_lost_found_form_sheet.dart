@@ -7,11 +7,7 @@ import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.da
 import 'package:fuvekonmobile/shared/widgets/s3_image_upload_field.dart';
 
 class AdminLostFoundFormSheet extends StatefulWidget {
-  const AdminLostFoundFormSheet({
-    super.key,
-    this.item,
-    required this.onSubmit,
-  });
+  const AdminLostFoundFormSheet({super.key, this.item, required this.onSubmit});
 
   final AdminLostFoundItem? item;
   final Future<void> Function(CreateLostFoundInput input) onSubmit;
@@ -40,12 +36,12 @@ class _AdminLostFoundFormSheetState extends State<AdminLostFoundFormSheet> {
     final item = widget.item;
     _itemType = item?.itemType ?? 'found';
     _titleController = TextEditingController(text: item?.title ?? '');
-    _descriptionController =
-        TextEditingController(text: item?.description ?? '');
+    _descriptionController = TextEditingController(
+      text: item?.description ?? '',
+    );
     _locationController = TextEditingController(text: item?.location ?? '');
     _contactController = TextEditingController(text: item?.contactInfo ?? '');
-    _staffNotesController =
-        TextEditingController(text: item?.staffNotes ?? '');
+    _staffNotesController = TextEditingController(text: item?.staffNotes ?? '');
     _imageUrl = item?.imageUrl.isNotEmpty == true ? item!.imageUrl : null;
   }
 
@@ -117,14 +113,16 @@ class _AdminLostFoundFormSheetState extends State<AdminLostFoundFormSheet> {
                     ? l10n.adminLostFoundFormEditTitle
                     : l10n.adminLostFoundFormTitle,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: FuvekonColors.darkText,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: FuvekonColors.darkText,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 initialValue: _itemType,
-                decoration: InputDecoration(labelText: l10n.adminLostFoundFormType),
+                decoration: InputDecoration(
+                  labelText: l10n.adminLostFoundFormType,
+                ),
                 dropdownColor: FuvekonColors.darkSurfaceElevated,
                 items: [
                   DropdownMenuItem(

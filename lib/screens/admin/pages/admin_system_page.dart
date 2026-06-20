@@ -95,9 +95,9 @@ class _AdminSystemPageState extends State<AdminSystemPage> {
       final message = error is AppException
           ? formatAdminMessage(context.l10n, error.message)
           : formatAdminError(context.l10n, error);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
     }
   }
 

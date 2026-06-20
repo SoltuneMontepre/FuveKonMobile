@@ -13,9 +13,9 @@ class SaveNameCardUseCase {
     required TicketRepository ticketRepository,
     required S3UploadService s3UploadService,
     required NamecardRenderer namecardRenderer,
-  })  : _ticketRepository = ticketRepository,
-        _s3UploadService = s3UploadService,
-        _namecardRenderer = namecardRenderer;
+  }) : _ticketRepository = ticketRepository,
+       _s3UploadService = s3UploadService,
+       _namecardRenderer = namecardRenderer;
 
   final TicketRepository _ticketRepository;
   final S3UploadService _s3UploadService;
@@ -30,9 +30,7 @@ class SaveNameCardUseCase {
   }) async {
     final name = badgeName.trim();
     if (name.isEmpty) {
-      return const Error(
-        ServerFailure('Please enter a badge name'),
-      );
+      return const Error(ServerFailure('Please enter a badge name'));
     }
 
     String? namecardUrl;

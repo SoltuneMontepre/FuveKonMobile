@@ -44,23 +44,23 @@ class _AdminScanHistoryPageState extends State<AdminScanHistoryPage> {
       child: _loading
           ? const Center(child: CircularProgressIndicator())
           : _records.isEmpty
-              ? EmptyState(
-                  title: l10n.adminScanHistoryTitle,
-                  subtitle: l10n.adminScanHistoryEmpty,
-                  icon: Icons.history_rounded,
-                )
-              : RefreshIndicator(
-                  onRefresh: _load,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(FuvekonSpacing.page),
-                    itemCount: _records.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 8),
-                    itemBuilder: (context, index) {
-                      final record = _records[index];
-                      return _HistoryTile(record: record, l10n: l10n);
-                    },
-                  ),
-                ),
+          ? EmptyState(
+              title: l10n.adminScanHistoryTitle,
+              subtitle: l10n.adminScanHistoryEmpty,
+              icon: Icons.history_rounded,
+            )
+          : RefreshIndicator(
+              onRefresh: _load,
+              child: ListView.separated(
+                padding: const EdgeInsets.all(FuvekonSpacing.page),
+                itemCount: _records.length,
+                separatorBuilder: (_, _) => const SizedBox(height: 8),
+                itemBuilder: (context, index) {
+                  final record = _records[index];
+                  return _HistoryTile(record: record, l10n: l10n);
+                },
+              ),
+            ),
     );
   }
 }
@@ -93,14 +93,11 @@ class _HistoryTile extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: color.withValues(alpha: 0.15),
-          child: Icon(
-            switch (record.outcome) {
-              ScanOutcome.valid => Icons.check_rounded,
-              ScanOutcome.reused => Icons.history_rounded,
-              ScanOutcome.rejected => Icons.close_rounded,
-            },
-            color: color,
-          ),
+          child: Icon(switch (record.outcome) {
+            ScanOutcome.valid => Icons.check_rounded,
+            ScanOutcome.reused => Icons.history_rounded,
+            ScanOutcome.rejected => Icons.close_rounded,
+          }, color: color),
         ),
         title: Text(
           record.code,

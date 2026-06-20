@@ -7,24 +7,15 @@ class TicketApi extends BaseApi {
   TicketApi(super.client);
 
   Future<ApiResponse<List<dynamic>>> getTiers() {
-    return get(
-      ApiConstants.ticketTiers,
-      mapData: mapJsonList,
-    );
+    return get(ApiConstants.ticketTiers, mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getTierById(String tierId) {
-    return get(
-      ApiConstants.ticketTier(tierId),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.ticketTier(tierId), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>?>> getMyTicket() {
-    return get(
-      ApiConstants.ticketMe,
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.ticketMe, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> purchaseTicket({
@@ -38,10 +29,7 @@ class TicketApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> confirmPayment() {
-    return patch(
-      ApiConstants.ticketMeConfirm,
-      mapData: mapJsonObject,
-    );
+    return patch(ApiConstants.ticketMeConfirm, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> updateBadgeDetails(
@@ -75,9 +63,6 @@ class TicketApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> cancelTicket() {
-    return delete(
-      ApiConstants.ticketMeCancel,
-      mapData: mapJsonObject,
-    );
+    return delete(ApiConstants.ticketMeCancel, mapData: mapJsonObject);
   }
 }

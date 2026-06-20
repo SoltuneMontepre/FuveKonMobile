@@ -21,13 +21,13 @@ class AdminTicketFilter {
   final int? pageSize;
 
   Map<String, dynamic> toQuery() => buildQuery({
-        if (status != null) 'status': status,
-        if (tierId != null) 'tier_id': tierId,
-        if (search != null) 'search': search,
-        if (pendingOver24 == true) 'pending_over_24': 'true',
-        if (page != null) 'page': page,
-        if (pageSize != null) 'page_size': pageSize,
-      });
+    if (status != null) 'status': status,
+    if (tierId != null) 'tier_id': tierId,
+    if (search != null) 'search': search,
+    if (pendingOver24 == true) 'pending_over_24': 'true',
+    if (page != null) 'page': page,
+    if (pageSize != null) 'page_size': pageSize,
+  });
 }
 
 /// Admin ticket endpoints from `useAdminTicket.ts`.
@@ -45,10 +45,7 @@ class AdminTicketApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getStatistics() {
-    return get(
-      ApiConstants.adminTicketStatistics,
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminTicketStatistics, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<List<dynamic>>> getSalesTimeline({int days = 90}) {
@@ -68,10 +65,7 @@ class AdminTicketApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getTicketById(String ticketId) {
-    return get(
-      ApiConstants.adminTicket(ticketId),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminTicket(ticketId), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> approveTicket(String ticketId) {
@@ -117,10 +111,7 @@ class AdminTicketApi extends BaseApi {
   }
 
   Future<ApiResponse<List<dynamic>>> getAdminTiers() {
-    return get(
-      ApiConstants.adminTicketTiers,
-      mapData: mapJsonList,
-    );
+    return get(ApiConstants.adminTicketTiers, mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> createTier(
@@ -184,9 +175,6 @@ class AdminTicketApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> deleteTicket(String ticketId) {
-    return delete(
-      ApiConstants.adminTicket(ticketId),
-      mapData: mapJsonObject,
-    );
+    return delete(ApiConstants.adminTicket(ticketId), mapData: mapJsonObject);
   }
 }

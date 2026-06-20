@@ -83,21 +83,24 @@ class _HubTile extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: FuvekonColors.darkText,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: FuvekonColors.darkText,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: FuvekonColors.darkTextSecondary,
-                          ),
+                        color: FuvekonColors.darkTextSecondary,
+                      ),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: FuvekonColors.darkTextSecondary),
+              const Icon(
+                Icons.chevron_right,
+                color: FuvekonColors.darkTextSecondary,
+              ),
             ],
           ),
         ),

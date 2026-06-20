@@ -7,8 +7,8 @@ import 'package:fuvekonmobile/features/notification/presentation/bloc/notificati
 
 class NotificationListCubit extends Cubit<NotificationListState> {
   NotificationListCubit({required NotificationRepository repository})
-      : _repository = repository,
-        super(const NotificationListInitial());
+    : _repository = repository,
+      super(const NotificationListInitial());
 
   static const _pageSize = 20;
 

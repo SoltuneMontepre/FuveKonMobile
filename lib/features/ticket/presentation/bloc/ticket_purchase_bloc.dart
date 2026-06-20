@@ -18,11 +18,11 @@ class TicketPurchaseBloc
     required GetMyTicketUseCase getMyTicketUseCase,
     required GetMeUseCase getMeUseCase,
     required UpdateMeUseCase updateMeUseCase,
-  })  : _confirmTicketPaymentUseCase = confirmTicketPaymentUseCase,
-        _getMyTicketUseCase = getMyTicketUseCase,
-        _getMeUseCase = getMeUseCase,
-        _updateMeUseCase = updateMeUseCase,
-        super(const TicketPurchaseState.initial()) {
+  }) : _confirmTicketPaymentUseCase = confirmTicketPaymentUseCase,
+       _getMyTicketUseCase = getMyTicketUseCase,
+       _getMeUseCase = getMeUseCase,
+       _updateMeUseCase = updateMeUseCase,
+       super(const TicketPurchaseState.initial()) {
     on<TicketPurchaseStarted>(_onStarted);
     on<TicketPurchaseRefreshRequested>(
       (event, emit) => _onStarted(
@@ -101,10 +101,7 @@ class TicketPurchaseBloc
       account,
       allowRetry: false,
     );
-    emit(
-      resolved ??
-          TicketPurchaseState.notFound(queued: _queued),
-    );
+    emit(resolved ?? TicketPurchaseState.notFound(queued: _queued));
   }
 
   TicketPurchaseState? _resolveTicketState(
@@ -117,7 +114,9 @@ class TicketPurchaseBloc
         return TicketPurchaseState.failure(failure.message);
       case Success(:final data):
         if (data == null) {
-          return allowRetry ? null : TicketPurchaseState.notFound(queued: _queued);
+          return allowRetry
+              ? null
+              : TicketPurchaseState.notFound(queued: _queued);
         }
         if (data.status == TicketStatus.denied) {
           return TicketPurchaseState.denied(
@@ -129,9 +128,7 @@ class TicketPurchaseBloc
             _tierId != null &&
             data.tier?.id != _tierId &&
             data.status == TicketStatus.pending) {
-          return allowRetry
-              ? null
-              : TicketPurchaseState.notFound(queued: true);
+          return allowRetry ? null : TicketPurchaseState.notFound(queued: true);
         }
         return TicketPurchaseState.loaded(
           ticket: data,

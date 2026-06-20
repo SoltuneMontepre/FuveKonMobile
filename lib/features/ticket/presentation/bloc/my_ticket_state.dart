@@ -34,8 +34,7 @@ extension MyTicketLoadedX on MyTicketLoaded {
 
   bool get canEditNameCard => tierCodeNumber >= 1;
 
-  String get previewName =>
-      badgeName.trim().isNotEmpty
-          ? badgeName.trim()
-          : (account.displayName ?? 'Guest');
+  String get previewName => badgeName.trim().isNotEmpty
+      ? badgeName.trim()
+      : (account.displayName ?? 'Guest');
 }

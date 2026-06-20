@@ -40,18 +40,16 @@ class FuveSectionHeader extends StatelessWidget {
           TextButton(
             onPressed: onActionTap,
             style: TextButton.styleFrom(
-              foregroundColor:
-                  FuvekonColors.premiumOnSurfaceVariant.withValues(alpha: 0.9),
+              foregroundColor: FuvekonColors.premiumOnSurfaceVariant.withValues(
+                alpha: 0.9,
+              ),
               padding: EdgeInsets.zero,
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: Text(
               actionLabel!,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
             ),
           ),
       ],

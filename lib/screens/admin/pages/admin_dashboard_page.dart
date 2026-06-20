@@ -59,67 +59,67 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
       child: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(FuvekonSpacing.page),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        EmptyState(
-                          title: l10n.adminDashboardLoadFailed,
-                          subtitle: l10n.adminDashboardLoadFailedSubtitle,
-                          icon: Icons.error_outline,
-                        ),
-                        const SizedBox(height: 16),
-                        FilledButton(
-                          onPressed: _load,
-                          child: Text(l10n.adminRetry),
-                        ),
-                      ],
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(FuvekonSpacing.page),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    EmptyState(
+                      title: l10n.adminDashboardLoadFailed,
+                      subtitle: l10n.adminDashboardLoadFailedSubtitle,
+                      icon: Icons.error_outline,
                     ),
-                  ),
-                )
-              : RefreshIndicator(
-                  onRefresh: _load,
-                  child: ListView(
-                    padding: const EdgeInsets.all(FuvekonSpacing.page),
-                    children: [
-                      _SectionHeader(
-                        title: l10n.adminDashboardTitle,
-                        subtitle: l10n.adminDashboardSubtitle,
-                      ),
-                      const SizedBox(height: 16),
-                      _OverviewGrid(data: _data!),
-                      const SizedBox(height: 24),
-                      _SectionHeader(title: l10n.adminDashboardTickets),
-                      const SizedBox(height: 12),
-                      _TicketStatsSection(data: _data!),
-                      if (_data!.tierStats.isNotEmpty) ...[
-                        const SizedBox(height: 24),
-                        _SectionHeader(title: l10n.adminDashboardByTier),
-                        const SizedBox(height: 12),
-                        ..._data!.tierStats.map(
-                          (tier) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: _TierTile(tier: tier),
-                          ),
-                        ),
-                      ],
-                      if (_data!.salesTimeline.isNotEmpty) ...[
-                        const SizedBox(height: 24),
-                        SalesTimelineChart(points: _data!.salesTimeline),
-                      ],
-                      if (_data!.usersByCountry.isNotEmpty) ...[
-                        const SizedBox(height: 24),
-                        UsersByCountryChart(
-                          items: _data!.usersByCountry,
-                          maxVisible: 6,
-                        ),
-                      ],
-                      const SizedBox(height: 16),
-                    ],
-                  ),
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      onPressed: _load,
+                      child: Text(l10n.adminRetry),
+                    ),
+                  ],
                 ),
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: _load,
+              child: ListView(
+                padding: const EdgeInsets.all(FuvekonSpacing.page),
+                children: [
+                  _SectionHeader(
+                    title: l10n.adminDashboardTitle,
+                    subtitle: l10n.adminDashboardSubtitle,
+                  ),
+                  const SizedBox(height: 16),
+                  _OverviewGrid(data: _data!),
+                  const SizedBox(height: 24),
+                  _SectionHeader(title: l10n.adminDashboardTickets),
+                  const SizedBox(height: 12),
+                  _TicketStatsSection(data: _data!),
+                  if (_data!.tierStats.isNotEmpty) ...[
+                    const SizedBox(height: 24),
+                    _SectionHeader(title: l10n.adminDashboardByTier),
+                    const SizedBox(height: 12),
+                    ..._data!.tierStats.map(
+                      (tier) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: _TierTile(tier: tier),
+                      ),
+                    ),
+                  ],
+                  if (_data!.salesTimeline.isNotEmpty) ...[
+                    const SizedBox(height: 24),
+                    SalesTimelineChart(points: _data!.salesTimeline),
+                  ],
+                  if (_data!.usersByCountry.isNotEmpty) ...[
+                    const SizedBox(height: 24),
+                    UsersByCountryChart(
+                      items: _data!.usersByCountry,
+                      maxVisible: 6,
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
     );
   }
 }
@@ -322,13 +322,14 @@ class _MetricCard extends StatelessWidget {
             SizedBox(height: compact ? 8 : 12),
             Text(
               value,
-              style: (compact
-                      ? theme.textTheme.titleLarge
-                      : theme.textTheme.headlineSmall)
-                  ?.copyWith(
-                color: valueColor ?? FuvekonColors.darkText,
-                fontWeight: FontWeight.w700,
-              ),
+              style:
+                  (compact
+                          ? theme.textTheme.titleLarge
+                          : theme.textTheme.headlineSmall)
+                      ?.copyWith(
+                        color: valueColor ?? FuvekonColors.darkText,
+                        fontWeight: FontWeight.w700,
+                      ),
             ),
           ],
         ),

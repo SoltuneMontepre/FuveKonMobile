@@ -73,7 +73,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 child: PageView.builder(
                   controller: _pageController,
                   itemCount: _slides.length,
-                  onPageChanged: (index) => setState(() => _currentPage = index),
+                  onPageChanged: (index) =>
+                      setState(() => _currentPage = index),
                   itemBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 4),
                     child: _OnboardingSlideCard(slide: _slides[index]),
@@ -81,10 +82,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ),
               ),
               const SizedBox(height: 28),
-              _PageIndicator(
-                count: _slides.length,
-                current: _currentPage,
-              ),
+              _PageIndicator(count: _slides.length, current: _currentPage),
               const SizedBox(height: 32),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,10 +160,26 @@ abstract final class _OnboardingColors {
 
   /// Desaturate + slight green cast to match Figma hero art.
   static const grayscaleMatrix = <double>[
-    0.18, 0.55, 0.09, 0, 0,
-    0.18, 0.55, 0.09, 0, 0,
-    0.18, 0.55, 0.09, 0, 0,
-    0, 0, 0, 1, 0,
+    0.18,
+    0.55,
+    0.09,
+    0,
+    0,
+    0.18,
+    0.55,
+    0.09,
+    0,
+    0,
+    0.18,
+    0.55,
+    0.09,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
   ];
 }
 
@@ -322,10 +336,7 @@ class _SlideHero extends StatelessWidget {
 }
 
 class _PageIndicator extends StatelessWidget {
-  const _PageIndicator({
-    required this.count,
-    required this.current,
-  });
+  const _PageIndicator({required this.count, required this.current});
 
   final int count;
   final int current;

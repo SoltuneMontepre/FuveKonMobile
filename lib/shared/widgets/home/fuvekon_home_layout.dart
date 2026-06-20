@@ -27,7 +27,10 @@ class FuvekonHomeAppBar extends StatelessWidget {
             IconButton(
               onPressed: onMenuTap,
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              icon: const Icon(Icons.menu_rounded, color: FuvekonColors.darkText),
+              icon: const Icon(
+                Icons.menu_rounded,
+                color: FuvekonColors.darkText,
+              ),
             )
           else
             const SizedBox(width: 48),
@@ -36,21 +39,17 @@ class FuvekonHomeAppBar extends StatelessWidget {
               'FUVEKON',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: FuvekonColors.darkText,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
-                  ),
+                color: FuvekonColors.darkText,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
+              ),
             ),
           ),
           IconButton(
             onPressed: onProfileTap,
             padding: EdgeInsets.zero,
             tooltip: 'Hồ sơ',
-            icon: S3Avatar(
-              imageUrl: avatarUrl,
-              initials: initials,
-              radius: 18,
-            ),
+            icon: S3Avatar(imageUrl: avatarUrl, initials: initials, radius: 18),
           ),
         ],
       ),
@@ -144,8 +143,10 @@ class FuvekonHeroBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: FuvekonColors.available,
                       borderRadius: BorderRadius.circular(999),
@@ -153,18 +154,18 @@ class FuvekonHeroBanner extends StatelessWidget {
                     child: Text(
                       badge,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   const Spacer(),
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -211,18 +212,21 @@ class FuvekonSageCard extends StatelessWidget {
                   child: Text(
                     title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: FuvekonColors.darkCardText,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: FuvekonColors.darkCardText,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 if (badge != null)
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
-                      color: (badgeColor ?? FuvekonColors.available)
-                          .withValues(alpha: 0.15),
+                      color: (badgeColor ?? FuvekonColors.available).withValues(
+                        alpha: 0.15,
+                      ),
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Row(
@@ -238,11 +242,11 @@ class FuvekonSageCard extends StatelessWidget {
                         ],
                         Text(
                           badge!,
-                          style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    color: badgeColor ?? FuvekonColors.available,
-                                    fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: badgeColor ?? FuvekonColors.available,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                       ],
                     ),
@@ -273,10 +277,7 @@ class FuvekonUtilityItem {
 }
 
 class FuvekonUtilitySection extends StatelessWidget {
-  const FuvekonUtilitySection({
-    super.key,
-    required this.items,
-  });
+  const FuvekonUtilitySection({super.key, required this.items});
 
   final List<FuvekonUtilityItem> items;
 
@@ -288,9 +289,9 @@ class FuvekonUtilitySection extends StatelessWidget {
         Text(
           'Tiện ích',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: FuvekonColors.darkText,
-                fontWeight: FontWeight.w600,
-              ),
+            color: FuvekonColors.darkText,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         const SizedBox(height: 12),
         Row(
@@ -335,8 +336,8 @@ class _UtilityTile extends StatelessWidget {
           Text(
             item.label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
             textAlign: TextAlign.center,
             maxLines: 2,
           ),
@@ -359,10 +360,7 @@ class FuvekonQuickActionItem {
 }
 
 class FuvekonQuickActionsSection extends StatelessWidget {
-  const FuvekonQuickActionsSection({
-    super.key,
-    required this.items,
-  });
+  const FuvekonQuickActionsSection({super.key, required this.items});
 
   final List<FuvekonQuickActionItem> items;
 
@@ -378,9 +376,9 @@ class FuvekonQuickActionsSection extends StatelessWidget {
             Text(
               'Tác vụ nhanh',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: FuvekonColors.darkText,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: FuvekonColors.darkText,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
@@ -422,8 +420,8 @@ class _QuickActionTile extends StatelessWidget {
               Text(
                 item.label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
               ),

@@ -62,15 +62,15 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
     try {
       await action();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.adminUpdateSuccess)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.adminUpdateSuccess)));
       context.pop(true);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(l10n, e))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(formatAdminError(l10n, e))));
     } finally {
       if (mounted) setState(() => _actionInProgress = false);
     }
@@ -107,14 +107,11 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
                 _error!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
               const SizedBox(height: 16),
-              FilledButton(
-                onPressed: _load,
-                child: Text(l10n.adminRetry),
-              ),
+              FilledButton(onPressed: _load, child: Text(l10n.adminRetry)),
             ],
           ),
         ),
@@ -181,10 +178,7 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
               width: double.infinity,
               fit: BoxFit.contain,
               borderRadius: BorderRadius.circular(12),
-              onTap: () => showS3ImagePreview(
-                context,
-                dealer.priceSheets[i],
-              ),
+              onTap: () => showS3ImagePreview(context, dealer.priceSheets[i]),
             ),
           ],
         ],
@@ -199,8 +193,8 @@ class _AdminDealerDetailPageState extends State<AdminDealerDetailPage> {
               Text(
                 l10n.adminDealerNoStaff,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
+                  color: FuvekonColors.darkTextSecondary,
+                ),
               ),
             ],
           )
@@ -245,9 +239,9 @@ class _DealerHeaderCard extends StatelessWidget {
                 child: Text(
                   dealer.boothName,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: FuvekonColors.darkText,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: FuvekonColors.darkText,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -266,8 +260,8 @@ class _DealerHeaderCard extends StatelessWidget {
             Text(
               l10n.adminDealerBoothCode(dealer.boothNumber!),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: FuvekonColors.darkTextSecondary,
-                  ),
+                color: FuvekonColors.darkTextSecondary,
+              ),
             ),
           ],
         ],
@@ -363,15 +357,15 @@ class _InfoRow extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: FuvekonColors.darkTextSecondary,
-                ),
+              color: FuvekonColors.darkTextSecondary,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: FuvekonColors.darkText,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: FuvekonColors.darkText),
           ),
         ],
       ),
@@ -394,9 +388,7 @@ class _StaffRow extends StatelessWidget {
           radius: 20,
           backgroundColor: FuvekonColors.darkBorder,
           child: Text(
-            member.userName.isNotEmpty
-                ? member.userName[0].toUpperCase()
-                : '?',
+            member.userName.isNotEmpty ? member.userName[0].toUpperCase() : '?',
             style: const TextStyle(
               color: FuvekonColors.darkText,
               fontWeight: FontWeight.w600,
@@ -416,9 +408,9 @@ class _StaffRow extends StatelessWidget {
                           ? member.userName
                           : member.userEmail,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: FuvekonColors.darkText,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: FuvekonColors.darkText,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   if (member.isOwner)
@@ -433,8 +425,8 @@ class _StaffRow extends StatelessWidget {
                 Text(
                   member.userEmail,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: FuvekonColors.darkTextSecondary,
-                      ),
+                    color: FuvekonColors.darkTextSecondary,
+                  ),
                 ),
               ],
               if (member.createdAt != null) ...[
@@ -442,8 +434,8 @@ class _StaffRow extends StatelessWidget {
                 Text(
                   '${l10n.adminDealerJoined} ${formatAdminDate(member.createdAt)}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: FuvekonColors.darkTextSecondary,
-                      ),
+                    color: FuvekonColors.darkTextSecondary,
+                  ),
                 ),
               ],
             ],

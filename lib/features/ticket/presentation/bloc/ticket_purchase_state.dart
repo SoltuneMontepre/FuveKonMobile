@@ -20,10 +20,10 @@ sealed class TicketPurchaseState with _$TicketPurchaseState {
     @Default(false) bool isConfirming,
     @Default(false) bool isSavingIdCard,
   }) = TicketPurchaseLoaded;
-  const factory TicketPurchaseState.notFound({
-    @Default(false) bool queued,
-  }) = TicketPurchaseNotFound;
-  const factory TicketPurchaseState.queueTimedOut() = TicketPurchaseQueueTimedOut;
+  const factory TicketPurchaseState.notFound({@Default(false) bool queued}) =
+      TicketPurchaseNotFound;
+  const factory TicketPurchaseState.queueTimedOut() =
+      TicketPurchaseQueueTimedOut;
   const factory TicketPurchaseState.denied({
     required UserTicket ticket,
     required String denialReason,

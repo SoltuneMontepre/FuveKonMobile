@@ -40,14 +40,12 @@ class _S3ImageState extends State<S3Image> {
   Widget build(BuildContext context) {
     final rawUrl = widget.imageUrl;
     final hasUrl = rawUrl != null && rawUrl.isNotEmpty;
-    final resolvedUrl =
-        hasUrl && !_loadFailed ? S3Url.resolveImageUrl(rawUrl) : null;
+    final resolvedUrl = hasUrl && !_loadFailed
+        ? S3Url.resolveImageUrl(rawUrl)
+        : null;
 
     final child = resolvedUrl == null
-        ? _Placeholder(
-            width: widget.width,
-            height: widget.height,
-          )
+        ? _Placeholder(width: widget.width, height: widget.height)
         : Image.network(
             resolvedUrl,
             width: widget.width,
@@ -61,7 +59,7 @@ class _S3ImageState extends State<S3Image> {
                 child: CircularProgressIndicator(
                   value: loadingProgress.expectedTotalBytes != null
                       ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
+                            loadingProgress.expectedTotalBytes!
                       : null,
                 ),
               );
@@ -80,17 +78,11 @@ class _S3ImageState extends State<S3Image> {
             },
           );
 
-    final image = ClipRRect(
-      borderRadius: widget.borderRadius,
-      child: child,
-    );
+    final image = ClipRRect(borderRadius: widget.borderRadius, child: child);
 
     if (widget.onTap == null) return image;
 
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: image,
-    );
+    return GestureDetector(onTap: widget.onTap, child: image);
   }
 }
 
@@ -114,11 +106,7 @@ class _Placeholder extends StatelessWidget {
       height: height,
       alignment: Alignment.center,
       color: FuvekonColors.darkBorder.withValues(alpha: 0.35),
-      child: child ??
-          Icon(
-            icon,
-            color: FuvekonColors.darkTextSecondary,
-          ),
+      child: child ?? Icon(icon, color: FuvekonColors.darkTextSecondary),
     );
   }
 }
@@ -132,10 +120,7 @@ void showS3ImagePreview(BuildContext context, String imageUrl) {
       child: Stack(
         children: [
           InteractiveViewer(
-            child: S3Image(
-              imageUrl: imageUrl,
-              fit: BoxFit.contain,
-            ),
+            child: S3Image(imageUrl: imageUrl, fit: BoxFit.contain),
           ),
           Positioned(
             top: 8,

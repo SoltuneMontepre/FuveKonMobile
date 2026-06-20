@@ -168,12 +168,10 @@ class _StaffHomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<ProfileBloc>().add(
-              const ProfileEvent.refreshRequested(),
-            );
+        context.read<ProfileBloc>().add(const ProfileEvent.refreshRequested());
         await context.read<ProfileBloc>().stream.firstWhere(
-              (s) => s is ProfileLoaded || s is ProfileFailure,
-            );
+          (s) => s is ProfileLoaded || s is ProfileFailure,
+        );
       },
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -210,8 +208,8 @@ class _StaffHomeContent extends StatelessWidget {
                     child: Text(
                       context.l10n.adminStaffScanHint,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: FuvekonColors.textSecondary,
-                          ),
+                        color: FuvekonColors.textSecondary,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),

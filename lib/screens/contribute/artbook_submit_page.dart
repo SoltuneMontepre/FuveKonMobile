@@ -41,12 +41,12 @@ class _ArtbookSubmitPageState extends State<ArtbookSubmitPage> {
   }
 
   List<String> _genres(AppLocalizations l10n) => [
-        l10n.artbookGenreIllustration,
-        l10n.artbookGenreComic,
-        l10n.artbookGenrePhoto,
-        l10n.artbookGenreDigital,
-        l10n.artbookGenreOther,
-      ];
+    l10n.artbookGenreIllustration,
+    l10n.artbookGenreComic,
+    l10n.artbookGenrePhoto,
+    l10n.artbookGenreDigital,
+    l10n.artbookGenreOther,
+  ];
 
   String _buildDescription() {
     final parts = <String>[];
@@ -64,18 +64,18 @@ class _ArtbookSubmitPageState extends State<ArtbookSubmitPage> {
   Future<void> _submit() async {
     final l10n = context.l10n;
     if (!sl<AuthSessionNotifier>().isAuthenticated) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.artbookLoginRequired)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.artbookLoginRequired)));
       context.go(Routes.login);
       return;
     }
 
     if (!_formKey.currentState!.validate()) return;
     if (_previewUrl == null || _previewUrl!.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.artbookPreviewRequired)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.artbookPreviewRequired)));
       return;
     }
 
@@ -88,18 +88,18 @@ class _ArtbookSubmitPageState extends State<ArtbookSubmitPage> {
         'image_url': _previewUrl,
       });
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.artbookSubmitSuccess)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.artbookSubmitSuccess)));
       context.go(Routes.artbook);
     } catch (e) {
       if (!mounted) return;
       final message = e is ServerException
           ? e.message
           : l10n.artbookSubmitFailed;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -118,173 +118,172 @@ class _ArtbookSubmitPageState extends State<ArtbookSubmitPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _SubmitHero(l10n: l10n),
-            Transform.translate(
-              offset: const Offset(0, -28),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    AppIllustratedInteractiveSection(
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.public,
-                                  size: 20,
-                                  color: ext.contentOnCardMuted,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  l10n.artbookFormSectionTitle,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.copyWith(
-                                        color: ext.contentOnCard,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            _ArtbookField(
-                              label: l10n.artbookFieldTitle,
-                              required: true,
-                              child: _ArtbookTextField(
-                                controller: _titleController,
-                                hint: l10n.artbookFieldTitleHint,
-                                validator: (value) {
-                                  if (value == null || value.trim().isEmpty) {
-                                    return l10n.artbookFieldRequired;
-                                  }
-                                  return null;
-                                },
+              Transform.translate(
+                offset: const Offset(0, -28),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      AppIllustratedInteractiveSection(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.public,
+                                    size: 20,
+                                    color: ext.contentOnCardMuted,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    l10n.artbookFormSectionTitle,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          color: ext.contentOnCard,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(height: 16),
-                            _ArtbookField(
-                              label: l10n.artbookFieldAuthor,
-                              required: true,
-                              child: _ArtbookTextField(
-                                controller: _authorController,
-                                hint: l10n.artbookFieldAuthorHint,
-                                validator: (value) {
-                                  if (value == null || value.trim().isEmpty) {
-                                    return l10n.artbookFieldRequired;
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            _ArtbookField(
-                              label: l10n.artbookFieldGenre,
-                              required: true,
-                              child: DropdownButtonFormField<String>(
-                                key: ValueKey(_genre),
-                                initialValue: _genre,
-                                decoration: _inputDecoration(
-                                  hint: l10n.artbookFieldGenreHint,
-                                ),
-                                items: _genres(l10n)
-                                    .map(
-                                      (genre) => DropdownMenuItem(
-                                        value: genre,
-                                        child: Text(genre),
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: (value) =>
-                                    setState(() => _genre = value),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return l10n.artbookFieldRequired;
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            _ArtbookField(
-                              label: l10n.artbookFieldDescription,
-                              child: _ArtbookTextField(
-                                controller: _descriptionController,
-                                hint: l10n.artbookFieldDescriptionHint,
-                                maxLines: 4,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            _ArtbookField(
-                              label: l10n.artbookFieldPortfolio,
-                              child: _ArtbookTextField(
-                                controller: _portfolioController,
-                                hint: l10n.artbookFieldPortfolioHint,
-                                keyboardType: TextInputType.url,
-                                prefixIcon: Icons.link,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            AppFormLabel(
-                              text: l10n.artbookFieldPreview,
-                              required: true,
-                            ),
-                            S3ImageUploadField(
-                              imageUrl: _previewUrl,
-                              folder: 'conbooks',
-                              label: l10n.artbookUploadLabel,
-                              onChanged: (url) =>
-                                  setState(() => _previewUrl = url),
-                            ),
-                            Text(
-                              l10n.artbookUploadHint,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(color: ext.contentOnCardMuted),
-                            ),
-                            const SizedBox(height: 24),
-                            FilledButton.icon(
-                              onPressed: _submitting ? null : _submit,
-                              icon: _submitting
-                                  ? const SizedBox(
-                                      width: 18,
-                                      height: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Icon(Icons.send_rounded, size: 18),
-                              label: Text(l10n.artbookSubmitButton),
-                              style: FilledButton.styleFrom(
-                                backgroundColor: FuvekonColors.sageGreenContainer,
-                                foregroundColor: Colors.white,
-                                minimumSize: const Size.fromHeight(52),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(999),
+                              const SizedBox(height: 20),
+                              _ArtbookField(
+                                label: l10n.artbookFieldTitle,
+                                required: true,
+                                child: _ArtbookTextField(
+                                  controller: _titleController,
+                                  hint: l10n.artbookFieldTitleHint,
+                                  validator: (value) {
+                                    if (value == null || value.trim().isEmpty) {
+                                      return l10n.artbookFieldRequired;
+                                    }
+                                    return null;
+                                  },
                                 ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 16),
+                              _ArtbookField(
+                                label: l10n.artbookFieldAuthor,
+                                required: true,
+                                child: _ArtbookTextField(
+                                  controller: _authorController,
+                                  hint: l10n.artbookFieldAuthorHint,
+                                  validator: (value) {
+                                    if (value == null || value.trim().isEmpty) {
+                                      return l10n.artbookFieldRequired;
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              _ArtbookField(
+                                label: l10n.artbookFieldGenre,
+                                required: true,
+                                child: DropdownButtonFormField<String>(
+                                  key: ValueKey(_genre),
+                                  initialValue: _genre,
+                                  decoration: _inputDecoration(
+                                    hint: l10n.artbookFieldGenreHint,
+                                  ),
+                                  items: _genres(l10n)
+                                      .map(
+                                        (genre) => DropdownMenuItem(
+                                          value: genre,
+                                          child: Text(genre),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) =>
+                                      setState(() => _genre = value),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return l10n.artbookFieldRequired;
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              _ArtbookField(
+                                label: l10n.artbookFieldDescription,
+                                child: _ArtbookTextField(
+                                  controller: _descriptionController,
+                                  hint: l10n.artbookFieldDescriptionHint,
+                                  maxLines: 4,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              _ArtbookField(
+                                label: l10n.artbookFieldPortfolio,
+                                child: _ArtbookTextField(
+                                  controller: _portfolioController,
+                                  hint: l10n.artbookFieldPortfolioHint,
+                                  keyboardType: TextInputType.url,
+                                  prefixIcon: Icons.link,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              AppFormLabel(
+                                text: l10n.artbookFieldPreview,
+                                required: true,
+                              ),
+                              S3ImageUploadField(
+                                imageUrl: _previewUrl,
+                                folder: 'conbooks',
+                                label: l10n.artbookUploadLabel,
+                                onChanged: (url) =>
+                                    setState(() => _previewUrl = url),
+                              ),
+                              Text(
+                                l10n.artbookUploadHint,
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: ext.contentOnCardMuted),
+                              ),
+                              const SizedBox(height: 24),
+                              FilledButton.icon(
+                                onPressed: _submitting ? null : _submit,
+                                icon: _submitting
+                                    ? const SizedBox(
+                                        width: 18,
+                                        height: 18,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : const Icon(Icons.send_rounded, size: 18),
+                                label: Text(l10n.artbookSubmitButton),
+                                style: FilledButton.styleFrom(
+                                  backgroundColor:
+                                      FuvekonColors.sageGreenContainer,
+                                  foregroundColor: Colors.white,
+                                  minimumSize: const Size.fromHeight(52),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(999),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    _RulesCard(l10n: l10n),
-                    const SizedBox(height: 16),
-                    _DeadlineCard(l10n: l10n),
-                  ],
+                      const SizedBox(height: 20),
+                      _RulesCard(l10n: l10n),
+                      const SizedBox(height: 16),
+                      _DeadlineCard(l10n: l10n),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -307,7 +306,10 @@ class _ArtbookSubmitPageState extends State<ArtbookSubmitPage> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(FuvekonRadii.input),
-        borderSide: const BorderSide(color: FuvekonColors.sageGreen, width: 1.5),
+        borderSide: const BorderSide(
+          color: FuvekonColors.sageGreen,
+          width: 1.5,
+        ),
       ),
     );
   }
@@ -450,7 +452,10 @@ class _ArtbookTextField extends StatelessWidget {
             : Icon(prefixIcon, size: 20, color: FuvekonColors.textSecondary),
         filled: true,
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 14,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(FuvekonRadii.input),
           borderSide: const BorderSide(color: FuvekonColors.inputBorder),
@@ -463,7 +468,10 @@ class _ArtbookTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(FuvekonRadii.input),
-          borderSide: const BorderSide(color: FuvekonColors.sageGreen, width: 1.5),
+          borderSide: const BorderSide(
+            color: FuvekonColors.sageGreen,
+            width: 1.5,
+          ),
         ),
       ),
     );
@@ -481,7 +489,9 @@ class _RulesCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: FuvekonColors.darkSurfaceElevated,
         borderRadius: BorderRadius.circular(FuvekonRadii.notes),
-        border: Border.all(color: FuvekonColors.darkBorder.withValues(alpha: 0.5)),
+        border: Border.all(
+          color: FuvekonColors.darkBorder.withValues(alpha: 0.5),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -490,7 +500,11 @@ class _RulesCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.gavel_outlined, color: FuvekonColors.darkPrimary, size: 20),
+                Icon(
+                  Icons.gavel_outlined,
+                  color: FuvekonColors.darkPrimary,
+                  size: 20,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   l10n.artbookRulesTitle,
@@ -503,9 +517,15 @@ class _RulesCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            _RuleRow(title: l10n.artbookRuleSizeTitle, body: l10n.artbookRuleSizeBody),
+            _RuleRow(
+              title: l10n.artbookRuleSizeTitle,
+              body: l10n.artbookRuleSizeBody,
+            ),
             const SizedBox(height: 12),
-            _RuleRow(title: l10n.artbookRuleFormatTitle, body: l10n.artbookRuleFormatBody),
+            _RuleRow(
+              title: l10n.artbookRuleFormatTitle,
+              body: l10n.artbookRuleFormatBody,
+            ),
             const SizedBox(height: 12),
             _RuleRow(
               title: l10n.artbookRuleCopyrightTitle,
@@ -563,7 +583,9 @@ class _DeadlineCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: FuvekonColors.darkSurface,
         borderRadius: BorderRadius.circular(FuvekonRadii.notes),
-        border: Border.all(color: FuvekonColors.darkBorder.withValues(alpha: 0.45)),
+        border: Border.all(
+          color: FuvekonColors.darkBorder.withValues(alpha: 0.45),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(18),

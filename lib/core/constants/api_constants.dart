@@ -56,8 +56,7 @@ abstract final class ApiConstants {
   // —— Users (admin) ——
   static const String adminUsers = '/admin/users';
   static String adminUser(String userId) => '/admin/users/$userId';
-  static String adminUserVerify(String userId) =>
-      '/admin/users/$userId/verify';
+  static String adminUserVerify(String userId) => '/admin/users/$userId/verify';
   static const String adminUsersCountByCountry =
       '/admin/users/statistics/count-by-country';
   static const String adminUsersCountByAgeRange =
@@ -74,7 +73,8 @@ abstract final class ApiConstants {
 
   // —— Event controls (admin) ——
   static const String adminEventSettings = '/admin/event/settings';
-  static const String adminEventTicketSalesOpen = '/admin/event/ticket-sales/open';
+  static const String adminEventTicketSalesOpen =
+      '/admin/event/ticket-sales/open';
   static const String adminEventTicketSalesClose =
       '/admin/event/ticket-sales/close';
   static const String adminEventPanelRegistrationOpen =
@@ -122,7 +122,8 @@ abstract final class ApiConstants {
   static String panel(String id) => '/panels/$id';
   static const String adminPanelsPending = '/admin/panels/pending';
   static const String adminPanelsApproved = '/admin/panels/approved';
-  static const String adminPanelsRequireChanges = '/admin/panels/require-changes';
+  static const String adminPanelsRequireChanges =
+      '/admin/panels/require-changes';
   static const String adminPanelsDenied = '/admin/panels/denied';
   static String adminPanelApprove(String id) => '/admin/panels/$id/approve';
   static String adminPanelRequireChanges(String id) =>

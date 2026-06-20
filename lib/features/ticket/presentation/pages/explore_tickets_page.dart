@@ -54,13 +54,15 @@ class _ExploreTicketsView extends StatelessWidget {
                           icon: Icons.confirmation_number_outlined,
                           title: l10n.exploreTicketsEmpty,
                         ),
-                      TicketTiersLoaded(:final tiers) => _LoadedBody(tiers: tiers),
+                      TicketTiersLoaded(:final tiers) => _LoadedBody(
+                        tiers: tiers,
+                      ),
                       TicketTiersFailure(:final message) => _ErrorBody(
-                          message: message,
-                          onRetry: () => context.read<TicketTiersBloc>().add(
-                                const TicketTiersRefreshRequested(),
-                              ),
+                        message: message,
+                        onRetry: () => context.read<TicketTiersBloc>().add(
+                          const TicketTiersRefreshRequested(),
                         ),
+                      ),
                     };
                   },
                 ),

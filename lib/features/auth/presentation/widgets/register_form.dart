@@ -33,10 +33,10 @@ class RegisterForm extends StatefulWidget {
   final void Function({
     required String fullName,
     required String email,
-    required String phone,
     required String password,
     required String confirmPassword,
-  }) onSubmit;
+  })
+  onSubmit;
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
@@ -46,7 +46,6 @@ class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -58,7 +57,6 @@ class _RegisterFormState extends State<RegisterForm> {
   void dispose() {
     _fullNameController.dispose();
     _emailController.dispose();
-    _phoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -76,7 +74,6 @@ class _RegisterFormState extends State<RegisterForm> {
     widget.onSubmit(
       fullName: _fullNameController.text.trim(),
       email: _emailController.text.trim(),
-      phone: _phoneController.text.trim(),
       password: _passwordController.text,
       confirmPassword: _confirmPasswordController.text,
     );
@@ -173,30 +170,6 @@ class _RegisterFormState extends State<RegisterForm> {
             enabled: !widget.isLoading,
           ),
           const SizedBox(height: 16),
-          _FieldLabel(text: l10n.registerPhoneLabel),
-          const SizedBox(height: 8),
-          TextFormField(
-            controller: _phoneController,
-            keyboardType: TextInputType.phone,
-            autofillHints: const [AutofillHints.telephoneNumber],
-            style: const TextStyle(color: _RegisterFormColors.inputText),
-            decoration: _inputDecoration(
-              hint: l10n.registerPhoneHint,
-              prefixIcon: Icons.phone_outlined,
-            ),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return l10n.validationPhoneRequired;
-              }
-              final digits = value.replaceAll(RegExp(r'\D'), '');
-              if (digits.length < 9 || digits.length > 11) {
-                return l10n.validationPhoneInvalid;
-              }
-              return null;
-            },
-            enabled: !widget.isLoading,
-          ),
-          const SizedBox(height: 16),
           _FieldLabel(text: l10n.registerPasswordLabel),
           const SizedBox(height: 8),
           TextFormField(
@@ -216,7 +189,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 onPressed: widget.isLoading
                     ? null
-                    : () => setState(() => _obscurePassword = !_obscurePassword),
+                    : () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
               ),
             ),
             validator: (value) {
@@ -251,8 +225,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 onPressed: widget.isLoading
                     ? null
                     : () => setState(
-                          () => _obscureConfirmPassword = !_obscureConfirmPassword,
-                        ),
+                        () =>
+                            _obscureConfirmPassword = !_obscureConfirmPassword,
+                      ),
               ),
             ),
             validator: (value) {
@@ -278,11 +253,10 @@ class _RegisterFormState extends State<RegisterForm> {
                   value: _termsAccepted,
                   onChanged: widget.isLoading
                       ? null
-                      : (value) => setState(() => _termsAccepted = value ?? false),
+                      : (value) =>
+                            setState(() => _termsAccepted = value ?? false),
                   activeColor: _RegisterFormColors.link,
-                  side: BorderSide(
-                    color: Colors.white.withValues(alpha: 0.45),
-                  ),
+                  side: BorderSide(color: Colors.white.withValues(alpha: 0.45)),
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.compact,
                 ),
@@ -297,10 +271,12 @@ class _RegisterFormState extends State<RegisterForm> {
             style: FilledButton.styleFrom(
               backgroundColor: _RegisterFormColors.buttonBg,
               foregroundColor: _RegisterFormColors.buttonFg,
-              disabledBackgroundColor:
-                  _RegisterFormColors.buttonBg.withValues(alpha: 0.35),
-              disabledForegroundColor:
-                  _RegisterFormColors.buttonFg.withValues(alpha: 0.55),
+              disabledBackgroundColor: _RegisterFormColors.buttonBg.withValues(
+                alpha: 0.35,
+              ),
+              disabledForegroundColor: _RegisterFormColors.buttonFg.withValues(
+                alpha: 0.55,
+              ),
               minimumSize: const Size.fromHeight(52),
               elevation: 0,
               shape: RoundedRectangleBorder(

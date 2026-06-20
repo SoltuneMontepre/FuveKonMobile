@@ -62,18 +62,18 @@ class LostFoundPublicItem {
   bool get isReturned => status == 'resolved';
 
   String get statusLabel => switch (status) {
-        'open' => 'Đang mở',
-        'claimed' => 'Đang xử lý',
-        'resolved' => 'Đã trả đồ',
-        _ => status,
-      };
+    'open' => 'Đang mở',
+    'claimed' => 'Đang xử lý',
+    'resolved' => 'Đã trả đồ',
+    _ => status,
+  };
 
   String get userClaimStatusLabel => switch (userClaimStatus) {
-        'pending' => 'Chờ xác minh',
-        'approved' => 'Đã duyệt',
-        'rejected' => 'Từ chối',
-        _ => '',
-      };
+    'pending' => 'Chờ xác minh',
+    'approved' => 'Đã duyệt',
+    'rejected' => 'Từ chối',
+    _ => '',
+  };
 
   static DateTime? _parseDateTime(Object? value) {
     if (value is! String || value.isEmpty) return null;
@@ -97,13 +97,13 @@ class LostFoundReportInput {
   final String contactInfo;
 
   Map<String, dynamic> toJson() => {
-        'item_type': 'lost',
-        'title': title,
-        if (description.isNotEmpty) 'description': description,
-        if (location.isNotEmpty) 'location': location,
-        if (imageUrl.isNotEmpty) 'image_url': imageUrl,
-        if (contactInfo.isNotEmpty) 'contact_info': contactInfo,
-      };
+    'item_type': 'lost',
+    'title': title,
+    if (description.isNotEmpty) 'description': description,
+    if (location.isNotEmpty) 'location': location,
+    if (imageUrl.isNotEmpty) 'image_url': imageUrl,
+    if (contactInfo.isNotEmpty) 'contact_info': contactInfo,
+  };
 }
 
 class AdminLostFoundClaimUser {
@@ -138,9 +138,10 @@ class AdminLostFoundClaimUser {
   final String avatar;
 
   String get displayName {
-    final parts = [firstName.trim(), lastName.trim()]
-        .where((part) => part.isNotEmpty)
-        .join(' ');
+    final parts = [
+      firstName.trim(),
+      lastName.trim(),
+    ].where((part) => part.isNotEmpty).join(' ');
     if (parts.isNotEmpty) return parts;
     if (fursonaName.trim().isNotEmpty) return fursonaName.trim();
     return email;

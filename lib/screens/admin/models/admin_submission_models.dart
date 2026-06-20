@@ -3,11 +3,7 @@ import 'package:fuvekonmobile/screens/info/lost_found_models.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
 
 class AdminDetailField {
-  const AdminDetailField({
-    required this.label,
-    this.value = '',
-    this.imageUrl,
-  });
+  const AdminDetailField({required this.label, this.value = '', this.imageUrl});
 
   final String label;
   final String value;
@@ -124,30 +120,27 @@ class AdminDealerItem implements AdminListItem {
 
   @override
   List<AdminDetailField> get details => [
-        AdminDetailField(label: 'Tên gian hàng', value: boothName),
-        if (boothNumber?.isNotEmpty == true)
-          AdminDetailField(label: 'Mã gian', value: boothNumber!),
-        AdminDetailField(
-          label: 'Trạng thái',
-          value: isVerified ? 'Đã duyệt' : 'Chờ duyệt',
-        ),
-        if (description.isNotEmpty)
-          AdminDetailField(label: 'Mô tả', value: description),
-        for (var i = 0; i < priceSheets.length; i++)
-          AdminDetailField(
-            label: priceSheets.length == 1 ? 'Bảng giá' : 'Bảng giá ${i + 1}',
-            imageUrl: priceSheets[i],
-          ),
-        AdminDetailField(
-          label: 'Ngày đăng ký',
-          value: formatAdminDate(createdAt),
-        ),
-        if (modifiedAt != null)
-          AdminDetailField(
-            label: 'Cập nhật lần cuối',
-            value: formatAdminDate(modifiedAt),
-          ),
-      ];
+    AdminDetailField(label: 'Tên gian hàng', value: boothName),
+    if (boothNumber?.isNotEmpty == true)
+      AdminDetailField(label: 'Mã gian', value: boothNumber!),
+    AdminDetailField(
+      label: 'Trạng thái',
+      value: isVerified ? 'Đã duyệt' : 'Chờ duyệt',
+    ),
+    if (description.isNotEmpty)
+      AdminDetailField(label: 'Mô tả', value: description),
+    for (var i = 0; i < priceSheets.length; i++)
+      AdminDetailField(
+        label: priceSheets.length == 1 ? 'Bảng giá' : 'Bảng giá ${i + 1}',
+        imageUrl: priceSheets[i],
+      ),
+    AdminDetailField(label: 'Ngày đăng ký', value: formatAdminDate(createdAt)),
+    if (modifiedAt != null)
+      AdminDetailField(
+        label: 'Cập nhật lần cuối',
+        value: formatAdminDate(modifiedAt),
+      ),
+  ];
 }
 
 class AdminPanelItem implements AdminListItem {
@@ -200,48 +193,39 @@ class AdminPanelItem implements AdminListItem {
 
   @override
   String? get subtitle => [
-        if (nickname.isNotEmpty) nickname,
-        if (performanceGenre.isNotEmpty) performanceGenre,
-        '$durationMinutes phút',
-      ].join(' • ');
+    if (nickname.isNotEmpty) nickname,
+    if (performanceGenre.isNotEmpty) performanceGenre,
+    '$durationMinutes phút',
+  ].join(' • ');
 
   @override
   List<AdminDetailField> get details => [
-        AdminDetailField(label: 'Tiêu đề', value: title),
-        if (nickname.isNotEmpty)
-          AdminDetailField(label: 'Nickname', value: nickname),
-        if (representativeUrl?.isNotEmpty == true)
-          AdminDetailField(
-            label: 'Ảnh đại diện',
-            imageUrl: representativeUrl,
-          ),
-        if (performanceGenre.isNotEmpty)
-          AdminDetailField(label: 'Thể loại', value: performanceGenre),
-        AdminDetailField(
-          label: 'Số người tham gia',
-          value: participantCount.toString(),
-        ),
-        AdminDetailField(
-          label: 'Thời lượng',
-          value: '$durationMinutes phút',
-        ),
-        if (slotLabel?.isNotEmpty == true)
-          AdminDetailField(label: 'Khung giờ', value: slotLabel!),
-        AdminDetailField(label: 'Trạng thái', value: _statusLabel(status)),
-        if (introduction?.isNotEmpty == true)
-          AdminDetailField(label: 'Giới thiệu', value: introduction!),
-        AdminDetailField(
-          label: 'Ngày gửi',
-          value: formatAdminDate(createdAt),
-        ),
-      ];
+    AdminDetailField(label: 'Tiêu đề', value: title),
+    if (nickname.isNotEmpty)
+      AdminDetailField(label: 'Nickname', value: nickname),
+    if (representativeUrl?.isNotEmpty == true)
+      AdminDetailField(label: 'Ảnh đại diện', imageUrl: representativeUrl),
+    if (performanceGenre.isNotEmpty)
+      AdminDetailField(label: 'Thể loại', value: performanceGenre),
+    AdminDetailField(
+      label: 'Số người tham gia',
+      value: participantCount.toString(),
+    ),
+    AdminDetailField(label: 'Thời lượng', value: '$durationMinutes phút'),
+    if (slotLabel?.isNotEmpty == true)
+      AdminDetailField(label: 'Khung giờ', value: slotLabel!),
+    AdminDetailField(label: 'Trạng thái', value: _statusLabel(status)),
+    if (introduction?.isNotEmpty == true)
+      AdminDetailField(label: 'Giới thiệu', value: introduction!),
+    AdminDetailField(label: 'Ngày gửi', value: formatAdminDate(createdAt)),
+  ];
 
   static String _statusLabel(String status) => switch (status) {
-        'approved' => 'Đã duyệt',
-        'require_changes' => 'Cần chỉnh sửa',
-        'denied' => 'Từ chối',
-        _ => 'Chờ duyệt',
-      };
+    'approved' => 'Đã duyệt',
+    'require_changes' => 'Cần chỉnh sửa',
+    'denied' => 'Từ chối',
+    _ => 'Chờ duyệt',
+  };
 }
 
 String parseAdminRole(dynamic value) {
@@ -271,7 +255,8 @@ const adminPermissionCodes = [
   'manage_users',
 ];
 
-List<String> defaultPermissionsForRole(String role) => switch (role.toLowerCase()) {
+List<String> defaultPermissionsForRole(String role) =>
+    switch (role.toLowerCase()) {
       'admin' => List<String>.from(adminPermissionCodes),
       'staff' => const ['scan_tickets', 'view_dashboard'],
       _ => const [],
@@ -319,7 +304,9 @@ class AdminUserItem implements AdminListItem {
       isDealer: json['is_dealer'] as bool? ?? false,
       isHasTicket: json['is_has_ticket'] as bool? ?? false,
       isBlacklisted:
-          json['is_blacklisted'] as bool? ?? json['is_banned'] as bool? ?? false,
+          json['is_blacklisted'] as bool? ??
+          json['is_banned'] as bool? ??
+          false,
       denialCount: json['denial_count'] as int? ?? 0,
       blacklistReason: json['blacklist_reason'] as String?,
       blacklistedAt: parseAdminDate(json['blacklisted_at']),
@@ -367,9 +354,10 @@ class AdminUserItem implements AdminListItem {
 
   String get displayName {
     if (fursonaName != null && fursonaName!.isNotEmpty) return fursonaName!;
-    final parts = [firstName, lastName].whereType<String>().where(
-          (s) => s.isNotEmpty,
-        );
+    final parts = [
+      firstName,
+      lastName,
+    ].whereType<String>().where((s) => s.isNotEmpty);
     final joined = parts.join(' ').trim();
     if (joined.isNotEmpty) return joined;
     return email;
@@ -414,63 +402,53 @@ class AdminUserItem implements AdminListItem {
 
   @override
   List<AdminDetailField> get details => [
-        AdminDetailField(label: 'Email', value: email),
-        AdminDetailField(label: 'Tên hiển thị', value: displayName),
-        if (fursonaName?.isNotEmpty == true)
-          AdminDetailField(label: 'Fursona', value: fursonaName!),
-        if (firstName?.isNotEmpty == true)
-          AdminDetailField(label: 'Họ', value: firstName!),
-        if (lastName?.isNotEmpty == true)
-          AdminDetailField(label: 'Tên', value: lastName!),
-        AdminDetailField(
-          label: 'Vai trò',
-          value: switch (role.toLowerCase()) {
-            'admin' => 'Quản trị viên',
-            'dealer' => 'Dealer',
-            'staff' => 'Nhân viên',
-            _ => 'Người dùng',
-          },
-        ),
-        AdminDetailField(
-          label: 'Xác minh',
-          value: isVerified ? 'Đã xác minh' : 'Chưa xác minh',
-        ),
-        if (country?.isNotEmpty == true)
-          AdminDetailField(label: 'Quốc gia', value: country!),
-        if (idCard?.isNotEmpty == true)
-          AdminDetailField(label: 'CCCD/CMND', value: idCard!),
-        if (dateOfBirth?.isNotEmpty == true)
-          AdminDetailField(label: 'Ngày sinh', value: dateOfBirth!),
-        AdminDetailField(
-          label: 'Có vé',
-          value: isHasTicket ? 'Có' : 'Không',
-        ),
-        AdminDetailField(
-          label: 'Dealer',
-          value: isDealer ? 'Có' : 'Không',
-        ),
-        if (isBlacklisted) ...[
-          AdminDetailField(label: 'Trạng thái', value: 'Bị cấm mua vé'),
-          if (blacklistReason?.isNotEmpty == true)
-            AdminDetailField(label: 'Lý do cấm', value: blacklistReason!),
-          AdminDetailField(
-            label: 'Ngày cấm',
-            value: formatAdminDate(blacklistedAt),
-          ),
-          AdminDetailField(
-            label: 'Số lần từ chối vé',
-            value: denialCount.toString(),
-          ),
-        ],
-        if (isDeleted)
-          AdminDetailField(label: 'Tài khoản', value: 'Đã xóa'),
-        if (avatar?.isNotEmpty == true)
-          AdminDetailField(label: 'Ảnh đại diện', imageUrl: avatar),
-        AdminDetailField(
-          label: 'Ngày tạo',
-          value: formatAdminDate(createdAt),
-        ),
-      ];
+    AdminDetailField(label: 'Email', value: email),
+    AdminDetailField(label: 'Tên hiển thị', value: displayName),
+    if (fursonaName?.isNotEmpty == true)
+      AdminDetailField(label: 'Fursona', value: fursonaName!),
+    if (firstName?.isNotEmpty == true)
+      AdminDetailField(label: 'Họ', value: firstName!),
+    if (lastName?.isNotEmpty == true)
+      AdminDetailField(label: 'Tên', value: lastName!),
+    AdminDetailField(
+      label: 'Vai trò',
+      value: switch (role.toLowerCase()) {
+        'admin' => 'Quản trị viên',
+        'dealer' => 'Dealer',
+        'staff' => 'Nhân viên',
+        _ => 'Người dùng',
+      },
+    ),
+    AdminDetailField(
+      label: 'Xác minh',
+      value: isVerified ? 'Đã xác minh' : 'Chưa xác minh',
+    ),
+    if (country?.isNotEmpty == true)
+      AdminDetailField(label: 'Quốc gia', value: country!),
+    if (idCard?.isNotEmpty == true)
+      AdminDetailField(label: 'CCCD/CMND', value: idCard!),
+    if (dateOfBirth?.isNotEmpty == true)
+      AdminDetailField(label: 'Ngày sinh', value: dateOfBirth!),
+    AdminDetailField(label: 'Có vé', value: isHasTicket ? 'Có' : 'Không'),
+    AdminDetailField(label: 'Dealer', value: isDealer ? 'Có' : 'Không'),
+    if (isBlacklisted) ...[
+      AdminDetailField(label: 'Trạng thái', value: 'Bị cấm mua vé'),
+      if (blacklistReason?.isNotEmpty == true)
+        AdminDetailField(label: 'Lý do cấm', value: blacklistReason!),
+      AdminDetailField(
+        label: 'Ngày cấm',
+        value: formatAdminDate(blacklistedAt),
+      ),
+      AdminDetailField(
+        label: 'Số lần từ chối vé',
+        value: denialCount.toString(),
+      ),
+    ],
+    if (isDeleted) AdminDetailField(label: 'Tài khoản', value: 'Đã xóa'),
+    if (avatar?.isNotEmpty == true)
+      AdminDetailField(label: 'Ảnh đại diện', imageUrl: avatar),
+    AdminDetailField(label: 'Ngày tạo', value: formatAdminDate(createdAt)),
+  ];
 }
 
 class AdminConbookItem implements AdminListItem {
@@ -511,33 +489,33 @@ class AdminConbookItem implements AdminListItem {
 
   @override
   String? get subtitle => [
-        if (handle.isNotEmpty) '@$handle',
-        if (description.isNotEmpty) description,
-      ].join(' • ');
+    if (handle.isNotEmpty) '@$handle',
+    if (description.isNotEmpty) description,
+  ].join(' • ');
 
   @override
   List<AdminDetailField> get details => [
-        AdminDetailField(label: 'Tiêu đề', value: title),
-        if (handle.isNotEmpty) AdminDetailField(label: 'Handle', value: '@$handle'),
-        AdminDetailField(label: 'Trạng thái', value: AdminPanelItem._statusLabel(status)),
-        if (description.isNotEmpty)
-          AdminDetailField(label: 'Mô tả', value: description),
-        if (imageUrl.isNotEmpty)
-          AdminDetailField(label: 'Ảnh conbook', imageUrl: imageUrl),
-        AdminDetailField(
-          label: 'Ngày gửi',
-          value: formatAdminDate(createdAt),
-        ),
-      ];
+    AdminDetailField(label: 'Tiêu đề', value: title),
+    if (handle.isNotEmpty) AdminDetailField(label: 'Handle', value: '@$handle'),
+    AdminDetailField(
+      label: 'Trạng thái',
+      value: AdminPanelItem._statusLabel(status),
+    ),
+    if (description.isNotEmpty)
+      AdminDetailField(label: 'Mô tả', value: description),
+    if (imageUrl.isNotEmpty)
+      AdminDetailField(label: 'Ảnh conbook', imageUrl: imageUrl),
+    AdminDetailField(label: 'Ngày gửi', value: formatAdminDate(createdAt)),
+  ];
 }
 
 Color ticketStatusColor(TicketStatus status) => switch (status) {
-      TicketStatus.pending => const Color(0xFFFBBF24),
-      TicketStatus.selfConfirmed => const Color(0xFF60A5FA),
-      TicketStatus.approved => const Color(0xFF10B981),
-      TicketStatus.denied => const Color(0xFFF0A0A8),
-      TicketStatus.adminGranted => const Color(0xFFA78BFA),
-    };
+  TicketStatus.pending => const Color(0xFFFBBF24),
+  TicketStatus.selfConfirmed => const Color(0xFF60A5FA),
+  TicketStatus.approved => const Color(0xFF10B981),
+  TicketStatus.denied => const Color(0xFFF0A0A8),
+  TicketStatus.adminGranted => const Color(0xFFA78BFA),
+};
 
 class AdminTicketItem implements AdminListItem {
   const AdminTicketItem({
@@ -571,16 +549,19 @@ class AdminTicketItem implements AdminListItem {
 
   factory AdminTicketItem.fromJson(Map<String, dynamic> json) {
     final user = json['user'];
-    final userMap =
-        user is Map ? Map<String, dynamic>.from(user) : <String, dynamic>{};
+    final userMap = user is Map
+        ? Map<String, dynamic>.from(user)
+        : <String, dynamic>{};
     final tier = json['tier'];
-    final tierMap =
-        tier is Map ? Map<String, dynamic>.from(tier) : <String, dynamic>{};
+    final tierMap = tier is Map
+        ? Map<String, dynamic>.from(tier)
+        : <String, dynamic>{};
 
     return AdminTicketItem(
       id: json['id']?.toString() ?? '',
       referenceCode: json['reference_code'] as String? ?? '',
-      status: TicketStatus.fromApi(json['status'] as String?) ??
+      status:
+          TicketStatus.fromApi(json['status'] as String?) ??
           TicketStatus.pending,
       ticketNumber: json['ticket_number'] as int? ?? 0,
       conBadgeName: json['con_badge_name'] as String?,
@@ -641,9 +622,10 @@ class AdminTicketItem implements AdminListItem {
     if (userFursonaName != null && userFursonaName!.isNotEmpty) {
       return userFursonaName!;
     }
-    final parts = [userFirstName, userLastName]
-        .whereType<String>()
-        .where((s) => s.isNotEmpty);
+    final parts = [
+      userFirstName,
+      userLastName,
+    ].whereType<String>().where((s) => s.isNotEmpty);
     final joined = parts.join(' ').trim();
     if (joined.isNotEmpty) return joined;
     return userEmail ?? referenceCode;
@@ -652,8 +634,7 @@ class AdminTicketItem implements AdminListItem {
   bool get canApprove => status == TicketStatus.selfConfirmed;
 
   bool get canDeny =>
-      status == TicketStatus.selfConfirmed ||
-      status == TicketStatus.pending;
+      status == TicketStatus.selfConfirmed || status == TicketStatus.pending;
 
   bool get canResendQr =>
       status == TicketStatus.approved || status == TicketStatus.adminGranted;
@@ -685,65 +666,53 @@ class AdminTicketItem implements AdminListItem {
 
   @override
   List<AdminDetailField> get details => [
-        AdminDetailField(label: 'Mã vé', value: referenceCode),
-        AdminDetailField(label: 'Số vé', value: '#$ticketNumber'),
-        AdminDetailField(
-          label: 'Trạng thái',
-          value: switch (status) {
-            TicketStatus.pending => 'Chờ thanh toán',
-            TicketStatus.selfConfirmed => 'Chờ duyệt',
-            TicketStatus.approved => 'Đã duyệt',
-            TicketStatus.denied => 'Từ chối',
-            TicketStatus.adminGranted => 'Cấp bởi admin',
-          },
-        ),
-        if (tierName?.isNotEmpty == true)
-          AdminDetailField(label: 'Hạng vé', value: tierName!),
-        if (tierCode?.isNotEmpty == true)
-          AdminDetailField(label: 'Mã hạng', value: tierCode!),
-        if (conBadgeName?.isNotEmpty == true)
-          AdminDetailField(label: 'Tên badge', value: conBadgeName!),
-        if (userEmail?.isNotEmpty == true)
-          AdminDetailField(label: 'Email', value: userEmail!),
-        if (userIdCard?.isNotEmpty == true)
-          AdminDetailField(label: 'CCCD/CMND', value: userIdCard!),
-        if (userIsBlacklisted)
-          AdminDetailField(label: 'Người dùng', value: 'Bị cấm mua vé'),
-        AdminDetailField(
-          label: 'Fursuiter',
-          value: isFursuiter ? 'Có' : 'Không',
-        ),
-        AdminDetailField(
-          label: 'Fursuit staff',
-          value: isFursuitStaff ? 'Có' : 'Không',
-        ),
-        if (tshirtSize?.isNotEmpty == true)
-          AdminDetailField(label: 'Size áo', value: tshirtSize!),
-        AdminDetailField(
-          label: 'Check-in',
-          value: isCheckedIn ? 'Đã check-in' : 'Chưa check-in',
-        ),
-        if (denialReason?.isNotEmpty == true)
-          AdminDetailField(label: 'Lý do từ chối', value: denialReason!),
-        if (badgeImage?.isNotEmpty == true)
-          AdminDetailField(label: 'Ảnh badge', imageUrl: badgeImage),
-        if (namecardUrl?.isNotEmpty == true)
-          AdminDetailField(label: 'Namecard', imageUrl: namecardUrl),
-        AdminDetailField(
-          label: 'Ngày tạo',
-          value: formatAdminDate(createdAt),
-        ),
-        if (approvedAt != null)
-          AdminDetailField(
-            label: 'Ngày duyệt',
-            value: formatAdminDate(approvedAt),
-          ),
-        if (deniedAt != null)
-          AdminDetailField(
-            label: 'Ngày từ chối',
-            value: formatAdminDate(deniedAt),
-          ),
-      ];
+    AdminDetailField(label: 'Mã vé', value: referenceCode),
+    AdminDetailField(label: 'Số vé', value: '#$ticketNumber'),
+    AdminDetailField(
+      label: 'Trạng thái',
+      value: switch (status) {
+        TicketStatus.pending => 'Chờ thanh toán',
+        TicketStatus.selfConfirmed => 'Chờ duyệt',
+        TicketStatus.approved => 'Đã duyệt',
+        TicketStatus.denied => 'Từ chối',
+        TicketStatus.adminGranted => 'Cấp bởi admin',
+      },
+    ),
+    if (tierName?.isNotEmpty == true)
+      AdminDetailField(label: 'Hạng vé', value: tierName!),
+    if (tierCode?.isNotEmpty == true)
+      AdminDetailField(label: 'Mã hạng', value: tierCode!),
+    if (conBadgeName?.isNotEmpty == true)
+      AdminDetailField(label: 'Tên badge', value: conBadgeName!),
+    if (userEmail?.isNotEmpty == true)
+      AdminDetailField(label: 'Email', value: userEmail!),
+    if (userIdCard?.isNotEmpty == true)
+      AdminDetailField(label: 'CCCD/CMND', value: userIdCard!),
+    if (userIsBlacklisted)
+      AdminDetailField(label: 'Người dùng', value: 'Bị cấm mua vé'),
+    AdminDetailField(label: 'Fursuiter', value: isFursuiter ? 'Có' : 'Không'),
+    AdminDetailField(
+      label: 'Fursuit staff',
+      value: isFursuitStaff ? 'Có' : 'Không',
+    ),
+    if (tshirtSize?.isNotEmpty == true)
+      AdminDetailField(label: 'Size áo', value: tshirtSize!),
+    AdminDetailField(
+      label: 'Check-in',
+      value: isCheckedIn ? 'Đã check-in' : 'Chưa check-in',
+    ),
+    if (denialReason?.isNotEmpty == true)
+      AdminDetailField(label: 'Lý do từ chối', value: denialReason!),
+    if (badgeImage?.isNotEmpty == true)
+      AdminDetailField(label: 'Ảnh badge', imageUrl: badgeImage),
+    if (namecardUrl?.isNotEmpty == true)
+      AdminDetailField(label: 'Namecard', imageUrl: namecardUrl),
+    AdminDetailField(label: 'Ngày tạo', value: formatAdminDate(createdAt)),
+    if (approvedAt != null)
+      AdminDetailField(label: 'Ngày duyệt', value: formatAdminDate(approvedAt)),
+    if (deniedAt != null)
+      AdminDetailField(label: 'Ngày từ chối', value: formatAdminDate(deniedAt)),
+  ];
 }
 
 class AdminTicketTierItem {
@@ -902,22 +871,22 @@ class AdminLostFoundItem implements AdminListItem {
   }
 
   static String itemTypeLabel(String type) => switch (type) {
-        'lost' => 'Thất lạc',
-        'found' => 'Nhặt được',
-        _ => type,
-      };
+    'lost' => 'Thất lạc',
+    'found' => 'Nhặt được',
+    _ => type,
+  };
 
   static String statusLabel(String status) => switch (status) {
-        'claimed' => 'Đã nhận',
-        'resolved' => 'Đã xử lý',
-        _ => 'Đang mở',
-      };
+    'claimed' => 'Đã nhận',
+    'resolved' => 'Đã xử lý',
+    _ => 'Đang mở',
+  };
 
   static Color statusColor(String status) => switch (status) {
-        'claimed' => const Color(0xFFFBBF24),
-        'resolved' => const Color(0xFF10B981),
-        _ => const Color(0xFF60A5FA),
-      };
+    'claimed' => const Color(0xFFFBBF24),
+    'resolved' => const Color(0xFF10B981),
+    _ => const Color(0xFF60A5FA),
+  };
 
   @override
   String? get previewImageUrl => imageUrl.isNotEmpty ? imageUrl : null;
@@ -934,42 +903,34 @@ class AdminLostFoundItem implements AdminListItem {
 
   @override
   List<AdminDetailField> get details => [
-        AdminDetailField(label: 'Tiêu đề', value: title),
-        AdminDetailField(label: 'Mã vật phẩm', value: itemCode),
-        AdminDetailField(label: 'Loại', value: itemTypeLabel(itemType)),
-        AdminDetailField(label: 'Trạng thái', value: statusLabel(status)),
-        if (description.isNotEmpty)
-          AdminDetailField(label: 'Mô tả', value: description),
-        if (location.isNotEmpty)
-          AdminDetailField(label: 'Vị trí', value: location),
-        if (contactInfo.isNotEmpty)
-          AdminDetailField(label: 'Liên hệ', value: contactInfo),
-        if (imageUrl.isNotEmpty)
-          AdminDetailField(label: 'Ảnh', imageUrl: imageUrl),
-        if (staffNotes.isNotEmpty)
-          AdminDetailField(label: 'Ghi chú nhân viên', value: staffNotes),
-        if (returnedAt != null && recipientName.isNotEmpty) ...[
-          AdminDetailField(label: 'Người nhận', value: recipientName),
-          AdminDetailField(
-            label: 'CCCD người nhận',
-            value: maskSensitive(recipientIdCard),
-          ),
-          AdminDetailField(
-            label: 'SĐT người nhận',
-            value: maskSensitive(recipientPhone),
-          ),
-          AdminDetailField(
-            label: 'Hoàn trả lúc',
-            value: formatAdminDate(returnedAt),
-          ),
-        ],
-        AdminDetailField(
-          label: 'Ngày tạo',
-          value: formatAdminDate(createdAt),
-        ),
-        AdminDetailField(
-          label: 'Cập nhật',
-          value: formatAdminDate(modifiedAt),
-        ),
-      ];
+    AdminDetailField(label: 'Tiêu đề', value: title),
+    AdminDetailField(label: 'Mã vật phẩm', value: itemCode),
+    AdminDetailField(label: 'Loại', value: itemTypeLabel(itemType)),
+    AdminDetailField(label: 'Trạng thái', value: statusLabel(status)),
+    if (description.isNotEmpty)
+      AdminDetailField(label: 'Mô tả', value: description),
+    if (location.isNotEmpty) AdminDetailField(label: 'Vị trí', value: location),
+    if (contactInfo.isNotEmpty)
+      AdminDetailField(label: 'Liên hệ', value: contactInfo),
+    if (imageUrl.isNotEmpty) AdminDetailField(label: 'Ảnh', imageUrl: imageUrl),
+    if (staffNotes.isNotEmpty)
+      AdminDetailField(label: 'Ghi chú nhân viên', value: staffNotes),
+    if (returnedAt != null && recipientName.isNotEmpty) ...[
+      AdminDetailField(label: 'Người nhận', value: recipientName),
+      AdminDetailField(
+        label: 'CCCD người nhận',
+        value: maskSensitive(recipientIdCard),
+      ),
+      AdminDetailField(
+        label: 'SĐT người nhận',
+        value: maskSensitive(recipientPhone),
+      ),
+      AdminDetailField(
+        label: 'Hoàn trả lúc',
+        value: formatAdminDate(returnedAt),
+      ),
+    ],
+    AdminDetailField(label: 'Ngày tạo', value: formatAdminDate(createdAt)),
+    AdminDetailField(label: 'Cập nhật', value: formatAdminDate(modifiedAt)),
+  ];
 }

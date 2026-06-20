@@ -37,17 +37,11 @@ class DealerApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> leaveDealer() {
-    return delete(
-      ApiConstants.dealerLeave,
-      mapData: mapJsonObject,
-    );
+    return delete(ApiConstants.dealerLeave, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getMyDealer() {
-    return get(
-      ApiConstants.dealerMe,
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.dealerMe, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> editDealer(
@@ -70,10 +64,10 @@ class AdminDealerFilter {
   final bool? isVerified;
 
   Map<String, dynamic> toQuery() => buildQuery({
-        if (page != null) 'page': page,
-        if (pageSize != null) 'page_size': pageSize,
-        if (isVerified != null) 'is_verified': isVerified,
-      });
+    if (page != null) 'page': page,
+    if (pageSize != null) 'page_size': pageSize,
+    if (isVerified != null) 'is_verified': isVerified,
+  });
 }
 
 /// Admin dealer endpoints from `useAdminDealer.ts`.
@@ -91,10 +85,7 @@ class AdminDealerApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getDealerById(String dealerId) {
-    return get(
-      ApiConstants.adminDealer(dealerId),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.adminDealer(dealerId), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> verifyDealer(String dealerId) {

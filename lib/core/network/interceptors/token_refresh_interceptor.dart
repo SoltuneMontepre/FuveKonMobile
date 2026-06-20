@@ -10,10 +10,10 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
     required TokenStorage tokenStorage,
     required Future<String?> Function() refreshToken,
     required void Function() onSessionExpired,
-  })  : _dio = dio,
-        _tokenStorage = tokenStorage,
-        _refreshToken = refreshToken,
-        _onSessionExpired = onSessionExpired;
+  }) : _dio = dio,
+       _tokenStorage = tokenStorage,
+       _refreshToken = refreshToken,
+       _onSessionExpired = onSessionExpired;
 
   final Dio _dio;
   final TokenStorage _tokenStorage;

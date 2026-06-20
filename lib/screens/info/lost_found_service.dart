@@ -24,9 +24,9 @@ class LostFoundService {
       final rawItems = data['items'];
       final items = rawItems is List
           ? rawItems
-              .whereType<Map<String, dynamic>>()
-              .map(LostFoundPublicItem.fromJson)
-              .toList()
+                .whereType<Map<String, dynamic>>()
+                .map(LostFoundPublicItem.fromJson)
+                .toList()
           : <LostFoundPublicItem>[];
 
       return LostFoundPageResult(

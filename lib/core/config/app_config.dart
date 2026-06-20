@@ -21,8 +21,8 @@ abstract final class AppConfig {
 
   /// Fuvekon general API: `https://api.fuve.vn/api/general/v1`
   static String get baseUrl => _resolveDevApiHost(
-        _read('BASE_URL', defaultValue: 'https://api.fuve.vn/api/general/v1'),
-      );
+    _read('BASE_URL', defaultValue: 'https://api.fuve.vn/api/general/v1'),
+  );
 
   /// Maps dev loopback hosts per platform (Android emulator uses `10.0.2.2`).
   ///
@@ -50,8 +50,8 @@ abstract final class AppConfig {
 
   /// Fuvekon Next.js site (used for non-API web assets if needed).
   static String get webBaseUrl => _resolveDevApiHost(
-        _read('WEB_BASE_URL', defaultValue: 'https://fuve.vn'),
-      );
+    _read('WEB_BASE_URL', defaultValue: 'https://fuve.vn'),
+  );
 
   /// Google OAuth web client ID (`NEXT_PUBLIC_GOOGLE_CLIENT_ID` on Fuvekon web).
   static String get googleClientId => _read('GOOGLE_CLIENT_ID');

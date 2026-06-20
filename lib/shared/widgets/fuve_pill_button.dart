@@ -23,20 +23,20 @@ class FuvePillButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bg, fg, border) = switch (variant) {
       FuvePillButtonVariant.primary => (
-          FuvekonColors.premiumPrimary,
-          FuvekonColors.premiumOnPrimary,
-          Colors.transparent,
-        ),
+        FuvekonColors.premiumPrimary,
+        FuvekonColors.premiumOnPrimary,
+        Colors.transparent,
+      ),
       FuvePillButtonVariant.secondary => (
-          FuvekonColors.premiumSecondary,
-          FuvekonColors.premiumOnPrimary,
-          Colors.transparent,
-        ),
+        FuvekonColors.premiumSecondary,
+        FuvekonColors.premiumOnPrimary,
+        Colors.transparent,
+      ),
       FuvePillButtonVariant.outline => (
-          Colors.transparent,
-          FuvekonColors.premiumPrimary,
-          FuvekonColors.premiumPrimary,
-        ),
+        Colors.transparent,
+        FuvekonColors.premiumPrimary,
+        FuvekonColors.premiumPrimary,
+      ),
     };
 
     final child = Row(
@@ -61,17 +61,19 @@ class FuvePillButton extends StatelessWidget {
     return Material(
       color: bg,
       shape: StadiumBorder(
-        side: BorderSide(color: border, width: variant == FuvePillButtonVariant.outline ? 1.5 : 0),
+        side: BorderSide(
+          color: border,
+          width: variant == FuvePillButtonVariant.outline ? 1.5 : 0,
+        ),
       ),
       child: InkWell(
         onTap: onPressed,
         customBorder: const StadiumBorder(),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 24,
-            vertical: 14,
-          ),
-          child: expanded ? SizedBox(width: double.infinity, child: child) : child,
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          child: expanded
+              ? SizedBox(width: double.infinity, child: child)
+              : child,
         ),
       ),
     );

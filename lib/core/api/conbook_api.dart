@@ -16,10 +16,10 @@ class AdminConbookFilter {
   final String status;
 
   Map<String, dynamic> toQuery() => buildQuery({
-        if (page != null) 'page': page,
-        if (pageSize != null) 'page_size': pageSize,
-        if (search != null) 'search': search,
-      });
+    if (page != null) 'page': page,
+    if (pageSize != null) 'page_size': pageSize,
+    if (search != null) 'search': search,
+  });
 }
 
 /// Conbook / art submission endpoints from `useUploadFile.ts`.
@@ -34,29 +34,16 @@ class ConbookApi extends BaseApi {
     );
   }
 
-  Future<Map<String, dynamic>> update(
-    String id,
-    Map<String, dynamic> payload,
-  ) {
-    return putRaw(
-      ApiConstants.conbook(id),
-      data: payload,
-      map: (json) => json,
-    );
+  Future<Map<String, dynamic>> update(String id, Map<String, dynamic> payload) {
+    return putRaw(ApiConstants.conbook(id), data: payload, map: (json) => json);
   }
 
   Future<ApiResponse<List<dynamic>>> getMySubmissions() {
-    return get(
-      ApiConstants.conbooks,
-      mapData: mapJsonList,
-    );
+    return get(ApiConstants.conbooks, mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
-    return get(
-      ApiConstants.conbook(id),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.conbook(id), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<List<dynamic>>> getAdminSubmissions([
@@ -70,10 +57,7 @@ class ConbookApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> approveByAdmin(String id) {
-    return patch(
-      ApiConstants.adminConbookApprove(id),
-      mapData: mapJsonObject,
-    );
+    return patch(ApiConstants.adminConbookApprove(id), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> requireChangesByAdmin(String id) {
@@ -84,23 +68,14 @@ class ConbookApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> denyByAdmin(String id) {
-    return patch(
-      ApiConstants.adminConbookDeny(id),
-      mapData: mapJsonObject,
-    );
+    return patch(ApiConstants.adminConbookDeny(id), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> setPendingByAdmin(String id) {
-    return patch(
-      ApiConstants.adminConbookPending(id),
-      mapData: mapJsonObject,
-    );
+    return patch(ApiConstants.adminConbookPending(id), mapData: mapJsonObject);
   }
 
   Future<Map<String, dynamic>> deleteSubmission(String id) {
-    return deleteRaw(
-      ApiConstants.conbook(id),
-      map: (json) => json,
-    );
+    return deleteRaw(ApiConstants.conbook(id), map: (json) => json);
   }
 }

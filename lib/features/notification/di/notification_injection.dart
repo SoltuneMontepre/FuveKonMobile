@@ -10,9 +10,7 @@ void registerNotificationModule(GetIt sl) {
     ..registerLazySingleton<NotificationRepository>(
       () => NotificationRepositoryImpl(api: sl()),
     )
-    ..registerLazySingleton(
-      () => NotificationUnreadCubit(repository: sl()),
-    )
+    ..registerLazySingleton(() => NotificationUnreadCubit(repository: sl()))
     ..registerFactory(() => NotificationListCubit(repository: sl()))
     ..registerFactory(() => NotificationDetailCubit(repository: sl()));
 }

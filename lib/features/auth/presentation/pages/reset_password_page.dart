@@ -82,10 +82,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             const SizedBox(width: 6),
             Text(
               l10n.resetPasswordBackToLogin,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
             ),
           ],
         ),

@@ -209,7 +209,8 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
               AdminListFilterChip(
                 label: l10n.adminLostFoundTypeLost,
                 selected: _typeFilter == 'lost',
-                onTap: () => _setTypeFilter(_typeFilter == 'lost' ? '' : 'lost'),
+                onTap: () =>
+                    _setTypeFilter(_typeFilter == 'lost' ? '' : 'lost'),
               ),
               AdminListFilterChip(
                 label: l10n.adminLostFoundTypeFound,
@@ -255,10 +256,7 @@ class _AdminLostFoundPageState extends State<AdminLostFoundPage> {
             return const AdminListLoadMoreIndicator();
           }
           final item = _items[index];
-          return _LostFoundTile(
-            item: item,
-            onTap: () => _openDetail(item),
-          );
+          return _LostFoundTile(item: item, onTap: () => _openDetail(item));
         },
       ),
     );
@@ -291,8 +289,9 @@ class _LostFoundTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               )
             : CircleAvatar(
-                backgroundColor:
-                    lostFoundStatusColor(item.status).withValues(alpha: 0.15),
+                backgroundColor: lostFoundStatusColor(
+                  item.status,
+                ).withValues(alpha: 0.15),
                 child: Icon(
                   item.itemType == 'lost'
                       ? Icons.search_off_rounded

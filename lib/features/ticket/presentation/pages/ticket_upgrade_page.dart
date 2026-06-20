@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
@@ -37,42 +37,39 @@ class _TicketUpgradeView extends StatelessWidget {
           if (bloc.lastActionError != null) {
             final message = bloc.lastActionError!;
             bloc.lastActionError = null;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(message)));
           }
 
           if (state is TicketUpgradeSuccess) {
-            context.push<bool>(
-              Routes.ticketPurchaseStep(state.tierId),
-            );
+            context.push<bool>(Routes.ticketPurchaseStep(state.tierId));
           }
         },
         builder: (context, state) {
           return switch (state) {
-            TicketUpgradeInitial() || TicketUpgradeLoading() =>
-              const Center(child: CircularProgressIndicator()),
+            TicketUpgradeInitial() || TicketUpgradeLoading() => const Center(
+              child: CircularProgressIndicator(),
+            ),
             TicketUpgradeLoaded() => _LoadedBody(state: state),
             TicketUpgradeNoTicket() => _MessageBody(
-                message: l10n.ticketUpgradeNoTicket,
-                onBack: () => context.pop(),
-              ),
+              message: l10n.ticketUpgradeNoTicket,
+              onBack: () => context.pop(),
+            ),
             TicketUpgradeNoOptions(:final ticket) => _MessageBody(
-                message: l10n.ticketUpgradeMaxTier(
-                  ticket.tier?.ticketName ?? '',
-                ),
-                onBack: () => context.pop(),
-              ),
+              message: l10n.ticketUpgradeMaxTier(ticket.tier?.ticketName ?? ''),
+              onBack: () => context.pop(),
+            ),
             TicketUpgradeFailure(:final message) => _MessageBody(
-                message: message,
-                onBack: () => context.pop(),
-                onRetry: () => context.read<TicketUpgradeBloc>().add(
-                      const TicketUpgradeStarted(),
-                    ),
+              message: message,
+              onBack: () => context.pop(),
+              onRetry: () => context.read<TicketUpgradeBloc>().add(
+                const TicketUpgradeStarted(),
               ),
+            ),
             TicketUpgradeSuccess() => const Center(
-                child: CircularProgressIndicator(),
-              ),
+              child: CircularProgressIndicator(),
+            ),
           };
         },
       ),
@@ -101,7 +98,9 @@ class _LoadedBody extends StatelessWidget {
               Text(
                 l10n.ticketUpgradeCurrentLabel,
                 style: TextStyle(
-                  color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.85),
+                  color: FuvekonColors.darkTextSecondary.withValues(
+                    alpha: 0.85,
+                  ),
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.2,
@@ -133,8 +132,8 @@ class _LoadedBody extends StatelessWidget {
                     option,
                   ),
                   onTap: () => context.read<TicketUpgradeBloc>().add(
-                        TicketUpgradeTierSelected(option.id),
-                      ),
+                    TicketUpgradeTierSelected(option.id),
+                  ),
                 ),
                 if (option != state.options.last) const SizedBox(height: 14),
               ],
@@ -148,8 +147,8 @@ class _LoadedBody extends StatelessWidget {
           ctaLabel: l10n.ticketUpgradeContinue,
           isLoading: state.isSubmitting,
           onContinue: () => context.read<TicketUpgradeBloc>().add(
-                const TicketUpgradeSubmitted(),
-              ),
+            const TicketUpgradeSubmitted(),
+          ),
         ),
       ],
     );
@@ -243,10 +242,7 @@ class _CurrentTicketCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   paidLabel,
-                  style: TextStyle(
-                    color: colors.muted,
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: colors.muted, fontSize: 12),
                 ),
               ],
             ),
@@ -293,7 +289,9 @@ class _UpgradeOptionCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: selected ? _gold : FuvekonColors.darkBorder.withValues(alpha: 0.5),
+          color: selected
+              ? _gold
+              : FuvekonColors.darkBorder.withValues(alpha: 0.5),
           width: selected ? 1.5 : 1,
         ),
       ),
@@ -340,8 +338,9 @@ class _UpgradeOptionCard extends StatelessWidget {
                           Text(
                             tier.description,
                             style: TextStyle(
-                              color: FuvekonColors.darkTextSecondary
-                                  .withValues(alpha: 0.95),
+                              color: FuvekonColors.darkTextSecondary.withValues(
+                                alpha: 0.95,
+                              ),
                               fontSize: 12,
                               height: 1.35,
                             ),
@@ -375,10 +374,7 @@ class _UpgradeOptionCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 14),
-              Divider(
-                color: Colors.white.withValues(alpha: 0.08),
-                height: 1,
-              ),
+              Divider(color: Colors.white.withValues(alpha: 0.08), height: 1),
               const SizedBox(height: 12),
               Text(
                 context.l10n.ticketUpgradeExtraBenefits,
@@ -408,8 +404,9 @@ class _UpgradeOptionCard extends StatelessWidget {
                         child: Text(
                           benefit,
                           style: TextStyle(
-                            color: FuvekonColors.darkTextSecondary
-                                .withValues(alpha: 0.95),
+                            color: FuvekonColors.darkTextSecondary.withValues(
+                              alpha: 0.95,
+                            ),
                             fontSize: 12,
                             height: 1.4,
                           ),
@@ -498,7 +495,9 @@ class _UpgradeInfoNote extends StatelessWidget {
               child: Text(
                 text,
                 style: TextStyle(
-                  color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.95),
+                  color: FuvekonColors.darkTextSecondary.withValues(
+                    alpha: 0.95,
+                  ),
                   fontSize: 12,
                   height: 1.45,
                 ),

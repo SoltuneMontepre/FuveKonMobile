@@ -40,10 +40,10 @@ class Account extends Equatable {
 
   /// Full legal name (first + last) for tickets and checkout.
   String? get legalName {
-    final parts = [firstName, lastName]
-        .whereType<String>()
-        .map((s) => s.trim())
-        .where((s) => s.isNotEmpty);
+    final parts = [
+      firstName,
+      lastName,
+    ].whereType<String>().map((s) => s.trim()).where((s) => s.isNotEmpty);
     final joined = parts.join(' ').trim();
     return joined.isEmpty ? null : joined;
   }
@@ -73,19 +73,19 @@ class Account extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        email,
-        fursonaName,
-        firstName,
-        lastName,
-        country,
-        idCard,
-        dateOfBirth,
-        avatar,
-        role,
-        isVerified,
-        isDealer,
-        isBlacklisted,
-        isHasTicket,
-      ];
+    id,
+    email,
+    fursonaName,
+    firstName,
+    lastName,
+    country,
+    idCard,
+    dateOfBirth,
+    avatar,
+    role,
+    isVerified,
+    isDealer,
+    isBlacklisted,
+    isHasTicket,
+  ];
 }

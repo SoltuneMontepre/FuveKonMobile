@@ -25,24 +25,15 @@ class NotificationApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> unreadCount() {
-    return get(
-      ApiConstants.notificationsUnreadCount,
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.notificationsUnreadCount, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> markAllRead() {
-    return put(
-      ApiConstants.notificationsReadAll,
-      mapData: mapJsonObject,
-    );
+    return put(ApiConstants.notificationsReadAll, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
-    return get(
-      ApiConstants.notification(id),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.notification(id), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> markAsRead(String id) {

@@ -9,43 +9,26 @@ class PanelApi extends BaseApi {
   Future<ApiResponse<Map<String, dynamic>>> createPanel(
     Map<String, dynamic> payload,
   ) {
-    return post(
-      ApiConstants.panels,
-      data: payload,
-      mapData: mapJsonObject,
-    );
+    return post(ApiConstants.panels, data: payload, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<List<dynamic>>> getMyPanels() {
-    return get(
-      ApiConstants.panels,
-      mapData: mapJsonList,
-    );
+    return get(ApiConstants.panels, mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> getById(String id) {
-    return get(
-      ApiConstants.panel(id),
-      mapData: mapJsonObject,
-    );
+    return get(ApiConstants.panel(id), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> updatePanel(
     String id,
     Map<String, dynamic> payload,
   ) {
-    return put(
-      ApiConstants.panel(id),
-      data: payload,
-      mapData: mapJsonObject,
-    );
+    return put(ApiConstants.panel(id), data: payload, mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> deletePanel(String id) {
-    return delete(
-      ApiConstants.panel(id),
-      mapData: mapJsonObject,
-    );
+    return delete(ApiConstants.panel(id), mapData: mapJsonObject);
   }
 }
 
@@ -56,18 +39,15 @@ class AdminPanelApi extends BaseApi {
   AdminPanelApi(super.client);
 
   static String _listPath(AdminPanelListFilter filter) => switch (filter) {
-        AdminPanelListFilter.pending => ApiConstants.adminPanelsPending,
-        AdminPanelListFilter.approved => ApiConstants.adminPanelsApproved,
-        AdminPanelListFilter.requireChanges =>
-          ApiConstants.adminPanelsRequireChanges,
-        AdminPanelListFilter.denied => ApiConstants.adminPanelsDenied,
-      };
+    AdminPanelListFilter.pending => ApiConstants.adminPanelsPending,
+    AdminPanelListFilter.approved => ApiConstants.adminPanelsApproved,
+    AdminPanelListFilter.requireChanges =>
+      ApiConstants.adminPanelsRequireChanges,
+    AdminPanelListFilter.denied => ApiConstants.adminPanelsDenied,
+  };
 
   Future<ApiResponse<List<dynamic>>> getList(AdminPanelListFilter filter) {
-    return get(
-      _listPath(filter),
-      mapData: mapJsonList,
-    );
+    return get(_listPath(filter), mapData: mapJsonList);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> approve(String panelId) {
@@ -85,10 +65,7 @@ class AdminPanelApi extends BaseApi {
   }
 
   Future<ApiResponse<Map<String, dynamic>>> deny(String panelId) {
-    return patch(
-      ApiConstants.adminPanelDeny(panelId),
-      mapData: mapJsonObject,
-    );
+    return patch(ApiConstants.adminPanelDeny(panelId), mapData: mapJsonObject);
   }
 
   Future<ApiResponse<Map<String, dynamic>>> markPending(String panelId) {

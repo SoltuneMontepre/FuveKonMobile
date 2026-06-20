@@ -64,8 +64,9 @@ class AuthSessionNotifier extends ChangeNotifier {
   }
 
   void completeHydration({required bool success, String? error}) {
-    final nextStatus =
-        success ? SessionHydrationStatus.success : SessionHydrationStatus.failure;
+    final nextStatus = success
+        ? SessionHydrationStatus.success
+        : SessionHydrationStatus.failure;
     if (_hydrationStatus == nextStatus && _hydrationError == error) return;
     _hydrationStatus = nextStatus;
     _hydrationError = error;
@@ -80,9 +81,11 @@ class AuthSessionNotifier extends ChangeNotifier {
     required bool success,
     String? error,
   }) {
-    final nextStatus =
-        success ? SessionHydrationStatus.success : SessionHydrationStatus.failure;
-    final changed = _role != role ||
+    final nextStatus = success
+        ? SessionHydrationStatus.success
+        : SessionHydrationStatus.failure;
+    final changed =
+        _role != role ||
         _isVerified != isVerified ||
         !listEquals(_permissions, permissions) ||
         _hydrationStatus != nextStatus ||
@@ -97,7 +100,8 @@ class AuthSessionNotifier extends ChangeNotifier {
   }
 
   void clearHydrationProfile() {
-    final changed = _role != null ||
+    final changed =
+        _role != null ||
         _isVerified != null ||
         _permissions.isNotEmpty ||
         _hydrationStatus != SessionHydrationStatus.idle ||
@@ -114,7 +118,8 @@ class AuthSessionNotifier extends ChangeNotifier {
   bool _clearRoleIfLoggedOut(AuthState state) {
     final loggedOut = state is AuthUnauthenticated || state is AuthInitial;
     if (!loggedOut) return false;
-    final hadSessionData = _role != null ||
+    final hadSessionData =
+        _role != null ||
         _isVerified != null ||
         _permissions.isNotEmpty ||
         _hydrationStatus != SessionHydrationStatus.idle ||
@@ -178,8 +183,7 @@ class RouterRefreshNotifier extends ChangeNotifier {
     final roleChanged = _session.role != _role;
     final verifiedChanged = _session.isVerified != _isVerified;
     final hydrationChanged = _session.hydrationStatus != _hydrationStatus;
-    final permissionsChanged =
-        !listEquals(_session.permissions, _permissions);
+    final permissionsChanged = !listEquals(_session.permissions, _permissions);
 
     _authState = _session.state;
     _role = _session.role;

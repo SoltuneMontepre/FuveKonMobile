@@ -8,6 +8,7 @@ import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_state.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/auth_nav_links.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/auth_page_layout.dart';
 import 'package:fuvekonmobile/features/auth/presentation/widgets/google_register_form.dart';
+
 class GoogleRegisterPage extends StatelessWidget {
   const GoogleRegisterPage({super.key, required this.credential});
 
@@ -23,10 +24,7 @@ class GoogleRegisterPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                authErrorMessage(
-                  state.message,
-                  fallback: state.message,
-                ),
+                authErrorMessage(state.message, fallback: state.message),
               ),
             ),
           );
@@ -37,19 +35,21 @@ class GoogleRegisterPage extends StatelessWidget {
 
         return AuthPageLayout(
           heroTitle: 'Almost there',
-          heroSubtitle: 'Fill in the remaining details to finish Google sign-up',
+          heroSubtitle:
+              'Fill in the remaining details to finish Google sign-up',
           footer: const AuthNavLinks(
             leading: AuthNavLink(label: 'Sign in', route: Routes.login),
           ),
           child: GoogleRegisterForm(
             isLoading: isLoading,
-            onSubmit: ({
-              required fullName,
-              required nickname,
-              required dateOfBirth,
-              required country,
-            }) {
-              context.read<AuthBloc>().add(
+            onSubmit:
+                ({
+                  required fullName,
+                  required nickname,
+                  required dateOfBirth,
+                  required country,
+                }) {
+                  context.read<AuthBloc>().add(
                     AuthEvent.googleRegisterSubmitted(
                       credential: credential,
                       fullName: fullName,
@@ -58,7 +58,7 @@ class GoogleRegisterPage extends StatelessWidget {
                       country: country,
                     ),
                   );
-            },
+                },
           ),
         );
       },

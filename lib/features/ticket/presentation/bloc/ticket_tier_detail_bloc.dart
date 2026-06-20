@@ -68,10 +68,10 @@ class TicketTierDetailBloc
     required GetTicketTierUseCase getTicketTierUseCase,
     required GetTicketTiersUseCase getTicketTiersUseCase,
     required PurchaseTicketUseCase purchaseTicketUseCase,
-  })  : _getTicketTierUseCase = getTicketTierUseCase,
-        _getTicketTiersUseCase = getTicketTiersUseCase,
-        _purchaseTicketUseCase = purchaseTicketUseCase,
-        super(const TicketTierDetailInitial()) {
+  }) : _getTicketTierUseCase = getTicketTierUseCase,
+       _getTicketTiersUseCase = getTicketTiersUseCase,
+       _purchaseTicketUseCase = purchaseTicketUseCase,
+       super(const TicketTierDetailInitial()) {
     on<TicketTierDetailStarted>(_onStarted);
     on<TicketTierDetailPurchaseRequested>(_onPurchase);
   }
@@ -97,13 +97,12 @@ class TicketTierDetailBloc
 
     final tier = (tierResult as Success<TicketTier>).data;
     final tiersResult = await _getTicketTiersUseCase();
-    final allTiers = switch (tiersResult) {
-      Success(:final data) => data,
-      Error() => <TicketTier>[],
-    }
-        .where((item) => item.isVisible && item.isActive)
-        .toList()
-      ..sort((a, b) => a.price.compareTo(b.price));
+    final allTiers =
+        switch (tiersResult) {
+            Success(:final data) => data,
+            Error() => <TicketTier>[],
+          }.where((item) => item.isVisible && item.isActive).toList()
+          ..sort((a, b) => a.price.compareTo(b.price));
 
     if (!allTiers.any((item) => item.id == tier.id)) {
       allTiers.add(tier);

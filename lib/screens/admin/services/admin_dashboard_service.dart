@@ -34,8 +34,7 @@ class AdminDashboardData {
     final revenue = json['revenue'] as Map<String, dynamic>?;
     final tierList = ticketStats?['tier_stats'] as List<dynamic>? ?? const [];
     final timeline = json['sales_timeline'] as List<dynamic>? ?? const [];
-    final byCountry =
-        json['users_by_country'] as List<dynamic>? ?? const [];
+    final byCountry = json['users_by_country'] as List<dynamic>? ?? const [];
 
     return AdminDashboardData(
       totalTickets: (ticketStats?['total_tickets'] as num?)?.toInt() ?? 0,
@@ -111,7 +110,7 @@ class SalesTimelinePoint {
 
 class AdminDashboardService {
   AdminDashboardService({required AnalyticsApi analyticsApi})
-      : _api = analyticsApi;
+    : _api = analyticsApi;
 
   final AnalyticsApi _api;
 

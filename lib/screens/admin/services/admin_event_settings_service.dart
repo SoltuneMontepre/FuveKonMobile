@@ -54,7 +54,8 @@ class AdminEventSettings {
 }
 
 class AdminEventSettingsService {
-  AdminEventSettingsService({required EventApi eventApi}) : _eventApi = eventApi;
+  AdminEventSettingsService({required EventApi eventApi})
+    : _eventApi = eventApi;
 
   final EventApi _eventApi;
 
@@ -75,7 +76,9 @@ class AdminEventSettingsService {
     bool enabled,
   ) async {
     final response = switch (toggle) {
-      AdminEventToggle.ticketSales => await _eventApi.setTicketSalesOpen(enabled),
+      AdminEventToggle.ticketSales => await _eventApi.setTicketSalesOpen(
+        enabled,
+      ),
       AdminEventToggle.panelRegistration =>
         await _eventApi.setPanelRegistrationOpen(enabled),
       AdminEventToggle.talentRegistration =>

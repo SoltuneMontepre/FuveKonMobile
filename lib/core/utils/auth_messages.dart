@@ -1,5 +1,8 @@
 /// Maps Fuvekon API `errorMessage` keys to user-facing copy (web `auth` namespace).
-String authErrorMessage(String? key, {String fallback = 'Something went wrong.'}) {
+String authErrorMessage(
+  String? key, {
+  String fallback = 'Something went wrong.',
+}) {
   if (key == null || key.isEmpty) return fallback;
   return switch (key) {
     'invalidEmailOrPassword' => 'Invalid email or password.',
@@ -7,8 +10,7 @@ String authErrorMessage(String? key, {String fallback = 'Something went wrong.'}
     'userNotVerified' => 'Please verify your email before signing in.',
     'accountBanned' => 'This account has been banned.',
     'registerFailed' => 'Registration failed. Please try again.',
-    'forgotPasswordFailed' =>
-      'Could not send reset email. Please try again.',
+    'forgotPasswordFailed' => 'Could not send reset email. Please try again.',
     'resetPasswordConfirmFailed' =>
       'Could not reset password. The link may have expired.',
     'verifyOtpFailed' => 'Invalid or expired code. Please try again.',

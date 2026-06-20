@@ -58,5 +58,13 @@ class SubmissionSummary extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, type, title, status, subtitle, imageUrl, createdAt];
+  List<Object?> get props => [
+    id,
+    type,
+    title,
+    status,
+    subtitle,
+    imageUrl,
+    createdAt,
+  ];
 }

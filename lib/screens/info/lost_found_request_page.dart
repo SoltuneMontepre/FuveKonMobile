@@ -79,10 +79,7 @@ class _LostFoundRequestPageState extends State<LostFoundRequestPage> {
           children: [
             Text(_error!, textAlign: TextAlign.center),
             const SizedBox(height: FuvekonSpacing.field),
-            FilledButton(
-              onPressed: _load,
-              child: const Text('Thử lại'),
-            ),
+            FilledButton(onPressed: _load, child: const Text('Thử lại')),
           ],
         ),
       );
@@ -105,7 +102,8 @@ class _LostFoundRequestPageState extends State<LostFoundRequestPage> {
                     Expanded(
                       child: Text(
                         item.title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
                               color: theme.contentOnCard,
                               fontWeight: FontWeight.w700,
                             ),
@@ -121,8 +119,8 @@ class _LostFoundRequestPageState extends State<LostFoundRequestPage> {
                 Text(
                   '# ${item.itemCode}',
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: theme.contentOnCardMuted,
-                      ),
+                    color: theme.contentOnCardMuted,
+                  ),
                 ),
                 if (item.imageUrl.isNotEmpty) ...[
                   const SizedBox(height: FuvekonSpacing.stackGapMd),
@@ -139,8 +137,8 @@ class _LostFoundRequestPageState extends State<LostFoundRequestPage> {
                   Text(
                     item.location,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: theme.contentOnCardMuted,
-                        ),
+                      color: theme.contentOnCardMuted,
+                    ),
                   ),
                 ],
               ],
@@ -174,8 +172,8 @@ class _LostFoundRequestPageState extends State<LostFoundRequestPage> {
               'Cập nhật lần cuối: ${DateFormat('HH:mm dd/MM/yyyy').format(item.modifiedAt!)}',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: FuvekonColors.darkTextSecondary,
-                  ),
+                color: FuvekonColors.darkTextSecondary,
+              ),
             ),
           ],
         ],
@@ -361,19 +359,18 @@ class _TimelineStep extends StatelessWidget {
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: theme.contentOnCard,
-                          fontWeight:
-                              isActive ? FontWeight.w700 : FontWeight.w600,
-                        ),
+                      color: theme.contentOnCard,
+                      fontWeight: isActive ? FontWeight.w700 : FontWeight.w600,
+                    ),
                   ),
                   if (subtitle.isNotEmpty) ...[
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: theme.contentOnCardMuted,
-                            height: 1.4,
-                          ),
+                        color: theme.contentOnCardMuted,
+                        height: 1.4,
+                      ),
                     ),
                   ],
                 ],
