@@ -187,6 +187,8 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			protectedNotifications := protected.Group("/notifications")
 			{
 				protectedNotifications.POST("", h.Notification.CreateNotification)
+				protectedNotifications.GET("/unread-count", h.Notification.GetUnreadNotificationCount)
+				protectedNotifications.PUT("/read-all", h.Notification.MarkAllNotificationsRead)
 				protectedNotifications.GET("", h.Notification.ListMyNotifications)
 				protectedNotifications.GET("/:id", h.Notification.GetNotificationByID)
 				protectedNotifications.PUT("/:id", h.Notification.UpdateNotification)
@@ -300,6 +302,8 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			adminNotifications := admin.Group("/notifications")
 			adminNotifications.Use(middlewares.RequirePermission(repos.RBAC, role.PermSendNotifications))
 			{
+				adminNotifications.GET("", h.Notification.AdminListNotifications)
+				adminNotifications.POST("/broadcast", h.Notification.AdminBroadcastNotification)
 				adminNotifications.POST("", h.Notification.AdminCreateNotification)
 			}
 

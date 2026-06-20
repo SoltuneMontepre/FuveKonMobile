@@ -6,6 +6,8 @@ import (
 	"general-service/internal/dto/notification/requests"
 	"general-service/internal/repositories"
 	"general-service/internal/services"
+	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -53,10 +55,14 @@ func (h *NotificationHandler) CreateNotification(c *gin.Context) {
 
 // ListMyNotifications godoc
 // @Summary List my notifications
-// @Description Returns all notifications for the authenticated user, newest first.
+// @Description Returns notifications for the authenticated user, newest first. Supports pagination and filters.
 // @Tags notifications
 // @Produce json
 // @Security BearerAuth
+// @Param page query int false "Page number (default 1)"
+// @Param page_size query int false "Page size (default 50, max 100)"
+// @Param kind query string false "Filter by kind"
+// @Param unread_only query bool false "Only unread notifications"
 // @Success 200 {object} map[string]interface{}
 // @Failure 401 "Unauthorized"
 // @Failure 500 "Internal server error"
@@ -68,12 +74,86 @@ func (h *NotificationHandler) ListMyNotifications(c *gin.Context) {
 		utils.RespondUnauthorized(c, "User ID not found in token")
 		return
 	}
-	list, err := h.services.Notification.ListMine(ctx, userID.(string))
+
+	var q requests.ListNotificationsQuery
+	if err := c.ShouldBindQuery(&q); err != nil {
+		utils.RespondValidationError(c, err.Error())
+		return
+	}
+	if q.Page <= 0 {
+		if pageStr := c.Query("page"); pageStr != "" {
+			if parsed, err := strconv.Atoi(pageStr); err == nil {
+				q.Page = parsed
+			}
+		}
+	}
+	if q.PageSize <= 0 {
+		if pageSizeStr := c.Query("page_size"); pageSizeStr != "" {
+			if parsed, err := strconv.Atoi(pageSizeStr); err == nil {
+				q.PageSize = parsed
+			}
+		}
+	}
+	if unreadStr := strings.TrimSpace(c.Query("unread_only")); unreadStr != "" {
+		q.UnreadOnly = unreadStr == "true" || unreadStr == "1"
+	}
+
+	list, meta, err := h.services.Notification.ListMinePaginated(ctx, userID.(string), q)
 	if err != nil {
 		utils.RespondInternalServerError(c, "Failed to list notifications")
 		return
 	}
-	utils.RespondSuccess(c, &list, "OK")
+	utils.RespondSuccessWithMeta(c, &list, meta, "OK")
+}
+
+// GetUnreadNotificationCount godoc
+// @Summary Unread notification count
+// @Description Returns the number of unread notifications for the authenticated user.
+// @Tags notifications
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} map[string]interface{}
+// @Failure 401 "Unauthorized"
+// @Failure 500 "Internal server error"
+// @Router /notifications/unread-count [get]
+func (h *NotificationHandler) GetUnreadNotificationCount(c *gin.Context) {
+	ctx := c.Request.Context()
+	userID, ok := c.Get("user_id")
+	if !ok {
+		utils.RespondUnauthorized(c, "User ID not found in token")
+		return
+	}
+	out, err := h.services.Notification.CountUnread(ctx, userID.(string))
+	if err != nil {
+		utils.RespondInternalServerError(c, "Failed to count unread notifications")
+		return
+	}
+	utils.RespondSuccess(c, out, "OK")
+}
+
+// MarkAllNotificationsRead godoc
+// @Summary Mark all notifications as read
+// @Description Sets read_at on all unread notifications for the authenticated user.
+// @Tags notifications
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} map[string]interface{}
+// @Failure 401 "Unauthorized"
+// @Failure 500 "Internal server error"
+// @Router /notifications/read-all [put]
+func (h *NotificationHandler) MarkAllNotificationsRead(c *gin.Context) {
+	ctx := c.Request.Context()
+	userID, ok := c.Get("user_id")
+	if !ok {
+		utils.RespondUnauthorized(c, "User ID not found in token")
+		return
+	}
+	out, err := h.services.Notification.MarkAllRead(ctx, userID.(string))
+	if err != nil {
+		utils.RespondInternalServerError(c, "Failed to mark notifications as read")
+		return
+	}
+	utils.RespondSuccess(c, out, "Notifications marked as read")
 }
 
 // GetNotificationByID godoc
@@ -233,4 +313,80 @@ func (h *NotificationHandler) AdminCreateNotification(c *gin.Context) {
 	}
 
 	utils.RespondCreated(c, out, "Notification created")
+}
+
+// AdminListNotifications godoc
+// @Summary Admin: list notifications
+// @Description Lists notifications with optional user_id and kind filters.
+// @Tags admin-notifications
+// @Produce json
+// @Security BearerAuth
+// @Param user_id query string false "Filter by user ID"
+// @Param kind query string false "Filter by kind"
+// @Param page query int false "Page number"
+// @Param page_size query int false "Page size"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 "Invalid request"
+// @Failure 401 "Unauthorized"
+// @Failure 403 "Forbidden"
+// @Failure 500 "Internal server error"
+// @Router /admin/notifications [get]
+func (h *NotificationHandler) AdminListNotifications(c *gin.Context) {
+	ctx := c.Request.Context()
+	var q requests.AdminListNotificationsQuery
+	if err := c.ShouldBindQuery(&q); err != nil {
+		utils.RespondValidationError(c, err.Error())
+		return
+	}
+	list, meta, err := h.services.Notification.AdminList(ctx, q)
+	if err != nil {
+		if err.Error() == "invalid user id" {
+			utils.RespondValidationError(c, err.Error())
+			return
+		}
+		utils.RespondInternalServerError(c, "Failed to list notifications")
+		return
+	}
+	utils.RespondSuccessWithMeta(c, &list, meta, "OK")
+}
+
+// AdminBroadcastNotification godoc
+// @Summary Admin: broadcast notification
+// @Description Creates inbox rows for all users or a role cohort. Optionally sends email and/or FCM push.
+// @Tags admin-notifications
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body requests.AdminBroadcastNotificationRequest true "Broadcast body"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400 "Invalid request"
+// @Failure 401 "Unauthorized"
+// @Failure 403 "Forbidden"
+// @Failure 500 "Internal server error"
+// @Router /admin/notifications/broadcast [post]
+func (h *NotificationHandler) AdminBroadcastNotification(c *gin.Context) {
+	ctx := c.Request.Context()
+	var req requests.AdminBroadcastNotificationRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.RespondValidationError(c, err.Error())
+		return
+	}
+
+	fromEmail := getEnvOr("SES_EMAIL_IDENTITY", "")
+	if req.SendEmail && fromEmail == "" {
+		utils.RespondError(c, 400, "MAIL_NOT_CONFIGURED", "Sending email requires SES_EMAIL_IDENTITY to be set")
+		return
+	}
+
+	out, err := h.services.Notification.AdminBroadcast(ctx, &req, fromEmail)
+	if err != nil {
+		if strings.Contains(err.Error(), "too many recipients") || strings.Contains(err.Error(), "invalid user role") {
+			utils.RespondValidationError(c, err.Error())
+			return
+		}
+		utils.RespondInternalServerError(c, "Failed to broadcast notification")
+		return
+	}
+
+	utils.RespondCreated(c, out, "Notification broadcast")
 }

@@ -53,6 +53,50 @@ class AdminCreateNotificationResult {
   final int devicesNotified;
 }
 
+class AdminBroadcastNotificationInput {
+  const AdminBroadcastNotificationInput({
+    required this.title,
+    required this.body,
+    this.kind,
+    this.role,
+    this.sendEmail = false,
+    this.sendPush = true,
+  });
+
+  final String title;
+  final String body;
+  final String? kind;
+  final String? role;
+  final bool sendEmail;
+  final bool sendPush;
+}
+
+class AdminBroadcastNotificationResult {
+  const AdminBroadcastNotificationResult({
+    required this.recipients,
+    required this.inboxCreated,
+    required this.emailsSent,
+    required this.pushDevicesSent,
+    this.error,
+  });
+
+  factory AdminBroadcastNotificationResult.fromJson(Map<String, dynamic> json) {
+    return AdminBroadcastNotificationResult(
+      recipients: (json['recipients'] as num?)?.toInt() ?? 0,
+      inboxCreated: (json['inbox_created'] as num?)?.toInt() ?? 0,
+      emailsSent: (json['emails_sent'] as num?)?.toInt() ?? 0,
+      pushDevicesSent: (json['push_devices_sent'] as num?)?.toInt() ?? 0,
+      error: json['error'] as String?,
+    );
+  }
+
+  final int recipients;
+  final int inboxCreated;
+  final int emailsSent;
+  final int pushDevicesSent;
+  final String? error;
+}
+
 class AdminNotificationService {
   AdminNotificationService({required AdminNotificationApi api}) : _api = api;
 
@@ -75,5 +119,24 @@ class AdminNotificationService {
     }
 
     return AdminCreateNotificationResult.fromJson(response.data!);
+  }
+
+  Future<AdminBroadcastNotificationResult> broadcast(
+    AdminBroadcastNotificationInput input,
+  ) async {
+    final response = await _api.broadcast(
+      title: input.title,
+      body: input.body,
+      kind: input.kind,
+      role: input.role,
+      sendEmail: input.sendEmail,
+      sendPush: input.sendPush,
+    );
+
+    if (!response.isSuccess || response.data == null) {
+      throw ServerException(response.errorMessage ?? response.message);
+    }
+
+    return AdminBroadcastNotificationResult.fromJson(response.data!);
   }
 }

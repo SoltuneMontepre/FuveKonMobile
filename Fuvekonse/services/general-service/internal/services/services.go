@@ -32,7 +32,8 @@ type Services struct {
 func NewServices(repos *repositories.Repositories, redisClient *redis.Client, loginMaxFail int, loginFailBlockMinutes int) *Services {
 	mail := NewMailService(repos)
 	fcm := NewFCMService(repos)
-	ticket := NewTicketService(repos, mail)
+	notification := NewNotificationService(repos, mail, fcm)
+	ticket := NewTicketService(repos, mail, notification)
 
 	var s3Service *S3Service
 	if svc, err := NewS3Service(context.Background()); err != nil {
@@ -49,15 +50,15 @@ func NewServices(repos *repositories.Repositories, redisClient *redis.Client, lo
 		DeviceToken:  NewDeviceTokenService(repos),
 		Ticket:       ticket,
 		Event:        NewEventService(repos),
-		Dealer:       NewDealerService(repos, mail),
-		Conbook:      NewConbookService(repos),
-		Panel:        NewPanelService(repos),
+		Dealer:       NewDealerService(repos, mail, notification),
+		Conbook:      NewConbookService(repos, notification),
+		Panel:        NewPanelService(repos, notification),
 		Venue:        NewVenueService(repos),
 		Schedule:     NewScheduleService(repos),
-		Talent:       NewTalentService(repos),
-		Notification: NewNotificationService(repos, mail, fcm),
+		Talent:       NewTalentService(repos, notification),
+		Notification: notification,
 		Analytics:    NewAnalyticsService(repos, ticket),
-		LostFound:    NewLostFoundService(repos),
+		LostFound:    NewLostFoundService(repos, notification),
 		S3:           s3Service,
 		RBAC:         NewRBACService(repos),
 	}

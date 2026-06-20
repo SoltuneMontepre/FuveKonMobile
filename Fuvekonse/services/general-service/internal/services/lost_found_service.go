@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"general-service/internal/common/constants"
 	"general-service/internal/dto/lostfound/requests"
 	"general-service/internal/dto/lostfound/responses"
 	"general-service/internal/mappers"
@@ -40,11 +41,12 @@ var (
 )
 
 type LostFoundService struct {
-	repos *repositories.Repositories
+	repos  *repositories.Repositories
+	notify *NotificationService
 }
 
-func NewLostFoundService(repos *repositories.Repositories) *LostFoundService {
-	return &LostFoundService{repos: repos}
+func NewLostFoundService(repos *repositories.Repositories, notify *NotificationService) *LostFoundService {
+	return &LostFoundService{repos: repos, notify: notify}
 }
 
 func (s *LostFoundService) Create(ctx context.Context, userIDStr string, req *requests.CreateLostFoundRequest) (*responses.LostFoundResponse, error) {
@@ -291,6 +293,20 @@ func (s *LostFoundService) ClaimItem(ctx context.Context, userIDStr, idStr strin
 		return nil, err
 	}
 
+	if s.notify != nil {
+		label := strings.TrimSpace(item.Title)
+		if label == "" {
+			label = "vật phẩm"
+		}
+		s.notify.NotifyUser(
+			ctx,
+			item.SubmittedByUserId,
+			"Có yêu cầu nhận đồ",
+			fmt.Sprintf("Có người yêu cầu nhận %s bạn đã báo tìm thấy.", label),
+			constants.NotificationKindLostFound,
+		)
+	}
+
 	return &responses.LostFoundClaimResultResponse{
 		ItemId:  id,
 		Status:  string(models.LostFoundClaimPending),
@@ -380,6 +396,20 @@ func (s *LostFoundService) ConfirmReturn(ctx context.Context, staffIDStr, idStr 
 	if err != nil {
 		log.Printf("Error confirming lost and found return: %v", err)
 		return nil, err
+	}
+
+	if s.notify != nil {
+		label := strings.TrimSpace(existing.Title)
+		if label == "" {
+			label = "vật phẩm"
+		}
+		s.notify.NotifyUser(
+			ctx,
+			claim.ClaimedByUserId,
+			"Đồ đã được trả",
+			fmt.Sprintf("%s đã được xác nhận trả lại cho bạn.", label),
+			constants.NotificationKindLostFound,
+		)
 	}
 
 	resp := mappers.MapLostFoundToResponse(updated, nil)

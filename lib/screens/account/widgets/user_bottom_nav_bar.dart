@@ -9,10 +9,14 @@ class UserBottomNavBar extends StatelessWidget {
     super.key,
     required this.currentBranchIndex,
     required this.onTap,
+    this.notificationUnreadCount = 0,
   });
 
   final int currentBranchIndex;
   final ValueChanged<int> onTap;
+  final int notificationUnreadCount;
+
+  static const _notificationsTabIndex = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,9 @@ class UserBottomNavBar extends StatelessWidget {
               child: Row(
                 children: List.generate(items.length, (index) {
                   final selected = currentBranchIndex == index;
+                  final showBadge =
+                      index == _notificationsTabIndex &&
+                      notificationUnreadCount > 0;
                   return Expanded(
                     child: InkWell(
                       onTap: () {
@@ -56,12 +63,21 @@ class UserBottomNavBar extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
-                              items[index].icon,
-                              color: selected
-                                  ? FuvekonColors.sageGreen
-                                  : FuvekonColors.onSurfaceVariant,
-                              size: 24,
+                            Badge(
+                              isLabelVisible: showBadge,
+                              label: Text(
+                                notificationUnreadCount > 99
+                                    ? '99+'
+                                    : '$notificationUnreadCount',
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                              child: Icon(
+                                items[index].icon,
+                                color: selected
+                                    ? FuvekonColors.sageGreen
+                                    : FuvekonColors.onSurfaceVariant,
+                                size: 24,
+                              ),
                             ),
                             const SizedBox(height: 4),
                             Text(

@@ -1,0 +1,19 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fuvekonmobile/core/errors/result.dart';
+import 'package:fuvekonmobile/features/notification/domain/repositories/notification_repository.dart';
+
+/// Tracks unread notification count for nav badges.
+class NotificationUnreadCubit extends Cubit<int> {
+  NotificationUnreadCubit({required NotificationRepository repository})
+      : _repository = repository,
+        super(0);
+
+  final NotificationRepository _repository;
+
+  Future<void> refresh() async {
+    final result = await _repository.unreadCount();
+    if (result case Success(:final data)) {
+      emit(data);
+    }
+  }
+}

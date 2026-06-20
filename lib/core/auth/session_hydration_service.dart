@@ -5,8 +5,10 @@ import 'package:fuvekonmobile/core/auth/auth_session_controller.dart';
 import 'package:fuvekonmobile/core/auth/user_role.dart';
 import 'package:fuvekonmobile/core/errors/failures.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
+import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/services/push_notification_service.dart';
+import 'package:fuvekonmobile/features/notification/presentation/bloc/notification_unread_cubit.dart';
 import 'package:fuvekonmobile/features/profile/domain/usecases/get_me_usecase.dart';
 
 /// Loads the signed-in account role and permissions after auth is restored.
@@ -75,6 +77,7 @@ class SessionHydrationService {
             success: true,
           );
           unawaited(_syncPushNotifications());
+      unawaited(_refreshNotificationUnreadCount());
         case Error(:final failure):
           if (failure is AuthFailure) {
             // Stale token (e.g. after DB reseed) or revoked session.
@@ -104,6 +107,14 @@ class SessionHydrationService {
   Future<void> _syncPushNotifications() async {
     await _pushNotificationService?.initialize();
     await _pushNotificationService?.registerTokenIfAuthenticated();
+  }
+
+  Future<void> _refreshNotificationUnreadCount() async {
+    try {
+      await sl<NotificationUnreadCubit>().refresh();
+    } catch (_) {
+      // Unread badge refresh is best-effort.
+    }
   }
 
   void _failHydration(String message) {

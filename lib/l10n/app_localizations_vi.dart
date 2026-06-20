@@ -2317,6 +2317,73 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get notificationsMarkAllRead => 'Đánh dấu tất cả đã đọc';
+
+  @override
+  String get notificationsMarkAllReadSuccess =>
+      'Đã đánh dấu tất cả thông báo là đã đọc.';
+
+  @override
+  String get notificationsMarkAllReadFailed =>
+      'Không thể đánh dấu đã đọc. Vui lòng thử lại.';
+
+  @override
+  String get notificationsUnreadOnly => 'Chỉ chưa đọc';
+
+  @override
+  String get notificationsEmptyUnread => 'Không có thông báo chưa đọc.';
+
+  @override
+  String get adminNotificationsHubTitle => 'Thông báo';
+
+  @override
+  String get adminNotificationsHubSubtitle =>
+      'Gửi cho một người dùng hoặc phát sóng theo nhóm.';
+
+  @override
+  String get adminNotificationSendToUser => 'Gửi cho người dùng';
+
+  @override
+  String get adminNotificationSendToUserHint =>
+      'Tạo thông báo in-app cho một tài khoản cụ thể.';
+
+  @override
+  String get adminNotificationBroadcastAction => 'Phát sóng';
+
+  @override
+  String get adminNotificationBroadcastTitle => 'Phát sóng thông báo';
+
+  @override
+  String get adminNotificationBroadcastSubtitle =>
+      'Gửi cùng nội dung tới tất cả người dùng hoặc theo vai trò.';
+
+  @override
+  String get adminNotificationBroadcastAudienceLabel => 'Đối tượng';
+
+  @override
+  String get adminNotificationBroadcastAudienceAll => 'Tất cả người dùng';
+
+  @override
+  String get adminNotificationBroadcastAudienceUser => 'User';
+
+  @override
+  String get adminNotificationBroadcastAudienceDealer => 'Dealer';
+
+  @override
+  String get adminNotificationBroadcastAudienceStaff => 'Staff';
+
+  @override
+  String get adminNotificationBroadcastAudienceAdmin => 'Admin';
+
+  @override
+  String get adminNotificationBroadcastSuccess => 'Đã phát sóng thông báo.';
+
+  @override
+  String adminNotificationBroadcastRecipients(int count) {
+    return 'Đã gửi tới $count người nhận.';
+  }
+
+  @override
   String get adminMenuSchedules => 'Lịch trình';
 
   @override

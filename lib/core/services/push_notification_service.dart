@@ -14,9 +14,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:fuvekonmobile/core/api/device_api.dart';
 
+import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/router/app_router.dart';
-
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/features/notification/presentation/bloc/notification_unread_cubit.dart';
 
 import 'package:fuvekonmobile/shared/services/token_storage.dart';
 
@@ -405,15 +406,14 @@ class PushNotificationService {
     final notificationId = message.data['notification_id'];
 
     _showLocalNotification(
-
       title: notification.title ?? 'Fuvekon',
-
       body: notification.body ?? '',
-
       payload: notificationId is String ? notificationId : null,
-
     );
 
+    try {
+      sl<NotificationUnreadCubit>().refresh();
+    } catch (_) {}
   }
 
 

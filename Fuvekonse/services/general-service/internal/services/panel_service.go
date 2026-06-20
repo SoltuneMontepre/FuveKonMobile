@@ -3,6 +3,8 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
+	"general-service/internal/common/constants"
 	"general-service/internal/dto/panel/requests"
 	"general-service/internal/dto/panel/responses"
 	"general-service/internal/mappers"
@@ -22,11 +24,12 @@ var (
 )
 
 type PanelService struct {
-	repos *repositories.Repositories
+	repos  *repositories.Repositories
+	notify *NotificationService
 }
 
-func NewPanelService(repos *repositories.Repositories) *PanelService {
-	return &PanelService{repos: repos}
+func NewPanelService(repos *repositories.Repositories, notify *NotificationService) *PanelService {
+	return &PanelService{repos: repos, notify: notify}
 }
 
 func (s *PanelService) CreatePanel(ctx context.Context, userIDStr string, req *requests.CreatePanelRequest) (*responses.PanelResponse, error) {
@@ -277,6 +280,8 @@ func (s *PanelService) setPanelStatus(ctx context.Context, panelIDStr string, st
 		return nil, err
 	}
 
+	s.notifyPanelStatus(ctx, panel, status)
+
 	updated, err := s.repos.Panel.GetPanelByID(ctx, panelID)
 	if err != nil {
 		return nil, err
@@ -330,4 +335,25 @@ func (s *PanelService) AssignPanelSchedule(ctx context.Context, panelIDStr strin
 
 	resp := mappers.MapPanelToResponse(updated)
 	return &resp, nil
+}
+
+func (s *PanelService) notifyPanelStatus(ctx context.Context, panel *models.PerformancePanel, status models.PanelStatus) {
+	if s.notify == nil {
+		return
+	}
+	var title, body string
+	switch status {
+	case models.PanelStatusApproved:
+		title = "Panel đã được duyệt"
+		body = fmt.Sprintf("Đơn đăng ký panel \"%s\" đã được phê duyệt.", panel.Title)
+	case models.PanelStatusDenied:
+		title = "Panel bị từ chối"
+		body = fmt.Sprintf("Đơn đăng ký panel \"%s\" đã bị từ chối.", panel.Title)
+	case models.PanelStatusRequireChanges:
+		title = "Panel cần chỉnh sửa"
+		body = fmt.Sprintf("Đơn đăng ký panel \"%s\" cần bổ sung hoặc chỉnh sửa.", panel.Title)
+	default:
+		return
+	}
+	s.notify.NotifyUser(ctx, panel.UserId, title, body, constants.NotificationKindPanel)
 }

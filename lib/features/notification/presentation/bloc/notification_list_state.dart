@@ -13,13 +13,23 @@ final class NotificationListLoading extends NotificationListState {
 }
 
 final class NotificationListLoaded extends NotificationListState {
-  const NotificationListLoaded(this.items);
+  const NotificationListLoaded({
+    required this.items,
+    required this.hasMore,
+    this.isLoadingMore = false,
+    this.unreadOnly = false,
+  });
 
   final List<NotificationItem> items;
+  final bool hasMore;
+  final bool isLoadingMore;
+  final bool unreadOnly;
 }
 
 final class NotificationListEmpty extends NotificationListState {
-  const NotificationListEmpty();
+  const NotificationListEmpty({this.unreadOnly = false});
+
+  final bool unreadOnly;
 }
 
 final class NotificationListFailure extends NotificationListState {

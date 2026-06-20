@@ -3,6 +3,8 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
+	"general-service/internal/common/constants"
 	"general-service/internal/dto/conbook/requests"
 	"general-service/internal/dto/conbook/responses"
 	"general-service/internal/mappers"
@@ -23,11 +25,12 @@ var (
 )
 
 type ConbookService struct {
-	repos *repositories.Repositories
+	repos  *repositories.Repositories
+	notify *NotificationService
 }
 
-func NewConbookService(repos *repositories.Repositories) *ConbookService {
-	return &ConbookService{repos: repos}
+func NewConbookService(repos *repositories.Repositories, notify *NotificationService) *ConbookService {
+	return &ConbookService{repos: repos, notify: notify}
 }
 
 // UploadConbook creates a new conbook for a user
@@ -251,6 +254,8 @@ func (s *ConbookService) setConbookStatus(ctx context.Context, conbookIDStr stri
 		return nil, err
 	}
 
+	s.notifyConbookStatus(ctx, conbook, status)
+
 	// Get updated conbook
 	updated, err := s.repos.Conbook.GetConbookByID(ctx, conbookID)
 	if err != nil {
@@ -279,4 +284,25 @@ func (s *ConbookService) RequestConbookChanges(ctx context.Context, conbookIDStr
 // MarkConbookPending moves a conbook back to pending (staff only).
 func (s *ConbookService) MarkConbookPending(ctx context.Context, conbookIDStr string) (*responses.ConbookResponse, error) {
 	return s.setConbookStatus(ctx, conbookIDStr, models.ConbookStatusPending)
+}
+
+func (s *ConbookService) notifyConbookStatus(ctx context.Context, conbook *models.ConBookArt, status models.ConbookStatus) {
+	if s.notify == nil {
+		return
+	}
+	var title, body string
+	switch status {
+	case models.ConbookStatusApproved:
+		title = "Conbook đã được duyệt"
+		body = fmt.Sprintf("Tác phẩm \"%s\" đã được phê duyệt.", conbook.Title)
+	case models.ConbookStatusDenied:
+		title = "Conbook bị từ chối"
+		body = fmt.Sprintf("Tác phẩm \"%s\" đã bị từ chối.", conbook.Title)
+	case models.ConbookStatusRequireChanges:
+		title = "Conbook cần chỉnh sửa"
+		body = fmt.Sprintf("Tác phẩm \"%s\" cần bổ sung hoặc chỉnh sửa.", conbook.Title)
+	default:
+		return
+	}
+	s.notify.NotifyUser(ctx, conbook.UserId, title, body, constants.NotificationKindConbook)
 }

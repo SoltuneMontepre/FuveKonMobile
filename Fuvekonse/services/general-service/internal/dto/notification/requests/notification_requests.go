@@ -25,3 +25,14 @@ type AdminCreateNotificationRequest struct {
 	SendEmail bool   `json:"send_email"`
 	SendPush  bool   `json:"send_push"`
 }
+
+// AdminBroadcastNotificationRequest sends the same notification to all users or a role cohort.
+// Role is optional: user, dealer, staff, admin. Empty role = all active users.
+type AdminBroadcastNotificationRequest struct {
+	Title     string `json:"title" binding:"required,min=1,max=255"`
+	Body      string `json:"body" binding:"max=10000"`
+	Kind      string `json:"kind" binding:"omitempty,max=50"`
+	Role      string `json:"role" binding:"omitempty,max=20"`
+	SendEmail bool   `json:"send_email"`
+	SendPush  bool   `json:"send_push"`
+}

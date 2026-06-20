@@ -3,6 +3,8 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
+	"general-service/internal/common/constants"
 	"general-service/internal/dto/talent/requests"
 	"general-service/internal/dto/talent/responses"
 	"general-service/internal/mappers"
@@ -22,11 +24,12 @@ var (
 )
 
 type TalentService struct {
-	repos *repositories.Repositories
+	repos  *repositories.Repositories
+	notify *NotificationService
 }
 
-func NewTalentService(repos *repositories.Repositories) *TalentService {
-	return &TalentService{repos: repos}
+func NewTalentService(repos *repositories.Repositories, notify *NotificationService) *TalentService {
+	return &TalentService{repos: repos, notify: notify}
 }
 
 func (s *TalentService) CreateTalent(ctx context.Context, userIDStr string, req *requests.CreateTalentRequest) (*responses.TalentResponse, error) {
@@ -268,6 +271,8 @@ func (s *TalentService) setTalentStatus(ctx context.Context, talentIDStr string,
 		return nil, err
 	}
 
+	s.notifyTalentStatus(ctx, talent, status)
+
 	updated, err := s.repos.Talent.GetTalentByID(ctx, talentID)
 	if err != nil {
 		return nil, err
@@ -316,4 +321,22 @@ func (s *TalentService) AssignTalentSchedule(ctx context.Context, talentIDStr st
 
 	resp := mappers.MapTalentToResponse(updated)
 	return &resp, nil
+}
+
+func (s *TalentService) notifyTalentStatus(ctx context.Context, talent *models.PerformanceTalent, status models.TalentStatus) {
+	if s.notify == nil {
+		return
+	}
+	var title, body string
+	switch status {
+	case models.TalentStatusApproved:
+		title = "Talent đã được duyệt"
+		body = fmt.Sprintf("Đơn đăng ký talent \"%s\" đã được phê duyệt.", talent.Title)
+	case models.TalentStatusDenied:
+		title = "Talent bị từ chối"
+		body = fmt.Sprintf("Đơn đăng ký talent \"%s\" đã bị từ chối.", talent.Title)
+	default:
+		return
+	}
+	s.notify.NotifyUser(ctx, talent.UserId, title, body, constants.NotificationKindTalent)
 }

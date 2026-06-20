@@ -24,8 +24,52 @@ class NotificationsPage extends StatelessWidget {
   }
 }
 
-class _NotificationsView extends StatelessWidget {
+class _NotificationsView extends StatefulWidget {
   const _NotificationsView();
+
+  @override
+  State<_NotificationsView> createState() => _NotificationsViewState();
+}
+
+class _NotificationsViewState extends State<_NotificationsView> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    if (position.pixels >= position.maxScrollExtent - 200) {
+      context.read<NotificationListCubit>().loadMore();
+    }
+  }
+
+  Future<void> _markAllRead() async {
+    final l10n = context.l10n;
+    final ok = await context.read<NotificationListCubit>().markAllRead();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          ok
+              ? l10n.notificationsMarkAllReadSuccess
+              : l10n.notificationsMarkAllReadFailed,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,36 +79,90 @@ class _NotificationsView extends StatelessWidget {
       title: l10n.navNotifications,
       showBackButton: false,
       padding: EdgeInsets.zero,
+      actions: [
+        BlocBuilder<NotificationListCubit, NotificationListState>(
+          builder: (context, state) {
+            final unreadOnly = switch (state) {
+              NotificationListLoaded(:final unreadOnly) => unreadOnly,
+              NotificationListEmpty(:final unreadOnly) => unreadOnly,
+              _ => false,
+            };
+            return IconButton(
+              tooltip: l10n.notificationsUnreadOnly,
+              onPressed: () => context
+                  .read<NotificationListCubit>()
+                  .setUnreadOnly(!unreadOnly),
+              icon: Icon(
+                unreadOnly
+                    ? Icons.mark_email_unread
+                    : Icons.mark_email_unread_outlined,
+                color: unreadOnly ? FuvekonColors.sageGreen : null,
+              ),
+            );
+          },
+        ),
+        IconButton(
+          tooltip: l10n.notificationsMarkAllRead,
+          onPressed: _markAllRead,
+          icon: const Icon(Icons.done_all),
+        ),
+      ],
       body: BlocBuilder<NotificationListCubit, NotificationListState>(
         builder: (context, state) {
           return switch (state) {
             NotificationListInitial() || NotificationListLoading() =>
               const Center(child: CircularProgressIndicator()),
-            NotificationListEmpty() => Padding(
+            NotificationListEmpty(:final unreadOnly) => Padding(
               padding: const EdgeInsets.all(FuvekonSpacing.page),
               child: EmptyState(
                 title: l10n.navNotifications,
-                subtitle: l10n.authHomeNotificationsEmpty,
+                subtitle: unreadOnly
+                    ? l10n.notificationsEmptyUnread
+                    : l10n.authHomeNotificationsEmpty,
                 icon: Icons.notifications_outlined,
               ),
             ),
-            NotificationListLoaded(:final items) => RefreshIndicator(
-              onRefresh: () => context.read<NotificationListCubit>().refresh(),
-              child: ListView.separated(
-                padding: const EdgeInsets.all(FuvekonSpacing.page),
-                itemCount: items.length,
-                separatorBuilder: (_, _) =>
-                    const SizedBox(height: FuvekonSpacing.stackGapMd),
-                itemBuilder: (context, index) {
-                  final item = items[index];
-                  return NotificationListCard(
-                    item: item,
-                    onTap: () =>
-                        context.push(Routes.accountNotificationDetail(item.id)),
-                  );
-                },
+            NotificationListLoaded(:final items, :final isLoadingMore) =>
+              RefreshIndicator(
+                onRefresh: () => context.read<NotificationListCubit>().refresh(),
+                child: ListView.separated(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.all(FuvekonSpacing.page),
+                  itemCount: items.length + (isLoadingMore ? 1 : 0),
+                  separatorBuilder: (_, index) {
+                    if (index >= items.length - 1) {
+                      return const SizedBox.shrink();
+                    }
+                    return const SizedBox(height: FuvekonSpacing.stackGapMd);
+                  },
+                  itemBuilder: (context, index) {
+                    if (index >= items.length) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Center(
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        ),
+                      );
+                    }
+                    final item = items[index];
+                    return NotificationListCard(
+                      item: item,
+                      onTap: () async {
+                        await context.push(
+                          Routes.accountNotificationDetail(item.id),
+                        );
+                        if (context.mounted) {
+                          await context.read<NotificationListCubit>().refresh();
+                        }
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
             NotificationListFailure(:final message) => _NotificationsError(
               message: message,
               onRetry: () => context.read<NotificationListCubit>().load(),

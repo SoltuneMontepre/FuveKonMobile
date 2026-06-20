@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"general-service/internal/common/constants"
 	"general-service/internal/common/utils"
 	"general-service/internal/dto/common"
 	"general-service/internal/dto/dealer/requests"
@@ -21,12 +22,13 @@ import (
 const maxDealerBoothStaff = 3
 
 type DealerService struct {
-	repos *repositories.Repositories
-	mail  *MailService
+	repos  *repositories.Repositories
+	mail   *MailService
+	notify *NotificationService
 }
 
-func NewDealerService(repos *repositories.Repositories, mail *MailService) *DealerService {
-	return &DealerService{repos: repos, mail: mail}
+func NewDealerService(repos *repositories.Repositories, mail *MailService, notify *NotificationService) *DealerService {
+	return &DealerService{repos: repos, mail: mail, notify: notify}
 }
 
 // RegisterDealer creates a new dealer booth and assigns the creator as owner
@@ -246,6 +248,15 @@ func (s *DealerService) VerifyDealer(ctx context.Context, boothID string, fromEm
 				if err := s.mail.SendDealerApprovedEmail(ctx, fromEmail, staff.User.Email, boothWithStaffs.BoothName, boothNumber, LangFromCountry(staff.User.Country)); err != nil {
 					log.Printf("Failed to send dealer approved email to %s: %v", staff.User.Email, err)
 				}
+				if s.notify != nil {
+					s.notify.NotifyUser(
+						ctx,
+						staff.UserId,
+						"Gian hàng dealer đã được duyệt",
+						fmt.Sprintf("Gian hàng \"%s\" đã được phê duyệt. Mã gian: %s.", boothWithStaffs.BoothName, boothNumber),
+						constants.NotificationKindDealer,
+					)
+				}
 				break
 			}
 		}
@@ -269,9 +280,30 @@ func (s *DealerService) DenyDealerBooth(boothID string) (*responses.DealerBoothD
 		return nil, errors.New("dealer booth is already verified")
 	}
 
+	boothWithStaffs, err := s.repos.Dealer.FindBoothByIDWithStaffs(boothID)
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, err
+	}
+
 	deniedBooth, err := s.repos.Dealer.DenyBooth(boothID)
 	if err != nil {
 		return nil, errors.New("failed to deny dealer booth")
+	}
+
+	if s.notify != nil && boothWithStaffs != nil {
+		for i := range boothWithStaffs.Staffs {
+			staff := &boothWithStaffs.Staffs[i]
+			if staff.IsOwner && !staff.IsDeleted {
+				s.notify.NotifyUser(
+					context.Background(),
+					staff.UserId,
+					"Gian hàng dealer bị từ chối",
+					fmt.Sprintf("Đăng ký gian hàng \"%s\" đã bị từ chối.", boothWithStaffs.BoothName),
+					constants.NotificationKindDealer,
+				)
+				break
+			}
+		}
 	}
 
 	return mappers.MapDealerBoothToDetailResponse(deniedBooth), nil

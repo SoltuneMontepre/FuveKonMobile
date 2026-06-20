@@ -25,3 +25,22 @@ type AdminCreateNotificationResponse struct {
 	PushError       string               `json:"push_error,omitempty"`
 	DevicesNotified int                  `json:"devices_notified,omitempty"`
 }
+
+type UnreadCountResponse struct {
+	Count int64 `json:"count"`
+}
+
+type MarkAllReadResponse struct {
+	Updated int64 `json:"updated"`
+}
+
+// AdminBroadcastNotificationResponse summarizes a role/all-users broadcast.
+type AdminBroadcastNotificationResponse struct {
+	Recipients      int    `json:"recipients"`
+	InboxCreated    int    `json:"inbox_created"`
+	EmailsSent      int    `json:"emails_sent"`
+	PushDevicesSent int    `json:"push_devices_sent"`
+	EmailErrors     int    `json:"email_errors,omitempty"`
+	PushErrors      int    `json:"push_errors,omitempty"`
+	Error           string `json:"error,omitempty"`
+}

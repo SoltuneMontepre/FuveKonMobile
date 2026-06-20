@@ -1,9 +1,11 @@
 import 'package:fuvekonmobile/core/errors/failures.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
+import 'package:fuvekonmobile/core/models/pagination_meta.dart';
 import 'package:fuvekonmobile/features/notification/domain/entities/notification_item.dart';
+import 'package:fuvekonmobile/features/notification/domain/entities/notification_page_result.dart';
 import 'package:fuvekonmobile/features/notification/domain/repositories/notification_repository.dart';
 
-/// Mock notifications until the mobile client wires `GET /notifications`.
+/// Mock notifications for offline UI work.
 class MockNotificationRepository implements NotificationRepository {
   MockNotificationRepository() {
     final now = DateTime.now();
@@ -36,26 +38,64 @@ class MockNotificationRepository implements NotificationRepository {
         kind: 'reminder',
         createdAt: now.subtract(const Duration(days: 1)),
       ),
-      NotificationItem(
-        id: 'n4',
-        title: 'Thông báo hệ thống',
-        body:
-            'Ứng dụng FUVEKON đã được cập nhật với giao diện mới. '
-            'Nếu gặp sự cố, vui lòng liên hệ ban tổ chức qua mục FAQ.',
-        kind: 'system',
-        createdAt: now.subtract(const Duration(days: 3)),
-        readAt: now.subtract(const Duration(days: 2)),
-      ),
     ];
   }
 
   late List<NotificationItem> _items;
 
-  @override
-  Future<Result<List<NotificationItem>>> list() async {
-    await Future<void>.delayed(const Duration(milliseconds: 350));
+  List<NotificationItem> _filtered({bool unreadOnly = false}) {
     final sorted = [..._items]..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    return Success(sorted);
+    if (!unreadOnly) return sorted;
+    return sorted.where((item) => !item.isRead).toList();
+  }
+
+  @override
+  Future<Result<NotificationPageResult>> list({
+    int page = 1,
+    int pageSize = 20,
+    String? kind,
+    bool unreadOnly = false,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 350));
+    var filtered = _filtered(unreadOnly: unreadOnly);
+    if (kind != null && kind.isNotEmpty) {
+      filtered = filtered.where((item) => item.kind == kind).toList();
+    }
+    final start = (page - 1) * pageSize;
+    final slice = start >= filtered.length
+        ? <NotificationItem>[]
+        : filtered.skip(start).take(pageSize).toList();
+    final totalPages = filtered.isEmpty
+        ? 1
+        : ((filtered.length + pageSize - 1) / pageSize).ceil();
+
+    return Success(
+      NotificationPageResult(
+        items: slice,
+        meta: PaginationMeta(
+          currentPage: page,
+          pageSize: pageSize,
+          totalPages: totalPages,
+          totalItems: filtered.length,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Future<Result<int>> unreadCount() async {
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+    return Success(_items.where((item) => !item.isRead).length);
+  }
+
+  @override
+  Future<Result<int>> markAllRead() async {
+    await Future<void>.delayed(const Duration(milliseconds: 150));
+    final now = DateTime.now();
+    _items = _items
+        .map((item) => item.isRead ? item : item.copyWith(readAt: now))
+        .toList();
+    return Success(_items.where((item) => !item.isRead).length);
   }
 
   @override

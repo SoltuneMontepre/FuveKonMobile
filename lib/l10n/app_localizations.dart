@@ -4466,6 +4466,126 @@ abstract class AppLocalizations {
   /// **'Email failed: {error}'**
   String adminNotificationEmailFailed(String error);
 
+  /// No description provided for @notificationsMarkAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get notificationsMarkAllRead;
+
+  /// No description provided for @notificationsMarkAllReadSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'All notifications marked as read.'**
+  String get notificationsMarkAllReadSuccess;
+
+  /// No description provided for @notificationsMarkAllReadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not mark notifications as read. Please try again.'**
+  String get notificationsMarkAllReadFailed;
+
+  /// No description provided for @notificationsUnreadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread only'**
+  String get notificationsUnreadOnly;
+
+  /// No description provided for @notificationsEmptyUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'No unread notifications.'**
+  String get notificationsEmptyUnread;
+
+  /// No description provided for @adminNotificationsHubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get adminNotificationsHubTitle;
+
+  /// No description provided for @adminNotificationsHubSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to one user or broadcast to a group.'**
+  String get adminNotificationsHubSubtitle;
+
+  /// No description provided for @adminNotificationSendToUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to user'**
+  String get adminNotificationSendToUser;
+
+  /// No description provided for @adminNotificationSendToUserHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an in-app notification for a specific account.'**
+  String get adminNotificationSendToUserHint;
+
+  /// No description provided for @adminNotificationBroadcastAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Broadcast'**
+  String get adminNotificationBroadcastAction;
+
+  /// No description provided for @adminNotificationBroadcastTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Broadcast notification'**
+  String get adminNotificationBroadcastTitle;
+
+  /// No description provided for @adminNotificationBroadcastSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the same message to all users or a role.'**
+  String get adminNotificationBroadcastSubtitle;
+
+  /// No description provided for @adminNotificationBroadcastAudienceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Audience'**
+  String get adminNotificationBroadcastAudienceLabel;
+
+  /// No description provided for @adminNotificationBroadcastAudienceAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All users'**
+  String get adminNotificationBroadcastAudienceAll;
+
+  /// No description provided for @adminNotificationBroadcastAudienceUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get adminNotificationBroadcastAudienceUser;
+
+  /// No description provided for @adminNotificationBroadcastAudienceDealer.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealers'**
+  String get adminNotificationBroadcastAudienceDealer;
+
+  /// No description provided for @adminNotificationBroadcastAudienceStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get adminNotificationBroadcastAudienceStaff;
+
+  /// No description provided for @adminNotificationBroadcastAudienceAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins'**
+  String get adminNotificationBroadcastAudienceAdmin;
+
+  /// No description provided for @adminNotificationBroadcastSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification broadcast sent.'**
+  String get adminNotificationBroadcastSuccess;
+
+  /// No description provided for @adminNotificationBroadcastRecipients.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered to {count} recipients.'**
+  String adminNotificationBroadcastRecipients(int count);
+
   /// No description provided for @adminMenuSchedules.
   ///
   /// In en, this message translates to:

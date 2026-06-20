@@ -262,7 +262,7 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
             onDelete: _confirmDelete,
             onSendNotification: canSendNotification
                 ? () => context.push(
-                      Routes.adminNotificationCreate(userId: user.id),
+                      Routes.adminNotificationCreateForUser(userId: user.id),
                     )
                 : null,
           ),

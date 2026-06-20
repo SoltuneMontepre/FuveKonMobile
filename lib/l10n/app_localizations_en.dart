@@ -2320,6 +2320,74 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get notificationsMarkAllRead => 'Mark all as read';
+
+  @override
+  String get notificationsMarkAllReadSuccess =>
+      'All notifications marked as read.';
+
+  @override
+  String get notificationsMarkAllReadFailed =>
+      'Could not mark notifications as read. Please try again.';
+
+  @override
+  String get notificationsUnreadOnly => 'Unread only';
+
+  @override
+  String get notificationsEmptyUnread => 'No unread notifications.';
+
+  @override
+  String get adminNotificationsHubTitle => 'Notifications';
+
+  @override
+  String get adminNotificationsHubSubtitle =>
+      'Send to one user or broadcast to a group.';
+
+  @override
+  String get adminNotificationSendToUser => 'Send to user';
+
+  @override
+  String get adminNotificationSendToUserHint =>
+      'Create an in-app notification for a specific account.';
+
+  @override
+  String get adminNotificationBroadcastAction => 'Broadcast';
+
+  @override
+  String get adminNotificationBroadcastTitle => 'Broadcast notification';
+
+  @override
+  String get adminNotificationBroadcastSubtitle =>
+      'Send the same message to all users or a role.';
+
+  @override
+  String get adminNotificationBroadcastAudienceLabel => 'Audience';
+
+  @override
+  String get adminNotificationBroadcastAudienceAll => 'All users';
+
+  @override
+  String get adminNotificationBroadcastAudienceUser => 'Users';
+
+  @override
+  String get adminNotificationBroadcastAudienceDealer => 'Dealers';
+
+  @override
+  String get adminNotificationBroadcastAudienceStaff => 'Staff';
+
+  @override
+  String get adminNotificationBroadcastAudienceAdmin => 'Admins';
+
+  @override
+  String get adminNotificationBroadcastSuccess =>
+      'Notification broadcast sent.';
+
+  @override
+  String adminNotificationBroadcastRecipients(int count) {
+    return 'Delivered to $count recipients.';
+  }
+
+  @override
   String get adminMenuSchedules => 'Schedules';
 
   @override

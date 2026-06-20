@@ -103,10 +103,26 @@ abstract final class AdminRoutes {
                 GoRoute(
                   path: 'notifications',
                   parentNavigatorKey: rootNavigatorKey,
-                  builder: (context, state) {
-                    final userId = state.uri.queryParameters['user_id'];
-                    return AdminNotificationCreatePage(initialUserId: userId);
-                  },
+                  builder: (context, state) =>
+                      const AdminNotificationsHubPage(),
+                  routes: [
+                    GoRoute(
+                      path: 'create',
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) {
+                        final userId = state.uri.queryParameters['user_id'];
+                        return AdminNotificationCreatePage(
+                          initialUserId: userId,
+                        );
+                      },
+                    ),
+                    GoRoute(
+                      path: 'broadcast',
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) =>
+                          const AdminNotificationBroadcastPage(),
+                    ),
+                  ],
                 ),
               ],
             ),

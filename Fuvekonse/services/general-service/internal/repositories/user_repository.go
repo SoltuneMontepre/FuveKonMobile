@@ -1,12 +1,15 @@
 package repositories
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	role "general-service/internal/common/constants"
 	"general-service/internal/models"
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -208,4 +211,17 @@ func (r *UserRepository) CountByAgeRanges(ranges [][2]int) ([]AgeRangeCountResul
 		return nil, err
 	}
 	return results, nil
+}
+
+// ListActiveUserIDs returns IDs of non-deleted users, optionally filtered by role.
+func (r *UserRepository) ListActiveUserIDs(ctx context.Context, roleFilter *role.UserRole) ([]uuid.UUID, error) {
+	q := r.db.WithContext(ctx).Model(&models.User{}).Where("is_deleted = ?", false)
+	if roleFilter != nil {
+		q = q.Where("role = ?", *roleFilter)
+	}
+	var ids []uuid.UUID
+	if err := q.Pluck("id", &ids).Error; err != nil {
+		return nil, err
+	}
+	return ids, nil
 }

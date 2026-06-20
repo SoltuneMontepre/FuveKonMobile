@@ -53,16 +53,8 @@ func (s *NotificationService) Create(ctx context.Context, userIDStr string, req 
 }
 
 func (s *NotificationService) ListMine(ctx context.Context, userIDStr string) ([]responses.NotificationResponse, error) {
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return nil, errors.New("invalid user id")
-	}
-	list, err := s.repos.Notification.ListByUserID(ctx, userID)
-	if err != nil {
-		log.Printf("notification list: %v", err)
-		return nil, err
-	}
-	return mappers.MapNotificationsToResponse(list), nil
+	list, _, err := s.ListMinePaginated(ctx, userIDStr, requests.ListNotificationsQuery{Page: 1, PageSize: 10000})
+	return list, err
 }
 
 func (s *NotificationService) GetByID(ctx context.Context, userIDStr, idStr string) (*responses.NotificationResponse, error) {
@@ -171,48 +163,16 @@ func (s *NotificationService) AdminCreateForUser(ctx context.Context, req *reque
 
 	out := &responses.AdminCreateNotificationResponse{
 		Notification: mappers.MapNotificationToResponse(created),
-		EmailSent:    false,
-		PushSent:     false,
 	}
 
-	if req.SendPush {
-		if s.fcm == nil || !s.fcm.Enabled() {
-			out.PushError = "FCM is not configured"
-		} else {
-			data := map[string]string{
-				"kind":            req.Kind,
-				"notification_id": created.Id.String(),
-			}
-			sent, err := s.fcm.SendToUser(ctx, targetID, req.Title, req.Body, data)
-			if err != nil {
-				log.Printf("admin notification push to user %s: %v", targetID, err)
-				out.PushError = err.Error()
-			} else if sent == 0 {
-				out.PushError = "no registered device tokens"
-			} else {
-				out.PushSent = true
-				out.DevicesNotified = sent
-			}
-		}
-	}
-
-	if req.SendEmail {
-		if fromEmail == "" {
-			out.EmailError = "SES_EMAIL_IDENTITY is not set"
-			return out, nil
-		}
-		if s.mail == nil {
-			out.EmailError = "mail service is not available"
-			return out, nil
-		}
-		lang := LangFromCountry(user.Country)
-		if err := s.mail.SendNotificationEmail(ctx, fromEmail, user.Email, req.Title, req.Body, lang); err != nil {
-			log.Printf("admin notification email to %s: %v", user.Email, err)
-			out.EmailError = err.Error()
-			return out, nil
-		}
-		out.EmailSent = true
-	}
+	emailSent, pushSent, emailErr, pushErr, devices := s.deliverForAdminCreate(
+		ctx, created, user, req.SendPush, req.SendEmail, fromEmail,
+	)
+	out.EmailSent = emailSent
+	out.PushSent = pushSent
+	out.EmailError = emailErr
+	out.PushError = pushErr
+	out.DevicesNotified = devices
 
 	return out, nil
 }

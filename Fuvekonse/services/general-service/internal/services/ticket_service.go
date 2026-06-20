@@ -41,12 +41,13 @@ var (
 var namecardFilenameSanitizer = regexp.MustCompile(`[^a-zA-Z0-9_-]+`)
 
 type TicketService struct {
-	repos *repositories.Repositories
-	mail  *MailService
+	repos  *repositories.Repositories
+	mail   *MailService
+	notify *NotificationService
 }
 
-func NewTicketService(repos *repositories.Repositories, mail *MailService) *TicketService {
-	return &TicketService{repos: repos, mail: mail}
+func NewTicketService(repos *repositories.Repositories, mail *MailService, notify *NotificationService) *TicketService {
+	return &TicketService{repos: repos, mail: mail, notify: notify}
 }
 
 // ========== Public User Endpoints ==========
@@ -260,6 +261,17 @@ func (s *TicketService) PurchaseTicket(ctx context.Context, userID string, req *
 		return nil, err
 	}
 
+	if s.notify != nil {
+		tierName := ticket.Ticket.TicketName
+		s.notify.NotifyUser(
+			ctx,
+			uid,
+			"Đặt vé thành công",
+			fmt.Sprintf("Vé %s đang chờ thanh toán. Mã tham chiếu: %s.", tierName, ticket.ReferenceCode),
+			constants.NotificationKindTicket,
+		)
+	}
+
 	return mappers.MapUserTicketToResponse(ticket, false), nil
 }
 
@@ -282,6 +294,16 @@ func (s *TicketService) ConfirmPayment(ctx context.Context, userID string) (*res
 	ticket, err := s.repos.Ticket.ConfirmPayment(ctx, existingTicket.Id, uid)
 	if err != nil {
 		return nil, err
+	}
+
+	if s.notify != nil {
+		s.notify.NotifyUser(
+			ctx,
+			uid,
+			"Xác nhận thanh toán",
+			fmt.Sprintf("Thanh toán vé %s đã được ghi nhận. Vé đang chờ duyệt.", ticket.ReferenceCode),
+			constants.NotificationKindTicket,
+		)
 	}
 
 	return mappers.MapUserTicketToResponse(ticket, false), nil
@@ -378,6 +400,16 @@ func (s *TicketService) UpgradeTicket(ctx context.Context, userID string, req *r
 	result, err := s.repos.Ticket.UpgradeTicketTier(ctx, uid, newTierID, adminBypass)
 	if err != nil {
 		return nil, err
+	}
+
+	if s.notify != nil && result.Ticket != nil {
+		s.notify.NotifyUser(
+			ctx,
+			uid,
+			"Yêu cầu nâng hạng vé",
+			fmt.Sprintf("Yêu cầu nâng hạng vé %s đã được gửi và đang chờ duyệt.", result.Ticket.ReferenceCode),
+			constants.NotificationKindTicket,
+		)
 	}
 
 	return mappers.MapUpgradeResultToResponse(result), nil
@@ -516,6 +548,17 @@ func (s *TicketService) ApproveTicket(ctx context.Context, ticketID string, staf
 		}
 	}
 
+	if s.notify != nil {
+		tierName := ticket.Ticket.TicketName
+		s.notify.NotifyUser(
+			ctx,
+			ticket.UserId,
+			"Vé đã được duyệt",
+			fmt.Sprintf("Vé %s (%s) đã được phê duyệt. Kiểm tra email để nhận mã QR check-in.", ticket.ReferenceCode, tierName),
+			constants.NotificationKindTicket,
+		)
+	}
+
 	return mappers.MapUserTicketToResponse(ticket, true), nil
 }
 
@@ -597,6 +640,14 @@ func (s *TicketService) DenyTicket(ctx context.Context, ticketID string, staffID
 				log.Printf("Failed to send ticket denied email to %s: %v", ticket.User.Email, err)
 			}
 		}
+	}
+
+	if s.notify != nil {
+		body := fmt.Sprintf("Vé %s đã bị từ chối.", ticket.ReferenceCode)
+		if reason := strings.TrimSpace(req.Reason); reason != "" {
+			body += " Lý do: " + reason
+		}
+		s.notify.NotifyUser(ctx, ticket.UserId, "Vé bị từ chối", body, constants.NotificationKindTicket)
 	}
 
 	return mappers.MapUserTicketToResponse(ticket, true), nil

@@ -129,9 +129,11 @@ abstract final class Routes {
     return '$path?section=$section';
   }
   static const adminNotifications = '/admin/notifications';
-  static String adminNotificationCreate({String? userId}) {
-    if (userId == null || userId.isEmpty) return adminNotifications;
-    return '$adminNotifications?user_id=${Uri.encodeComponent(userId)}';
+  static const adminNotificationCreate = '/admin/notifications/create';
+  static const adminNotificationBroadcast = '/admin/notifications/broadcast';
+  static String adminNotificationCreateForUser({String? userId}) {
+    if (userId == null || userId.isEmpty) return adminNotificationCreate;
+    return '$adminNotificationCreate?user_id=${Uri.encodeComponent(userId)}';
   }
 
   static const publicRoutes = {

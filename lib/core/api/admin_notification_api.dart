@@ -27,4 +27,26 @@ class AdminNotificationApi extends BaseApi {
       mapData: mapJsonObject,
     );
   }
+
+  Future<ApiResponse<Map<String, dynamic>>> broadcast({
+    required String title,
+    required String body,
+    String? kind,
+    String? role,
+    bool sendEmail = false,
+    bool sendPush = false,
+  }) {
+    return post(
+      ApiConstants.adminNotificationsBroadcast,
+      data: {
+        'title': title,
+        'body': body,
+        if (kind != null && kind.isNotEmpty) 'kind': kind,
+        if (role != null && role.isNotEmpty) 'role': role,
+        'send_email': sendEmail,
+        'send_push': sendPush,
+      },
+      mapData: mapJsonObject,
+    );
+  }
 }
