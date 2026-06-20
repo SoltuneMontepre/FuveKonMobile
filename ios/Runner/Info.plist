@@ -70,6 +70,10 @@
 	<string>Ứng dụng cần quyền camera để quét mã QR vé check-in.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Ứng dụng cần quyền thư viện ảnh để tải ảnh lên.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

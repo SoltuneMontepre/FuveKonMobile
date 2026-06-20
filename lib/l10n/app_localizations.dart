@@ -4340,6 +4340,132 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get adminMenuNotifications;
 
+  /// No description provided for @adminNotificationCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send notification'**
+  String get adminNotificationCreateTitle;
+
+  /// No description provided for @adminNotificationCreateSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an in-app notification for a user. Optionally send push and email.'**
+  String get adminNotificationCreateSubtitle;
+
+  /// No description provided for @adminNotificationRecipientLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient'**
+  String get adminNotificationRecipientLabel;
+
+  /// No description provided for @adminNotificationSearchUserHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name or email'**
+  String get adminNotificationSearchUserHint;
+
+  /// No description provided for @adminNotificationSelectUserRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a recipient user.'**
+  String get adminNotificationSelectUserRequired;
+
+  /// No description provided for @adminNotificationTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get adminNotificationTitleLabel;
+
+  /// No description provided for @adminNotificationTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required.'**
+  String get adminNotificationTitleRequired;
+
+  /// No description provided for @adminNotificationBodyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get adminNotificationBodyLabel;
+
+  /// No description provided for @adminNotificationKindLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Kind (optional)'**
+  String get adminNotificationKindLabel;
+
+  /// No description provided for @adminNotificationKindHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. announcement'**
+  String get adminNotificationKindHint;
+
+  /// No description provided for @adminNotificationSendPush.
+  ///
+  /// In en, this message translates to:
+  /// **'Send push notification'**
+  String get adminNotificationSendPush;
+
+  /// No description provided for @adminNotificationSendPushHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliver via FCM to registered mobile devices.'**
+  String get adminNotificationSendPushHint;
+
+  /// No description provided for @adminNotificationSendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send email'**
+  String get adminNotificationSendEmail;
+
+  /// No description provided for @adminNotificationSendEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Email the same title and message to the user.'**
+  String get adminNotificationSendEmailHint;
+
+  /// No description provided for @adminNotificationSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send notification'**
+  String get adminNotificationSend;
+
+  /// No description provided for @adminNotificationSendAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify'**
+  String get adminNotificationSendAction;
+
+  /// No description provided for @adminNotificationCreateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification created.'**
+  String get adminNotificationCreateSuccess;
+
+  /// No description provided for @adminNotificationPushSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Push delivered to {count, plural, =0 {no devices} =1 {1 device} other {{count} devices}}.'**
+  String adminNotificationPushSent(int count);
+
+  /// No description provided for @adminNotificationPushFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Push failed: {error}'**
+  String adminNotificationPushFailed(String error);
+
+  /// No description provided for @adminNotificationEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Email sent.'**
+  String get adminNotificationEmailSent;
+
+  /// No description provided for @adminNotificationEmailFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Email failed: {error}'**
+  String adminNotificationEmailFailed(String error);
+
   /// No description provided for @adminMenuSchedules.
   ///
   /// In en, this message translates to:

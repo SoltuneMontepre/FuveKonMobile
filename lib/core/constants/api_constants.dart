@@ -176,4 +176,10 @@ abstract final class ApiConstants {
   // —— Notifications (user) ——
   static const String notifications = '/notifications';
   static String notification(String id) => '/notifications/$id';
+
+  // —— Notifications (admin) ——
+  static const String adminNotifications = '/admin/notifications';
+
+  // —— Devices (FCM push) ——
+  static const String devicesFcmToken = '/devices/fcm-token';
 }

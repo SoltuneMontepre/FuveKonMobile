@@ -1,5 +1,10 @@
 .env
 
+# Firebase (download from Firebase Console — see docs/FCM_SETUP.md)
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+**/firebase-service-account*.json
+
 # Miscellaneous
 *.class
 *.log

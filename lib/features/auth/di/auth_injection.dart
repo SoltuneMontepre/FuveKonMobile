@@ -29,6 +29,7 @@ void registerAuthModule(GetIt sl) {
         remoteDataSource: sl(),
         tokenStorage: sl(),
         tokenRefreshService: sl(),
+        pushNotificationService: sl(),
       ),
     )
     ..registerLazySingleton(() => LoginUseCase(sl()))

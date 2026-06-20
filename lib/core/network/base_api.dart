@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/core/network/api_client.dart';
@@ -87,12 +88,14 @@ abstract class BaseApi {
     Map<String, dynamic>? queryParameters,
     T? Function(dynamic value)? mapData,
     bool throwOnFailure = true,
+    Options? options,
   }) {
     return _envelope(
       _client.delete<JsonMap>(
         path,
         data: data,
         queryParameters: queryParameters,
+        options: options,
       ),
       mapData: mapData,
       throwOnFailure: throwOnFailure,
@@ -152,6 +155,13 @@ abstract class BaseApi {
           isSuccess: true,
           message: 'Success',
           statusCode: statusCode,
+        );
+      }
+      if (!throwOnFailure) {
+        return ApiResponse<T>(
+          isSuccess: false,
+          message: 'Request failed',
+          statusCode: statusCode ?? 0,
         );
       }
       throw const ServerException('Empty response');

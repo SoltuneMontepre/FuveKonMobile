@@ -4,7 +4,6 @@ import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
-import 'package:fuvekonmobile/features/notification/presentation/pages/notifications_page.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/shared/widgets/home/fuvekon_home_layout.dart';
 import 'package:go_router/go_router.dart';
@@ -136,6 +135,13 @@ class AdminHomeSections extends StatelessWidget {
               icon: Icons.analytics_outlined,
               onTap: () => context.go(Routes.adminDashboard),
             ),
+          if (auth.hasPermission(UserPermissions.sendNotifications))
+            _item(
+              context,
+              label: l10n.adminMenuNotifications,
+              icon: Icons.notifications_outlined,
+              onTap: () => context.push(Routes.adminNotifications),
+            ),
         ],
       ),
     ].whereType<Widget>().toList();
@@ -192,36 +198,31 @@ class AdminHomeSections extends StatelessWidget {
               icon: Icons.people_outline,
               onTap: () => context.push(Routes.adminUsers),
             ),
+          if (auth.hasPermission(UserPermissions.sendNotifications))
+            _item(
+              context,
+              label: l10n.adminMenuNotifications,
+              icon: Icons.notifications_outlined,
+              onTap: () => context.push(Routes.adminNotifications),
+            ),
         ],
       ),
-      _section(
-        context,
-        title: l10n.adminSectionOther,
-        subtitle: l10n.adminSectionOtherSubtitle,
-        icon: Icons.more_horiz_rounded,
-        items: [
-          _item(
-            context,
-            label: l10n.adminMenuNotifications,
-            icon: Icons.notifications_outlined,
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const NotificationsPage(),
-                ),
-              );
-            },
-          ),
-          if (includePublicSchedule &&
-              !auth.hasPermission(UserPermissions.approveProfiles))
+      if (includePublicSchedule &&
+          !auth.hasPermission(UserPermissions.approveProfiles))
+        _section(
+          context,
+          title: l10n.adminSectionOther,
+          subtitle: l10n.adminSectionOtherSubtitle,
+          icon: Icons.more_horiz_rounded,
+          items: [
             _item(
               context,
               label: l10n.adminMenuSchedules,
               icon: Icons.calendar_month_outlined,
               onTap: () => context.push(Routes.schedule),
             ),
-        ],
-      ),
+          ],
+        ),
     ].whereType<Widget>().toList();
   }
 

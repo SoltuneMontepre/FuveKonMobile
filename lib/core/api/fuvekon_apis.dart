@@ -1,3 +1,4 @@
+import 'package:fuvekonmobile/core/api/admin_notification_api.dart';
 import 'package:fuvekonmobile/core/api/admin_ticket_api.dart';
 import 'package:fuvekonmobile/core/api/admin_user_api.dart';
 import 'package:fuvekonmobile/core/api/analytics_api.dart';
@@ -6,6 +7,7 @@ import 'package:fuvekonmobile/core/api/health_api.dart';
 import 'package:fuvekonmobile/core/api/auth_api.dart';
 import 'package:fuvekonmobile/core/api/conbook_api.dart';
 import 'package:fuvekonmobile/core/api/dealer_api.dart';
+import 'package:fuvekonmobile/core/api/device_api.dart';
 import 'package:fuvekonmobile/core/api/lost_found_api.dart';
 import 'package:fuvekonmobile/core/api/panel_api.dart';
 import 'package:fuvekonmobile/core/api/talent_api.dart';
@@ -22,6 +24,7 @@ class FuvekonApis {
         ticket = TicketApi(client),
         adminTicket = AdminTicketApi(client),
         adminUser = AdminUserApi(client),
+        adminNotification = AdminNotificationApi(client),
         dealer = DealerApi(client),
         adminDealer = AdminDealerApi(client),
         talent = TalentApi(client),
@@ -32,6 +35,7 @@ class FuvekonApis {
         adminLostFound = AdminLostFoundApi(client),
         lostFound = LostFoundApi(client),
         notification = NotificationApi(client),
+        device = DeviceApi(client),
         schedule = ScheduleApi(client),
         adminSchedule = AdminScheduleApi(client),
         adminVenue = AdminVenueApi(client),
@@ -44,6 +48,7 @@ class FuvekonApis {
   final TicketApi ticket;
   final AdminTicketApi adminTicket;
   final AdminUserApi adminUser;
+  final AdminNotificationApi adminNotification;
   final DealerApi dealer;
   final AdminDealerApi adminDealer;
   final TalentApi talent;
@@ -54,6 +59,7 @@ class FuvekonApis {
   final AdminLostFoundApi adminLostFound;
   final LostFoundApi lostFound;
   final NotificationApi notification;
+  final DeviceApi device;
   final ScheduleApi schedule;
   final AdminScheduleApi adminSchedule;
   final AdminVenueApi adminVenue;

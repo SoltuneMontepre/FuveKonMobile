@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/auth/user_permissions.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
+import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
@@ -221,6 +223,8 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
     final effectivePermissions = isAdminRole(user.role)
         ? adminPermissionCodes
         : user.permissions;
+    final canSendNotification =
+        sl<AuthSessionNotifier>().hasPermission(UserPermissions.sendNotifications);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(
@@ -256,6 +260,11 @@ class _AdminUserDetailPageState extends State<AdminUserDetailPage> {
             onUnblacklist: () =>
                 _runAction(() => _service.unblacklistUser(user.id)),
             onDelete: _confirmDelete,
+            onSendNotification: canSendNotification
+                ? () => context.push(
+                      Routes.adminNotificationCreate(userId: user.id),
+                    )
+                : null,
           ),
           const SizedBox(height: FuvekonSpacing.section),
         ],
@@ -284,6 +293,7 @@ class _QuickActionsSection extends StatelessWidget {
     required this.onBlacklist,
     required this.onUnblacklist,
     required this.onDelete,
+    this.onSendNotification,
   });
 
   final AppLocalizations l10n;
@@ -296,6 +306,7 @@ class _QuickActionsSection extends StatelessWidget {
   final VoidCallback onBlacklist;
   final VoidCallback onUnblacklist;
   final VoidCallback onDelete;
+  final VoidCallback? onSendNotification;
 
   @override
   Widget build(BuildContext context) {
@@ -332,6 +343,13 @@ class _QuickActionsSection extends StatelessWidget {
               variant: _QuickActionVariant.secondary,
               onTap: loading ? null : onPermissions,
             ),
+            if (onSendNotification != null)
+              _QuickActionCard(
+                icon: Icons.notifications_outlined,
+                label: l10n.adminNotificationSendAction,
+                variant: _QuickActionVariant.secondary,
+                onTap: loading ? null : onSendNotification,
+              ),
             if (isBlacklisted)
               _QuickActionCard(
                 icon: Icons.lock_open_rounded,

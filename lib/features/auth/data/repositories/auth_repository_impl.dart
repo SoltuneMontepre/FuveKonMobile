@@ -1,5 +1,6 @@
 import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
+import 'package:fuvekonmobile/core/services/push_notification_service.dart';
 import 'package:fuvekonmobile/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:fuvekonmobile/features/auth/data/mappers/user_mapper.dart';
 import 'package:fuvekonmobile/features/auth/domain/entities/google_register_input.dart';
@@ -14,13 +15,16 @@ class AuthRepositoryImpl implements AuthRepository {
     required AuthRemoteDataSource remoteDataSource,
     required TokenStorage tokenStorage,
     required TokenRefreshService tokenRefreshService,
+    PushNotificationService? pushNotificationService,
   })  : _remoteDataSource = remoteDataSource,
         _tokenStorage = tokenStorage,
-        _tokenRefreshService = tokenRefreshService;
+        _tokenRefreshService = tokenRefreshService,
+        _pushNotificationService = pushNotificationService;
 
   final AuthRemoteDataSource _remoteDataSource;
   final TokenStorage _tokenStorage;
   final TokenRefreshService _tokenRefreshService;
+  final PushNotificationService? _pushNotificationService;
 
   @override
   Future<Result<User>> login({
@@ -87,6 +91,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Result<void>> logout() async {
     try {
+      await _pushNotificationService?.unregisterToken();
       final hasToken = await isLoggedIn();
       if (hasToken) {
         await _remoteDataSource.logout();

@@ -16,6 +16,7 @@ export 'admin_scan_history_page.dart';
 export 'admin_scan_ticket_page.dart';
 export 'admin_schedules_page.dart';
 export 'admin_schedule_detail_page.dart';
+export 'admin_notification_create_page.dart';
 export 'admin_user_detail_page.dart';
 export 'admin_user_edit_page.dart';
 export 'admin_tier_edit_page.dart';

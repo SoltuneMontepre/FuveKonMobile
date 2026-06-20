@@ -2238,6 +2238,85 @@ class AppLocalizationsVi extends AppLocalizations {
   String get adminMenuNotifications => 'Thông báo';
 
   @override
+  String get adminNotificationCreateTitle => 'Gửi thông báo';
+
+  @override
+  String get adminNotificationCreateSubtitle =>
+      'Tạo thông báo trong app cho người dùng. Có thể gửi kèm push và email.';
+
+  @override
+  String get adminNotificationRecipientLabel => 'Người nhận';
+
+  @override
+  String get adminNotificationSearchUserHint => 'Tìm theo tên hoặc email';
+
+  @override
+  String get adminNotificationSelectUserRequired => 'Vui lòng chọn người nhận.';
+
+  @override
+  String get adminNotificationTitleLabel => 'Tiêu đề';
+
+  @override
+  String get adminNotificationTitleRequired => 'Tiêu đề là bắt buộc.';
+
+  @override
+  String get adminNotificationBodyLabel => 'Nội dung';
+
+  @override
+  String get adminNotificationKindLabel => 'Loại (tuỳ chọn)';
+
+  @override
+  String get adminNotificationKindHint => 'vd: announcement';
+
+  @override
+  String get adminNotificationSendPush => 'Gửi push notification';
+
+  @override
+  String get adminNotificationSendPushHint =>
+      'Gửi qua FCM tới thiết bị đã đăng ký.';
+
+  @override
+  String get adminNotificationSendEmail => 'Gửi email';
+
+  @override
+  String get adminNotificationSendEmailHint =>
+      'Gửi email cùng tiêu đề và nội dung cho người dùng.';
+
+  @override
+  String get adminNotificationSend => 'Gửi thông báo';
+
+  @override
+  String get adminNotificationSendAction => 'Thông báo';
+
+  @override
+  String get adminNotificationCreateSuccess => 'Đã tạo thông báo.';
+
+  @override
+  String adminNotificationPushSent(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count thiết bị',
+      one: '1 thiết bị',
+      zero: '0 thiết bị',
+    );
+    return 'Đã gửi push tới $_temp0.';
+  }
+
+  @override
+  String adminNotificationPushFailed(String error) {
+    return 'Gửi push thất bại: $error';
+  }
+
+  @override
+  String get adminNotificationEmailSent => 'Đã gửi email.';
+
+  @override
+  String adminNotificationEmailFailed(String error) {
+    return 'Gửi email thất bại: $error';
+  }
+
+  @override
   String get adminMenuSchedules => 'Lịch trình';
 
   @override

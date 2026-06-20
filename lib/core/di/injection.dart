@@ -7,6 +7,7 @@ import 'package:fuvekonmobile/core/router/app_router.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/di/api_injection.dart';
 import 'package:fuvekonmobile/features/auth/di/auth_injection.dart';
+import 'package:fuvekonmobile/core/services/push_notification_service.dart';
 import 'package:fuvekonmobile/features/profile/di/profile_injection.dart';
 import 'package:fuvekonmobile/features/notification/di/notification_injection.dart';
 import 'package:fuvekonmobile/features/schedule/di/schedule_injection.dart';
@@ -53,14 +54,6 @@ Future<void> configureDependencies() async {
     )
     ..registerLazySingleton(() => ApiClient(sl()))
     ..registerLazySingleton(AuthSessionNotifier.new)
-    ..registerLazySingleton(
-      () => SessionHydrationService(
-        notifier: sl(),
-        getMeUseCase: sl(),
-        accountApi: sl(),
-        sessionController: sl(),
-      ),
-    )
     ..registerLazySingleton(() => AppRouter(authSessionNotifier: sl()));
 
   registerApiModule(sl);
@@ -69,4 +62,22 @@ Future<void> configureDependencies() async {
   registerTicketModule(sl);
   registerNotificationModule(sl);
   registerScheduleModule(sl, useMock: false);
+
+  sl
+    ..registerLazySingleton(
+      () => PushNotificationService(
+        deviceApi: sl(),
+        tokenStorage: sl(),
+        appRouter: sl(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => SessionHydrationService(
+        notifier: sl(),
+        getMeUseCase: sl(),
+        accountApi: sl(),
+        sessionController: sl(),
+        pushNotificationService: sl(),
+      ),
+    );
 }

@@ -1475,6 +1475,66 @@
   "@adminMenuStats": {},
   "adminMenuNotifications": "Notifications",
   "@adminMenuNotifications": {},
+  "adminNotificationCreateTitle": "Send notification",
+  "@adminNotificationCreateTitle": {},
+  "adminNotificationCreateSubtitle": "Create an in-app notification for a user. Optionally send push and email.",
+  "@adminNotificationCreateSubtitle": {},
+  "adminNotificationRecipientLabel": "Recipient",
+  "@adminNotificationRecipientLabel": {},
+  "adminNotificationSearchUserHint": "Search by name or email",
+  "@adminNotificationSearchUserHint": {},
+  "adminNotificationSelectUserRequired": "Select a recipient user.",
+  "@adminNotificationSelectUserRequired": {},
+  "adminNotificationTitleLabel": "Title",
+  "@adminNotificationTitleLabel": {},
+  "adminNotificationTitleRequired": "Title is required.",
+  "@adminNotificationTitleRequired": {},
+  "adminNotificationBodyLabel": "Message",
+  "@adminNotificationBodyLabel": {},
+  "adminNotificationKindLabel": "Kind (optional)",
+  "@adminNotificationKindLabel": {},
+  "adminNotificationKindHint": "e.g. announcement",
+  "@adminNotificationKindHint": {},
+  "adminNotificationSendPush": "Send push notification",
+  "@adminNotificationSendPush": {},
+  "adminNotificationSendPushHint": "Deliver via FCM to registered mobile devices.",
+  "@adminNotificationSendPushHint": {},
+  "adminNotificationSendEmail": "Send email",
+  "@adminNotificationSendEmail": {},
+  "adminNotificationSendEmailHint": "Email the same title and message to the user.",
+  "@adminNotificationSendEmailHint": {},
+  "adminNotificationSend": "Send notification",
+  "@adminNotificationSend": {},
+  "adminNotificationSendAction": "Notify",
+  "@adminNotificationSendAction": {},
+  "adminNotificationCreateSuccess": "Notification created.",
+  "@adminNotificationCreateSuccess": {},
+  "adminNotificationPushSent": "Push delivered to {count, plural, =0 {no devices} =1 {1 device} other {{count} devices}}.",
+  "@adminNotificationPushSent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "adminNotificationPushFailed": "Push failed: {error}",
+  "@adminNotificationPushFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "adminNotificationEmailSent": "Email sent.",
+  "@adminNotificationEmailSent": {},
+  "adminNotificationEmailFailed": "Email failed: {error}",
+  "@adminNotificationEmailFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "adminMenuSchedules": "Schedules",
   "@adminMenuSchedules": {},
   "adminEventSchedulesTitle": "Schedule management",

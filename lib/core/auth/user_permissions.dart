@@ -101,6 +101,9 @@ abstract final class UserPermissions {
     if (location.startsWith('${Routes.admin}/users')) {
       return manageUsers;
     }
+    if (location.startsWith(Routes.adminNotifications)) {
+      return sendNotifications;
+    }
     if (location.startsWith('${Routes.admin}/art-submit') ||
         location.startsWith('${Routes.admin}/panels') ||
         location.startsWith('${Routes.admin}/talents') ||

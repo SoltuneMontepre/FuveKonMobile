@@ -9,6 +9,7 @@ import 'package:fuvekonmobile/screens/admin/services/admin_dashboard_service.dar
 import 'package:fuvekonmobile/screens/admin/services/admin_dealer_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_lost_found_service.dart';
 import 'package:fuvekonmobile/screens/info/lost_found_service.dart';
+import 'package:fuvekonmobile/screens/admin/services/admin_notification_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_panel_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_schedule_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_event_settings_service.dart';
@@ -28,6 +29,7 @@ void registerApiModule(GetIt sl) {
     ..registerLazySingleton(() => sl<FuvekonApis>().ticket)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminTicket)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminUser)
+    ..registerLazySingleton(() => sl<FuvekonApis>().adminNotification)
     ..registerLazySingleton(() => sl<FuvekonApis>().dealer)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminDealer)
     ..registerLazySingleton(() => sl<FuvekonApis>().talent)
@@ -38,6 +40,7 @@ void registerApiModule(GetIt sl) {
     ..registerLazySingleton(() => sl<FuvekonApis>().adminLostFound)
     ..registerLazySingleton(() => sl<FuvekonApis>().lostFound)
     ..registerLazySingleton(() => sl<FuvekonApis>().notification)
+    ..registerLazySingleton(() => sl<FuvekonApis>().device)
     ..registerLazySingleton(() => sl<FuvekonApis>().schedule)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminSchedule)
     ..registerLazySingleton(() => sl<FuvekonApis>().adminVenue)
@@ -64,6 +67,9 @@ void registerApiModule(GetIt sl) {
     )
     ..registerLazySingleton(
       () => AdminUserService(adminUserApi: sl()),
+    )
+    ..registerLazySingleton(
+      () => AdminNotificationService(api: sl()),
     )
     ..registerLazySingleton(
       () => AdminLostFoundService(api: sl<AdminLostFoundApi>()),

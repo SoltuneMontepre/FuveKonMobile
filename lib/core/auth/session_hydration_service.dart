@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:fuvekonmobile/core/api/auth_api.dart';
 import 'package:fuvekonmobile/core/auth/auth_session_controller.dart';
 import 'package:fuvekonmobile/core/auth/user_role.dart';
 import 'package:fuvekonmobile/core/errors/failures.dart';
 import 'package:fuvekonmobile/core/errors/result.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
+import 'package:fuvekonmobile/core/services/push_notification_service.dart';
 import 'package:fuvekonmobile/features/profile/domain/usecases/get_me_usecase.dart';
 
 /// Loads the signed-in account role and permissions after auth is restored.
@@ -13,15 +16,18 @@ class SessionHydrationService {
     required GetMeUseCase getMeUseCase,
     required AccountApi accountApi,
     required AuthSessionController sessionController,
+    PushNotificationService? pushNotificationService,
   }) : _notifier = notifier,
        _getMeUseCase = getMeUseCase,
        _accountApi = accountApi,
-       _sessionController = sessionController;
+       _sessionController = sessionController,
+       _pushNotificationService = pushNotificationService;
 
   final AuthSessionNotifier _notifier;
   final GetMeUseCase _getMeUseCase;
   final AccountApi _accountApi;
   final AuthSessionController _sessionController;
+  final PushNotificationService? _pushNotificationService;
   Future<void>? _inFlight;
 
   Future<void> hydrate({bool force = false}) async {
@@ -68,6 +74,7 @@ class SessionHydrationService {
             permissions: await _loadPermissions(),
             success: true,
           );
+          unawaited(_syncPushNotifications());
         case Error(:final failure):
           if (failure is AuthFailure) {
             // Stale token (e.g. after DB reseed) or revoked session.
@@ -92,6 +99,11 @@ class SessionHydrationService {
       // Permissions are optional; HTTP failures are ignored here.
     }
     return const [];
+  }
+
+  Future<void> _syncPushNotifications() async {
+    await _pushNotificationService?.initialize();
+    await _pushNotificationService?.registerTokenIfAuthenticated();
   }
 
   void _failHydration(String message) {

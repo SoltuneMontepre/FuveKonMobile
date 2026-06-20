@@ -58,10 +58,10 @@ func NewFCMService(repos *repositories.Repositories) *FCMService {
 }
 
 func loadFCMCredentialsJSON() ([]byte, error) {
-	if path := strings.TrimSpace(os.Getenv("FCM_SERVICE_ACCOUNT_PATH")); path != "" {
+	if path := trimEnvPath(os.Getenv("FCM_SERVICE_ACCOUNT_PATH")); path != "" {
 		data, err := os.ReadFile(path)
 		if err != nil {
-			return nil, fmt.Errorf("read FCM_SERVICE_ACCOUNT_PATH: %w", err)
+			return nil, fmt.Errorf("read FCM_SERVICE_ACCOUNT_PATH (%s): %w", path, err)
 		}
 		return data, nil
 	}
@@ -71,6 +71,10 @@ func loadFCMCredentialsJSON() ([]byte, error) {
 	}
 
 	return nil, errors.New("set FCM_SERVICE_ACCOUNT_JSON or FCM_SERVICE_ACCOUNT_PATH to enable push")
+}
+
+func trimEnvPath(value string) string {
+	return strings.Trim(strings.TrimSpace(value), `"'`)
 }
 
 func (s *FCMService) Enabled() bool {

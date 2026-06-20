@@ -100,6 +100,14 @@ abstract final class AdminRoutes {
                     ),
                   ],
                 ),
+                GoRoute(
+                  path: 'notifications',
+                  parentNavigatorKey: rootNavigatorKey,
+                  builder: (context, state) {
+                    final userId = state.uri.queryParameters['user_id'];
+                    return AdminNotificationCreatePage(initialUserId: userId);
+                  },
+                ),
               ],
             ),
           ],

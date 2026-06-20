@@ -2241,6 +2241,85 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminMenuNotifications => 'Notifications';
 
   @override
+  String get adminNotificationCreateTitle => 'Send notification';
+
+  @override
+  String get adminNotificationCreateSubtitle =>
+      'Create an in-app notification for a user. Optionally send push and email.';
+
+  @override
+  String get adminNotificationRecipientLabel => 'Recipient';
+
+  @override
+  String get adminNotificationSearchUserHint => 'Search by name or email';
+
+  @override
+  String get adminNotificationSelectUserRequired => 'Select a recipient user.';
+
+  @override
+  String get adminNotificationTitleLabel => 'Title';
+
+  @override
+  String get adminNotificationTitleRequired => 'Title is required.';
+
+  @override
+  String get adminNotificationBodyLabel => 'Message';
+
+  @override
+  String get adminNotificationKindLabel => 'Kind (optional)';
+
+  @override
+  String get adminNotificationKindHint => 'e.g. announcement';
+
+  @override
+  String get adminNotificationSendPush => 'Send push notification';
+
+  @override
+  String get adminNotificationSendPushHint =>
+      'Deliver via FCM to registered mobile devices.';
+
+  @override
+  String get adminNotificationSendEmail => 'Send email';
+
+  @override
+  String get adminNotificationSendEmailHint =>
+      'Email the same title and message to the user.';
+
+  @override
+  String get adminNotificationSend => 'Send notification';
+
+  @override
+  String get adminNotificationSendAction => 'Notify';
+
+  @override
+  String get adminNotificationCreateSuccess => 'Notification created.';
+
+  @override
+  String adminNotificationPushSent(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count devices',
+      one: '1 device',
+      zero: 'no devices',
+    );
+    return 'Push delivered to $_temp0.';
+  }
+
+  @override
+  String adminNotificationPushFailed(String error) {
+    return 'Push failed: $error';
+  }
+
+  @override
+  String get adminNotificationEmailSent => 'Email sent.';
+
+  @override
+  String adminNotificationEmailFailed(String error) {
+    return 'Email failed: $error';
+  }
+
+  @override
   String get adminMenuSchedules => 'Schedules';
 
   @override
