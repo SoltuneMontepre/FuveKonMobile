@@ -32,12 +32,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageEnglish => 'English';
 
   @override
-  String get themeSwitchToLight => 'Light mode';
-
-  @override
-  String get themeSwitchToDark => 'Dark mode';
-
-  @override
   String get splashTagline => 'Where event communities and art connect';
 
   @override

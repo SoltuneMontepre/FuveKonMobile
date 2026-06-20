@@ -37,7 +37,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
   Future<void> _continue() async {
     await sl<AppPreferences>().setIntroductionCompleted(true);
     if (!mounted) return;
-    context.go(Routes.home);
+    context.go(Routes.tosOnboarding);
   }
 
   @override

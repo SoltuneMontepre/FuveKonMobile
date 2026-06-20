@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
+import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
@@ -12,6 +13,7 @@ import 'package:fuvekonmobile/features/profile/domain/entities/account.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_event.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_state.dart';
+import 'package:fuvekonmobile/shared/services/app_preferences.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
@@ -146,56 +148,6 @@ class _ProfileBody extends StatelessWidget {
             ],
           ),
         ),
-        if (account.isDealer == true || account.isHasTicket == true) ...[
-          const SizedBox(height: FuvekonSpacing.stackGapLg),
-          const FuveSectionHeader(title: 'Trạng thái'),
-          const SizedBox(height: FuvekonSpacing.stackGapMd),
-          FuveMintCard(
-            child: Column(
-              children: [
-                if (account.isDealer == true)
-                  FuveSettingsRow(
-                    icon: Icons.storefront_outlined,
-                    label: 'Gian hàng dealer',
-                    subtitle: 'Quản lý booth và nhân viên',
-                    onTap: () => context.push(Routes.accountDealer),
-                    showDivider: account.isHasTicket == true,
-                  ),
-                if (account.isHasTicket == true)
-                  FuveSettingsRow(
-                    icon: Icons.confirmation_number_outlined,
-                    label: 'Vé của tôi',
-                    subtitle: 'Xem vé và QR check-in',
-                    onTap: () => context.go(Routes.accountTicket),
-                    showDivider: false,
-                  ),
-              ],
-            ),
-          ),
-        ],
-        const SizedBox(height: FuvekonSpacing.stackGapLg),
-        const FuveSectionHeader(title: 'Hồ sơ & đăng ký'),
-        const SizedBox(height: FuvekonSpacing.stackGapMd),
-        FuveMintCard(
-          child: Column(
-            children: [
-              FuveSettingsRow(
-                icon: Icons.folder_shared_outlined,
-                label: 'Hồ sơ đã gửi',
-                subtitle: 'Panel, talent, conbook',
-                onTap: () => context.push(Routes.accountSubmissions),
-                showDivider: true,
-              ),
-              FuveSettingsRow(
-                icon: Icons.menu_book_outlined,
-                label: 'Thông tin conbook',
-                subtitle: 'Quy định và gửi bài',
-                onTap: () => context.push(Routes.artbook),
-                showDivider: false,
-              ),
-            ],
-          ),
-        ),
         const SizedBox(height: FuvekonSpacing.stackGapLg),
         const FuveSectionHeader(title: 'Cài đặt tài khoản'),
         const SizedBox(height: FuvekonSpacing.stackGapMd),
@@ -219,28 +171,18 @@ class _ProfileBody extends StatelessWidget {
                 showDivider: true,
               ),
               FuveSettingsRow(
-                icon: Icons.verified_user_outlined,
-                label: 'Xác minh danh tính',
-                subtitle: 'API đang phát triển',
-                onTap: () => context.push(Routes.accountVerifyIdentity),
-                showDivider: true,
-              ),
-              FuveSettingsRow(
                 icon: Icons.lock_outline,
                 label: 'Đổi mật khẩu',
                 onTap: () => context.push(Routes.accountChangePassword),
-                showDivider: true,
-              ),
-              FuveSettingsRow(
-                icon: Icons.settings_outlined,
-                label: 'Cài đặt ứng dụng',
-                subtitle: 'Giao diện và ngôn ngữ',
-                onTap: () => context.push(Routes.accountSettings),
                 showDivider: false,
               ),
             ],
           ),
         ),
+        const SizedBox(height: FuvekonSpacing.stackGapLg),
+        const FuveSectionHeader(title: 'Ngôn ngữ'),
+        const SizedBox(height: FuvekonSpacing.stackGapMd),
+        const _ProfileLanguageSection(),
         const SizedBox(height: FuvekonSpacing.stackGapLg),
         FuvePillButton(
           label: 'Đăng xuất',
@@ -266,6 +208,90 @@ String? _fullName(Account account) {
 String _displayOrPlaceholder(String? value) {
   if (value == null || value.trim().isEmpty) return '—';
   return value.trim();
+}
+
+class _ProfileLanguageSection extends StatefulWidget {
+  const _ProfileLanguageSection();
+
+  @override
+  State<_ProfileLanguageSection> createState() => _ProfileLanguageSectionState();
+}
+
+class _ProfileLanguageSectionState extends State<_ProfileLanguageSection> {
+  final _localeNotifier = sl<LocaleNotifier>();
+  String _language = 'vi';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLanguage();
+  }
+
+  Future<void> _loadLanguage() async {
+    final saved = await sl<AppPreferences>().languageCode;
+    if (!mounted) return;
+    setState(() => _language = saved ?? _localeNotifier.locale.languageCode);
+  }
+
+  Future<void> _setLanguage(String code) async {
+    setState(() => _language = code);
+    _localeNotifier.update(Locale(code));
+    await sl<AppPreferences>().setLanguageCode(code);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: _localeNotifier,
+      builder: (context, _) {
+        return FuveMintCard(
+          child: Column(
+            children: [
+              _ProfileLanguageRow(
+                label: 'Tiếng Việt',
+                selected: _language == 'vi',
+                onTap: () => _setLanguage('vi'),
+                showDivider: true,
+              ),
+              _ProfileLanguageRow(
+                label: 'English',
+                selected: _language == 'en',
+                onTap: () => _setLanguage('en'),
+                showDivider: false,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ProfileLanguageRow extends StatelessWidget {
+  const _ProfileLanguageRow({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    required this.showDivider,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  final bool showDivider;
+
+  @override
+  Widget build(BuildContext context) {
+    return FuveSettingsRow(
+      icon: Icons.language,
+      label: label,
+      onTap: onTap,
+      showDivider: showDivider,
+      trailing: selected
+          ? Icon(Icons.check_circle, color: FuvekonColors.premiumPrimary, size: 22)
+          : Icon(Icons.circle_outlined, color: FuvekonColors.premiumOutline, size: 22),
+    );
+  }
 }
 
 class _InfoRow extends StatelessWidget {

@@ -140,18 +140,6 @@ abstract class AppLocalizations {
   /// **'English'**
   String get languageEnglish;
 
-  /// No description provided for @themeSwitchToLight.
-  ///
-  /// In en, this message translates to:
-  /// **'Light mode'**
-  String get themeSwitchToLight;
-
-  /// No description provided for @themeSwitchToDark.
-  ///
-  /// In en, this message translates to:
-  /// **'Dark mode'**
-  String get themeSwitchToDark;
-
   /// No description provided for @splashTagline.
   ///
   /// In en, this message translates to:

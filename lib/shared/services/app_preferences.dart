@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class AppPreferences {
@@ -13,9 +12,6 @@ abstract interface class AppPreferences {
 
   Future<String?> get languageCode;
   Future<void> setLanguageCode(String code);
-
-  Future<ThemeMode> get themeMode;
-  Future<void> setThemeMode(ThemeMode mode);
 }
 
 final class SharedAppPreferences implements AppPreferences {
@@ -27,7 +23,6 @@ final class SharedAppPreferences implements AppPreferences {
   static const _introductionKey = 'introduction_completed';
   static const _eventRulesKey = 'event_rules_accepted';
   static const _languageKey = 'language_code';
-  static const _themeModeKey = 'theme_mode';
 
   static Future<SharedAppPreferences> create() async {
     final prefs = await SharedPreferences.getInstance();
@@ -67,19 +62,5 @@ final class SharedAppPreferences implements AppPreferences {
   @override
   Future<void> setLanguageCode(String code) async {
     await _prefs.setString(_languageKey, code);
-  }
-
-  @override
-  Future<ThemeMode> get themeMode async {
-    final saved = _prefs.getString(_themeModeKey);
-    return saved == 'light' ? ThemeMode.light : ThemeMode.dark;
-  }
-
-  @override
-  Future<void> setThemeMode(ThemeMode mode) async {
-    await _prefs.setString(
-      _themeModeKey,
-      mode == ThemeMode.light ? 'light' : 'dark',
-    );
   }
 }

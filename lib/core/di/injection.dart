@@ -18,7 +18,6 @@ import 'package:fuvekonmobile/shared/services/token_refresh_service.dart';
 import 'package:fuvekonmobile/shared/services/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
-import 'package:fuvekonmobile/core/theme/theme_mode_notifier.dart';
 import 'package:get_it/get_it.dart';
 
 final GetIt sl = GetIt.instance;
@@ -27,7 +26,6 @@ Future<void> configureDependencies() async {
   final appPreferences = await SharedAppPreferences.create();
   final scanSessionStore = await ScanSessionStore.create();
   final savedLanguage = await appPreferences.languageCode;
-  final savedThemeMode = await appPreferences.themeMode;
 
   sl
     ..registerSingleton<AppPreferences>(appPreferences)
@@ -38,9 +36,6 @@ Future<void> configureDependencies() async {
             ? Locale(savedLanguage)
             : const Locale('vi'),
       ),
-    )
-    ..registerLazySingleton(
-      () => ThemeModeNotifier(initialMode: savedThemeMode),
     )
     ..registerLazySingleton<TokenStorage>(SecureTokenStorage.new)
     ..registerLazySingleton(AuthSessionController.new)

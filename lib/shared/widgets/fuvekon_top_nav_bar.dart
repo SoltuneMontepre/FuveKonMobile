@@ -5,7 +5,6 @@ import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
-import 'package:fuvekonmobile/core/theme/theme_mode_notifier.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
 import 'package:go_router/go_router.dart';
@@ -52,9 +51,7 @@ class _FuvekonDrawerBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final themeModeNotifier = sl<ThemeModeNotifier>();
     final location = GoRouterState.of(context).matchedLocation;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final homeRoute = isAuthenticated ? Routes.account : Routes.home;
 
     final navItems = [
@@ -74,7 +71,7 @@ class _FuvekonDrawerBody extends StatelessWidget {
     ];
 
     return Drawer(
-      backgroundColor: isDark ? FuvekonColors.darkSurface : FuvekonColors.paper,
+      backgroundColor: FuvekonColors.darkSurface,
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -84,9 +81,7 @@ class _FuvekonDrawerBody extends StatelessWidget {
               child: Text(
                 'FUVEKON',
                 style: TextStyle(
-                  color: isDark
-                      ? FuvekonColors.darkPrimary
-                      : FuvekonColors.textPrimary,
+                  color: FuvekonColors.darkPrimary,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 2,
                   fontSize: 18,
@@ -179,24 +174,6 @@ class _FuvekonDrawerBody extends StatelessWidget {
                       });
                     },
                   ),
-                  ListTile(
-                    leading: Icon(
-                      themeModeNotifier.isDark
-                          ? Icons.light_mode_outlined
-                          : Icons.dark_mode_outlined,
-                      color: isDark ? Colors.white : FuvekonColors.textPrimary,
-                    ),
-                    title: Text(
-                      themeModeNotifier.isDark
-                          ? l10n.themeSwitchToLight
-                          : l10n.themeSwitchToDark,
-                      style: TextStyle(
-                        color: isDark ? Colors.white : FuvekonColors.textPrimary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    onTap: themeModeNotifier.toggle,
-                  ),
                   if (isAuthenticated)
                     ListTile(
                       leading: Icon(
@@ -257,23 +234,17 @@ class _DrawerNavTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final selectedColor =
-        isDark ? FuvekonColors.darkPrimary : FuvekonColors.primary;
+    const selectedColor = FuvekonColors.darkPrimary;
 
     return ListTile(
       leading: Icon(
         icon,
-        color: selected
-            ? selectedColor
-            : (isDark ? Colors.white70 : FuvekonColors.textSecondary),
+        color: selected ? selectedColor : Colors.white70,
       ),
       title: Text(
         label,
         style: TextStyle(
-          color: selected
-              ? selectedColor
-              : (isDark ? Colors.white : FuvekonColors.textPrimary),
+          color: selected ? selectedColor : Colors.white,
           fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
         ),
       ),
@@ -303,13 +274,9 @@ class FuvekonTopNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final brandColor =
-        isDark ? FuvekonColors.darkPrimary : FuvekonColors.textPrimary;
-    final iconColor = isDark ? Colors.white : FuvekonColors.textPrimary;
-    final borderColor = isDark
-        ? FuvekonColors.darkBorder
-        : FuvekonColors.inputBorder.withValues(alpha: 0.45);
+    const brandColor = FuvekonColors.darkPrimary;
+    const iconColor = Colors.white;
+    const borderColor = FuvekonColors.darkBorder;
 
     final bar = Padding(
       padding: const EdgeInsets.fromLTRB(4, 8, 12, 10),

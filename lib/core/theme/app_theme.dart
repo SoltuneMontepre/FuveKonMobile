@@ -4,43 +4,6 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 
 abstract final class AppTheme {
-  static ThemeData get light => _buildTheme(
-        brightness: Brightness.light,
-        extension: FuvekonThemeExtension.light,
-        colorScheme: const ColorScheme(
-          brightness: Brightness.light,
-          primary: FuvekonColors.button,
-          onPrimary: FuvekonColors.onPrimary,
-          primaryContainer: FuvekonColors.primary,
-          onPrimaryContainer: FuvekonColors.textPrimary,
-          secondary: FuvekonColors.secondary,
-          onSecondary: FuvekonColors.onPrimary,
-          secondaryContainer: FuvekonColors.bgSecondary,
-          onSecondaryContainer: FuvekonColors.textPrimary,
-          tertiary: FuvekonColors.outline,
-          onTertiary: FuvekonColors.onPrimary,
-          error: Color(0xFFB3261E),
-          onError: Colors.white,
-          surface: FuvekonColors.paper,
-          onSurface: FuvekonColors.textSecondary,
-          onSurfaceVariant: FuvekonColors.textPrimary,
-          outline: FuvekonColors.inputBorder,
-          outlineVariant: Color(0x3348715B),
-          shadow: Color(0x1A154C5B),
-          scrim: Color(0x80000000),
-          inverseSurface: FuvekonColors.textPrimary,
-          onInverseSurface: FuvekonColors.main,
-          inversePrimary: FuvekonColors.primary,
-          surfaceTint: FuvekonColors.button,
-        ),
-        scaffoldBackground: FuvekonColors.main,
-        cardColor: Colors.white,
-        inputFill: FuvekonColors.inputFill,
-        dividerColor: const Color(0x3348715B),
-        appBarForeground: FuvekonColors.textPrimary,
-        bodyMuted: FuvekonColors.textSecondary,
-      );
-
   static ThemeData get dark => _buildTheme(
         brightness: Brightness.dark,
         extension: FuvekonThemeExtension.dark,

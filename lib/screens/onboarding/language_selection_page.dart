@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
+import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/shared/services/app_preferences.dart';
@@ -17,6 +18,7 @@ class LanguageSelectionPage extends StatefulWidget {
 
 class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
   String _selected = 'vi';
+  bool _returningUser = false;
 
   @override
   void initState() {
@@ -25,10 +27,20 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
   }
 
   Future<void> _loadSavedLanguage() async {
-    final saved = await sl<AppPreferences>().languageCode;
-    if (!mounted || saved == null) return;
-    setState(() => _selected = saved);
-    sl<LocaleNotifier>().update(Locale(saved));
+    final prefs = sl<AppPreferences>();
+    final saved = await prefs.languageCode;
+    final onboardingDone = await prefs.onboardingCompleted;
+    final rulesAccepted = await prefs.eventRulesAccepted;
+    if (!mounted) return;
+    if (saved != null) {
+      setState(() => _selected = saved);
+      sl<LocaleNotifier>().update(Locale(saved));
+    }
+    if (!mounted) return;
+    setState(
+      () => _returningUser =
+          onboardingDone && (saved != null || rulesAccepted),
+    );
   }
 
   void _selectLanguage(String code) {
@@ -40,7 +52,17 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
     await sl<AppPreferences>().setLanguageCode(_selected);
     sl<LocaleNotifier>().update(Locale(_selected));
     if (!mounted) return;
-    context.go(Routes.tosOnboarding);
+
+    if (_returningUser) {
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go(sl<AuthSessionNotifier>().homeRoute);
+      }
+      return;
+    }
+
+    context.go(Routes.introduction);
   }
 
   @override

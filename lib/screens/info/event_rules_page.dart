@@ -26,9 +26,7 @@ class _EventRulesPageState extends State<EventRulesPage> {
     if (!mounted) return;
 
     if (widget.onboarding) {
-      final introDone = await sl<AppPreferences>().introductionCompleted;
-      if (!mounted) return;
-      context.go(introDone ? Routes.home : Routes.introduction);
+      context.go(Routes.home);
       return;
     }
 
@@ -44,6 +42,7 @@ class _EventRulesPageState extends State<EventRulesPage> {
     final l10n = context.l10n;
     final body = _RulesBody(
       l10n: l10n,
+      showAcceptance: widget.onboarding,
       agreed: _agreed,
       onAgreedChanged: (value) => setState(() => _agreed = value),
       onConfirm: _agreed ? _confirm : null,
@@ -65,12 +64,14 @@ class _EventRulesPageState extends State<EventRulesPage> {
 class _RulesBody extends StatelessWidget {
   const _RulesBody({
     required this.l10n,
+    required this.showAcceptance,
     required this.agreed,
     required this.onAgreedChanged,
     required this.onConfirm,
   });
 
   final AppLocalizations l10n;
+  final bool showAcceptance;
   final bool agreed;
   final ValueChanged<bool> onAgreedChanged;
   final VoidCallback? onConfirm;
@@ -110,76 +111,77 @@ class _RulesBody extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-            child: FuvekonIllustratedContentPanel(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  InkWell(
-                    onTap: () => onAgreedChanged(!agreed),
-                    borderRadius: BorderRadius.circular(8),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: Checkbox(
-                              value: agreed,
-                              onChanged: (value) =>
-                                  onAgreedChanged(value ?? false),
-                              activeColor: _RulesColors.accentGreen,
-                              side: BorderSide(
-                                color: Colors.white.withValues(alpha: 0.45),
-                              ),
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              l10n.rulesAgreeCheckbox,
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.85),
-                                fontSize: 13.5,
-                                height: 1.45,
+          if (showAcceptance)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+              child: FuvekonIllustratedContentPanel(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    InkWell(
+                      onTap: () => onAgreedChanged(!agreed),
+                      borderRadius: BorderRadius.circular(8),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 22,
+                              height: 22,
+                              child: Checkbox(
+                                value: agreed,
+                                onChanged: (value) =>
+                                    onAgreedChanged(value ?? false),
+                                activeColor: _RulesColors.accentGreen,
+                                side: BorderSide(
+                                  color: Colors.white.withValues(alpha: 0.45),
+                                ),
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                l10n.rulesAgreeCheckbox,
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.85),
+                                  fontSize: 13.5,
+                                  height: 1.45,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: onConfirm,
-                    style: FilledButton.styleFrom(
-                    backgroundColor: _RulesColors.accentGreen,
-                    disabledBackgroundColor: const Color(0xFF3A3A3A),
-                    disabledForegroundColor: const Color(0xFF888888),
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size.fromHeight(52),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(999),
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      onPressed: onConfirm,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: _RulesColors.accentGreen,
+                        disabledBackgroundColor: const Color(0xFF3A3A3A),
+                        disabledForegroundColor: const Color(0xFF888888),
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size.fromHeight(52),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                      ),
+                      child: Text(
+                        l10n.rulesConfirmButton,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    l10n.rulesConfirmButton,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    ),
-                  ),
+                  ],
                 ),
-                ],
               ),
             ),
-          ),
         ],
     );
   }

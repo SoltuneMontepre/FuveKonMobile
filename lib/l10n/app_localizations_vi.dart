@@ -32,12 +32,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get languageEnglish => 'English';
 
   @override
-  String get themeSwitchToLight => 'Chế độ sáng';
-
-  @override
-  String get themeSwitchToDark => 'Chế độ tối';
-
-  @override
   String get splashTagline => 'Nơi kết nối cộng đồng sự kiện và nghệ thuật';
 
   @override

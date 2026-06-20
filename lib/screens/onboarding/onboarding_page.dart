@@ -46,7 +46,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Future<void> _finish() async {
     await sl<AppPreferences>().setOnboardingCompleted(true);
     if (!mounted) return;
-    context.go(Routes.login);
+    context.go(Routes.language);
   }
 
   void _next() {

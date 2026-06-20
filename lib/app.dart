@@ -7,7 +7,6 @@ import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
 import 'package:fuvekonmobile/core/router/app_router.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
 import 'package:fuvekonmobile/core/theme/app_theme.dart';
-import 'package:fuvekonmobile/core/theme/theme_mode_notifier.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_state.dart';
@@ -19,7 +18,6 @@ class FuvekonApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localeNotifier = sl<LocaleNotifier>();
-    final themeModeNotifier = sl<ThemeModeNotifier>();
 
     return BlocProvider(
       create: (_) => sl<AuthBloc>()..add(const AuthEvent.started()),
@@ -28,13 +26,12 @@ class FuvekonApp extends StatelessWidget {
           listener: (_, state) => sl<AuthSessionNotifier>().update(state),
           child: RoleSessionSync(
             child: ListenableBuilder(
-              listenable: Listenable.merge([localeNotifier, themeModeNotifier]),
+              listenable: localeNotifier,
               builder: (context, _) {
                 return MaterialApp.router(
                   title: AppConfig.appName,
-                  theme: AppTheme.light,
-                  darkTheme: AppTheme.dark,
-                  themeMode: themeModeNotifier.themeMode,
+                  theme: AppTheme.dark,
+                  themeMode: ThemeMode.dark,
                   locale: localeNotifier.locale,
                   supportedLocales: AppLocalizations.supportedLocales,
                   localizationsDelegates:

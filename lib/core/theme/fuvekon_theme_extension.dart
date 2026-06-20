@@ -27,19 +27,6 @@ class FuvekonThemeExtension extends ThemeExtension<FuvekonThemeExtension> {
   final Color notesSurface;
   final Color link;
 
-  static const light = FuvekonThemeExtension(
-    contentCard: Colors.white,
-    contentOnCard: FuvekonColors.textOnCard,
-    contentOnCardMuted: FuvekonColors.textSecondary,
-    appBarTitle: FuvekonColors.textPrimary,
-    uploadZoneBackground: FuvekonColors.uploadZoneBg,
-    uploadZoneBorder: FuvekonColors.uploadZoneBorder,
-    infoAccent: FuvekonColors.infoAccent,
-    infoTitle: FuvekonColors.textPrimary,
-    notesSurface: FuvekonColors.bgSecondary,
-    link: FuvekonColors.outline,
-  );
-
   static const dark = FuvekonThemeExtension(
     contentCard: FuvekonColors.mintCard,
     contentOnCard: FuvekonColors.onSageGreen,
