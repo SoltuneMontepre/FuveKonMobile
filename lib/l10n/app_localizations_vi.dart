@@ -191,6 +191,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get registerEmailHint => 'example@domain.com';
 
   @override
+  String get registerCountryLabel => 'Country';
+
+  @override
+  String get registerCountryHint => 'Select your country';
+
+  @override
   String get registerPasswordLabel => 'Mật khẩu';
 
   @override
@@ -250,6 +256,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get validationFullNameMin => 'Họ và tên phải có ít nhất 2 ký tự';
+
+  @override
+  String get validationCountryRequired => 'Please select your country';
 
   @override
   String get validationConfirmPasswordRequired => 'Vui lòng xác nhận mật khẩu';
@@ -715,44 +724,33 @@ class AppLocalizationsVi extends AppLocalizations {
   String get rulesTitle => 'Nội quy sự kiện';
 
   @override
+  String get rulesLastUpdated => 'Last updated: April 2, 2026';
+
+  @override
   String get rulesIntro =>
       'Vui lòng đọc kỹ các quy định dưới đây để đảm bảo một kỳ triển lãm an toàn, chuyên nghiệp và đáng nhớ cho tất cả mọi người.';
 
   @override
-  String get rulesAttendanceTitle => 'Nội quy tham dự';
+  String get rulesAttendeeSection => 'Rule for Attendee';
 
   @override
-  String get rulesAttendance1 => 'Xuất trình vé hợp lệ tại cổng.';
+  String get rulesTicketsTitle => 'Attendee Tickets';
 
   @override
-  String get rulesAttendance2 => 'Không mang vũ khí, chất cháy nổ.';
+  String get rulesTickets1 =>
+      'All attendees must wear their identification badges at all times while in the event area.';
 
   @override
-  String get rulesAttendance3 => 'Tôn trọng không gian chung.';
+  String get rulesTickets2 =>
+      'Badges must be displayed in a visible location (chest, neck, or sleeve).';
 
   @override
-  String get rulesCosplayTitle => 'Quy định cosplay';
+  String get rulesTickets3 =>
+      'Tickets and badges are the property of the organizing committee and may not be transferred, lent, or duplicated without the consent of the organizing committee.';
 
   @override
-  String get rulesCosplay1 => 'Trang phục phù hợp thuần phong mỹ tục.';
-
-  @override
-  String get rulesCosplay2 => 'Đạo cụ không sắc nhọn, nguy hiểm.';
-
-  @override
-  String get rulesCosplay3 => 'Sử dụng khu vực thay đồ đúng quy định.';
-
-  @override
-  String get rulesBoothTitle => 'Quy định gian hàng';
-
-  @override
-  String get rulesBooth1 => 'Kinh doanh đúng danh mục đăng ký.';
-
-  @override
-  String get rulesBooth2 => 'Không lấn chiếm lối đi chung.';
-
-  @override
-  String get rulesBooth3 => 'Đảm bảo vệ sinh khu vực.';
+  String get rulesTickets4 =>
+      'Attendees are responsible for safeguarding their badges.';
 
   @override
   String get rulesConductTitle => 'Quy định hành vi';
@@ -765,6 +763,237 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get rulesConduct3 => 'Tuân thủ hướng dẫn của BTC.';
+
+  @override
+  String get rulesConduct4 =>
+      'Prohibited acts of discrimination, prejudice, defamation, or actions that cause division within the community.';
+
+  @override
+  String get rulesConduct5 =>
+      'Prohibited acts of propagating or inciting content related to religion, politics, or of a military nature.';
+
+  @override
+  String get rulesConduct6 =>
+      'Prohibited acts that disrupt order or negatively affect attendees, staff, or general building operations.';
+
+  @override
+  String get rulesProhibitedItemsTitle => 'Prohibited Items';
+
+  @override
+  String get rulesProhibitedItems1 =>
+      'No items that can cause bodily harm, explosives, or items resembling weapons.';
+
+  @override
+  String get rulesProhibitedItems2 =>
+      'No pornographic publications, sensitive or inappropriate content, 16+, or related to politics and religions.';
+
+  @override
+  String get rulesProhibitedItems3 =>
+      'No alcohol, cigarettes, and all stimulants inside the venue.';
+
+  @override
+  String get rulesProhibitedItems4 =>
+      'Food is not allowed inside the event venue.';
+
+  @override
+  String get rulesProhibitedItems5 =>
+      'Avoid heavy smelling items, loud noises or bright flashing lights causing discomfort for others.';
+
+  @override
+  String get rulesProhibitedItems6 =>
+      'Avoid big bulky items taking up space or causing blockades.';
+
+  @override
+  String get rulesClothingTitle => 'Clothing and Accessories';
+
+  @override
+  String get rulesClothingIntro =>
+      'The event is attended by participants of various age groups; attire must be appropriate for a public setting.';
+
+  @override
+  String get rulesClothingProhibitedIntro =>
+      'Attendees must be dressed appropriately at the event. Prohibited costumes and accessories include:';
+
+  @override
+  String get rulesClothingProhibited1 => 'Revealing, suggestive clothing';
+
+  @override
+  String get rulesClothingProhibited2 =>
+      'Political, religious or military, intended for propaganda, incitement of hostility, or causing division';
+
+  @override
+  String get rulesClothingProhibited3 => 'Weapon-shaped or able to cause harm';
+
+  @override
+  String get rulesClothingProhibited4 =>
+      'Oversized costume making it difficult for other guests to move';
+
+  @override
+  String get rulesClothingNote1 =>
+      'Should the attendees dress too suggestively or revealing, organizers will ask you to change your costumes or cover yourself up.';
+
+  @override
+  String get rulesClothingNote2 =>
+      'Organizers has the right to ask you to leave the venue if you do not cooperate.';
+
+  @override
+  String get rulesClothingNote3 =>
+      'The final decision regarding the appropriateness of attire rests with the Organizing Committee.';
+
+  @override
+  String get rulesClothingNote4 =>
+      'Appropriate attire is clothing that is comfortable and convenient for the wearer, suitable for the public and community nature of the event, maintaining decency and must not display offensive images, symbols, or text that incite violence, are discriminatory, or contrary to public morals. Additionally, attire must not obstruct event activities or compromise safety and public order.';
+
+  @override
+  String get rulesPhotographyTitle => 'Videography and Photography';
+
+  @override
+  String get rulesPhotography1 =>
+      'Attendees may record the event for personal use. However, organizers may still ask you to take the post down if it contains images affecting the event or other attendees.';
+
+  @override
+  String get rulesPhotography2 =>
+      'Attendees must act accordingly when recording at the event. Respect other attendees\' personal space and do not record them if they\'re not comfortable with it.';
+
+  @override
+  String get rulesPhotography3 =>
+      'Participants must comply with instructions from the Organizing Team and/or Security staff when they request all photography, filming, or recording activities to stop or cease in specific areas or at certain times. Photography, videography, and audio recording are strictly prohibited in restrooms, changing rooms, private dressing areas, and other sensitive locations.';
+
+  @override
+  String get rulesPhotography4 =>
+      'Attendees acknowledges that being accidentally recorded is unavoidable.';
+
+  @override
+  String get rulesPhotography5 =>
+      'Organizers reserve the rights to use videos/images containing attendees for marketing purposes.';
+
+  @override
+  String get rulesPhotography6 =>
+      'The use of editing tools, AI, or any form of modification to alter images, videos, or audio - as well as the posting or distribution of content created or modified using such tools - for the purpose of defamation, harassment, or causing negative impact to participants or the event is strictly prohibited.';
+
+  @override
+  String get rulesOrganizerAttendeeTitle => 'Organizer\'s Decision';
+
+  @override
+  String get rulesOrganizerAttendee1 =>
+      'The organizing committee reserves the right to issue warnings and cautions to first-time offenders. Upon violation, attendees must comply with the organizing committee\'s directives and have the right to provide immediate feedback at the location of the violation if they find the decision unsatisfactory.';
+
+  @override
+  String get rulesOrganizerAttendee2 =>
+      'For prohibited items, the organizing committee may require attendees to store items outside the event area or temporarily hold them until the event concludes.';
+
+  @override
+  String get rulesOrganizerAttendee3 =>
+      'Repeat offenders after receiving warnings or those committing serious violations will be required to leave the event premises, have their badges revoked, and forfeit participation fees.';
+
+  @override
+  String get rulesOrganizerAttendee4 =>
+      'Serious violations or repeated offenses will be documented and may affect eligibility to attend future FUVE events.';
+
+  @override
+  String get rulesOrganizerAttendee5 =>
+      'The organizing committee reserves the right to address behaviors or items not explicitly listed that negatively impact the event, attendees, or violate the spirit of these regulations.';
+
+  @override
+  String get rulesOrganizerAttendee6 =>
+      'All individuals are responsible for promptly reporting any violations to the organizing committee.';
+
+  @override
+  String get rulesProductSection => 'Product Regulations';
+
+  @override
+  String get rulesProductIntro =>
+      'Dealers must prepare a product list of products for sale during the event.';
+
+  @override
+  String get rulesProductAllowedIntro =>
+      'Listed products must satisfy the following conditions:';
+
+  @override
+  String get rulesProductAllowed1 => 'Handmade';
+
+  @override
+  String get rulesProductAllowed2 =>
+      'Reselling products are proved allowed by the makers/artists';
+
+  @override
+  String get rulesProductAllowed3 =>
+      'Products must have a minimum of 25% of the Dealers/Sellers participation during the product developing process.';
+
+  @override
+  String get rulesProductProhibitedIntro => 'Prohibited products at the event:';
+
+  @override
+  String get rulesProductProhibited1 => 'Sensitive products, 16+';
+
+  @override
+  String get rulesProductProhibited2 => 'Food, beverage';
+
+  @override
+  String get rulesProductProhibited3 => 'Sharp objects';
+
+  @override
+  String get rulesProductProhibited4 => 'Alcohols and stimulants';
+
+  @override
+  String get rulesProductProhibited5 => 'Flammable products';
+
+  @override
+  String get rulesProductFireSafety =>
+      'All acts of using stimulants, flammable items at the event and booth areas are prohibited. Avoid placing flammable objects (paper cups, dry towels, papers, …) near open electric sockets and wires.';
+
+  @override
+  String get rulesProductViolation1 =>
+      'All violated products will be revoked by the Organizers.';
+
+  @override
+  String get rulesProductViolation2 =>
+      'Booths violating the regulations once will be warned by the Organizers, the second violation will result in force to stop all booth related activities by the Organizers.';
+
+  @override
+  String get rulesProductLiability =>
+      'The Organizer is not responsible for any losses inside and outside of the event.';
+
+  @override
+  String get rulesDealerSection => 'Rule for Dealer';
+
+  @override
+  String get rulesDealerAreaTitle => 'Dealer Den Area';
+
+  @override
+  String get rulesDealerArea1 =>
+      'Dealers must arrive and receive their ticket and booth on informed time.';
+
+  @override
+  String get rulesDealerArea2 =>
+      'All behaviours of violating other booth\'s area are prohibited, including decorations, personnel and customer lines.';
+
+  @override
+  String get rulesDealerArea3 =>
+      'Avoid decorating your booth with decorations associated with sensitive topics, religions.';
+
+  @override
+  String get rulesDealerArea4 =>
+      'All Dealers must keep their booth clean and well-organized.';
+
+  @override
+  String get rulesDealerArea5 =>
+      'Keep an eye out for your personal belongings, Building\'s and Organizer\'s properties.';
+
+  @override
+  String get rulesDealerArea6 =>
+      'Dealers/Sellers are responsible for handling customer queues, avoiding affecting common walkways and other booths.';
+
+  @override
+  String get rulesOrganizerDealerTitle => 'Organizer\'s Decision';
+
+  @override
+  String get rulesOrganizerDealer1 =>
+      'The Organizer has all the rights to require the Dealers to stop all activities related to the booth and leave the event area if the dealer violated the regulations.';
+
+  @override
+  String get rulesOrganizerDealer2 =>
+      'The Organizer has all the rights to decide the Dealer\'s booth location.';
 
   @override
   String get rulesAgreeCheckbox =>
@@ -1038,20 +1267,11 @@ class AppLocalizationsVi extends AppLocalizations {
       'Staff cập nhật trạng thái (Lost / Found / Claimed) trên hệ thống. Bạn theo dõi tiến trình trong app hoặc liên hệ quầy.';
 
   @override
-  String get artbookTitle => 'Conbook FUVEKON';
-
-  @override
-  String get artbookSubtitle => 'Hành trình Nghệ thuật - 2024';
+  String get artbookTitle => 'Tham gia Conbook';
 
   @override
   String get artbookDescription =>
-      'Cuốn sách tổng hợp hơn 50 tác phẩm nghệ thuật từ cộng đồng sáng tạo FUVEKON, được in trên giấy mỹ thuật cao cấp.';
-
-  @override
-  String get artbookPageCount => '120 Trang';
-
-  @override
-  String get artbookPaperType => 'Giấy Couche 150gsm';
+      'Conbook là ấn phẩm tổng hợp các hướng dẫn cho người tham dự sự kiện và bao gồm cả các tác phẩm nghệ thuật do chính những nhà sáng tạo trong cộng đồng sáng tác, mang đậm màu sắc cá nhân và tinh thần của sự kiện. Nếu bạn yêu nghệ thuật và muốn đóng góp một phần tinh thần cho sự kiện thì hãy gửi ngay tác phẩm của bạn đến FUVE để tham gia conbook nhé.';
 
   @override
   String get artbookSubmitCta => 'Gửi tác phẩm cho Conbook';
@@ -1119,29 +1339,63 @@ class AppLocalizationsVi extends AppLocalizations {
   String get artbookSubmitButton => 'Gửi tác phẩm cho Conbook';
 
   @override
-  String get artbookRulesTitle => 'Quy định nộp bài';
+  String get artbookRulesTitle => 'QUY ĐỊNH KHI NỘP TÁC PHẨM CHO CONBOOK';
 
   @override
-  String get artbookRuleSizeTitle => 'KÍCH THƯỚC';
+  String get artbookRulesFormatSection => 'YÊU CẦU ĐỊNH DẠNG:';
 
   @override
-  String get artbookRuleSizeBody => 'A4 (210 x 297mm), lề an toàn 5mm.';
+  String get artbookRulesFormat1 =>
+      'Kích thước: Khổ A5 (2480x3508px), cỡ ngang hay dọc đều được nha!';
 
   @override
-  String get artbookRuleFormatTitle => 'ĐỊNH DẠNG';
+  String get artbookRulesFormat2 => 'Độ phân giải: 300dpi, hệ màu CMYK';
 
   @override
-  String get artbookRuleFormatBody => 'Chế độ màu CMYK, tối thiểu 300dpi.';
+  String get artbookRulesFormat3 => 'Định dạng tệp: JPG/PNG';
 
   @override
-  String get artbookRuleCopyrightTitle => 'BẢN QUYỀN';
+  String get artbookRulesFormat4 =>
+      'Sản phẩm cho phép khác: Tranh vẽ, ảnh chụp, văn ngắn';
 
   @override
-  String get artbookRuleCopyrightBody =>
-      'Tác phẩm phải là nguyên bản, chưa từng xuất bản thương mại.';
+  String get artbookRulesTipsSection => 'MỘT VÀI LƯU Ý NHỎ:';
 
   @override
-  String get artbookDeadline => 'Hạn chót nộp tác phẩm: 20 Tháng 11, 2023';
+  String get artbookRulesTip1 =>
+      'Tác phẩm bạn tạo ra phải là của chính bạn, chưa từng xuất hiện công khai trên bất cứ nền tảng nào trước ngày diễn ra FUVE 2026.';
+
+  @override
+  String get artbookRulesTip2 =>
+      'Tác phẩm gửi đến FUVE phải là phiên bản đã hoàn thiện, không phải là bản vẽ nháp.';
+
+  @override
+  String get artbookRulesTip3 =>
+      'Đối với tác phẩm viết văn, bạn chỉ nên viết khoảng 300-500 từ. Hãy nộp tác phẩm của bạn dưới dạng file Word.';
+
+  @override
+  String get artbookRulesTip4 =>
+      'Đối với tác phẩm chụp hình, hình ảnh cần ghi rõ thông tin người chụp ảnh, model hoặc fursuiter.';
+
+  @override
+  String get artbookRulesTip5 =>
+      'Không nhất thiết phải có linh vật FUVE nhưng cần có liên quan đến chủ đề của sự kiện.';
+
+  @override
+  String get artbookRulesTip6 =>
+      'Tất cả tác phẩm sẽ được chiếu trong video bế mạc hoặc đính kèm trong folder được đăng lên page sau sự kiện. Tuy nhiên, chỉ có một lượng tác phẩm được chọn góp mặt trong sổ tay sự kiện vì giới hạn số lượng trong handbook.';
+
+  @override
+  String get artbookRulesTip7 =>
+      'Tác phẩm của bạn có thể được sử dụng dưới các hình thức phi lợi nhuận ở sự kiện (bao gồm truyền thông trên mạng xã hội, bìa và nội dung trong sổ tay sự kiện, các sản phẩm in ấn phục vụ quảng bá như poster, thư mời, vòng tay...). Chúng mình sẽ gửi xin phép qua email nếu tác phẩm của bạn được lựa chọn.';
+
+  @override
+  String get artbookRulesTip8 =>
+      'Tác phẩm của bạn sẽ không được chọn nếu không có thông tin tác giả, không phù hợp với quy tắc ứng xử hoặc có chủ đề nhạy cảm, bạo lực, chính trị, tôn giáo.';
+
+  @override
+  String get artbookRulesTip9 =>
+      'Khi tham gia gửi tác phẩm, FUVE xin chân thành cảm ơn bạn đã dành thời gian đóng góp cho sự kiện của chúng mình.';
 
   @override
   String get artbookLoginRequired =>
@@ -1764,6 +2018,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get adminTicketsSearchHint => 'Tìm mã vé, email, tên...';
+
+  @override
+  String get adminTicketsViewUser => 'View user profile';
 
   @override
   String get adminTicketsDisableSales => 'Tắt bán';

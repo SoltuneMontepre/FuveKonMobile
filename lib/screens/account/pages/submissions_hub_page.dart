@@ -156,7 +156,7 @@ class _SubmissionsHubPageState extends State<SubmissionsHubPage> {
                 title: const Text('Conbook'),
                 onTap: () {
                   Navigator.pop(context);
-                  context.push(Routes.artbook);
+                  context.push(Routes.accountConbookSubmit);
                 },
               ),
             ],

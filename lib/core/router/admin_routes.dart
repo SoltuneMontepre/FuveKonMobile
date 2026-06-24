@@ -24,6 +24,16 @@ abstract final class AdminRoutes {
                   path: 'tickets',
                   parentNavigatorKey: rootNavigatorKey,
                   builder: (context, state) => const AdminTicketsPage(),
+                  routes: [
+                    GoRoute(
+                      path: ':id',
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (context, state) {
+                        final ticketId = state.pathParameters['id']!;
+                        return AdminTicketDetailPage(ticketId: ticketId);
+                      },
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: 'art-submit',

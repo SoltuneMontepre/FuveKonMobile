@@ -9,9 +9,10 @@ import (
 type TalentStatus string
 
 const (
-	TalentStatusPending  TalentStatus = "pending"
-	TalentStatusApproved TalentStatus = "approved"
-	TalentStatusDenied   TalentStatus = "denied"
+	TalentStatusPending         TalentStatus = "pending"
+	TalentStatusApproved        TalentStatus = "approved"
+	TalentStatusDenied          TalentStatus = "denied"
+	TalentStatusRequireChanges  TalentStatus = "require_changes"
 )
 
 // PerformanceTalent stores a talent application (schedule slot proposal).

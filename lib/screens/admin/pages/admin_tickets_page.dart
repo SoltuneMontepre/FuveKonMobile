@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
+import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
 import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
@@ -13,8 +14,8 @@ import 'package:fuvekonmobile/screens/admin/services/admin_ticket_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
-import 'package:fuvekonmobile/shared/widgets/s3_image.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_tier_management_widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class AdminTicketsPage extends StatefulWidget {
@@ -32,7 +33,6 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
   late final TextEditingController _searchController;
 
   Timer? _searchDebounce;
-  String? _actionInProgress;
 
   final _itemsByTab = <int, List<AdminTicketItem>>{};
   final _metaByTab = <int, PaginationMeta>{};
@@ -186,58 +186,6 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
   Future<void> _refreshTickets() =>
       _loadTicketTab(_ticketTabController.index, refresh: true);
 
-  Future<String?> _promptDenyReason() async {
-    final l10n = context.l10n;
-    final controller = TextEditingController();
-    return showDialog<String>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(l10n.adminDenyReason),
-          content: TextField(
-            controller: controller,
-            decoration: InputDecoration(hintText: l10n.adminDenyReasonHint),
-            maxLines: 3,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(l10n.adminCancel),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.pop(context, controller.text.trim()),
-              child: Text(l10n.adminDeny),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _runTicketAction(
-    AdminTicketItem item, {
-    required Future<void> Function() action,
-    required String successMessage,
-  }) async {
-    setState(() => _actionInProgress = item.id);
-    try {
-      await action();
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(successMessage)));
-      Navigator.of(context).maybePop();
-      await _refreshTickets();
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(context.l10n, e))),
-      );
-    } finally {
-      if (mounted) setState(() => _actionInProgress = null);
-    }
-  }
-
   Future<void> _runTierAction(
     Future<void> Function() action, {
     bool closeSheet = true,
@@ -296,150 +244,17 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
     await _runTierAction(() => _service.deleteTier(tier.id));
   }
 
-  void _showTicketDetail(AdminTicketItem item) {
-    final l10n = context.l10n;
-    final loading = _actionInProgress == item.id;
+  void _openUser(AdminTicketItem item) {
+    final userId = item.userId;
+    if (userId == null || userId.isEmpty) return;
+    context.push(Routes.adminUserDetail(userId));
+  }
 
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: FuvekonColors.darkSurfaceElevated,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.6,
-          minChildSize: 0.35,
-          maxChildSize: 0.92,
-          builder: (context, scrollController) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: FuvekonColors.darkBorder,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          item.title,
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(
-                                color: FuvekonColors.darkText,
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                      ),
-                      _StatusChip(status: item.status),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Expanded(
-                    child: ListView(
-                      controller: scrollController,
-                      children: [
-                        for (final field in item.localizedDetails(l10n))
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  field.label,
-                                  style: Theme.of(context).textTheme.labelMedium
-                                      ?.copyWith(
-                                        color: FuvekonColors.darkTextSecondary,
-                                      ),
-                                ),
-                                const SizedBox(height: 4),
-                                if (field.imageUrl != null)
-                                  S3Image(
-                                    imageUrl: field.imageUrl,
-                                    height: 200,
-                                    width: double.infinity,
-                                    fit: BoxFit.contain,
-                                    borderRadius: BorderRadius.circular(12),
-                                    onTap: () => showS3ImagePreview(
-                                      context,
-                                      field.imageUrl!,
-                                    ),
-                                  )
-                                else if (field.value.isNotEmpty)
-                                  Text(
-                                    field.value,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          color: FuvekonColors.darkText,
-                                        ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  if (item.canApprove) ...[
-                    _ActionButton(
-                      label: l10n.adminUserTicketsApprove,
-                      color: FuvekonColors.available,
-                      loading: loading,
-                      onPressed: () => _runTicketAction(
-                        item,
-                        action: () => _service.approveTicket(item.id),
-                        successMessage: l10n.adminUserTicketsApproveSuccess,
-                      ),
-                    ),
-                  ],
-                  if (item.canDeny) ...[
-                    _ActionButton(
-                      label: l10n.adminUserTicketsDeny,
-                      color: const Color(0xFFF0A0A8),
-                      loading: loading,
-                      onPressed: () async {
-                        final reason = await _promptDenyReason();
-                        if (!context.mounted || reason == null) return;
-                        await _runTicketAction(
-                          item,
-                          action: () =>
-                              _service.denyTicket(item.id, reason: reason),
-                          successMessage: l10n.adminUserTicketsDenySuccess,
-                        );
-                      },
-                    ),
-                  ],
-                  if (item.canResendQr) ...[
-                    _ActionButton(
-                      label: l10n.adminUserTicketsResendQr,
-                      color: const Color(0xFF60A5FA),
-                      loading: loading,
-                      onPressed: () => _runTicketAction(
-                        item,
-                        action: () => _service.resendQrEmail(item.id),
-                        successMessage: l10n.adminUserTicketsResendQrSuccess,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
+  Future<void> _openTicketDetail(AdminTicketItem item) async {
+    final changed = await context.push<bool>(Routes.adminTicketDetail(item.id));
+    if (changed == true && mounted) {
+      await _refreshTickets();
+    }
   }
 
   void _showTierDetail(AdminTicketTierItem tier) {
@@ -785,7 +600,10 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
             final ticket = items[i];
             return _TicketTile(
               ticket: ticket,
-              onTap: () => _showTicketDetail(ticket),
+              onTap: () => _openTicketDetail(ticket),
+              onViewUser: ticket.userId?.isNotEmpty == true
+                  ? () => _openUser(ticket)
+                  : null,
             );
           },
         ),
@@ -893,45 +711,108 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
 }
 
 class _TicketTile extends StatelessWidget {
-  const _TicketTile({required this.ticket, required this.onTap});
+  const _TicketTile({
+    required this.ticket,
+    required this.onTap,
+    this.onViewUser,
+  });
 
   final AdminTicketItem ticket;
   final VoidCallback onTap;
+  final VoidCallback? onViewUser;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final initials = ticket.holderName.isNotEmpty
         ? ticket.holderName[0].toUpperCase()
         : '?';
+    final userInfo = ticket.localizedListUserInfo(l10n);
+    final ticketLine = ticket.localizedTicketLine(l10n);
 
     return Material(
       color: FuvekonColors.darkSurfaceElevated,
       borderRadius: BorderRadius.circular(16),
       clipBehavior: Clip.antiAlias,
-      child: ListTile(
+      child: InkWell(
         onTap: onTap,
-        leading: S3Avatar(
-          imageUrl: ticket.userAvatar,
-          initials: initials,
-          radius: 24,
-        ),
-        title: Text(
-          ticket.title,
-          style: theme.textTheme.titleSmall?.copyWith(
-            color: FuvekonColors.darkText,
-            fontWeight: FontWeight.w600,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              S3Avatar(
+                imageUrl: ticket.userAvatar,
+                initials: initials,
+                radius: 24,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ticket.title,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: FuvekonColors.darkText,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    if (userInfo.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        userInfo,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: FuvekonColors.darkTextSecondary,
+                        ),
+                      ),
+                    ],
+                    if (ticketLine.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        ticketLine,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: FuvekonColors.darkTextSecondary
+                              .withValues(alpha: 0.85),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(width: 4),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _StatusChip(status: ticket.status, compact: true),
+                  if (onViewUser != null) ...[
+                    const SizedBox(height: 4),
+                    IconButton(
+                      tooltip: l10n.adminTicketsViewUser,
+                      visualDensity: VisualDensity.compact,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(
+                        minWidth: 32,
+                        minHeight: 32,
+                      ),
+                      onPressed: onViewUser,
+                      icon: const Icon(
+                        Icons.person_outline_rounded,
+                        size: 20,
+                        color: FuvekonColors.darkTextSecondary,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ],
           ),
         ),
-        subtitle: Text(
-          ticket.localizedSubtitle(context.l10n),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: FuvekonColors.darkTextSecondary,
-          ),
-        ),
-        trailing: _StatusChip(status: ticket.status, compact: true),
       ),
     );
   }
@@ -1003,13 +884,11 @@ class _ActionButton extends StatelessWidget {
     required this.label,
     required this.color,
     required this.onPressed,
-    this.loading = false,
   });
 
   final String label;
   final Color color;
   final VoidCallback onPressed;
-  final bool loading;
 
   @override
   Widget build(BuildContext context) {
@@ -1018,18 +897,12 @@ class _ActionButton extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: FilledButton(
-          onPressed: loading ? null : onPressed,
+          onPressed: onPressed,
           style: FilledButton.styleFrom(
             backgroundColor: color,
             foregroundColor: FuvekonColors.darkCardText,
           ),
-          child: loading
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(label),
+          child: Text(label),
         ),
       ),
     );

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/errors/exceptions.dart';
+import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/screens/account/services/account_submissions_service.dart';
+import 'package:fuvekonmobile/screens/contribute/performance_form_fields.dart';
 import 'package:fuvekonmobile/shared/utils/submission_status.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
+import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_status_badge.dart';
+import 'package:go_router/go_router.dart';
 
 class AccountPanelPage extends StatelessWidget {
   const AccountPanelPage({super.key});
@@ -82,7 +87,9 @@ class AccountTalentDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SubmissionDetailPage(
       title: 'Chi tiết talent',
+      submissionId: talentId,
       load: () => sl<AccountSubmissionsService>().getTalentDetail(talentId),
+      editRoute: Routes.accountTalentEdit,
       mock: {
         'title': 'Live Music Performance',
         'nickname': 'MusicFur',
@@ -96,27 +103,6 @@ class AccountTalentDetailPage extends StatelessWidget {
   }
 }
 
-class AccountConbookPage extends StatelessWidget {
-  const AccountConbookPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const _SubmissionListPage(
-      title: 'Conbook của tôi',
-      load: _loadConbooks,
-      emptyMessage: 'Bạn chưa gửi ảnh conbook nào.',
-    );
-  }
-
-  static Future<List<Map<String, dynamic>>> _loadConbooks() async {
-    final service = sl<AccountSubmissionsService>();
-    final items = await service.getConbooks();
-    return items
-        .map((e) => {'id': e.id, 'title': e.title, 'status': e.status})
-        .toList();
-  }
-}
-
 class AccountConbookDetailPage extends StatelessWidget {
   const AccountConbookDetailPage({super.key, required this.conbookId});
 
@@ -126,7 +112,9 @@ class AccountConbookDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SubmissionDetailPage(
       title: 'Chi tiết conbook',
+      submissionId: conbookId,
       load: () => sl<AccountSubmissionsService>().getConbookDetail(conbookId),
+      editRoute: Routes.accountConbookEdit,
       mock: {
         'title': 'My Fursona Portrait',
         'handle': 'artist_fur',
@@ -217,11 +205,15 @@ class _SubmissionDetailPage extends StatelessWidget {
     required this.title,
     required this.load,
     required this.mock,
+    this.submissionId,
+    this.editRoute,
   });
 
   final String title;
   final Future<Map<String, dynamic>> Function() load;
   final Map<String, dynamic> mock;
+  final String? submissionId;
+  final String Function(String id)? editRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -235,10 +227,37 @@ class _SubmissionDetailPage extends StatelessWidget {
           }
           final data = snapshot.data ?? mock;
           final status = data['status'] as String? ?? 'pending';
+          final id = submissionId ?? data['id']?.toString();
+          final canFix = submissionNeedsFix(status) &&
+              id != null &&
+              editRoute != null;
           final ext = context.fuvekonTheme;
 
           return ListView(
             children: [
+              if (canFix) ...[
+                FuveMintCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'BTC yêu cầu bạn chỉnh sửa hồ sơ này trước khi xét duyệt lại.',
+                        style: TextStyle(
+                          color: ext.contentOnCard,
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: FuvekonSpacing.stackGapMd),
+                      FuvePillButton(
+                        label: 'Chỉnh sửa hồ sơ',
+                        icon: Icons.edit_outlined,
+                        onPressed: () => context.push(editRoute!(id)),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: FuvekonSpacing.stackGapMd),
+              ],
               FuveMintCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,5 +331,160 @@ class _SubmissionDetailPage extends StatelessWidget {
     add('Mô tả', data['description'] ?? data['introduction']);
     add('Khung giờ', data['slot_label']);
     return fields;
+  }
+}
+
+class AccountTalentEditPage extends StatefulWidget {
+  const AccountTalentEditPage({super.key, required this.talentId});
+
+  final String talentId;
+
+  @override
+  State<AccountTalentEditPage> createState() => _AccountTalentEditPageState();
+}
+
+class _AccountTalentEditPageState extends State<AccountTalentEditPage> {
+  final _service = sl<AccountSubmissionsService>();
+  final _formKey = GlobalKey<FormState>();
+  final _titleController = TextEditingController();
+  final _nicknameController = TextEditingController();
+  final _genreController = TextEditingController();
+  final _introController = TextEditingController();
+  final _driveController = TextEditingController();
+  final _repUrlController = TextEditingController();
+  final _memberNameController = TextEditingController();
+
+  late final Future<Map<String, dynamic>> _future = _service.getTalentDetail(
+    widget.talentId,
+  );
+  bool _initialized = false;
+  bool _submitting = false;
+  int _durationMinutes = 15;
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _nicknameController.dispose();
+    _genreController.dispose();
+    _introController.dispose();
+    _driveController.dispose();
+    _repUrlController.dispose();
+    _memberNameController.dispose();
+    super.dispose();
+  }
+
+  void _populate(Map<String, dynamic> data) {
+    if (_initialized) return;
+    _initialized = true;
+    _titleController.text = data['title'] as String? ?? '';
+    _nicknameController.text = data['nickname'] as String? ?? '';
+    _genreController.text = data['performance_genre'] as String? ?? '';
+    _introController.text = data['introduction'] as String? ?? '';
+    _driveController.text = data['materials_drive_url'] as String? ?? '';
+    _repUrlController.text = data['representative_url'] as String? ?? '';
+    _durationMinutes = data['duration_minutes'] as int? ?? 15;
+
+    final members = data['members'];
+    if (members is List && members.isNotEmpty) {
+      final first = members.first;
+      if (first is Map) {
+        _memberNameController.text = first['name'] as String? ?? '';
+      }
+    }
+  }
+
+  Future<void> _submit() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+
+    setState(() => _submitting = true);
+    try {
+      await _service.updateTalent(widget.talentId, {
+        'title': _titleController.text.trim(),
+        'nickname': _nicknameController.text.trim(),
+        'representative_url': _repUrlController.text.trim(),
+        'participant_count': 1,
+        'performance_genre': _genreController.text.trim(),
+        'introduction': _introController.text.trim(),
+        'duration_minutes': _durationMinutes,
+        'materials_drive_url': _driveController.text.trim(),
+        'equipment_notes': '',
+        'members': [
+          {'name': _memberNameController.text.trim(), 'detail': ''},
+        ],
+      });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Đã cập nhật và gửi lại hồ sơ talent')),
+      );
+      context.go(Routes.accountTalentDetail(widget.talentId));
+    } catch (e) {
+      if (!mounted) return;
+      final message = e is ServerException ? e.message : 'Không thể cập nhật';
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
+    } finally {
+      if (mounted) setState(() => _submitting = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Map<String, dynamic>>(
+      future: _future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const AppPageScaffold(
+            title: 'Chỉnh sửa talent',
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return AppPageScaffold(
+            title: 'Chỉnh sửa talent',
+            body: Center(child: Text('Không thể tải hồ sơ: ${snapshot.error}')),
+          );
+        }
+
+        final data = snapshot.data!;
+        _populate(data);
+
+        return AppScrollPage(
+          title: 'Chỉnh sửa talent',
+          footer: FuvePillButton(
+            label: _submitting ? 'Đang gửi...' : 'Gửi lại hồ sơ',
+            icon: Icons.send_outlined,
+            onPressed: _submitting ? null : _submit,
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Cập nhật thông tin theo yêu cầu của BTC, sau đó gửi lại để được xét duyệt.',
+                  style: TextStyle(
+                    color: context.fuvekonTheme.contentOnCardMuted,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: FuvekonSpacing.stackGapLg),
+                PerformanceFormFields(
+                  titleController: _titleController,
+                  nicknameController: _nicknameController,
+                  genreController: _genreController,
+                  introController: _introController,
+                  driveController: _driveController,
+                  repUrlController: _repUrlController,
+                  memberNameController: _memberNameController,
+                  enabled: !_submitting,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

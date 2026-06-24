@@ -35,6 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _onSubmit({
     required String fullName,
     required String email,
+    required String countryCode,
     required String password,
     required String confirmPassword,
   }) async {
@@ -46,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
         nickname: _deriveNickname(fullName),
         email: email,
         dateOfBirth: '2000-01-01',
-        country: 'Vietnam',
+        country: countryCode,
         password: password,
         confirmPassword: confirmPassword,
       ),

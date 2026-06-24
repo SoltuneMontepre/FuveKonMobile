@@ -251,6 +251,15 @@ func (s *TalentService) GetDeniedTalents(ctx context.Context) ([]responses.Talen
 	return mappers.MapTalentsToResponse(talents), nil
 }
 
+func (s *TalentService) GetRequireChangesTalents(ctx context.Context) ([]responses.TalentResponse, error) {
+	talents, err := s.repos.Talent.GetRequireChangesTalents(ctx)
+	if err != nil {
+		log.Printf("Error listing require_changes talents: %v", err)
+		return nil, err
+	}
+	return mappers.MapTalentsToResponse(talents), nil
+}
+
 func (s *TalentService) setTalentStatus(ctx context.Context, talentIDStr string, status models.TalentStatus) (*responses.TalentResponse, error) {
 	talentID, err := uuid.Parse(talentIDStr)
 	if err != nil {
@@ -294,6 +303,10 @@ func (s *TalentService) MarkTalentPending(ctx context.Context, talentIDStr strin
 	return s.setTalentStatus(ctx, talentIDStr, models.TalentStatusPending)
 }
 
+func (s *TalentService) RequestTalentChanges(ctx context.Context, talentIDStr string) (*responses.TalentResponse, error) {
+	return s.setTalentStatus(ctx, talentIDStr, models.TalentStatusRequireChanges)
+}
+
 func (s *TalentService) AssignTalentSchedule(ctx context.Context, talentIDStr string, req *requests.AssignTalentScheduleRequest) (*responses.TalentResponse, error) {
 	talentID, err := uuid.Parse(talentIDStr)
 	if err != nil {
@@ -335,6 +348,9 @@ func (s *TalentService) notifyTalentStatus(ctx context.Context, talent *models.P
 	case models.TalentStatusDenied:
 		title = "Talent bị từ chối"
 		body = fmt.Sprintf("Đơn đăng ký talent \"%s\" đã bị từ chối.", talent.Title)
+	case models.TalentStatusRequireChanges:
+		title = "Talent cần chỉnh sửa"
+		body = fmt.Sprintf("Đơn đăng ký talent \"%s\" cần bổ sung hoặc chỉnh sửa.", talent.Title)
 	default:
 		return
 	}

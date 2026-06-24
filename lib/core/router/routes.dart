@@ -56,10 +56,15 @@ abstract final class Routes {
   static const accountVerifyIdentity = '/account/profile/verify-identity';
   static const accountSubmissions = '/account/profile/submissions';
   static const accountConbook = '/account/profile/conbook';
+  static const accountConbookSubmit = '/account/profile/conbook/submit';
   static String accountConbookDetail(String id) =>
       '/account/profile/conbook/$id';
+  static String accountConbookEdit(String id) =>
+      '/account/profile/conbook/$id/edit';
   static const accountTalent = '/account/profile/talent';
   static String accountTalentDetail(String id) => '/account/profile/talent/$id';
+  static String accountTalentEdit(String id) =>
+      '/account/profile/talent/$id/edit';
   static const accountPanel = '/account/profile/panel';
   static String accountPanelDetail(String id) => '/account/profile/panel/$id';
   static const accountDealer = '/account/profile/dealer';
@@ -78,6 +83,7 @@ abstract final class Routes {
   static const panel = '/panel';
   static const artbook = '/artbook';
   static const artbookSubmit = '/artbook/submit';
+  static const conbookSubmit = artbookSubmit;
   static const dealer = '/dealer';
   static const volunteer = '/volunteer';
 
@@ -103,6 +109,7 @@ abstract final class Routes {
   static const adminDashboard = '/admin/dashboard';
   static const adminDashboardUsers = '/admin/dashboard/users';
   static const adminTickets = '/admin/tickets';
+  static String adminTicketDetail(String id) => '/admin/tickets/$id';
   static const adminScanTicket = '/admin/scan-ticket';
   static const adminHistory = '/admin/history';
   static const adminLostFound = '/admin/lost-found';

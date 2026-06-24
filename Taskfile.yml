@@ -146,9 +146,9 @@ tasks:
     desc: Create LocalStack SQS queue and S3 bucket (idempotent).
     cmds:
       - docker exec fuvekon-cloud awslocal sqs create-queue --queue-name fuvekon-queue --region ap-southeast-1
-      - cmd: docker exec fuvekon-cloud awslocal s3 mb s3://fuvekonse-bucket --region ap-southeast-1
+      - cmd: docker exec fuvekon-cloud awslocal s3 mb s3://fuvekon-bucket --region ap-southeast-1
         ignore_error: true
-      - echo "LocalStack resources ready (fuvekon-queue, fuvekonse-bucket)"
+      - echo "LocalStack resources ready (fuvekon-queue, fuvekon-bucket)"
 
   backend:_migrate:
     internal: true

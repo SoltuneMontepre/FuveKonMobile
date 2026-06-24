@@ -22,6 +22,7 @@ export 'admin_notifications_hub_page.dart';
 export 'admin_user_detail_page.dart';
 export 'admin_user_edit_page.dart';
 export 'admin_tier_edit_page.dart';
+export 'admin_ticket_detail_page.dart';
 export 'admin_tickets_page.dart';
 export 'admin_users_page.dart';
 export 'admin_system_page.dart';

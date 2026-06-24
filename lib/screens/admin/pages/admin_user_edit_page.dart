@@ -1,12 +1,15 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/utils/country_helpers.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/screens/admin/l10n/admin_error_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_user_service.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_user_access_widgets.dart';
+import 'package:fuvekonmobile/shared/widgets/country_picker_field.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_image_upload_field.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,10 +35,11 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
   late final TextEditingController _fursonaController;
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
-  late final TextEditingController _countryController;
   late final TextEditingController _idCardController;
+  final _countryFieldKey = GlobalKey<FormFieldState<Country>>();
 
   AdminUserItem? _user;
+  Country? _initialCountry;
   String? _avatarUrl;
   String? _error;
   bool _loading = true;
@@ -51,7 +55,6 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
     _fursonaController = TextEditingController();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
-    _countryController = TextEditingController();
     _idCardController = TextEditingController();
     _role = 'User';
     _isVerified = false;
@@ -64,7 +67,6 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
     _fursonaController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _countryController.dispose();
     _idCardController.dispose();
     super.dispose();
   }
@@ -81,10 +83,10 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
       _fursonaController.text = user.fursonaName ?? '';
       _firstNameController.text = user.firstName ?? '';
       _lastNameController.text = user.lastName ?? '';
-      _countryController.text = user.country ?? '';
       _idCardController.text = user.idCard ?? '';
       setState(() {
         _user = user;
+        _initialCountry = countryFromStoredValue(user.country);
         _avatarUrl = user.avatar;
         _role = adminRoleOptions.contains(user.role) ? user.role : 'User';
         _isVerified = user.isVerified;
@@ -154,7 +156,7 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
           fursonaName: _fursonaController.text.trim(),
           firstName: _firstNameController.text.trim(),
           lastName: _lastNameController.text.trim(),
-          country: _countryController.text.trim(),
+          country: countryToStoredValue(_countryFieldKey.currentState?.value),
           idCard: _idCardController.text.trim(),
           avatar: _avatarUrl?.trim() ?? '',
           role: _role,
@@ -311,11 +313,16 @@ class _AdminUserEditPageState extends State<AdminUserEditPage> {
                     ],
                   ),
                   const SizedBox(height: 14),
-                  TextFormField(
-                    controller: _countryController,
+                  CountryPickerField(
+                    key: _countryFieldKey,
+                    initialValue: _initialCountry,
                     enabled: !_saving,
-                    style: inputTextStyle,
-                    textCapitalization: TextCapitalization.words,
+                    hintText: l10n.registerCountryHint,
+                    textStyle: inputTextStyle ?? const TextStyle(),
+                    hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: FuvekonColors.darkTextSecondary,
+                    ),
+                    iconColor: FuvekonColors.darkTextSecondary,
                     decoration: InputDecoration(
                       labelText: l10n.adminFieldCountry,
                       prefixIcon: const Icon(Icons.public_outlined),

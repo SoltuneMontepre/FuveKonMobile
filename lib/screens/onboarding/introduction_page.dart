@@ -21,17 +21,25 @@ class IntroductionPage extends StatefulWidget {
 
 class _IntroductionPageState extends State<IntroductionPage> {
   String _version = '';
+  bool _introductionCompleted = false;
 
   @override
   void initState() {
     super.initState();
     _loadVersion();
+    _loadIntroductionCompleted();
   }
 
   Future<void> _loadVersion() async {
     final info = await PackageInfo.fromPlatform();
     if (!mounted) return;
     setState(() => _version = info.version);
+  }
+
+  Future<void> _loadIntroductionCompleted() async {
+    final completed = await sl<AppPreferences>().introductionCompleted;
+    if (!mounted) return;
+    setState(() => _introductionCompleted = completed);
   }
 
   Future<void> _continue() async {
@@ -91,30 +99,31 @@ class _IntroductionPageState extends State<IntroductionPage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-            child: FuvekonIllustratedContentPanel(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-              child: FilledButton(
-                onPressed: _continue,
-                style: FilledButton.styleFrom(
-                  backgroundColor: _IntroColors.accentGreen,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size.fromHeight(52),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(999),
+          if (!_introductionCompleted)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: FuvekonIllustratedContentPanel(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                child: FilledButton(
+                  onPressed: _continue,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: _IntroColors.accentGreen,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size.fromHeight(52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(999),
+                    ),
                   ),
-                ),
-                child: Text(
-                  l10n.continueButton,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
+                  child: Text(
+                    l10n.continueButton,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

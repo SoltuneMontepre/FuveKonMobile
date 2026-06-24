@@ -617,17 +617,20 @@ class AdminTicketItem implements AdminListItem {
   final DateTime? approvedAt;
   final DateTime? deniedAt;
 
+  String get userLegalName {
+    final parts = [
+      userFirstName,
+      userLastName,
+    ].whereType<String>().where((s) => s.isNotEmpty);
+    return parts.join(' ').trim();
+  }
+
   String get holderName {
     if (conBadgeName != null && conBadgeName!.isNotEmpty) return conBadgeName!;
     if (userFursonaName != null && userFursonaName!.isNotEmpty) {
       return userFursonaName!;
     }
-    final parts = [
-      userFirstName,
-      userLastName,
-    ].whereType<String>().where((s) => s.isNotEmpty);
-    final joined = parts.join(' ').trim();
-    if (joined.isNotEmpty) return joined;
+    if (userLegalName.isNotEmpty) return userLegalName;
     return userEmail ?? referenceCode;
   }
 

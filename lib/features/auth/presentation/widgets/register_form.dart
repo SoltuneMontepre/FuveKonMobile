@@ -1,8 +1,10 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/shared/widgets/country_picker_field.dart';
 import 'package:go_router/go_router.dart';
 
 abstract final class _RegisterFormColors {
@@ -33,6 +35,7 @@ class RegisterForm extends StatefulWidget {
   final void Function({
     required String fullName,
     required String email,
+    required String countryCode,
     required String password,
     required String confirmPassword,
   })
@@ -48,6 +51,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _countryFieldKey = GlobalKey<FormFieldState<Country>>();
 
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
@@ -74,6 +78,7 @@ class _RegisterFormState extends State<RegisterForm> {
     widget.onSubmit(
       fullName: _fullNameController.text.trim(),
       email: _emailController.text.trim(),
+      countryCode: _countryFieldKey.currentState!.value!.countryCode,
       password: _passwordController.text,
       confirmPassword: _confirmPasswordController.text,
     );
@@ -168,6 +173,27 @@ class _RegisterFormState extends State<RegisterForm> {
               return null;
             },
             enabled: !widget.isLoading,
+          ),
+          const SizedBox(height: 16),
+          _FieldLabel(text: l10n.registerCountryLabel),
+          const SizedBox(height: 8),
+          CountryPickerField(
+            key: _countryFieldKey,
+            enabled: !widget.isLoading,
+            hintText: l10n.registerCountryHint,
+            textStyle: const TextStyle(color: _RegisterFormColors.inputText),
+            hintStyle: const TextStyle(color: _RegisterFormColors.inputHint),
+            iconColor: _RegisterFormColors.inputIcon,
+            decoration: _inputDecoration(
+              hint: l10n.registerCountryHint,
+              prefixIcon: Icons.public_outlined,
+            ),
+            validator: (country) {
+              if (country == null) {
+                return l10n.validationCountryRequired;
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 16),
           _FieldLabel(text: l10n.registerPasswordLabel),

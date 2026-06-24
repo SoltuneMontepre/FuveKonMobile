@@ -1,14 +1,17 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
+import 'package:fuvekonmobile/core/utils/country_helpers.dart';
 import 'package:fuvekonmobile/features/profile/domain/entities/account.dart';
 import 'package:fuvekonmobile/features/profile/domain/entities/update_profile_input.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/edit_profile_bloc.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/edit_profile_event.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/edit_profile_state.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
+import 'package:fuvekonmobile/shared/widgets/country_picker_field.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 
@@ -26,9 +29,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late final TextEditingController _fursonaController;
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
-  late final TextEditingController _countryController;
   late final TextEditingController _idCardController;
   late final TextEditingController _dobController;
+  final _countryFieldKey = GlobalKey<FormFieldState<Country>>();
 
   @override
   void initState() {
@@ -37,7 +40,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _fursonaController = TextEditingController(text: account.fursonaName ?? '');
     _firstNameController = TextEditingController(text: account.firstName ?? '');
     _lastNameController = TextEditingController(text: account.lastName ?? '');
-    _countryController = TextEditingController(text: account.country ?? '');
     _idCardController = TextEditingController(text: account.idCard ?? '');
     _dobController = TextEditingController(text: account.dateOfBirth ?? '');
   }
@@ -47,7 +49,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _fursonaController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _countryController.dispose();
     _idCardController.dispose();
     _dobController.dispose();
     super.dispose();
@@ -62,7 +63,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           fursonaName: _fursonaController.text,
           firstName: _firstNameController.text,
           lastName: _lastNameController.text,
-          country: _countryController.text,
+          country: countryToStoredValue(_countryFieldKey.currentState?.value),
           idCard: _idCardController.text,
           dateOfBirth: _dobController.text,
         ),
@@ -70,10 +71,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  InputDecoration _decoration(String label, {IconData? icon}) {
+  TextStyle _inputTextStyle(FuvekonThemeExtension ext) {
+    return TextStyle(color: ext.contentOnCard, fontSize: 14);
+  }
+
+  InputDecoration _decoration(
+    FuvekonThemeExtension ext,
+    String label, {
+    IconData? icon,
+    String? hintText,
+  }) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: icon != null ? Icon(icon) : null,
+      hintText: hintText,
+      prefixIcon: icon != null
+          ? Icon(icon, color: ext.contentOnCardMuted)
+          : null,
+      labelStyle: TextStyle(
+        color: ext.contentOnCardMuted,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      hintStyle: TextStyle(
+        color: ext.contentOnCardMuted.withValues(alpha: 0.75),
+        fontSize: 14,
+      ),
       filled: true,
       fillColor: FuvekonColors.inputFill,
       border: OutlineInputBorder(
@@ -160,7 +182,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               TextFormField(
                                 initialValue: widget.account.email,
                                 readOnly: true,
+                                style: _inputTextStyle(ext),
                                 decoration: _decoration(
+                                  ext,
                                   'Email',
                                   icon: Icons.email_outlined,
                                 ),
@@ -169,8 +193,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               TextFormField(
                                 controller: _fursonaController,
                                 enabled: isVerified && !isSaving,
+                                style: _inputTextStyle(ext),
                                 textCapitalization: TextCapitalization.words,
                                 decoration: _decoration(
+                                  ext,
                                   'Nickname',
                                   icon: Icons.pets_outlined,
                                 ),
@@ -179,8 +205,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               TextFormField(
                                 controller: _firstNameController,
                                 enabled: isVerified && !isSaving,
+                                style: _inputTextStyle(ext),
                                 textCapitalization: TextCapitalization.words,
                                 decoration: _decoration(
+                                  ext,
                                   'Họ',
                                   icon: Icons.badge_outlined,
                                 ),
@@ -189,18 +217,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               TextFormField(
                                 controller: _lastNameController,
                                 enabled: isVerified && !isSaving,
+                                style: _inputTextStyle(ext),
                                 textCapitalization: TextCapitalization.words,
                                 decoration: _decoration(
+                                  ext,
                                   'Tên',
                                   icon: Icons.badge_outlined,
                                 ),
                               ),
                               const SizedBox(height: FuvekonSpacing.field),
-                              TextFormField(
-                                controller: _countryController,
+                              CountryPickerField(
+                                key: _countryFieldKey,
+                                initialValue: countryFromStoredValue(
+                                  widget.account.country,
+                                ),
                                 enabled: isVerified && !isSaving,
-                                textCapitalization: TextCapitalization.words,
+                                hintText: 'Chọn quốc gia',
+                                textStyle: TextStyle(
+                                  color: ext.contentOnCard,
+                                ),
+                                hintStyle: TextStyle(
+                                  color: ext.contentOnCardMuted.withValues(
+                                    alpha: 0.65,
+                                  ),
+                                ),
+                                iconColor: ext.contentOnCardMuted,
                                 decoration: _decoration(
+                                  ext,
                                   'Quốc gia',
                                   icon: Icons.public_outlined,
                                 ),
@@ -209,7 +252,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               TextFormField(
                                 controller: _idCardController,
                                 enabled: isVerified && !isSaving,
+                                style: _inputTextStyle(ext),
                                 decoration: _decoration(
+                                  ext,
                                   'CMND/Hộ chiếu',
                                   icon: Icons.credit_card_outlined,
                                 ),
@@ -218,11 +263,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               TextFormField(
                                 controller: _dobController,
                                 enabled: isVerified && !isSaving,
+                                style: _inputTextStyle(ext),
                                 keyboardType: TextInputType.datetime,
                                 decoration: _decoration(
+                                  ext,
                                   'Ngày sinh',
                                   icon: Icons.cake_outlined,
-                                ).copyWith(hintText: 'YYYY-MM-DD'),
+                                  hintText: 'YYYY-MM-DD',
+                                ),
                               ),
                             ],
                           ),

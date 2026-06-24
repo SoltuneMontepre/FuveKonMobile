@@ -374,9 +374,11 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 			{
 				adminTalents.GET("/pending", h.Talent.GetPendingTalents)
 				adminTalents.GET("/approved", h.Talent.GetApprovedTalents)
+				adminTalents.GET("/require-changes", h.Talent.GetRequireChangesTalents)
 				adminTalents.GET("/denied", h.Talent.GetDeniedTalents)
 				adminTalents.PATCH("/:id/schedule", h.Talent.AssignTalentSchedule)
 				adminTalents.PATCH("/:id/approve", h.Talent.ApproveTalent)
+				adminTalents.PATCH("/:id/require-changes", h.Talent.RequestTalentChanges)
 				adminTalents.PATCH("/:id/deny", h.Talent.DenyTalent)
 				adminTalents.PATCH("/:id/pending", h.Talent.MarkTalentPending)
 			}

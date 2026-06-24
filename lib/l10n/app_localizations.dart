@@ -428,6 +428,18 @@ abstract class AppLocalizations {
   /// **'example@domain.com'**
   String get registerEmailHint;
 
+  /// No description provided for @registerCountryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get registerCountryLabel;
+
+  /// No description provided for @registerCountryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your country'**
+  String get registerCountryHint;
+
   /// No description provided for @registerPasswordLabel.
   ///
   /// In en, this message translates to:
@@ -547,6 +559,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Full name must be at least 2 characters'**
   String get validationFullNameMin;
+
+  /// No description provided for @validationCountryRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your country'**
+  String get validationCountryRequired;
 
   /// No description provided for @validationConfirmPasswordRequired.
   ///
@@ -1265,7 +1283,7 @@ abstract class AppLocalizations {
   /// No description provided for @landingHeroTitle.
   ///
   /// In en, this message translates to:
-  /// **'Anime Event'**
+  /// **'Fuvekon'**
   String get landingHeroTitle;
 
   /// No description provided for @landingHeroBody.
@@ -1433,115 +1451,457 @@ abstract class AppLocalizations {
   /// No description provided for @rulesTitle.
   ///
   /// In en, this message translates to:
-  /// **'Event rules'**
+  /// **'Event Rules'**
   String get rulesTitle;
+
+  /// No description provided for @rulesLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: April 2, 2026'**
+  String get rulesLastUpdated;
 
   /// No description provided for @rulesIntro.
   ///
   /// In en, this message translates to:
-  /// **'Please read the following rules carefully to ensure a safe, professional, and memorable convention for everyone.'**
+  /// **'To ensure the best experience for all participants, FUVE has a code of conduct for everyone. When participating in the event, you are required to comply with the event rules.'**
   String get rulesIntro;
 
-  /// No description provided for @rulesAttendanceTitle.
+  /// No description provided for @rulesAttendeeSection.
   ///
   /// In en, this message translates to:
-  /// **'Attendance rules'**
-  String get rulesAttendanceTitle;
+  /// **'Rule for Attendee'**
+  String get rulesAttendeeSection;
 
-  /// No description provided for @rulesAttendance1.
+  /// No description provided for @rulesTicketsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Present a valid ticket at the entrance.'**
-  String get rulesAttendance1;
+  /// **'Attendee Tickets'**
+  String get rulesTicketsTitle;
 
-  /// No description provided for @rulesAttendance2.
+  /// No description provided for @rulesTickets1.
   ///
   /// In en, this message translates to:
-  /// **'No weapons or flammable materials.'**
-  String get rulesAttendance2;
+  /// **'All attendees must wear their identification badges at all times while in the event area.'**
+  String get rulesTickets1;
 
-  /// No description provided for @rulesAttendance3.
+  /// No description provided for @rulesTickets2.
   ///
   /// In en, this message translates to:
-  /// **'Respect shared spaces.'**
-  String get rulesAttendance3;
+  /// **'Badges must be displayed in a visible location (chest, neck, or sleeve).'**
+  String get rulesTickets2;
 
-  /// No description provided for @rulesCosplayTitle.
+  /// No description provided for @rulesTickets3.
   ///
   /// In en, this message translates to:
-  /// **'Cosplay guidelines'**
-  String get rulesCosplayTitle;
+  /// **'Tickets and badges are the property of the organizing committee and may not be transferred, lent, or duplicated without the consent of the organizing committee.'**
+  String get rulesTickets3;
 
-  /// No description provided for @rulesCosplay1.
+  /// No description provided for @rulesTickets4.
   ///
   /// In en, this message translates to:
-  /// **'Costumes must be appropriate and respectful.'**
-  String get rulesCosplay1;
-
-  /// No description provided for @rulesCosplay2.
-  ///
-  /// In en, this message translates to:
-  /// **'Props must not be sharp or dangerous.'**
-  String get rulesCosplay2;
-
-  /// No description provided for @rulesCosplay3.
-  ///
-  /// In en, this message translates to:
-  /// **'Use designated changing areas only.'**
-  String get rulesCosplay3;
-
-  /// No description provided for @rulesBoothTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Vendor booth rules'**
-  String get rulesBoothTitle;
-
-  /// No description provided for @rulesBooth1.
-  ///
-  /// In en, this message translates to:
-  /// **'Sell only registered product categories.'**
-  String get rulesBooth1;
-
-  /// No description provided for @rulesBooth2.
-  ///
-  /// In en, this message translates to:
-  /// **'Do not block walkways.'**
-  String get rulesBooth2;
-
-  /// No description provided for @rulesBooth3.
-  ///
-  /// In en, this message translates to:
-  /// **'Keep your booth area clean.'**
-  String get rulesBooth3;
+  /// **'Attendees are responsible for safeguarding their badges.'**
+  String get rulesTickets4;
 
   /// No description provided for @rulesConductTitle.
   ///
   /// In en, this message translates to:
-  /// **'Code of conduct'**
+  /// **'Personal Conduct'**
   String get rulesConductTitle;
 
   /// No description provided for @rulesConduct1.
   ///
   /// In en, this message translates to:
-  /// **'Harassment of any kind is strictly prohibited.'**
+  /// **'Prohibited acts of violence, threats, or endangerment to the life, health, or property of others.'**
   String get rulesConduct1;
 
   /// No description provided for @rulesConduct2.
   ///
   /// In en, this message translates to:
-  /// **'No littering.'**
+  /// **'Prohibited acts of harassment, stalking, following, or causing disturbance to others.'**
   String get rulesConduct2;
 
   /// No description provided for @rulesConduct3.
   ///
   /// In en, this message translates to:
-  /// **'Follow staff instructions.'**
+  /// **'Prohibited acts of sexual nature, sexually suggestive behavior, and any physical contact without consent.'**
   String get rulesConduct3;
+
+  /// No description provided for @rulesConduct4.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited acts of discrimination, prejudice, defamation, or actions that cause division within the community.'**
+  String get rulesConduct4;
+
+  /// No description provided for @rulesConduct5.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited acts of propagating or inciting content related to religion, politics, or of a military nature.'**
+  String get rulesConduct5;
+
+  /// No description provided for @rulesConduct6.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited acts that disrupt order or negatively affect attendees, staff, or general building operations.'**
+  String get rulesConduct6;
+
+  /// No description provided for @rulesProhibitedItemsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited Items'**
+  String get rulesProhibitedItemsTitle;
+
+  /// No description provided for @rulesProhibitedItems1.
+  ///
+  /// In en, this message translates to:
+  /// **'No items that can cause bodily harm, explosives, or items resembling weapons.'**
+  String get rulesProhibitedItems1;
+
+  /// No description provided for @rulesProhibitedItems2.
+  ///
+  /// In en, this message translates to:
+  /// **'No pornographic publications, sensitive or inappropriate content, 16+, or related to politics and religions.'**
+  String get rulesProhibitedItems2;
+
+  /// No description provided for @rulesProhibitedItems3.
+  ///
+  /// In en, this message translates to:
+  /// **'No alcohol, cigarettes, and all stimulants inside the venue.'**
+  String get rulesProhibitedItems3;
+
+  /// No description provided for @rulesProhibitedItems4.
+  ///
+  /// In en, this message translates to:
+  /// **'Food is not allowed inside the event venue.'**
+  String get rulesProhibitedItems4;
+
+  /// No description provided for @rulesProhibitedItems5.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid heavy smelling items, loud noises or bright flashing lights causing discomfort for others.'**
+  String get rulesProhibitedItems5;
+
+  /// No description provided for @rulesProhibitedItems6.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid big bulky items taking up space or causing blockades.'**
+  String get rulesProhibitedItems6;
+
+  /// No description provided for @rulesClothingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clothing and Accessories'**
+  String get rulesClothingTitle;
+
+  /// No description provided for @rulesClothingIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'The event is attended by participants of various age groups; attire must be appropriate for a public setting.'**
+  String get rulesClothingIntro;
+
+  /// No description provided for @rulesClothingProhibitedIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendees must be dressed appropriately at the event. Prohibited costumes and accessories include:'**
+  String get rulesClothingProhibitedIntro;
+
+  /// No description provided for @rulesClothingProhibited1.
+  ///
+  /// In en, this message translates to:
+  /// **'Revealing, suggestive clothing'**
+  String get rulesClothingProhibited1;
+
+  /// No description provided for @rulesClothingProhibited2.
+  ///
+  /// In en, this message translates to:
+  /// **'Political, religious or military, intended for propaganda, incitement of hostility, or causing division'**
+  String get rulesClothingProhibited2;
+
+  /// No description provided for @rulesClothingProhibited3.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon-shaped or able to cause harm'**
+  String get rulesClothingProhibited3;
+
+  /// No description provided for @rulesClothingProhibited4.
+  ///
+  /// In en, this message translates to:
+  /// **'Oversized costume making it difficult for other guests to move'**
+  String get rulesClothingProhibited4;
+
+  /// No description provided for @rulesClothingNote1.
+  ///
+  /// In en, this message translates to:
+  /// **'Should the attendees dress too suggestively or revealing, organizers will ask you to change your costumes or cover yourself up.'**
+  String get rulesClothingNote1;
+
+  /// No description provided for @rulesClothingNote2.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizers has the right to ask you to leave the venue if you do not cooperate.'**
+  String get rulesClothingNote2;
+
+  /// No description provided for @rulesClothingNote3.
+  ///
+  /// In en, this message translates to:
+  /// **'The final decision regarding the appropriateness of attire rests with the Organizing Committee.'**
+  String get rulesClothingNote3;
+
+  /// No description provided for @rulesClothingNote4.
+  ///
+  /// In en, this message translates to:
+  /// **'Appropriate attire is clothing that is comfortable and convenient for the wearer, suitable for the public and community nature of the event, maintaining decency and must not display offensive images, symbols, or text that incite violence, are discriminatory, or contrary to public morals. Additionally, attire must not obstruct event activities or compromise safety and public order.'**
+  String get rulesClothingNote4;
+
+  /// No description provided for @rulesPhotographyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Videography and Photography'**
+  String get rulesPhotographyTitle;
+
+  /// No description provided for @rulesPhotography1.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendees may record the event for personal use. However, organizers may still ask you to take the post down if it contains images affecting the event or other attendees.'**
+  String get rulesPhotography1;
+
+  /// No description provided for @rulesPhotography2.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendees must act accordingly when recording at the event. Respect other attendees\' personal space and do not record them if they\'re not comfortable with it.'**
+  String get rulesPhotography2;
+
+  /// No description provided for @rulesPhotography3.
+  ///
+  /// In en, this message translates to:
+  /// **'Participants must comply with instructions from the Organizing Team and/or Security staff when they request all photography, filming, or recording activities to stop or cease in specific areas or at certain times. Photography, videography, and audio recording are strictly prohibited in restrooms, changing rooms, private dressing areas, and other sensitive locations.'**
+  String get rulesPhotography3;
+
+  /// No description provided for @rulesPhotography4.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendees acknowledges that being accidentally recorded is unavoidable.'**
+  String get rulesPhotography4;
+
+  /// No description provided for @rulesPhotography5.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizers reserve the rights to use videos/images containing attendees for marketing purposes.'**
+  String get rulesPhotography5;
+
+  /// No description provided for @rulesPhotography6.
+  ///
+  /// In en, this message translates to:
+  /// **'The use of editing tools, AI, or any form of modification to alter images, videos, or audio - as well as the posting or distribution of content created or modified using such tools - for the purpose of defamation, harassment, or causing negative impact to participants or the event is strictly prohibited.'**
+  String get rulesPhotography6;
+
+  /// No description provided for @rulesOrganizerAttendeeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizer\'s Decision'**
+  String get rulesOrganizerAttendeeTitle;
+
+  /// No description provided for @rulesOrganizerAttendee1.
+  ///
+  /// In en, this message translates to:
+  /// **'The organizing committee reserves the right to issue warnings and cautions to first-time offenders. Upon violation, attendees must comply with the organizing committee\'s directives and have the right to provide immediate feedback at the location of the violation if they find the decision unsatisfactory.'**
+  String get rulesOrganizerAttendee1;
+
+  /// No description provided for @rulesOrganizerAttendee2.
+  ///
+  /// In en, this message translates to:
+  /// **'For prohibited items, the organizing committee may require attendees to store items outside the event area or temporarily hold them until the event concludes.'**
+  String get rulesOrganizerAttendee2;
+
+  /// No description provided for @rulesOrganizerAttendee3.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat offenders after receiving warnings or those committing serious violations will be required to leave the event premises, have their badges revoked, and forfeit participation fees.'**
+  String get rulesOrganizerAttendee3;
+
+  /// No description provided for @rulesOrganizerAttendee4.
+  ///
+  /// In en, this message translates to:
+  /// **'Serious violations or repeated offenses will be documented and may affect eligibility to attend future FUVE events.'**
+  String get rulesOrganizerAttendee4;
+
+  /// No description provided for @rulesOrganizerAttendee5.
+  ///
+  /// In en, this message translates to:
+  /// **'The organizing committee reserves the right to address behaviors or items not explicitly listed that negatively impact the event, attendees, or violate the spirit of these regulations.'**
+  String get rulesOrganizerAttendee5;
+
+  /// No description provided for @rulesOrganizerAttendee6.
+  ///
+  /// In en, this message translates to:
+  /// **'All individuals are responsible for promptly reporting any violations to the organizing committee.'**
+  String get rulesOrganizerAttendee6;
+
+  /// No description provided for @rulesProductSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Regulations'**
+  String get rulesProductSection;
+
+  /// No description provided for @rulesProductIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealers must prepare a product list of products for sale during the event.'**
+  String get rulesProductIntro;
+
+  /// No description provided for @rulesProductAllowedIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Listed products must satisfy the following conditions:'**
+  String get rulesProductAllowedIntro;
+
+  /// No description provided for @rulesProductAllowed1.
+  ///
+  /// In en, this message translates to:
+  /// **'Handmade'**
+  String get rulesProductAllowed1;
+
+  /// No description provided for @rulesProductAllowed2.
+  ///
+  /// In en, this message translates to:
+  /// **'Reselling products are proved allowed by the makers/artists'**
+  String get rulesProductAllowed2;
+
+  /// No description provided for @rulesProductAllowed3.
+  ///
+  /// In en, this message translates to:
+  /// **'Products must have a minimum of 25% of the Dealers/Sellers participation during the product developing process.'**
+  String get rulesProductAllowed3;
+
+  /// No description provided for @rulesProductProhibitedIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited products at the event:'**
+  String get rulesProductProhibitedIntro;
+
+  /// No description provided for @rulesProductProhibited1.
+  ///
+  /// In en, this message translates to:
+  /// **'Sensitive products, 16+'**
+  String get rulesProductProhibited1;
+
+  /// No description provided for @rulesProductProhibited2.
+  ///
+  /// In en, this message translates to:
+  /// **'Food, beverage'**
+  String get rulesProductProhibited2;
+
+  /// No description provided for @rulesProductProhibited3.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharp objects'**
+  String get rulesProductProhibited3;
+
+  /// No description provided for @rulesProductProhibited4.
+  ///
+  /// In en, this message translates to:
+  /// **'Alcohols and stimulants'**
+  String get rulesProductProhibited4;
+
+  /// No description provided for @rulesProductProhibited5.
+  ///
+  /// In en, this message translates to:
+  /// **'Flammable products'**
+  String get rulesProductProhibited5;
+
+  /// No description provided for @rulesProductFireSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'All acts of using stimulants, flammable items at the event and booth areas are prohibited. Avoid placing flammable objects (paper cups, dry towels, papers, …) near open electric sockets and wires.'**
+  String get rulesProductFireSafety;
+
+  /// No description provided for @rulesProductViolation1.
+  ///
+  /// In en, this message translates to:
+  /// **'All violated products will be revoked by the Organizers.'**
+  String get rulesProductViolation1;
+
+  /// No description provided for @rulesProductViolation2.
+  ///
+  /// In en, this message translates to:
+  /// **'Booths violating the regulations once will be warned by the Organizers, the second violation will result in force to stop all booth related activities by the Organizers.'**
+  String get rulesProductViolation2;
+
+  /// No description provided for @rulesProductLiability.
+  ///
+  /// In en, this message translates to:
+  /// **'The Organizer is not responsible for any losses inside and outside of the event.'**
+  String get rulesProductLiability;
+
+  /// No description provided for @rulesDealerSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Rule for Dealer'**
+  String get rulesDealerSection;
+
+  /// No description provided for @rulesDealerAreaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer Den Area'**
+  String get rulesDealerAreaTitle;
+
+  /// No description provided for @rulesDealerArea1.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealers must arrive and receive their ticket and booth on informed time.'**
+  String get rulesDealerArea1;
+
+  /// No description provided for @rulesDealerArea2.
+  ///
+  /// In en, this message translates to:
+  /// **'All behaviours of violating other booth\'s area are prohibited, including decorations, personnel and customer lines.'**
+  String get rulesDealerArea2;
+
+  /// No description provided for @rulesDealerArea3.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid decorating your booth with decorations associated with sensitive topics, religions.'**
+  String get rulesDealerArea3;
+
+  /// No description provided for @rulesDealerArea4.
+  ///
+  /// In en, this message translates to:
+  /// **'All Dealers must keep their booth clean and well-organized.'**
+  String get rulesDealerArea4;
+
+  /// No description provided for @rulesDealerArea5.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep an eye out for your personal belongings, Building\'s and Organizer\'s properties.'**
+  String get rulesDealerArea5;
+
+  /// No description provided for @rulesDealerArea6.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealers/Sellers are responsible for handling customer queues, avoiding affecting common walkways and other booths.'**
+  String get rulesDealerArea6;
+
+  /// No description provided for @rulesOrganizerDealerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizer\'s Decision'**
+  String get rulesOrganizerDealerTitle;
+
+  /// No description provided for @rulesOrganizerDealer1.
+  ///
+  /// In en, this message translates to:
+  /// **'The Organizer has all the rights to require the Dealers to stop all activities related to the booth and leave the event area if the dealer violated the regulations.'**
+  String get rulesOrganizerDealer1;
+
+  /// No description provided for @rulesOrganizerDealer2.
+  ///
+  /// In en, this message translates to:
+  /// **'The Organizer has all the rights to decide the Dealer\'s booth location.'**
+  String get rulesOrganizerDealer2;
 
   /// No description provided for @rulesAgreeCheckbox.
   ///
   /// In en, this message translates to:
-  /// **'I have read, understood, and agree to the rules above.'**
+  /// **'I have read, understood, and agree to the event rules above.'**
   String get rulesAgreeCheckbox;
 
   /// No description provided for @rulesConfirmButton.
@@ -2015,32 +2375,14 @@ abstract class AppLocalizations {
   /// No description provided for @artbookTitle.
   ///
   /// In en, this message translates to:
-  /// **'FUVEKON Conbook'**
+  /// **'Join the Conbook'**
   String get artbookTitle;
-
-  /// No description provided for @artbookSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Artistic Journey — 2024'**
-  String get artbookSubtitle;
 
   /// No description provided for @artbookDescription.
   ///
   /// In en, this message translates to:
-  /// **'A collection of over 50 artworks from the FUVEKON creative community, printed on premium art paper.'**
+  /// **'The Conbook is a commemorative publication with guides for attendees and artwork from creators in our community, each piece reflecting personal style and the spirit of the event. If you love art and want to contribute to the event, send your work to FUVE to join the Conbook.'**
   String get artbookDescription;
-
-  /// No description provided for @artbookPageCount.
-  ///
-  /// In en, this message translates to:
-  /// **'120 Pages'**
-  String get artbookPageCount;
-
-  /// No description provided for @artbookPaperType.
-  ///
-  /// In en, this message translates to:
-  /// **'150gsm Couche paper'**
-  String get artbookPaperType;
 
   /// No description provided for @artbookSubmitCta.
   ///
@@ -2171,50 +2513,98 @@ abstract class AppLocalizations {
   /// No description provided for @artbookRulesTitle.
   ///
   /// In en, this message translates to:
-  /// **'Submission rules'**
+  /// **'CONBOOK SUBMISSION GUIDELINES'**
   String get artbookRulesTitle;
 
-  /// No description provided for @artbookRuleSizeTitle.
+  /// No description provided for @artbookRulesFormatSection.
   ///
   /// In en, this message translates to:
-  /// **'SIZE'**
-  String get artbookRuleSizeTitle;
+  /// **'FORMAT REQUIREMENTS:'**
+  String get artbookRulesFormatSection;
 
-  /// No description provided for @artbookRuleSizeBody.
+  /// No description provided for @artbookRulesFormat1.
   ///
   /// In en, this message translates to:
-  /// **'A4 (210 x 297mm) with a 5mm safety margin.'**
-  String get artbookRuleSizeBody;
+  /// **'Size: A5 (2480×3508px), portrait or landscape.'**
+  String get artbookRulesFormat1;
 
-  /// No description provided for @artbookRuleFormatTitle.
+  /// No description provided for @artbookRulesFormat2.
   ///
   /// In en, this message translates to:
-  /// **'FORMAT'**
-  String get artbookRuleFormatTitle;
+  /// **'Resolution: 300dpi, CMYK color mode.'**
+  String get artbookRulesFormat2;
 
-  /// No description provided for @artbookRuleFormatBody.
+  /// No description provided for @artbookRulesFormat3.
   ///
   /// In en, this message translates to:
-  /// **'CMYK color mode, minimum 300dpi.'**
-  String get artbookRuleFormatBody;
+  /// **'File format: JPG/PNG.'**
+  String get artbookRulesFormat3;
 
-  /// No description provided for @artbookRuleCopyrightTitle.
+  /// No description provided for @artbookRulesFormat4.
   ///
   /// In en, this message translates to:
-  /// **'COPYRIGHT'**
-  String get artbookRuleCopyrightTitle;
+  /// **'Accepted works: Illustrations, photography, short writing.'**
+  String get artbookRulesFormat4;
 
-  /// No description provided for @artbookRuleCopyrightBody.
+  /// No description provided for @artbookRulesTipsSection.
   ///
   /// In en, this message translates to:
-  /// **'Must be original work that has never been commercially published.'**
-  String get artbookRuleCopyrightBody;
+  /// **'A FEW NOTES:'**
+  String get artbookRulesTipsSection;
 
-  /// No description provided for @artbookDeadline.
+  /// No description provided for @artbookRulesTip1.
   ///
   /// In en, this message translates to:
-  /// **'Submission deadline: November 20, 2023'**
-  String get artbookDeadline;
+  /// **'Your work must be your own and must not have been publicly shared on any platform before FUVE 2026.'**
+  String get artbookRulesTip1;
+
+  /// No description provided for @artbookRulesTip2.
+  ///
+  /// In en, this message translates to:
+  /// **'Submissions to FUVE must be finished pieces, not drafts or sketches.'**
+  String get artbookRulesTip2;
+
+  /// No description provided for @artbookRulesTip3.
+  ///
+  /// In en, this message translates to:
+  /// **'For written works, aim for about 300–500 words and submit as a Word file.'**
+  String get artbookRulesTip3;
+
+  /// No description provided for @artbookRulesTip4.
+  ///
+  /// In en, this message translates to:
+  /// **'For photography, clearly credit the photographer, model, or fursuiter.'**
+  String get artbookRulesTip4;
+
+  /// No description provided for @artbookRulesTip5.
+  ///
+  /// In en, this message translates to:
+  /// **'A FUVE mascot is not required, but the work should relate to the event theme.'**
+  String get artbookRulesTip5;
+
+  /// No description provided for @artbookRulesTip6.
+  ///
+  /// In en, this message translates to:
+  /// **'All works may appear in the closing video or in a folder posted after the event. Only a limited number will be selected for the event handbook due to print constraints.'**
+  String get artbookRulesTip6;
+
+  /// No description provided for @artbookRulesTip7.
+  ///
+  /// In en, this message translates to:
+  /// **'Your work may be used for non-commercial event purposes (social media, handbook cover and content, promotional print such as posters, invitations, wristbands, etc.). We will email you for permission if your work is selected.'**
+  String get artbookRulesTip7;
+
+  /// No description provided for @artbookRulesTip8.
+  ///
+  /// In en, this message translates to:
+  /// **'Works without author information, that violate conduct rules, or contain sensitive, violent, political, or religious themes will not be selected.'**
+  String get artbookRulesTip8;
+
+  /// No description provided for @artbookRulesTip9.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for taking the time to contribute to our event.'**
+  String get artbookRulesTip9;
 
   /// No description provided for @artbookLoginRequired.
   ///
@@ -3427,6 +3817,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search code, email, name...'**
   String get adminTicketsSearchHint;
+
+  /// No description provided for @adminTicketsViewUser.
+  ///
+  /// In en, this message translates to:
+  /// **'View user profile'**
+  String get adminTicketsViewUser;
 
   /// No description provided for @adminTicketsDisableSales.
   ///

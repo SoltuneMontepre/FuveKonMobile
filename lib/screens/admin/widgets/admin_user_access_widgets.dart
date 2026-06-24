@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/utils/country_helpers.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/screens/admin/l10n/admin_submission_l10n.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
@@ -278,7 +279,7 @@ class _DetailProfileHeader extends StatelessWidget {
         if (country != null && country!.isNotEmpty) ...[
           const SizedBox(height: 4),
           Text(
-            country!,
+            countryDisplayLabel(country, context: context),
             textAlign: TextAlign.center,
             style: theme.textTheme.bodySmall?.copyWith(
               color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.8),

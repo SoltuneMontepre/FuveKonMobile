@@ -234,6 +234,16 @@ func (h *TalentHandler) GetDeniedTalents(c *gin.Context) {
 	utils.RespondSuccess(c, &talents, "Successfully retrieved denied talents")
 }
 
+func (h *TalentHandler) GetRequireChangesTalents(c *gin.Context) {
+	ctx := c.Request.Context()
+	talents, err := h.services.Talent.GetRequireChangesTalents(ctx)
+	if err != nil {
+		utils.RespondInternalServerError(c, "Failed to retrieve require_changes talents")
+		return
+	}
+	utils.RespondSuccess(c, &talents, "Successfully retrieved require_changes talents")
+}
+
 // AssignTalentSchedule godoc
 // @Summary Assign slot and start time to an approved talent
 // @Tags admin-talents
@@ -347,4 +357,29 @@ func (h *TalentHandler) MarkTalentPending(c *gin.Context) {
 	}
 
 	utils.RespondSuccess(c, talent, "Talent status set to pending successfully")
+}
+
+func (h *TalentHandler) RequestTalentChanges(c *gin.Context) {
+	ctx := c.Request.Context()
+	talentID := c.Param("id")
+	if talentID == "" {
+		utils.RespondValidationError(c, "Talent ID is required")
+		return
+	}
+
+	talent, err := h.services.Talent.RequestTalentChanges(ctx, talentID)
+	if err != nil {
+		if errors.Is(err, repositories.ErrTalentNotFound) {
+			utils.RespondNotFound(c, "Talent not found")
+			return
+		}
+		if errors.Is(err, services.ErrStatusUnchanged) {
+			utils.RespondError(c, 409, "STATUS_UNCHANGED", "Talent already has require_changes status")
+			return
+		}
+		utils.RespondInternalServerError(c, "Failed to request talent changes")
+		return
+	}
+
+	utils.RespondSuccess(c, talent, "Changes requested successfully")
 }

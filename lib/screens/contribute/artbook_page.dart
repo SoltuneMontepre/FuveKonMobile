@@ -6,6 +6,7 @@ import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_illustrated_background.dart';
 import 'package:fuvekonmobile/shared/widgets/fuvekon_top_nav_bar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:fuvekonmobile/screens/contribute/conbook_rules_section.dart';
 
 class ArtbookPage extends StatelessWidget {
   const ArtbookPage({super.key});
@@ -43,6 +44,14 @@ class ArtbookPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 88),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: ConbookScrollSeparator(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                  child: ConbookRulesSection(l10n: l10n),
+                ),
               ],
             ),
           ),
@@ -122,87 +131,68 @@ class _ArtbookInfoCard extends StatelessWidget {
 
   final AppLocalizations l10n;
 
-  static const _accent = Color(0xFFCD6B52);
-
   @override
   Widget build(BuildContext context) {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        FuvekonIllustratedContentPanel(
-          padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l10n.artbookTitle,
-                style: const TextStyle(
-                  color: FuvekonColors.darkPrimary,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 22,
-                  height: 1.2,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                l10n.artbookSubtitle,
-                style: TextStyle(
-                  color: _accent.withValues(alpha: 0.95),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
-                  height: 1.35,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                l10n.artbookDescription,
-                style: TextStyle(
-                  color: FuvekonColors.darkTextSecondary.withValues(
-                    alpha: 0.95,
-                  ),
-                  fontSize: 14,
-                  height: 1.6,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: _SpecItem(
-                      icon: Icons.auto_stories_outlined,
-                      label: l10n.artbookPageCount,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _SpecItem(
-                      icon: Icons.description_outlined,
-                      label: l10n.artbookPaperType,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () => context.push(Routes.artbookSubmit),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: FuvekonColors.sageGreenContainer,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size.fromHeight(48),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                  ),
-                  child: Text(
-                    l10n.artbookSubmitCta,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                ),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: FuvekonColors.mintCard,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.22),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.artbookTitle,
+                  style: const TextStyle(
+                    color: FuvekonColors.onSageGreen,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 22,
+                    height: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.artbookDescription,
+                  style: const TextStyle(
+                    color: FuvekonColors.textSecondary,
+                    fontSize: 14,
+                    height: 1.6,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: () => context.push(Routes.artbookSubmit),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: FuvekonColors.sageGreenContainer,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size.fromHeight(48),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                    ),
+                    child: Text(
+                      l10n.artbookSubmitCta,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         const Positioned(top: 12, left: 12, child: _CornerAccent(flip: false)),
@@ -262,35 +252,4 @@ class _CornerAccentPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class _SpecItem extends StatelessWidget {
-  const _SpecItem({required this.icon, required this.label});
-
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          size: 22,
-          color: FuvekonColors.darkPrimary.withValues(alpha: 0.75),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            label,
-            style: TextStyle(
-              color: FuvekonColors.darkTextSecondary.withValues(alpha: 0.95),
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

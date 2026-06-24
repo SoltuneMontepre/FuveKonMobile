@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuvekonmobile/core/utils/country_helpers.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/screens/admin/models/admin_submission_models.dart';
@@ -189,7 +190,10 @@ extension AdminUserItemL10n on AdminUserItem {
           : l10n.adminFieldVerifiedNo,
     ),
     if (country?.isNotEmpty == true)
-      AdminDetailField(label: l10n.adminFieldCountry, value: country!),
+      AdminDetailField(
+        label: l10n.adminFieldCountry,
+        value: countryDisplayLabel(country),
+      ),
     if (idCard?.isNotEmpty == true)
       AdminDetailField(label: l10n.adminFieldIdCard, value: idCard!),
     if (dateOfBirth?.isNotEmpty == true)
@@ -263,7 +267,55 @@ extension AdminTicketItemL10n on AdminTicketItem {
     return parts.join(' • ');
   }
 
+  String localizedListUserInfo(AppLocalizations l10n) {
+    final parts = <String>[];
+    if (userEmail?.isNotEmpty == true) {
+      parts.add(userEmail!);
+    }
+    if (userLegalName.isNotEmpty && userLegalName != holderName) {
+      parts.add(userLegalName);
+    }
+    if (userFursonaName?.isNotEmpty == true &&
+        userFursonaName != holderName &&
+        userFursonaName != userLegalName) {
+      parts.add(userFursonaName!);
+    }
+    if (conBadgeName?.isNotEmpty == true && conBadgeName != holderName) {
+      parts.add(conBadgeName!);
+    }
+    if (userIsBlacklisted) {
+      parts.add(l10n.adminUserBlacklisted);
+    }
+    return parts.join(' • ');
+  }
+
+  String localizedTicketLine(AppLocalizations l10n) {
+    final parts = <String>[
+      referenceCode,
+      if (tierName != null && tierName!.isNotEmpty) tierName!,
+      if (isCheckedIn) l10n.adminCheckedIn,
+    ];
+    return parts.join(' • ');
+  }
+
   List<AdminDetailField> localizedDetails(AppLocalizations l10n) => [
+    if (userEmail?.isNotEmpty == true)
+      AdminDetailField(label: l10n.adminFieldEmail, value: userEmail!),
+    if (userLegalName.isNotEmpty)
+      AdminDetailField(label: l10n.adminFieldDisplayName, value: userLegalName),
+    if (userFursonaName?.isNotEmpty == true)
+      AdminDetailField(label: l10n.adminFieldFursona, value: userFursonaName!),
+    if (userFirstName?.isNotEmpty == true)
+      AdminDetailField(label: l10n.adminFieldFirstName, value: userFirstName!),
+    if (userLastName?.isNotEmpty == true)
+      AdminDetailField(label: l10n.adminFieldLastName, value: userLastName!),
+    if (userIdCard?.isNotEmpty == true)
+      AdminDetailField(label: l10n.adminFieldIdCard, value: userIdCard!),
+    if (userIsBlacklisted)
+      AdminDetailField(
+        label: l10n.adminFieldUser,
+        value: l10n.adminUserBannedFromTickets,
+      ),
     AdminDetailField(label: l10n.adminFieldTicketCode, value: referenceCode),
     AdminDetailField(
       label: l10n.adminFieldTicketNumber,
@@ -279,15 +331,6 @@ extension AdminTicketItemL10n on AdminTicketItem {
       AdminDetailField(label: l10n.adminFieldTierCode, value: tierCode!),
     if (conBadgeName?.isNotEmpty == true)
       AdminDetailField(label: l10n.adminFieldBadgeName, value: conBadgeName!),
-    if (userEmail?.isNotEmpty == true)
-      AdminDetailField(label: l10n.adminFieldEmail, value: userEmail!),
-    if (userIdCard?.isNotEmpty == true)
-      AdminDetailField(label: l10n.adminFieldIdCard, value: userIdCard!),
-    if (userIsBlacklisted)
-      AdminDetailField(
-        label: l10n.adminFieldUser,
-        value: l10n.adminUserBannedFromTickets,
-      ),
     AdminDetailField(
       label: l10n.adminFieldFursuiter,
       value: isFursuiter ? l10n.adminYes : l10n.adminNo,

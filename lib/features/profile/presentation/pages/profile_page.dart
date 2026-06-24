@@ -4,6 +4,7 @@ import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/utils/country_helpers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
@@ -136,7 +137,10 @@ class _ProfileBody extends StatelessWidget {
               AdminInfoRow(label: 'Nickname', value: account.fursonaName),
               AdminInfoRow(label: 'Họ tên', value: _fullName(account)),
               AdminInfoRow(label: 'Email', value: account.email),
-              AdminInfoRow(label: 'Quốc gia', value: account.country),
+              AdminInfoRow(
+                label: 'Quốc gia',
+                value: countryDisplayLabel(account.country, context: context),
+              ),
               AdminInfoRow(
                 label: 'CMND/Hộ chiếu',
                 value: _displayOrPlaceholder(account.idCard),
@@ -187,7 +191,7 @@ class _ProfileBody extends StatelessWidget {
                 icon: Icons.menu_book_outlined,
                 title: 'Thông tin conbook',
                 subtitle: 'Quy định và gửi bài',
-                onTap: () => context.push(Routes.artbook),
+                onTap: () => context.push(Routes.accountConbook),
               ),
             ],
           ),
@@ -211,13 +215,6 @@ class _ProfileBody extends StatelessWidget {
                         );
                   }
                 },
-              ),
-              const SizedBox(height: 8),
-              AdminActionTile(
-                icon: Icons.verified_user_outlined,
-                title: 'Xác minh danh tính',
-                subtitle: 'API đang phát triển',
-                onTap: () => context.push(Routes.accountVerifyIdentity),
               ),
               const SizedBox(height: 8),
               AdminActionTile(

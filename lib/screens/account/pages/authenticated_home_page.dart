@@ -338,7 +338,7 @@ class _ShortcutSection extends StatelessWidget {
       _HomeShortcut(
         icon: Icons.menu_book_outlined,
         label: l10n.authHomeShortcutArtbook,
-        route: Routes.artbook,
+        route: Routes.accountConbook,
       ),
       _HomeShortcut(
         icon: Icons.search_outlined,

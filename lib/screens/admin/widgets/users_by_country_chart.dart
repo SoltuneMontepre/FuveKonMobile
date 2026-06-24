@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/core/utils/country_helpers.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_dashboard_service.dart';
 import 'package:intl/intl.dart';
 
@@ -56,6 +57,7 @@ class UsersByCountryChart extends StatelessWidget {
               if (index > 0) const SizedBox(height: 12),
               _CountryRow(
                 label: _countryLabel(
+                  context,
                   visible[index].country,
                   l10n.adminDashboardUnknownCountry,
                 ),
@@ -82,9 +84,14 @@ class UsersByCountryChart extends StatelessWidget {
     );
   }
 
-  static String _countryLabel(String country, String unknownLabel) {
+  static String _countryLabel(
+    BuildContext context,
+    String country,
+    String unknownLabel,
+  ) {
     if (country.trim().isEmpty) return unknownLabel;
-    return country;
+    final label = countryDisplayLabel(country, context: context);
+    return label.isEmpty ? unknownLabel : label;
   }
 }
 

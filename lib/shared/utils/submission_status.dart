@@ -15,3 +15,5 @@ String statusLabelVi(String? status) => switch (status) {
   'pending' => 'Chờ duyệt',
   _ => 'Không rõ',
 };
+
+bool submissionNeedsFix(String? status) => status == 'require_changes';

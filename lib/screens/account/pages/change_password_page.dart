@@ -63,9 +63,22 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     }
   }
 
-  InputDecoration _decoration(String label, {Widget? suffix}) {
+  TextStyle _inputTextStyle(FuvekonThemeExtension ext) {
+    return TextStyle(color: ext.contentOnCard, fontSize: 14);
+  }
+
+  InputDecoration _decoration(
+    FuvekonThemeExtension ext,
+    String label, {
+    Widget? suffix,
+  }) {
     return InputDecoration(
       labelText: label,
+      labelStyle: TextStyle(
+        color: ext.contentOnCardMuted,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
       filled: true,
       fillColor: FuvekonColors.inputFill,
       suffixIcon: suffix,
@@ -103,7 +116,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     controller: _currentController,
                     obscureText: _obscureCurrent,
                     enabled: !_isSaving,
+                    style: _inputTextStyle(ext),
                     decoration: _decoration(
+                      ext,
                       'Mật khẩu hiện tại',
                       suffix: IconButton(
                         icon: Icon(
@@ -124,7 +139,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     controller: _newController,
                     obscureText: _obscureNew,
                     enabled: !_isSaving,
+                    style: _inputTextStyle(ext),
                     decoration: _decoration(
+                      ext,
                       'Mật khẩu mới',
                       suffix: IconButton(
                         icon: Icon(
@@ -146,7 +163,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     controller: _confirmController,
                     obscureText: _obscureConfirm,
                     enabled: !_isSaving,
+                    style: _inputTextStyle(ext),
                     decoration: _decoration(
+                      ext,
                       'Xác nhận mật khẩu mới',
                       suffix: IconButton(
                         icon: Icon(

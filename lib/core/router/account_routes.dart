@@ -228,6 +228,15 @@ abstract final class AccountRoutes {
 
                   routes: [
                     GoRoute(
+                      path: 'submit',
+
+                      parentNavigatorKey: rootNavigatorKey,
+
+                      builder: (context, state) =>
+                          const AccountConbookSubmitPage(),
+                    ),
+
+                    GoRoute(
                       path: ':id',
 
                       parentNavigatorKey: rootNavigatorKey,
@@ -237,6 +246,20 @@ abstract final class AccountRoutes {
 
                         return AccountConbookDetailPage(conbookId: id);
                       },
+
+                      routes: [
+                        GoRoute(
+                          path: 'edit',
+
+                          parentNavigatorKey: rootNavigatorKey,
+
+                          builder: (context, state) {
+                            final id = state.pathParameters['id']!;
+
+                            return AccountConbookEditPage(conbookId: id);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -259,6 +282,20 @@ abstract final class AccountRoutes {
 
                         return AccountTalentDetailPage(talentId: id);
                       },
+
+                      routes: [
+                        GoRoute(
+                          path: 'edit',
+
+                          parentNavigatorKey: rootNavigatorKey,
+
+                          builder: (context, state) {
+                            final id = state.pathParameters['id']!;
+
+                            return AccountTalentEditPage(talentId: id);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

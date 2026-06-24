@@ -12,7 +12,7 @@ import (
 
 var (
 	ErrTalentNotFound       = errors.New("talent not found")
-	ErrTalentNotEditable    = errors.New("cannot edit talent unless status is pending")
+	ErrTalentNotEditable    = errors.New("cannot edit talent unless status is pending or require_changes")
 	ErrUnauthorizedTalent   = errors.New("user is not the owner of this talent")
 	ErrTalentNotSchedulable = errors.New("talent must be approved before assigning a schedule")
 )
@@ -64,21 +64,31 @@ func (r *TalentRepository) GetUserTalents(ctx context.Context, userID uuid.UUID)
 	return talents, nil
 }
 
+func talentUserEditable(status models.TalentStatus) bool {
+	return status == models.TalentStatusPending || status == models.TalentStatusRequireChanges
+}
+
 func (r *TalentRepository) UpdateTalent(ctx context.Context, id uuid.UUID, talent *models.PerformanceTalent) (*models.PerformanceTalent, error) {
 	existing, err := r.GetTalentByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	if existing.TalentStatus != models.TalentStatusPending {
+	if !talentUserEditable(existing.TalentStatus) {
 		return nil, ErrTalentNotEditable
 	}
 
 	talent.Id = id
 	talent.UserId = existing.UserId
-	talent.TalentStatus = existing.TalentStatus
-	talent.SlotLabel = existing.SlotLabel
-	talent.ScheduledStartAt = existing.ScheduledStartAt
+	if existing.TalentStatus == models.TalentStatusRequireChanges {
+		talent.TalentStatus = models.TalentStatusPending
+		talent.SlotLabel = ""
+		talent.ScheduledStartAt = nil
+	} else {
+		talent.TalentStatus = existing.TalentStatus
+		talent.SlotLabel = existing.SlotLabel
+		talent.ScheduledStartAt = existing.ScheduledStartAt
+	}
 	talent.CreatedAt = existing.CreatedAt
 	talent.ModifiedAt = time.Now()
 
@@ -135,6 +145,10 @@ func (r *TalentRepository) GetDeniedTalents(ctx context.Context) ([]models.Perfo
 	return r.GetTalentsByStatus(ctx, models.TalentStatusDenied)
 }
 
+func (r *TalentRepository) GetRequireChangesTalents(ctx context.Context) ([]models.PerformanceTalent, error) {
+	return r.GetTalentsByStatus(ctx, models.TalentStatusRequireChanges)
+}
+
 func (r *TalentRepository) SetTalentStatus(ctx context.Context, id uuid.UUID, status models.TalentStatus) error {
 	if _, err := r.GetTalentByID(ctx, id); err != nil {
 		return err
@@ -174,7 +188,7 @@ func (r *TalentRepository) CanEditTalent(ctx context.Context, userID uuid.UUID, 
 		return false, err
 	}
 
-	if talent.UserId != userID || talent.TalentStatus != models.TalentStatusPending {
+	if talent.UserId != userID || !talentUserEditable(talent.TalentStatus) {
 		return false, nil
 	}
 
