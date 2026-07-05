@@ -72,11 +72,6 @@ variable "general_service_zip_path" {
   type        = string
 }
 
-variable "rbac_service_zip_path" {
-  description = "Path to the RBAC service deployment package (zip file)"
-  type        = string
-}
-
 variable "sqs_worker_zip_path" {
   description = "Path to the sqs-worker service deployment package (zip file)"
   type        = string

@@ -11,7 +11,6 @@ $servicesDir = Join-Path $scriptDir "services"
 
 $services = @(
     "general-service",
-    "rbac-service",
     "sqs-worker"
 )
 

@@ -13,7 +13,6 @@
 | `/` (root) | Flutter mobile app (Dart/Flutter) |
 | `Fuvekonse/` | Backend Go microservices |
 | `Fuvekonse/services/general-service/` | Core API service (Go + Gin + PostgreSQL) |
-| `Fuvekonse/services/rbac-service/` | Role-Based Access Control service |
 | `Fuvekonse/services/sqs-worker/` | SQS Lambda worker |
 
 ---

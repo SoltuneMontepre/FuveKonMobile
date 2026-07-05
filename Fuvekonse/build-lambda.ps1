@@ -17,12 +17,6 @@ $services = @(
         BuildPath = "./cmd"
     },
     @{
-        Name = "rbac-service"
-        Path = "services/rbac-service"
-        MainFile = "cmd/main.go"
-        BuildPath = "./cmd"
-    },
-    @{
         Name = "sqs-worker"
         Path = "services/sqs-worker"
         MainFile = "main.go"

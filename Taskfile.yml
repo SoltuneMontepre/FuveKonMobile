@@ -102,18 +102,11 @@ tasks:
     internal: true
     cmds:
       - task: backend:_deps:general
-      - task: backend:_deps:rbac
       - task: backend:_deps:worker
 
   backend:_deps:general:
     internal: true
     dir: "{{.BACKEND_DIR}}/services/general-service"
-    cmds:
-      - go mod tidy
-
-  backend:_deps:rbac:
-    internal: true
-    dir: "{{.BACKEND_DIR}}/services/rbac-service"
     cmds:
       - go mod tidy
 
@@ -177,12 +170,6 @@ tasks:
   backend:_run:general:
     internal: true
     dir: Fuvekonse/services/general-service
-    cmds:
-      - go run ./cmd/main.go
-
-  backend:_run:rbac:
-    internal: true
-    dir: Fuvekonse/services/rbac-service
     cmds:
       - go run ./cmd/main.go
 

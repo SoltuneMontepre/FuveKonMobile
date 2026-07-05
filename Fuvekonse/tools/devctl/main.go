@@ -81,7 +81,7 @@ func runCheck() error {
 		return fmt.Errorf("docker is installed but the daemon is not reachable: %w", err)
 	}
 
-	for _, port := range []int{8085, 8081} {
+	for _, port := range []int{8085} {
 		if err := assertServicePortFree(port); err != nil {
 			return err
 		}
@@ -286,10 +286,6 @@ func runEnsureEnv() error {
 		{
 			envPath:     "services/general-service/.env",
 			examplePath: "services/general-service/.env.example",
-		},
-		{
-			envPath:     "services/rbac-service/.env",
-			examplePath: "services/rbac-service/.env.example",
 		},
 		{
 			envPath:     "services/sqs-worker/.env",

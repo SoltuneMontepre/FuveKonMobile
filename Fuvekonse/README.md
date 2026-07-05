@@ -4,8 +4,7 @@
 
 Fuvekonse is a microservices-based application built with Go, featuring:
 
-- **General Service**: Core application functionality including user management, authentication, and ticket purchasing
-- **RBAC Service**: Role-Based Access Control - manages roles, permissions, and user bans
+- **General Service**: Core application functionality including user management, authentication, tickets, and RBAC permissions
 
 The services use PostgreSQL for data persistence, Redis for caching, and LocalStack for local AWS services (S3, SQS, SES) development.
 
@@ -51,7 +50,6 @@ npm i
 
 # Copy environment files
 cp .env.example ./services/general-service/.env
-cp .env.example ./services/rbac-service/.env
 
 # Install Go tools
 go install github.com/swaggo/swag/cmd/swag@latest
@@ -93,21 +91,18 @@ Copy the example environment file to each service directory:
 
 ```bash
 cp .env.example ./services/general-service/.env
-cp .env.example ./services/rbac-service/.env
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 Copy-Item .env.example .\services\general-service\.env -Force
-Copy-Item .env.example .\services\rbac-service\.env -Force
 ```
 
 **Windows (CMD):**
 
 ```cmd
 copy .env.example services\general-service\.env
-copy .env.example services\rbac-service\.env
 ```
 
 **Environment Variables Reference:**
@@ -133,18 +128,12 @@ The `.env` file contains the following configuration:
 
 #### 3. Install Go dependencies
 
-Navigate to the service directory you want to work on:
+Navigate to the service directory:
 
 **General service:**
 
 ```bash
 cd services/general-service
-```
-
-**RBAC service:**
-
-```bash
-cd services/rbac-service
 ```
 
 Then install dependencies:
@@ -222,7 +211,6 @@ Runs the complete stack including all microservices:
 - Redis cache
 - LocalStack (AWS services)
 - **General Service** (port 8085)
-- **Ticket Service** (port 8081)
 
 Use this when you want to run everything in Docker:
 

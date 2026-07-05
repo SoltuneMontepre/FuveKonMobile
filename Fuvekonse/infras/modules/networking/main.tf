@@ -64,37 +64,3 @@ resource "aws_lambda_permission" "general_service_api" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
 }
-
-# RBAC Service Integration (serves /api/ticket endpoints)
-resource "aws_apigatewayv2_integration" "rbac_service" {
-  api_id                 = aws_apigatewayv2_api.main.id
-  integration_type       = "AWS_PROXY"
-  integration_uri        = var.rbac_service_invoke_arn
-  payload_format_version = "2.0"
-  timeout_milliseconds   = 30000
-}
-
-# RBAC Service Routes - catch all paths (legacy /api/ticket path for backwards compatibility)
-resource "aws_apigatewayv2_route" "rbac_service" {
-  api_id             = aws_apigatewayv2_api.main.id
-  route_key          = "ANY /api/ticket/{proxy+}"
-  target             = "integrations/${aws_apigatewayv2_integration.rbac_service.id}"
-  authorization_type = "NONE"
-}
-
-# RBAC Service root route (legacy /api/ticket path for backwards compatibility)
-resource "aws_apigatewayv2_route" "rbac_service_root" {
-  api_id             = aws_apigatewayv2_api.main.id
-  route_key          = "ANY /api/ticket"
-  target             = "integrations/${aws_apigatewayv2_integration.rbac_service.id}"
-  authorization_type = "NONE"
-}
-
-# Lambda permission for API Gateway to invoke RBAC service
-resource "aws_lambda_permission" "rbac_service_api" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = var.rbac_service_function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
-}
