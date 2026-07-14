@@ -18,6 +18,8 @@ class UserTicket extends Equatable {
     this.denialReason,
     required this.createdAt,
     this.previousReferenceCode,
+    this.upgradedFromTierId,
+    this.upgradeDenialReason,
     this.tier,
   });
 
@@ -35,9 +37,15 @@ class UserTicket extends Equatable {
   final String? denialReason;
   final DateTime createdAt;
   final String? previousReferenceCode;
+  final String? upgradedFromTierId;
+  final String? upgradeDenialReason;
   final TicketTier? tier;
 
   bool get needsPayment => status == TicketStatus.pending;
+
+  bool get isUpgradeInProgress =>
+      (upgradedFromTierId != null && upgradedFromTierId!.isNotEmpty) ||
+      (previousReferenceCode != null && previousReferenceCode!.isNotEmpty);
 
   @override
   List<Object?> get props => [
@@ -55,6 +63,8 @@ class UserTicket extends Equatable {
     denialReason,
     createdAt,
     previousReferenceCode,
+    upgradedFromTierId,
+    upgradeDenialReason,
     tier,
   ];
 }

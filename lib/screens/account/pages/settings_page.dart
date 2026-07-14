@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
 import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
+import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
+import 'package:fuvekonmobile/l10n/app_localizations.dart';
 import 'package:fuvekonmobile/shared/services/app_preferences.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_section_header.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_settings_row.dart';
+import 'package:go_router/go_router.dart';
 
-/// Màn 42 — app settings (locale).
+/// Màn 42 — app settings (locale + signed-in devices).
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -40,33 +43,45 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return ListenableBuilder(
       listenable: _localeNotifier,
       builder: (context, _) {
         return AppPageScaffold(
-          title: 'Cài đặt',
+          title: l10n.settingsTitle,
           padding: EdgeInsets.zero,
           body: ListView(
             padding: const EdgeInsets.all(FuvekonSpacing.page),
             children: [
-              const FuveSectionHeader(title: 'Ngôn ngữ'),
+              FuveSectionHeader(title: l10n.languageTitle),
               const SizedBox(height: FuvekonSpacing.stackGapMd),
               FuveMintCard(
                 child: Column(
                   children: [
                     _LanguageRow(
-                      label: 'Tiếng Việt',
+                      label: l10n.languageVietnamese,
                       selected: _language == 'vi',
                       onTap: () => _setLanguage('vi'),
                       showDivider: true,
                     ),
                     _LanguageRow(
-                      label: 'English',
+                      label: l10n.languageEnglish,
                       selected: _language == 'en',
                       onTap: () => _setLanguage('en'),
                       showDivider: false,
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(height: FuvekonSpacing.stackGapLg),
+              FuveSectionHeader(title: l10n.signedInDevicesTitle),
+              const SizedBox(height: FuvekonSpacing.stackGapMd),
+              FuveMintCard(
+                child: FuveSettingsRow(
+                  icon: Icons.devices,
+                  label: l10n.signedInDevicesTitle,
+                  onTap: () => context.push(Routes.accountSignedInDevices),
+                  showDivider: false,
                 ),
               ),
             ],

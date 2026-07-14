@@ -65,6 +65,7 @@ void registerTicketModule(GetIt sl) {
       () => TicketPurchaseBloc(
         confirmTicketPaymentUseCase: sl(),
         getMyTicketUseCase: sl(),
+        getTicketTiersUseCase: sl(),
         getMeUseCase: sl(),
         updateMeUseCase: sl(),
       ),

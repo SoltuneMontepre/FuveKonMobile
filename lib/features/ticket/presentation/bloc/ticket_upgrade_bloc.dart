@@ -89,9 +89,15 @@ final class TicketUpgradeFailure extends TicketUpgradeState {
 }
 
 final class TicketUpgradeSuccess extends TicketUpgradeState {
-  const TicketUpgradeSuccess(this.tierId);
+  const TicketUpgradeSuccess({
+    required this.tierId,
+    required this.priceDifference,
+    this.queued = false,
+  });
 
   final String tierId;
+  final double priceDifference;
+  final bool queued;
 }
 
 class TicketUpgradeBloc extends Bloc<TicketUpgradeEvent, TicketUpgradeState> {
@@ -186,8 +192,17 @@ class TicketUpgradeBloc extends Bloc<TicketUpgradeEvent, TicketUpgradeState> {
     final result = await _upgradeTicketUseCase(current.selectedTierId);
 
     switch (result) {
-      case Success():
-        emit(TicketUpgradeSuccess(current.selectedTierId));
+      case Success(:final data):
+        final priceDiff = data.priceDifference > 0
+            ? data.priceDifference
+            : current.priceDiff;
+        emit(
+          TicketUpgradeSuccess(
+            tierId: current.selectedTierId,
+            priceDifference: priceDiff,
+            queued: data.queued,
+          ),
+        );
       case Error(:final failure):
         lastActionError = failure.message;
         emit(current.copyWith(isSubmitting: false));

@@ -73,8 +73,11 @@ func GetRefreshTokenExpiry() time.Duration {
 	return time.Duration(days) * 24 * time.Hour
 }
 
-// CreateAccessToken generates a new access token for the user
-func CreateAccessToken(userID uuid.UUID, email, fursonaName, role string) (string, error) {
+// CreateAccessToken generates a new access token for the user.
+// Returns the signed token, JWT ID (jti), and expiry time.
+func CreateAccessToken(userID uuid.UUID, email, fursonaName, role string) (tokenString string, jti string, expiresAt time.Time, err error) {
+	jti = uuid.New().String()
+	expiresAt = time.Now().Add(GetAccessTokenExpiry())
 	claims := JWTClaims{
 		UserID:      userID.String(),
 		Email:       email,
@@ -82,22 +85,22 @@ func CreateAccessToken(userID uuid.UUID, email, fursonaName, role string) (strin
 		Role:        role,
 		TokenType:   "access",
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(GetAccessTokenExpiry())),
+			ExpiresAt: jwt.NewNumericDate(expiresAt),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
 			Issuer:    "general-service",
 			Subject:   userID.String(),
-			ID:        uuid.New().String(),
+			ID:        jti,
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(GetJWTSecret()))
+	tokenString, err = token.SignedString([]byte(GetJWTSecret()))
 	if err != nil {
-		return "", fmt.Errorf("failed to sign access token: %w", err)
+		return "", "", time.Time{}, fmt.Errorf("failed to sign access token: %w", err)
 	}
 
-	return tokenString, nil
+	return tokenString, jti, expiresAt, nil
 }
 
 // CreateRefreshToken generates a new refresh token for the user
@@ -113,7 +116,7 @@ func CreateRefreshToken(_ uuid.UUID, _ string, _ string, _ string) (string, erro
 
 // CreateTokenPair generates both access and refresh tokens
 func CreateTokenPair(userID uuid.UUID, email, fursonaName, role string) (*TokenPair, error) {
-	accessToken, err := CreateAccessToken(userID, email, fursonaName, role)
+	accessToken, _, _, err := CreateAccessToken(userID, email, fursonaName, role)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create access token: %w", err)
 	}
@@ -246,7 +249,7 @@ func RefreshAccessToken(refreshTokenString string) (string, error) {
 	}
 
 	// Create a new access token
-	accessToken, err := CreateAccessToken(userID, claims.Email, claims.FursonaName, claims.Role)
+	accessToken, _, _, err := CreateAccessToken(userID, claims.Email, claims.FursonaName, claims.Role)
 	if err != nil {
 		return "", fmt.Errorf("failed to create new access token: %w", err)
 	}

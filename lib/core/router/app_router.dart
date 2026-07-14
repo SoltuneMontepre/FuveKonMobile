@@ -23,6 +23,10 @@ import 'package:get_it/get_it.dart';
 
 import 'package:go_router/go_router.dart';
 
+/// Top-level so hot reload does not recreate the key while Navigators still hold it.
+final GlobalKey<NavigatorState> appRootNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'appRoot');
+
 class AppRouter {
   AppRouter({required AuthSessionNotifier authSessionNotifier})
     : _authSessionNotifier = authSessionNotifier,
@@ -33,10 +37,10 @@ class AppRouter {
 
   final RouterRefreshNotifier _routerRefresh;
 
-  final rootNavigatorKey = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> get rootNavigatorKey => appRootNavigatorKey;
 
   late final GoRouter router = GoRouter(
-    navigatorKey: rootNavigatorKey,
+    navigatorKey: appRootNavigatorKey,
 
     initialLocation: Routes.splash,
 
@@ -47,13 +51,13 @@ class AppRouter {
     routes: [
       ...OnboardingRoutes.routes(),
 
-      ...PublicRoutes.routes(rootNavigatorKey: rootNavigatorKey),
+      ...PublicRoutes.routes(rootNavigatorKey: appRootNavigatorKey),
 
       ...GuestRoutes.routes(),
 
-      AccountRoutes.shell(rootNavigatorKey: rootNavigatorKey),
+      AccountRoutes.shell(rootNavigatorKey: appRootNavigatorKey),
 
-      AdminRoutes.shell(rootNavigatorKey: rootNavigatorKey),
+      AdminRoutes.shell(rootNavigatorKey: appRootNavigatorKey),
     ],
   );
 

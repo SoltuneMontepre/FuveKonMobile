@@ -32,6 +32,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
 
   double? _priceUsd;
   bool _isActive = true;
+  bool _isVisible = true;
   bool _saving = false;
 
   @override
@@ -51,6 +52,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
     );
     _priceUsd = tier?.priceUsd;
     _isActive = tier?.isActive ?? true;
+    _isVisible = tier?.isVisible ?? true;
 
     final benefits = tier?.benefits ?? const [];
     if (benefits.isEmpty) {
@@ -136,6 +138,7 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
       priceUsd: _priceUsd,
       stock: stock,
       isActive: _isActive,
+      isVisible: _isVisible,
     );
   }
 
@@ -361,6 +364,35 @@ class _AdminTierEditPageState extends State<AdminTierEditPage> {
                 onChanged: _saving
                     ? null
                     : (value) => setState(() => _isActive = value),
+              ),
+            ),
+            const SizedBox(height: 12),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: FuvekonColors.darkSurfaceElevated,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: FuvekonColors.darkBorder),
+              ),
+              child: SwitchListTile(
+                title: Text(
+                  l10n.adminTierVisibilityStatus,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: FuvekonColors.darkText,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                subtitle: Text(
+                  l10n.adminTierVisibilitySubtitle,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: FuvekonColors.darkTextSecondary,
+                  ),
+                ),
+                value: _isVisible,
+                activeThumbColor: FuvekonColors.darkCardText,
+                activeTrackColor: FuvekonColors.available,
+                onChanged: _saving
+                    ? null
+                    : (value) => setState(() => _isVisible = value),
               ),
             ),
             const SizedBox(height: 24),

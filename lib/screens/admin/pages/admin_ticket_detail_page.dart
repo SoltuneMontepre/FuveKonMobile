@@ -215,7 +215,39 @@ class _AdminTicketDetailPageState extends State<AdminTicketDetailPage> {
                       ),
                     ],
                     const SizedBox(height: 10),
-                    AdminTicketStatusChip(status: ticket.status),
+                    Row(
+                      children: [
+                        AdminTicketStatusChip(status: ticket.status),
+                        if (ticket.isUpgrade) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: FuvekonColors.lightGold.withValues(
+                                alpha: 0.18,
+                              ),
+                              borderRadius: BorderRadius.circular(999),
+                              border: Border.all(
+                                color: FuvekonColors.lightGold.withValues(
+                                  alpha: 0.55,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              l10n.adminTicketUpgradeBadge,
+                              style: const TextStyle(
+                                color: FuvekonColors.lightGold,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -238,7 +270,9 @@ class _AdminTicketDetailPageState extends State<AdminTicketDetailPage> {
         const SizedBox(height: 12),
         if (ticket.canApprove)
           _ActionButton(
-            label: l10n.adminUserTicketsApprove,
+            label: ticket.isUpgrade
+                ? l10n.adminUserTicketsApproveUpgrade
+                : l10n.adminUserTicketsApprove,
             color: FuvekonColors.available,
             loading: _actionInProgress,
             onPressed: () => _runAction(
@@ -248,7 +282,9 @@ class _AdminTicketDetailPageState extends State<AdminTicketDetailPage> {
           ),
         if (ticket.canDeny)
           _ActionButton(
-            label: l10n.adminUserTicketsDeny,
+            label: ticket.isUpgrade
+                ? l10n.adminUserTicketsDenyUpgrade
+                : l10n.adminUserTicketsDeny,
             color: const Color(0xFFF0A0A8),
             loading: _actionInProgress,
             onPressed: () async {
@@ -256,7 +292,9 @@ class _AdminTicketDetailPageState extends State<AdminTicketDetailPage> {
               if (!mounted || reason == null) return;
               await _runAction(
                 () => _service.denyTicket(ticket.id, reason: reason),
-                successMessage: l10n.adminUserTicketsDenySuccess,
+                successMessage: ticket.isUpgrade
+                    ? l10n.adminUserTicketsDenyUpgradeSuccess
+                    : l10n.adminUserTicketsDenySuccess,
               );
             },
           ),

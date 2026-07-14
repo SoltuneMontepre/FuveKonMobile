@@ -22,6 +22,7 @@ void registerAuthModule(GetIt sl) {
         authApi: sl(),
         accountApi: sl(),
         tokenStorage: sl(),
+        deviceInfoService: sl(),
       ),
     )
     ..registerLazySingleton<AuthRepository>(

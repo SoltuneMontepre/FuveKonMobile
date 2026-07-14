@@ -33,10 +33,10 @@ class LostFoundService {
         items: items,
         meta: LostFoundPageMeta.fromJson(data),
       );
-    } on ServerException {
+    } on AppException {
       rethrow;
     } catch (_) {
-      throw ServerException('Không thể tải danh sách đồ thất lạc.');
+      throw const ServerException('Không thể tải danh sách đồ thất lạc.');
     }
   }
 
@@ -47,10 +47,10 @@ class LostFoundService {
         throw ServerException(response.errorMessage ?? response.message);
       }
       return LostFoundPublicItem.fromJson(response.data!);
-    } on ServerException {
+    } on AppException {
       rethrow;
     } catch (_) {
-      throw ServerException('Không thể tải chi tiết vật phẩm.');
+      throw const ServerException('Không thể tải chi tiết vật phẩm.');
     }
   }
 
@@ -74,10 +74,12 @@ class LostFoundService {
         throw ServerException(response.errorMessage ?? response.message);
       }
       return LostFoundPublicItem.fromJson(response.data!);
-    } on ServerException {
+    } on AppException {
       rethrow;
     } catch (_) {
-      throw ServerException('Không thể gửi báo mất. Vui lòng thử lại.');
+      throw const ServerException(
+        'Không thể gửi báo mất. Vui lòng thử lại.',
+      );
     }
   }
 

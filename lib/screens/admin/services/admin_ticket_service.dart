@@ -71,6 +71,7 @@ class AdminTicketTierInput {
     this.priceUsd,
     required this.stock,
     this.isActive = true,
+    this.isVisible = true,
   });
 
   final String ticketName;
@@ -80,6 +81,7 @@ class AdminTicketTierInput {
   final double? priceUsd;
   final int stock;
   final bool isActive;
+  final bool isVisible;
 
   Map<String, dynamic> toCreateJson() => {
     'ticket_name': ticketName,
@@ -89,6 +91,7 @@ class AdminTicketTierInput {
     if (priceUsd != null) 'price_usd': priceUsd,
     'stock': stock,
     'is_active': isActive,
+    'is_visible': isVisible,
   };
 
   Map<String, dynamic> toUpdateJson() => {
@@ -99,6 +102,7 @@ class AdminTicketTierInput {
     if (priceUsd != null) 'price_usd': priceUsd,
     'stock': stock,
     'is_active': isActive,
+    'is_visible': isVisible,
   };
 }
 

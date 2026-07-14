@@ -18,27 +18,49 @@ class TicketPurchasePage extends StatelessWidget {
     super.key,
     required this.tierId,
     this.queued = false,
+    this.payableAmount,
+    this.isUpgrade = false,
   });
 
   final String tierId;
   final bool queued;
+  final double? payableAmount;
+  final bool isUpgrade;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          sl<TicketPurchaseBloc>()
-            ..add(TicketPurchaseEvent.started(tierId: tierId, queued: queued)),
-      child: _TicketPurchaseView(tierId: tierId, queued: queued),
+          sl<TicketPurchaseBloc>()..add(
+            TicketPurchaseEvent.started(
+              tierId: tierId,
+              queued: queued,
+              payableAmount: payableAmount,
+              isUpgrade: isUpgrade,
+            ),
+          ),
+      child: _TicketPurchaseView(
+        tierId: tierId,
+        queued: queued,
+        payableAmount: payableAmount,
+        isUpgrade: isUpgrade,
+      ),
     );
   }
 }
 
 class _TicketPurchaseView extends StatefulWidget {
-  const _TicketPurchaseView({required this.tierId, required this.queued});
+  const _TicketPurchaseView({
+    required this.tierId,
+    required this.queued,
+    this.payableAmount,
+    this.isUpgrade = false,
+  });
 
   final String tierId;
   final bool queued;
+  final double? payableAmount;
+  final bool isUpgrade;
 
   @override
   State<_TicketPurchaseView> createState() => _TicketPurchaseViewState();
@@ -49,6 +71,15 @@ class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
   _PaymentMethod _selectedMethod = _PaymentMethod.bankQr;
   _CheckoutStep _step = _CheckoutStep.payment;
   bool _acceptedTerms = true;
+  double? _payableAmount;
+  bool _isUpgrade = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _payableAmount = widget.payableAmount;
+    _isUpgrade = widget.isUpgrade;
+  }
 
   @override
   void dispose() {
@@ -67,6 +98,11 @@ class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(actionError)));
+        }
+
+        if (state is TicketPurchaseLoaded) {
+          _payableAmount = state.payableAmount ?? _payableAmount;
+          _isUpgrade = state.isUpgrade || _isUpgrade;
         }
 
         if (state is TicketPurchaseQueueTimedOut) {
@@ -102,6 +138,8 @@ class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
                   TicketPurchaseEvent.started(
                     tierId: widget.tierId,
                     queued: queued,
+                    payableAmount: widget.payableAmount,
+                    isUpgrade: widget.isUpgrade,
                   ),
                 ),
                 onBack: () => Navigator.of(context).pop(),
@@ -153,11 +191,15 @@ class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
                   TicketPurchaseEvent.started(
                     tierId: widget.tierId,
                     queued: widget.queued,
+                    payableAmount: widget.payableAmount,
+                    isUpgrade: widget.isUpgrade,
                   ),
                 ),
               ),
               TicketPurchaseConfirmed(:final ticket) => _PaymentSuccessBody(
                 ticket: ticket,
+                payableAmount: _payableAmount,
+                isUpgrade: _isUpgrade,
               ),
             },
           ),
@@ -188,9 +230,8 @@ class _PaymentBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final ticket = state.ticket;
     final tier = ticket.tier;
-    final locale = Localizations.localeOf(context);
-    final amount = tier != null ? formatTierPrice(tier, locale: locale) : '—';
-    final rawPrice = tier?.price ?? 0;
+    final rawPrice = state.payableAmount ?? tier?.price ?? 0;
+    final amount = formatTicketPriceVnd(rawPrice);
     final fee = 0.0;
     final total = formatTicketPriceVnd(rawPrice + fee);
     final buyerName = state.account.ticketHolderName;
@@ -421,9 +462,8 @@ class _ConfirmOrderBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tier = state.ticket.tier;
-    final amount = tier != null
-        ? formatTierPrice(tier, locale: Localizations.localeOf(context))
-        : '—';
+    final rawPrice = state.payableAmount ?? tier?.price ?? 0;
+    final amount = formatTicketPriceVnd(rawPrice);
     final buyerName = state.account.ticketHolderName;
 
     return Stack(
@@ -1150,93 +1190,112 @@ class _OrderTotalCard extends StatelessWidget {
 }
 
 class _PaymentSuccessBody extends StatelessWidget {
-  const _PaymentSuccessBody({required this.ticket});
+  const _PaymentSuccessBody({
+    required this.ticket,
+    this.payableAmount,
+    this.isUpgrade = false,
+  });
 
   final dynamic ticket;
+  final double? payableAmount;
+  final bool isUpgrade;
 
   @override
   Widget build(BuildContext context) {
     final tier = ticket.tier;
-    final total = tier != null
-        ? formatTierPrice(tier, locale: Localizations.localeOf(context))
-        : '—';
+    final rawPrice = payableAmount ?? tier?.price ?? 0;
+    final total = formatTicketPriceVnd(rawPrice);
 
     return SafeArea(
       child: Center(
         child: ListView(
           shrinkWrap: true,
-          padding: const EdgeInsets.fromLTRB(32, 28, 32, 28),
+          padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
           children: [
-            Center(
-              child: Container(
-                width: 76,
-                height: 76,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: FuvekonColors.sageGreenContainer.withValues(
-                    alpha: 0.72,
+            FuvekonIllustratedContentPanel(
+              padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
+              child: Column(
+                children: [
+                  Center(
+                    child: Container(
+                      width: 76,
+                      height: 76,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: FuvekonColors.sageGreenContainer.withValues(
+                          alpha: 0.85,
+                        ),
+                        border: Border.all(
+                          color: FuvekonColors.darkPrimary,
+                          width: 2,
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.check_rounded,
+                        color: Colors.white,
+                        size: 42,
+                      ),
+                    ),
                   ),
-                  border: Border.all(
-                    color: FuvekonColors.darkPrimary.withValues(alpha: 0.75),
-                    width: 2,
+                  const SizedBox(height: 24),
+                  Text(
+                    isUpgrade
+                        ? 'Yêu cầu nâng cấp đã gửi!'
+                        : 'Mua vé thành công!',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: FuvekonColors.darkText,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
-                ),
-                child: const Icon(
-                  Icons.check_rounded,
-                  color: Colors.white,
-                  size: 42,
-                ),
+                  const SizedBox(height: 12),
+                  Text(
+                    isUpgrade
+                        ? 'Cảm ơn bạn. BTC sẽ xác nhận khoản chênh lệch trong thời gian sớm nhất.'
+                        : 'Cảm ơn bạn đã đặt vé. Hẹn gặp bạn tại sự kiện.',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: FuvekonColors.darkTextSecondary,
+                      fontSize: 13,
+                      height: 1.45,
+                    ),
+                  ),
+                  const SizedBox(height: 22),
+                  _SuccessTicketCard(
+                    ticketName: tier?.ticketName ?? '—',
+                    referenceCode: ticket.referenceCode,
+                    total: total,
+                    purchasedAt: ticket.createdAt,
+                  ),
+                  const SizedBox(height: 24),
+                  FilledButton.icon(
+                    onPressed: () => context.go(Routes.accountTicket),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: FuvekonColors.darkButton,
+                      foregroundColor: FuvekonColors.darkButtonText,
+                      minimumSize: const Size.fromHeight(52),
+                    ),
+                    icon: const Icon(
+                      Icons.confirmation_number_outlined,
+                      size: 18,
+                    ),
+                    label: const Text('Xem vé của tôi'),
+                  ),
+                  const SizedBox(height: 10),
+                  OutlinedButton.icon(
+                    onPressed: () => context.go(Routes.account),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: FuvekonColors.dustyRose,
+                      side: const BorderSide(color: FuvekonColors.dustyRose),
+                      minimumSize: const Size.fromHeight(48),
+                      shape: const StadiumBorder(),
+                    ),
+                    icon: const Icon(Icons.home_outlined, size: 18),
+                    label: const Text('Về trang chủ'),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 28),
-            const Text(
-              'Mua vé thành công!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: FuvekonColors.darkPrimary,
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Cảm ơn bạn đã đặt vé. Hẹn gặp bạn tại sự kiện.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: FuvekonColors.darkTextSecondary,
-                fontSize: 12,
-                height: 1.45,
-              ),
-            ),
-            const SizedBox(height: 22),
-            _SuccessTicketCard(
-              ticketName: tier?.ticketName ?? '—',
-              referenceCode: ticket.referenceCode,
-              total: total,
-              purchasedAt: ticket.createdAt,
-            ),
-            const SizedBox(height: 30),
-            FilledButton.icon(
-              onPressed: () => context.go(Routes.accountTicket),
-              style: FilledButton.styleFrom(
-                backgroundColor: FuvekonColors.darkButton,
-                foregroundColor: FuvekonColors.darkButtonText,
-                minimumSize: const Size.fromHeight(52),
-              ),
-              icon: const Icon(Icons.confirmation_number_outlined, size: 18),
-              label: const Text('Xem vé của tôi'),
-            ),
-            const SizedBox(height: 10),
-            OutlinedButton.icon(
-              onPressed: () => context.go(Routes.account),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: FuvekonColors.dustyRose,
-                side: const BorderSide(color: FuvekonColors.dustyRose),
-                minimumSize: const Size.fromHeight(48),
-                shape: const StadiumBorder(),
-              ),
-              icon: const Icon(Icons.home_outlined, size: 18),
-              label: const Text('Về trang chủ'),
             ),
           ],
         ),
@@ -1300,12 +1359,12 @@ class _SuccessTicketCard extends StatelessWidget {
                 width: 54,
                 height: 54,
                 decoration: BoxDecoration(
-                  color: FuvekonColors.surfaceContainer,
+                  color: FuvekonColors.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.confirmation_number_rounded,
-                  color: FuvekonColors.darkPrimary,
+                  color: colors.title,
                 ),
               ),
               const SizedBox(width: 12),
@@ -1315,8 +1374,8 @@ class _SuccessTicketCard extends StatelessWidget {
                   children: [
                     Text(
                       '${AppConfig.appName} — $ticketName',
-                      style: const TextStyle(
-                        color: FuvekonColors.darkCardText,
+                      style: TextStyle(
+                        color: colors.body,
                         fontSize: 14,
                         fontWeight: FontWeight.w900,
                         height: 1.25,
@@ -1325,8 +1384,8 @@ class _SuccessTicketCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       dateLabel,
-                      style: const TextStyle(
-                        color: FuvekonColors.textSecondary,
+                      style: TextStyle(
+                        color: colors.muted,
                         fontSize: 11,
                       ),
                     ),
@@ -1336,24 +1395,24 @@ class _SuccessTicketCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          Divider(color: Colors.black.withValues(alpha: 0.1)),
+          Divider(color: colors.muted.withValues(alpha: 0.3)),
           const SizedBox(height: 12),
           Row(
             children: [
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Số lượng',
                     style: TextStyle(
-                      color: FuvekonColors.textSecondary,
+                      color: colors.muted,
                       fontSize: 11,
                     ),
                   ),
                   Text(
                     '1 Vé',
                     style: TextStyle(
-                      color: FuvekonColors.darkCardText,
+                      color: colors.body,
                       fontSize: 16,
                       fontWeight: FontWeight.w900,
                     ),
@@ -1364,17 +1423,17 @@ class _SuccessTicketCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text(
+                  Text(
                     'Tổng tiền',
                     style: TextStyle(
-                      color: FuvekonColors.textSecondary,
+                      color: colors.muted,
                       fontSize: 11,
                     ),
                   ),
                   Text(
                     total,
-                    style: const TextStyle(
-                      color: FuvekonColors.darkCardText,
+                    style: TextStyle(
+                      color: colors.title,
                       fontSize: 16,
                       fontWeight: FontWeight.w900,
                     ),

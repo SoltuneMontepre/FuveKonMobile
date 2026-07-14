@@ -12,4 +12,9 @@ type GoogleLoginRequest struct {
 	IdCard          string `json:"idCard"`
 	Password        string `json:"password"`
 	ConfirmPassword string `json:"confirmPassword"`
+	DeviceId        string `json:"device_id"`
+	DeviceName      string `json:"device_name"`
+	Platform        string `json:"platform"`
+	UserAgent       string `json:"-"`
+	IPAddress       string `json:"-"`
 }

@@ -270,7 +270,7 @@ func (s *AuthService) GoogleLoginOrRegister(ctx context.Context, req *requests.G
 		return nil, constants.ErrAccountBanned
 	}
 
-	accessToken, err := utils.CreateAccessToken(user.Id, user.Email, user.FursonaName, user.Role.String())
+	accessToken, err := s.issueAccessTokenWithSession(ctx, user, req.DeviceId, req.DeviceName, req.Platform, req.UserAgent, req.IPAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -353,8 +353,8 @@ func (s *AuthService) Login(ctx context.Context, req *requests.LoginRequest) (re
 		}
 	}
 
-	// Create tokens (convert int role to string for JWT)
-	AccessToken, err := utils.CreateAccessToken(user.Id, user.Email, user.FursonaName, user.Role.String())
+	// Create tokens (convert int role to string for JWT) and track device session
+	AccessToken, err := s.issueAccessTokenWithSession(ctx, user, req.DeviceId, req.DeviceName, req.Platform, req.UserAgent, req.IPAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -365,6 +365,123 @@ func (s *AuthService) Login(ctx context.Context, req *requests.LoginRequest) (re
 	}
 
 	return response, nil
+}
+
+// issueAccessTokenWithSession mints a JWT and persists a user_sessions row for device listing/revocation.
+func (s *AuthService) issueAccessTokenWithSession(ctx context.Context, user *models.User, deviceID, deviceName, platform, userAgent, ipAddress string) (string, error) {
+	accessToken, jti, expiresAt, err := utils.CreateAccessToken(user.Id, user.Email, user.FursonaName, user.Role.String())
+	if err != nil {
+		return "", err
+	}
+
+	deviceName = strings.TrimSpace(deviceName)
+	if deviceName == "" {
+		deviceName = defaultDeviceName(platform)
+	}
+	platform = strings.ToLower(strings.TrimSpace(platform))
+
+	// Session outlives the short-lived access JWT so the device list remains useful.
+	sessionExpiry := time.Now().Add(utils.GetRefreshTokenExpiry())
+	if sessionExpiry.Before(expiresAt) {
+		sessionExpiry = expiresAt
+	}
+
+	session := &models.UserSession{
+		Id:         uuid.New(),
+		UserId:     user.Id,
+		JTI:        jti,
+		DeviceId:   strings.TrimSpace(deviceID),
+		DeviceName: deviceName,
+		Platform:   platform,
+		UserAgent:  truncateRunes(userAgent, 512),
+		IPAddress:  strings.TrimSpace(ipAddress),
+		ExpiresAt:  sessionExpiry,
+		LastSeenAt: time.Now(),
+	}
+	if err := s.repos.UserSession.CreateLoginSession(ctx, session); err != nil {
+		return "", fmt.Errorf("failed to create user session: %w", err)
+	}
+	return accessToken, nil
+}
+
+func defaultDeviceName(platform string) string {
+	switch strings.ToLower(strings.TrimSpace(platform)) {
+	case "ios":
+		return "iPhone"
+	case "android":
+		return "Android device"
+	case "web":
+		return "Web browser"
+	case "windows":
+		return "Windows"
+	case "macos":
+		return "Mac"
+	case "linux":
+		return "Linux"
+	default:
+		return "Unknown device"
+	}
+}
+
+func truncateRunes(s string, max int) string {
+	if max <= 0 || len(s) <= max {
+		return s
+	}
+	return s[:max]
+}
+
+// ListSessions returns active sessions for the user; currentJTI marks the calling device.
+func (s *AuthService) ListSessions(ctx context.Context, userIDStr, currentJTI string) (*responses.ListSessionsResponse, error) {
+	userID, err := uuid.Parse(userIDStr)
+	if err != nil {
+		return nil, constants.ErrUserNotFound
+	}
+	sessions, err := s.repos.UserSession.ListActiveByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]responses.SessionResponse, 0, len(sessions))
+	for _, sess := range sessions {
+		name := sess.DeviceName
+		if name == "" {
+			name = defaultDeviceName(sess.Platform)
+		}
+		out = append(out, responses.SessionResponse{
+			Id:         sess.Id.String(),
+			DeviceName: name,
+			Platform:   sess.Platform,
+			DeviceId:   sess.DeviceId,
+			LastSeenAt: sess.LastSeenAt,
+			CreatedAt:  sess.CreatedAt,
+			IsCurrent:  currentJTI != "" && sess.JTI == currentJTI,
+		})
+	}
+	return &responses.ListSessionsResponse{Sessions: out}, nil
+}
+
+// RevokeSession revokes a session owned by the user (remote logout of another device).
+func (s *AuthService) RevokeSession(ctx context.Context, userIDStr, sessionIDStr string) error {
+	userID, err := uuid.Parse(userIDStr)
+	if err != nil {
+		return constants.ErrUserNotFound
+	}
+	sessionID, err := uuid.Parse(sessionIDStr)
+	if err != nil {
+		return repositories.ErrUserSessionNotFound
+	}
+	return s.repos.UserSession.RevokeByID(ctx, userID, sessionID)
+}
+
+// LogoutSession revokes the current session identified by JWT jti.
+func (s *AuthService) LogoutSession(ctx context.Context, jti string) error {
+	if strings.TrimSpace(jti) == "" {
+		return nil
+	}
+	err := s.repos.UserSession.RevokeByJTI(ctx, jti)
+	if errors.Is(err, repositories.ErrUserSessionNotFound) {
+		return nil
+	}
+	return err
 }
 
 // ResetPassword allows a logged-in user to change their password
@@ -398,6 +515,12 @@ func (s *AuthService) ResetPassword(userID string, req *requests.ResetPasswordRe
 	user.Password = hashedPassword
 	if err := s.repos.User.UpdateUserProfile(user); err != nil {
 		return errors.New("failed to update password")
+	}
+
+	// Invalidate all active sessions after password change
+	uid, parseErr := uuid.Parse(userID)
+	if parseErr == nil {
+		_ = s.repos.UserSession.RevokeAllForUser(context.Background(), uid)
 	}
 
 	return nil
@@ -599,6 +722,11 @@ func (s *AuthService) ResetPasswordWithToken(token string, req *requests.ResetPa
 
 	if err := s.repos.User.UpdateUserProfile(user); err != nil {
 		return constants.ErrInternalServer
+	}
+
+	uid, parseErr := uuid.Parse(userID)
+	if parseErr == nil {
+		_ = s.repos.UserSession.RevokeAllForUser(context.Background(), uid)
 	}
 
 	return nil

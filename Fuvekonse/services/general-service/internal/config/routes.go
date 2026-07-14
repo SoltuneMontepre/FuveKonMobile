@@ -29,16 +29,20 @@ func CheckHealth(c *gin.Context) {
 	c.JSON(200, common.SuccessResponse(&healthData, "Service is healthy", 200))
 }
 
-func SetupAuthRoutes(router *gin.RouterGroup, h *handlers.Handlers) {
+func SetupAuthRoutes(router *gin.RouterGroup, h *handlers.Handlers, repos *repositories.Repositories) {
+	jwtAuth := middlewares.JWTAuthMiddleware(repos.UserSession)
 	auth := router.Group("/auth")
 	{
 		auth.POST("/register", h.Auth.Register)
 		auth.POST("/login", h.Auth.Login)
 		auth.POST("/google", h.Auth.GoogleLogin)
-		auth.POST("/logout", middlewares.JWTAuthMiddleware(), h.Auth.Logout)
+		auth.POST("/logout", jwtAuth, h.Auth.Logout)
+
+		auth.GET("/sessions", jwtAuth, h.Auth.ListSessions)
+		auth.DELETE("/sessions/:id", jwtAuth, h.Auth.RevokeSession)
 
 		//add jwt auth
-		auth.POST("/reset-password", middlewares.JWTAuthMiddleware(), h.Auth.ResetPassword)
+		auth.POST("/reset-password", jwtAuth, h.Auth.ResetPassword)
 		auth.POST("/verify-otp", h.Auth.VerifyOtp)
 		auth.POST("/resend-otp", h.Auth.ResendOtp)
 
@@ -97,13 +101,13 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 	v1 := router.Group("/v1")
 	{
 		v1.GET("/ping", CheckHealth)
-		SetupAuthRoutes(v1, h)
+		SetupAuthRoutes(v1, h, repos)
 
 		v1.GET("/event/settings", h.Event.GetEventSettings)
 
 		// Public ticket routes (optional JWT so admins can get normalized tier payloads, e.g. is_active)
 		tickets := v1.Group("/tickets")
-		tickets.Use(middlewares.OptionalJWTAuthMiddleware())
+		tickets.Use(middlewares.OptionalJWTAuthMiddleware(repos.UserSession))
 		{
 			tickets.GET("/tiers", h.Ticket.GetTiers)
 			tickets.GET("/tiers/:id", h.Ticket.GetTierByID)
@@ -121,7 +125,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 
 		// Protected routes - require JWT authentication; verified users may call all, unverified only profile/verify whitelist
 		protected := v1.Group("")
-		protected.Use(middlewares.JWTAuthMiddleware())
+		protected.Use(middlewares.JWTAuthMiddleware(repos.UserSession))
 		protected.Use(middlewares.RequireVerifiedOrWhitelist(repos.User))
 		{
 			// User routes
@@ -216,7 +220,7 @@ func SetupAPIRoutes(router gin.IRouter, h *handlers.Handlers, db *gorm.DB, repos
 
 		// Admin routes - require JWT; role or permission enforced per subgroup
 		admin := v1.Group("/admin")
-		admin.Use(middlewares.JWTAuthMiddleware())
+		admin.Use(middlewares.JWTAuthMiddleware(repos.UserSession))
 		{
 			adminRBAC := admin.Group("/rbac")
 			adminRBAC.Use(middlewares.RequireRole(role.RoleAdmin))

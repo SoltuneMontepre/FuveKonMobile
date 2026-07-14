@@ -43,7 +43,14 @@ class _TicketUpgradeView extends StatelessWidget {
           }
 
           if (state is TicketUpgradeSuccess) {
-            context.push<bool>(Routes.ticketPurchaseStep(state.tierId));
+            context.push(
+              Routes.ticketPurchaseStep(state.tierId),
+              extra: {
+                'queued': state.queued,
+                'payableAmount': state.priceDifference,
+                'isUpgrade': true,
+              },
+            );
           }
         },
         builder: (context, state) {

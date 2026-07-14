@@ -196,6 +196,14 @@ abstract final class AccountRoutes {
                 ),
 
                 GoRoute(
+                  path: 'signed-in-devices',
+
+                  parentNavigatorKey: rootNavigatorKey,
+
+                  builder: (context, state) => const SignedInDevicesPage(),
+                ),
+
+                GoRoute(
                   path: 'verify-identity',
 
                   parentNavigatorKey: rootNavigatorKey,

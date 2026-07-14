@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/info/lost_found_models.dart';
@@ -70,8 +71,8 @@ class _LostFoundReportPageState extends State<LostFoundReportPage> {
       context.pushReplacement(Routes.lostFoundRequest(item.id));
     } catch (e) {
       if (!mounted) return;
-      final message = e.toString().replaceFirst('ServerException: ', '');
-      if (message.contains('ticket')) {
+      final message = e is AppException ? e.message : e.toString();
+      if (message.toLowerCase().contains('ticket')) {
         _showTicketRequiredDialog();
       } else {
         ScaffoldMessenger.of(
@@ -89,7 +90,7 @@ class _LostFoundReportPageState extends State<LostFoundReportPage> {
       builder: (context) => AlertDialog(
         title: const Text('Cần vé hợp lệ'),
         content: const Text(
-          'Bạn cần đăng nhập và có vé đã được duyệt để gửi báo mất.',
+          'Bạn cần có vé đã được duyệt để gửi báo mất.',
         ),
         actions: [
           TextButton(
@@ -99,9 +100,9 @@ class _LostFoundReportPageState extends State<LostFoundReportPage> {
           FilledButton(
             onPressed: () {
               Navigator.pop(context);
-              context.go(Routes.login);
+              context.go(Routes.accountTicket);
             },
-            child: const Text('Đăng nhập'),
+            child: const Text('Xem vé của tôi'),
           ),
         ],
       ),

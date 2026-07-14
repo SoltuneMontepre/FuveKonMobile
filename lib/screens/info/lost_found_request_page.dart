@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/screens/info/lost_found_models.dart';
@@ -51,7 +52,7 @@ class _LostFoundRequestPageState extends State<LostFoundRequestPage> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = e is AppException ? e.message : e.toString();
         _loading = false;
       });
     }

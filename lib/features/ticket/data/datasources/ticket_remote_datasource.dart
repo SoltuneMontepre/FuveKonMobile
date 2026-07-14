@@ -5,6 +5,7 @@ import 'package:fuvekonmobile/features/ticket/domain/entities/purchase_ticket_re
 import 'package:fuvekonmobile/features/ticket/domain/entities/update_badge_details_input.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/upgrade_ticket_result.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 
 abstract interface class TicketRemoteDataSource {
@@ -20,7 +21,7 @@ abstract interface class TicketRemoteDataSource {
 
   Future<UserTicket> updateBadgeDetails(UpdateBadgeDetailsInput input);
 
-  Future<UserTicket> upgradeTicket(String newTierId);
+  Future<UpgradeTicketResult> upgradeTicket(String newTierId);
 }
 
 class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
@@ -127,13 +128,62 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
   }
 
   @override
-  Future<UserTicket> upgradeTicket(String newTierId) async {
+  Future<UpgradeTicketResult> upgradeTicket(String newTierId) async {
     final response = await _ticketApi.upgradeTicket(newTierId: newTierId);
     final data = response.data;
-    if (data == null) {
-      throw const ServerException('Failed to upgrade ticket.');
+    final queued = response.statusCode == 202;
+
+    if (data != null) {
+      final ticketJson = data['ticket'] is Map
+          ? Map<String, dynamic>.from(data['ticket'] as Map)
+          : data;
+      return UpgradeTicketResult(
+        ticket: _mapUserTicket(ticketJson),
+        priceDifference: _parseDecimal(data['price_difference']),
+        queued: queued,
+        statusCode: response.statusCode,
+      );
     }
-    return _mapUserTicket(data);
+
+    if (queued || response.isSuccess) {
+      final ticket = await _fetchTicketAfterQueuedUpgrade(newTierId);
+      return UpgradeTicketResult(
+        ticket: ticket,
+        priceDifference: 0,
+        queued: true,
+        statusCode: response.statusCode,
+      );
+    }
+
+    throw const ServerException('Failed to upgrade ticket.');
+  }
+
+  Future<UserTicket?> _fetchTicketAfterQueuedUpgrade(String newTierId) async {
+    const attempts = 4;
+    const delay = Duration(milliseconds: 400);
+
+    for (var attempt = 0; attempt < attempts; attempt++) {
+      if (attempt > 0) {
+        await Future<void>.delayed(delay);
+      }
+
+      final response = await _ticketApi.getMyTicket();
+      final data = response.data;
+      if (data == null) continue;
+
+      final ticket = _mapUserTicket(data);
+      if (ticket.tier?.id == newTierId && ticket.isUpgradeInProgress) {
+        return ticket;
+      }
+      if (ticket.tier?.id == newTierId &&
+          ticket.status == TicketStatus.pending) {
+        return ticket;
+      }
+    }
+
+    final response = await _ticketApi.getMyTicket();
+    final data = response.data;
+    return data != null ? _mapUserTicket(data) : null;
   }
 
   TicketTier _mapTier(Map<String, dynamic> json) {
@@ -178,6 +228,8 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
           DateTime.tryParse(json['created_at'] as String? ?? '') ??
           DateTime.now(),
       previousReferenceCode: json['previous_reference_code'] as String?,
+      upgradedFromTierId: json['upgraded_from_tier_id']?.toString(),
+      upgradeDenialReason: json['upgrade_denial_reason'] as String?,
       tier: tierJson is Map
           ? _mapTier(Map<String, dynamic>.from(tierJson))
           : null,

@@ -23,12 +23,12 @@ class FeaturedEventSummary {
   bool get isPast => endAt.isBefore(DateTime.now());
 }
 
-/// Home featured card — aligned with Figma Màn 13 (FUVEKON 2024).
+/// Home featured card — aligned with Figma Màn 13 (FUVEKON 2026).
 final kHomeFeaturedEvent = FeaturedEventSummary(
   id: 'sched-fuvekon-2026',
-  title: 'FUVEKON 2024',
+  title: 'FUVEKON 2026',
   description:
-      'FUVEKON 2024 là sự kiện giao lưu văn hóa đại chúng lớn nhất năm, '
+      'FUVEKON 2026 là sự kiện giao lưu văn hóa đại chúng lớn nhất năm, '
       'quy tụ hàng ngàn người đam mê anime, manga, game và cosplay. '
       'Khám phá không gian triển lãm nghệ thuật đỉnh cao, gặp gỡ các khách mời '
       'quốc tế và đắm chìm trong không khí lễ hội sôi động.',

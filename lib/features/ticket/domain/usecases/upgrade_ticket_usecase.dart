@@ -1,5 +1,5 @@
 import 'package:fuvekonmobile/core/errors/result.dart';
-import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/upgrade_ticket_result.dart';
 import 'package:fuvekonmobile/features/ticket/domain/repositories/ticket_repository.dart';
 
 class UpgradeTicketUseCase {
@@ -7,6 +7,6 @@ class UpgradeTicketUseCase {
 
   final TicketRepository _repository;
 
-  Future<Result<UserTicket>> call(String newTierId) =>
+  Future<Result<UpgradeTicketResult>> call(String newTierId) =>
       _repository.upgradeTicket(newTierId);
 }

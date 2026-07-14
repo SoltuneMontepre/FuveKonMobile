@@ -20,117 +20,98 @@ class GuestLandingPage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           const Positioned.fill(child: FuvekonIllustratedBackground()),
+          // Soft bottom scrim so text stays readable without a heavy card.
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withValues(alpha: 0.15),
+                    Colors.black.withValues(alpha: 0.05),
+                    Colors.black.withValues(alpha: 0.72),
+                  ],
+                  stops: const [0.0, 0.35, 1.0],
+                ),
+              ),
+            ),
+          ),
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const FuvekonLandingHeader(),
                 Expanded(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final topInset = constraints.maxHeight * 0.30;
-
-                      return SingleChildScrollView(
-                        padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minHeight: constraints.maxHeight,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(height: topInset),
-                              _EventBadge(label: l10n.landingBadge),
-                              const SizedBox(height: 20),
-                              FuvekonIllustratedContentPanel(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      l10n.landingHeroTitle,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: _LandingColors.heroTitle,
-                                        fontSize: 34,
-                                        fontWeight: FontWeight.w800,
-                                        height: 1.15,
-                                        letterSpacing: -0.5,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Text(
-                                      l10n.landingHeroBody,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: FuvekonColors.darkText
-                                            .withValues(alpha: 0.88),
-                                        fontSize: 15,
-                                        height: 1.55,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 28),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: _PrimaryPillButton(
-                                            label: l10n.landingRegister,
-                                            backgroundColor:
-                                                _LandingColors.mintButton,
-                                            foregroundColor:
-                                                _LandingColors.mintButtonText,
-                                            onTap: () =>
-                                                context.go(Routes.register),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Expanded(
-                                          child: _PrimaryPillButton(
-                                            label: l10n.landingViewTickets,
-                                            backgroundColor:
-                                                _LandingColors.pinkButton,
-                                            foregroundColor:
-                                                _LandingColors.pinkButtonText,
-                                            onTap: () =>
-                                                context.go(Routes.ticket),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 12),
-                                    _OutlinePillButton(
-                                      label: l10n.loginTitle,
-                                      onTap: () => context.go(Routes.login),
-                                    ),
-                                    const SizedBox(height: 48),
-                                    Text(
-                                      l10n.landingExperienceTitle,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: _LandingColors.heroTitle,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      l10n.landingExperienceBody,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: FuvekonColors.darkTextSecondary
-                                            .withValues(alpha: 0.9),
-                                        fontSize: 14,
-                                        height: 1.5,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 0, 28, 36),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Spacer(flex: 3),
+                        Text(
+                          l10n.landingHeroTitle,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: _LandingColors.heroTitle,
+                            fontSize: 40,
+                            fontWeight: FontWeight.w800,
+                            height: 1.1,
+                            letterSpacing: -0.6,
                           ),
                         ),
-                      );
-                    },
+                        const SizedBox(height: 14),
+                        Text(
+                          l10n.landingHeroBody,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: FuvekonColors.darkText.withValues(
+                              alpha: 0.9,
+                            ),
+                            fontSize: 16,
+                            height: 1.45,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        _PrimaryPillButton(
+                          label: l10n.landingRegister,
+                          backgroundColor: _LandingColors.mintButton,
+                          foregroundColor: _LandingColors.mintButtonText,
+                          onTap: () => context.go(Routes.register),
+                        ),
+                        const SizedBox(height: 12),
+                        _OutlinePillButton(
+                          label: l10n.loginTitle,
+                          onTap: () => context.go(Routes.login),
+                        ),
+                        const SizedBox(height: 20),
+                        Center(
+                          child: TextButton(
+                            onPressed: () => context.go(Routes.ticket),
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.white.withValues(
+                                alpha: 0.85,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                            ),
+                            child: Text(
+                              l10n.landingViewTickets,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Colors.white54,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Spacer(flex: 1),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -146,50 +127,6 @@ abstract final class _LandingColors {
   static const heroTitle = FuvekonColors.darkPrimary;
   static const mintButton = FuvekonColors.darkButton;
   static const mintButtonText = FuvekonColors.darkButtonText;
-  static const pinkButton = FuvekonColors.dustyRose;
-  static const pinkButtonText = FuvekonColors.onDustyRose;
-  static const badgeDot = FuvekonColors.lightGold;
-}
-
-class _EventBadge extends StatelessWidget {
-  const _EventBadge({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-      decoration: BoxDecoration(
-        color: FuvekonColors.darkDeep.withValues(alpha: 0.35),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 7,
-            height: 7,
-            decoration: const BoxDecoration(
-              color: _LandingColors.badgeDot,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.1,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _PrimaryPillButton extends StatelessWidget {
@@ -214,14 +151,14 @@ class _PrimaryPillButton extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(999),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: Text(
             label,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: foregroundColor,
               fontWeight: FontWeight.w700,
-              fontSize: 14,
+              fontSize: 15,
             ),
           ),
         ),
@@ -245,7 +182,7 @@ class _OutlinePillButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 14),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
@@ -259,7 +196,7 @@ class _OutlinePillButton extends StatelessWidget {
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,
-              fontSize: 14,
+              fontSize: 15,
             ),
           ),
         ),

@@ -31,8 +31,24 @@ abstract final class PublicRoutes {
           parentNavigatorKey: rootNavigatorKey,
           builder: (context, state) {
             final id = state.pathParameters['id']!;
-            final queued = state.extra == true;
-            return TicketPurchasePage(tierId: id, queued: queued);
+            final extra = state.extra;
+            var queued = false;
+            double? payableAmount;
+            var isUpgrade = false;
+            if (extra == true) {
+              queued = true;
+            } else if (extra is Map) {
+              queued = extra['queued'] == true;
+              isUpgrade = extra['isUpgrade'] == true;
+              final raw = extra['payableAmount'];
+              if (raw is num) payableAmount = raw.toDouble();
+            }
+            return TicketPurchasePage(
+              tierId: id,
+              queued: queued,
+              payableAmount: payableAmount,
+              isUpgrade: isUpgrade,
+            );
           },
         ),
         GoRoute(

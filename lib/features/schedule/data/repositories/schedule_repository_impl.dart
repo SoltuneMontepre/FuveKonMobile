@@ -58,6 +58,11 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<Result<ScheduleEvent>> getScheduleEvent(String id) async {
+    // Home featured card uses a const placeholder id until a real schedule is wired.
+    if (id == kHomeFeaturedEvent.id) {
+      return Success(scheduleEventFromFeaturedSummary(kHomeFeaturedEvent));
+    }
+
     final cached = _cacheByScheduleId[id];
     if (cached != null) {
       return Success(cached.event);
@@ -66,30 +71,17 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     try {
       final response = await _scheduleApi.getSchedule(id);
       if (!response.isSuccess || response.data == null) {
-        return _resolveScheduleEventFailure(
-          id,
-          ServerFailure(response.message),
-        );
+        return Error(ServerFailure(response.message));
       }
 
       final adminItem = adminScheduleItemFromJson(response.data!);
       _storeScheduleDetail(adminItem);
       return Success(scheduleEventFromAdminItem(adminItem));
     } on AppException catch (error) {
-      return _resolveScheduleEventFailure(id, mapExceptionToFailure(error));
+      return Error(mapExceptionToFailure(error));
     } catch (error) {
-      return _resolveScheduleEventFailure(id, mapExceptionToFailure(error));
+      return Error(mapExceptionToFailure(error));
     }
-  }
-
-  Result<ScheduleEvent> _resolveScheduleEventFailure(
-    String id,
-    Failure failure,
-  ) {
-    if (id == kHomeFeaturedEvent.id) {
-      return Success(scheduleEventFromFeaturedSummary(kHomeFeaturedEvent));
-    }
-    return Error(failure);
   }
 
   @override

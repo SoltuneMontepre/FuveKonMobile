@@ -53,6 +53,7 @@ type CreateTicketTierRequest struct {
 	PriceUsd    *float64 `json:"price_usd" binding:"omitempty,gte=0"`
 	Stock       *int     `json:"stock" binding:"required,gte=0"`
 	IsActive    bool     `json:"is_active"`
+	IsVisible   *bool    `json:"is_visible"`
 }
 
 // UpdateTicketTierRequest is the request body for admin updating a ticket tier (all optional)
@@ -64,6 +65,7 @@ type UpdateTicketTierRequest struct {
 	PriceUsd    *float64 `json:"price_usd" binding:"omitempty,gte=0"`
 	Stock       *int     `json:"stock" binding:"omitempty,gte=0"`
 	IsActive    *bool    `json:"is_active"`
+	IsVisible   *bool    `json:"is_visible"`
 }
 
 // UpdateTicketForAdminRequest is the request body for admin updating a ticket (back-door, all fields optional).

@@ -32,6 +32,40 @@ class AppLocalizationsVi extends AppLocalizations {
   String get languageEnglish => 'English';
 
   @override
+  String get settingsTitle => 'Cài đặt';
+
+  @override
+  String get signedInDevicesTitle => 'Thiết bị đã đăng nhập';
+
+  @override
+  String get signedInDevicesSubtitle =>
+      'Các thiết bị đang đăng nhập vào tài khoản của bạn. Bạn có thể đăng xuất thiết bị không nhận ra.';
+
+  @override
+  String get signedInDevicesEmpty =>
+      'Không có phiên đăng nhập nào. Đăng nhập lại trên từng thiết bị để xem danh sách tại đây.';
+
+  @override
+  String get signedInDevicesThisDevice => 'Thiết bị này';
+
+  @override
+  String get signedInDevicesSignOutTitle => 'Đăng xuất thiết bị?';
+
+  @override
+  String signedInDevicesSignOutConfirm(String deviceName) {
+    return 'Đăng xuất “$deviceName”? Thiết bị đó sẽ cần đăng nhập lại.';
+  }
+
+  @override
+  String get signedInDevicesSignOutAction => 'Đăng xuất';
+
+  @override
+  String get signedInDevicesSignedOut => 'Đã đăng xuất thiết bị';
+
+  @override
+  String get signedInDevicesCancel => 'Hủy';
+
+  @override
   String get splashTagline => 'Nơi kết nối cộng đồng sự kiện và nghệ thuật';
 
   @override
@@ -631,11 +665,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get landingBadge => 'SỰ KIỆN HÀNG ĐẦU';
 
   @override
-  String get landingHeroTitle => 'Sự kiện Anime';
+  String get landingHeroTitle => 'Fuvekon';
 
   @override
   String get landingHeroBody =>
-      'Trải nghiệm không gian văn hóa độc bản với hệ thống quản lý vé và lịch trình thông minh. Tham gia ngay để không bỏ lỡ những khoảnh khắc tuyệt vời nhất.';
+      'Không gian văn hóa anime — quản lý vé và lịch trình trong một nơi.';
 
   @override
   String get landingRegister => 'Đăng ký';
@@ -1669,6 +1703,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get adminFieldTierCode => 'Mã hạng';
 
   @override
+  String get adminTicketUpgradeBadge => 'Nâng cấp';
+
+  @override
+  String get adminFieldTicketType => 'Loại yêu cầu';
+
+  @override
+  String get adminFieldPreviousTicketCode => 'Mã vé trước đó';
+
+  @override
+  String get adminFieldUpgradeDenialReason => 'Lý do từ chối nâng cấp';
+
+  @override
   String get adminFieldBadgeName => 'Tên badge';
 
   @override
@@ -2096,6 +2142,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get adminTierSalesStatus => 'Trạng thái bán';
 
   @override
+  String get adminTierVisibilityStatus => 'Trạng thái hiển thị';
+
+  @override
+  String get adminTierVisibilitySubtitle =>
+      'Hiển thị hạng vé này trong danh sách công khai';
+
+  @override
   String get adminTierPreview => 'Preview Hiển Thị';
 
   @override
@@ -2385,13 +2438,23 @@ class AppLocalizationsVi extends AppLocalizations {
   String get adminUserTicketsApprove => 'Duyệt vé';
 
   @override
+  String get adminUserTicketsApproveUpgrade => 'Duyệt nâng cấp';
+
+  @override
   String get adminUserTicketsApproveSuccess => 'Đã duyệt vé.';
 
   @override
   String get adminUserTicketsDeny => 'Từ chối vé';
 
   @override
+  String get adminUserTicketsDenyUpgrade => 'Từ chối nâng cấp';
+
+  @override
   String get adminUserTicketsDenySuccess => 'Đã từ chối vé.';
+
+  @override
+  String get adminUserTicketsDenyUpgradeSuccess =>
+      'Đã từ chối nâng cấp. Vé gốc được giữ lại.';
 
   @override
   String get adminUserTicketsResendQr => 'Gửi lại email QR';

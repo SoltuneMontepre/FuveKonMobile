@@ -1,6 +1,7 @@
 import 'package:fuvekonmobile/core/api/auth_api.dart';
 import 'package:fuvekonmobile/features/auth/data/models/auth_tokens_model.dart';
 import 'package:fuvekonmobile/features/auth/data/models/user_model.dart';
+import 'package:fuvekonmobile/shared/services/device_info_service.dart';
 import 'package:fuvekonmobile/shared/services/token_storage.dart';
 
 abstract interface class AuthRemoteDataSource {
@@ -35,22 +36,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required AuthApi authApi,
     required AccountApi accountApi,
     required TokenStorage tokenStorage,
+    required DeviceInfoService deviceInfoService,
   }) : _authApi = authApi,
        _accountApi = accountApi,
-       _tokenStorage = tokenStorage;
+       _tokenStorage = tokenStorage,
+       _deviceInfoService = deviceInfoService;
 
   final AuthApi _authApi;
   final AccountApi _accountApi;
   final TokenStorage _tokenStorage;
+  final DeviceInfoService _deviceInfoService;
 
   @override
   Future<({AuthTokensModel tokens, UserModel user})> login({
     required String email,
     required String password,
   }) async {
+    final device = await _deviceInfoService.loginDevicePayload();
     final accessToken = await _authApi.loginAndExtractToken(
       email: email,
       password: password,
+      device: device,
     );
 
     final tokens = AuthTokensModel(accessToken: accessToken);
@@ -79,7 +85,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<({AuthTokensModel tokens, UserModel user})> loginWithGoogle(
     Map<String, dynamic> body,
   ) async {
-    final accessToken = await _authApi.googleLoginAndExtractToken(body);
+    final device = await _deviceInfoService.loginDevicePayload();
+    final accessToken = await _authApi.googleLoginAndExtractToken({
+      ...body,
+      ...device,
+    });
 
     final tokens = AuthTokensModel(accessToken: accessToken);
 

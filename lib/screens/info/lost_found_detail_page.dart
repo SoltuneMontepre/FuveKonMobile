@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
@@ -55,7 +56,7 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = e is AppException ? e.message : e.toString();
         _loading = false;
       });
     }
@@ -79,8 +80,8 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
       context.pushReplacement(Routes.lostFoundRequest(itemId));
     } catch (e) {
       if (!mounted) return;
-      final message = e.toString().replaceFirst('ServerException: ', '');
-      if (message.contains('ticket')) {
+      final message = e is AppException ? e.message : e.toString();
+      if (message.toLowerCase().contains('ticket')) {
         _showTicketRequiredDialog();
       } else {
         ScaffoldMessenger.of(
@@ -98,7 +99,7 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
       builder: (context) => AlertDialog(
         title: const Text('Cần vé hợp lệ'),
         content: const Text(
-          'Bạn cần đăng nhập và có vé đã được duyệt để xem và nhận đồ thất lạc.',
+          'Bạn cần có vé đã được duyệt để xem và nhận đồ thất lạc.',
         ),
         actions: [
           TextButton(
@@ -108,9 +109,9 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
           FilledButton(
             onPressed: () {
               Navigator.pop(context);
-              context.go(Routes.login);
+              context.go(Routes.accountTicket);
             },
-            child: const Text('Đăng nhập'),
+            child: const Text('Xem vé của tôi'),
           ),
         ],
       ),
@@ -140,15 +141,15 @@ class _LostFoundDetailPageState extends State<LostFoundDetailPage> {
           children: [
             Text(
               needsTicket
-                  ? 'Bạn cần đăng nhập và có vé đã duyệt để xem chi tiết.'
+                  ? 'Bạn cần có vé đã được duyệt để xem chi tiết.'
                   : _error!,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: FuvekonSpacing.field),
             if (needsTicket)
               FilledButton(
-                onPressed: () => context.go(Routes.login),
-                child: const Text('Đăng nhập'),
+                onPressed: () => context.go(Routes.accountTicket),
+                child: const Text('Xem vé của tôi'),
               )
             else
               FilledButton(onPressed: _load, child: const Text('Thử lại')),

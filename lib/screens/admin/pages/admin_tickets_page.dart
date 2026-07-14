@@ -16,7 +16,6 @@ import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
 import 'package:fuvekonmobile/screens/admin/widgets/admin_tier_management_widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class AdminTicketsPage extends StatefulWidget {
   const AdminTicketsPage({super.key});
@@ -186,26 +185,6 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
   Future<void> _refreshTickets() =>
       _loadTicketTab(_ticketTabController.index, refresh: true);
 
-  Future<void> _runTierAction(
-    Future<void> Function() action, {
-    bool closeSheet = true,
-  }) async {
-    try {
-      await action();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.adminTierUpdateSuccess)),
-      );
-      if (closeSheet) Navigator.of(context).maybePop();
-      await _loadTiers();
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(formatAdminError(context.l10n, e))),
-      );
-    }
-  }
-
   Future<void> _openTierEditor({AdminTicketTierItem? tier}) async {
     final saved = await Navigator.of(context).push<bool>(
       MaterialPageRoute(builder: (_) => AdminTierEditPage(tier: tier)),
@@ -213,35 +192,6 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
     if (saved == true) {
       await _loadTiers();
     }
-  }
-
-  Future<void> _confirmDeleteTier(AdminTicketTierItem tier) async {
-    final l10n = context.l10n;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(l10n.adminTicketsDeleteTierTitle),
-          content: Text(l10n.adminTicketsDeleteTierBodyNamed(tier.ticketName)),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(l10n.adminCancel),
-            ),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFFF0A0A8),
-              ),
-              onPressed: () => Navigator.pop(context, true),
-              child: Text(l10n.adminDelete),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (confirmed != true || !mounted) return;
-    await _runTierAction(() => _service.deleteTier(tier.id));
   }
 
   void _openUser(AdminTicketItem item) {
@@ -255,178 +205,6 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
     if (changed == true && mounted) {
       await _refreshTickets();
     }
-  }
-
-  void _showTierDetail(AdminTicketTierItem tier) {
-    final l10n = context.l10n;
-    final currency = NumberFormat.currency(
-      locale: 'vi_VN',
-      symbol: '₫',
-      decimalDigits: 0,
-    );
-
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: FuvekonColors.darkSurfaceElevated,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.55,
-          minChildSize: 0.35,
-          maxChildSize: 0.9,
-          builder: (context, scrollController) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: FuvekonColors.darkBorder,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    tier.ticketName,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: FuvekonColors.darkText,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${tier.tierCode} • ${currency.format(tier.price)}'
-                    '${tier.priceUsd != null ? ' • \$${tier.priceUsd!.toStringAsFixed(2)}' : ''}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FuvekonColors.darkTextSecondary,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Expanded(
-                    child: ListView(
-                      controller: scrollController,
-                      children: [
-                        if (tier.description.isNotEmpty)
-                          _TierDetailRow(
-                            label: l10n.adminFieldDescription,
-                            value: tier.description,
-                          ),
-                        if (tier.stock != null)
-                          _TierDetailRow(
-                            label: l10n.adminTicketsStock,
-                            value:
-                                '${tier.stock}${tier.isSoldOut ? l10n.adminTicketsStockSoldOut : ''}',
-                          ),
-                        _TierDetailRow(
-                          label: l10n.adminFieldStatus,
-                          value: [
-                            if (tier.isActive)
-                              l10n.adminTicketsSelling
-                            else
-                              l10n.adminTicketsSalesOff,
-                            if (tier.isVisible)
-                              l10n.adminTicketsStoreVisible
-                            else
-                              l10n.adminTicketsStoreHidden,
-                          ].join(' • '),
-                        ),
-                        if (tier.benefits.isNotEmpty) ...[
-                          const SizedBox(height: 8),
-                          Text(
-                            l10n.adminTicketsBenefits,
-                            style: Theme.of(context).textTheme.labelMedium
-                                ?.copyWith(
-                                  color: FuvekonColors.darkTextSecondary,
-                                ),
-                          ),
-                          const SizedBox(height: 6),
-                          for (final benefit in tier.benefits)
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 4),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    '• ',
-                                    style: TextStyle(
-                                      color: FuvekonColors.darkText,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      benefit,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            color: FuvekonColors.darkText,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  _ActionButton(
-                    label: l10n.adminEdit,
-                    color: FuvekonColors.primary,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _openTierEditor(tier: tier);
-                    },
-                  ),
-                  _ActionButton(
-                    label: tier.isActive
-                        ? l10n.adminTicketsDisableSales
-                        : l10n.adminTicketsEnableSales,
-                    color: tier.isActive
-                        ? const Color(0xFFF0A0A8)
-                        : FuvekonColors.available,
-                    onPressed: () => _runTierAction(
-                      () => tier.isActive
-                          ? _service.deactivateTier(tier.id)
-                          : _service.activateTier(tier.id),
-                    ),
-                  ),
-                  _ActionButton(
-                    label: tier.isVisible
-                        ? l10n.adminTicketsHideStore
-                        : l10n.adminTicketsShowStore,
-                    color: const Color(0xFF60A5FA),
-                    onPressed: () => _runTierAction(
-                      () => _service.setTierVisibility(
-                        tier.id,
-                        visible: !tier.isVisible,
-                      ),
-                    ),
-                  ),
-                  _ActionButton(
-                    label: l10n.adminTicketsDeleteTier,
-                    color: const Color(0xFFDC2626),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _confirmDeleteTier(tier);
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
   }
 
   @override
@@ -701,7 +479,7 @@ class _AdminTicketsPageState extends State<AdminTicketsPage>
                 tier: filtered[i],
                 stockStat: _tierStats.statFor(filtered[i].id),
                 variantIndex: i,
-                onTap: () => _showTierDetail(filtered[i]),
+                onTap: () => _openTierEditor(tier: filtered[i]),
               ),
             ],
         ],
@@ -841,68 +619,6 @@ class _StatusChip extends StatelessWidget {
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: color,
           fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-}
-
-class _TierDetailRow extends StatelessWidget {
-  const _TierDetailRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: FuvekonColors.darkTextSecondary,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: FuvekonColors.darkText),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ActionButton extends StatelessWidget {
-  const _ActionButton({
-    required this.label,
-    required this.color,
-    required this.onPressed,
-  });
-
-  final String label;
-  final Color color;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: SizedBox(
-        width: double.infinity,
-        child: FilledButton(
-          onPressed: onPressed,
-          style: FilledButton.styleFrom(
-            backgroundColor: color,
-            foregroundColor: FuvekonColors.darkCardText,
-          ),
-          child: Text(label),
         ),
       ),
     );

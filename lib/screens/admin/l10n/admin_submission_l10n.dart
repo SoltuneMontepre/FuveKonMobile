@@ -260,6 +260,7 @@ extension AdminTicketItemL10n on AdminTicketItem {
   String localizedSubtitle(AppLocalizations l10n) {
     final parts = <String>[
       referenceCode,
+      if (isUpgrade) l10n.adminTicketUpgradeBadge,
       if (tierName != null && tierName!.isNotEmpty) tierName!,
       ticketStatusLabel(l10n, status),
       if (isCheckedIn) l10n.adminCheckedIn,
@@ -292,6 +293,7 @@ extension AdminTicketItemL10n on AdminTicketItem {
   String localizedTicketLine(AppLocalizations l10n) {
     final parts = <String>[
       referenceCode,
+      if (isUpgrade) l10n.adminTicketUpgradeBadge,
       if (tierName != null && tierName!.isNotEmpty) tierName!,
       if (isCheckedIn) l10n.adminCheckedIn,
     ];
@@ -329,6 +331,21 @@ extension AdminTicketItemL10n on AdminTicketItem {
       AdminDetailField(label: l10n.adminFieldTier, value: tierName!),
     if (tierCode?.isNotEmpty == true)
       AdminDetailField(label: l10n.adminFieldTierCode, value: tierCode!),
+    if (isUpgrade)
+      AdminDetailField(
+        label: l10n.adminFieldTicketType,
+        value: l10n.adminTicketUpgradeBadge,
+      ),
+    if (previousReferenceCode?.isNotEmpty == true)
+      AdminDetailField(
+        label: l10n.adminFieldPreviousTicketCode,
+        value: previousReferenceCode!,
+      ),
+    if (upgradeDenialReason?.isNotEmpty == true)
+      AdminDetailField(
+        label: l10n.adminFieldUpgradeDenialReason,
+        value: upgradeDenialReason!,
+      ),
     if (conBadgeName?.isNotEmpty == true)
       AdminDetailField(label: l10n.adminFieldBadgeName, value: conBadgeName!),
     AdminDetailField(

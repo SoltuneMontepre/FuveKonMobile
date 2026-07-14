@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui' show Color;
 
 import 'package:device_info_plus/device_info_plus.dart';
 
@@ -157,7 +158,7 @@ class PushNotificationService {
 
   Future<void> _initLocalNotifications() async {
     const androidSettings = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
+      '@drawable/ic_notification',
     );
 
     const iosSettings = DarwinInitializationSettings();
@@ -291,21 +292,19 @@ class PushNotificationService {
 
     String? payload,
   }) async {
-    const androidDetails = AndroidNotificationDetails(
+    final androidDetails = AndroidNotificationDetails(
       _androidChannelId,
-
       _androidChannelName,
-
       importance: Importance.high,
-
       priority: Priority.high,
+      icon: '@drawable/ic_notification',
+      color: const Color(0xFF0B1318),
     );
 
     const iosDetails = DarwinNotificationDetails();
 
-    const details = NotificationDetails(
+    final details = NotificationDetails(
       android: androidDetails,
-
       iOS: iosDetails,
     );
 

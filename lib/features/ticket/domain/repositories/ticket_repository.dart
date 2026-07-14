@@ -3,6 +3,7 @@ import 'package:fuvekonmobile/features/ticket/domain/entities/confirm_payment_re
 import 'package:fuvekonmobile/features/ticket/domain/entities/purchase_ticket_result.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/update_badge_details_input.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/upgrade_ticket_result.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 
 abstract interface class TicketRepository {
@@ -18,5 +19,5 @@ abstract interface class TicketRepository {
 
   Future<Result<UserTicket>> updateBadgeDetails(UpdateBadgeDetailsInput input);
 
-  Future<Result<UserTicket>> upgradeTicket(String newTierId);
+  Future<Result<UpgradeTicketResult>> upgradeTicket(String newTierId);
 }

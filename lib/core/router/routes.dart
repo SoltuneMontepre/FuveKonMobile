@@ -53,6 +53,7 @@ abstract final class Routes {
   static const accountProfile = '/account/profile';
   static const accountChangePassword = '/account/profile/change-password';
   static const accountSettings = '/account/profile/settings';
+  static const accountSignedInDevices = '/account/profile/signed-in-devices';
   static const accountVerifyIdentity = '/account/profile/verify-identity';
   static const accountSubmissions = '/account/profile/submissions';
   static const accountConbook = '/account/profile/conbook';
@@ -76,6 +77,7 @@ abstract final class Routes {
     accountProfile,
     accountChangePassword,
     accountSettings,
+    accountSignedInDevices,
   };
 
   // —— Contribute / registration (public) ——

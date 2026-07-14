@@ -1,8 +1,13 @@
 package middlewares
 
 import (
+	"errors"
+	"log"
+	"time"
+
 	role "general-service/internal/common/constants"
 	"general-service/internal/common/utils"
+	"general-service/internal/repositories"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -50,13 +55,53 @@ func setUserContext(c *gin.Context, claims *utils.JWTClaims) error {
 	c.Set("fursona_name", claims.FursonaName)
 	c.Set("role", userRole) // Store as UserRole int
 	c.Set("claims", claims)
+	c.Set("jti", claims.ID)
 
 	return nil
 }
 
+// validateSession rejects revoked/expired tracked sessions. Legacy JWTs with no session row are allowed.
+// When enforce is false, revoked/expired sessions return false without writing a response.
+func validateSession(c *gin.Context, sessionRepo *repositories.UserSessionRepository, claims *utils.JWTClaims, enforce bool) bool {
+	if sessionRepo == nil || claims.ID == "" {
+		return true
+	}
+
+	session, err := sessionRepo.FindByJTI(c.Request.Context(), claims.ID)
+	if errors.Is(err, repositories.ErrUserSessionNotFound) {
+		// Token issued before session tracking — allow until natural expiry
+		return true
+	}
+	if err != nil {
+		log.Printf("[WARN] session lookup failed for jti=%s: %v", claims.ID, err)
+		if enforce {
+			utils.RespondUnauthorized(c, "Invalid or expired token")
+		}
+		return false
+	}
+
+	if session.RevokedAt != nil {
+		if enforce {
+			utils.RespondUnauthorized(c, "Session has been revoked")
+		}
+		return false
+	}
+	if session.ExpiresAt.Before(time.Now()) {
+		if enforce {
+			utils.RespondUnauthorized(c, "Session has expired")
+		}
+		return false
+	}
+
+	c.Set("session_id", session.Id.String())
+	// Best-effort last-seen update; ignore errors
+	_ = sessionRepo.TouchLastSeen(c.Request.Context(), session.Id)
+	return true
+}
+
 // JWTAuthMiddleware validates the JWT access token from httponly cookie or Authorization header
 // Priority: httponly cookie first, then Authorization header
-func JWTAuthMiddleware() gin.HandlerFunc {
+func JWTAuthMiddleware(sessionRepo *repositories.UserSessionRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Extract token from cookie or header
 		tokenString, found := extractToken(c)
@@ -81,6 +126,11 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		if !validateSession(c, sessionRepo, claims, true) {
+			c.Abort()
+			return
+		}
+
 		// Set user context
 		if err := setUserContext(c, claims); err != nil {
 			utils.RespondUnauthorized(c, "Invalid role in token")
@@ -95,7 +145,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 // OptionalJWTAuthMiddleware is similar to JWTAuthMiddleware but doesn't abort if token is missing
 // It still validates if a token is provided
 // Priority: httponly cookie first, then Authorization header
-func OptionalJWTAuthMiddleware() gin.HandlerFunc {
+func OptionalJWTAuthMiddleware(sessionRepo *repositories.UserSessionRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Extract token from cookie or header
 		tokenString, found := extractToken(c)
@@ -115,9 +165,12 @@ func OptionalJWTAuthMiddleware() gin.HandlerFunc {
 
 		// Check if it's an access token and set user context
 		if claims.TokenType == "access" {
+			if !validateSession(c, sessionRepo, claims, false) {
+				c.Next()
+				return
+			}
 			// Try to set user context, but don't abort on error since it's optional
 			if err := setUserContext(c, claims); err != nil {
-				// Invalid role but optional, so continue
 				c.Next()
 				return
 			}

@@ -13,7 +13,8 @@ type Repositories struct {
 	Schedule     *ScheduleRepository
 	Talent       *TalentRepository
 	Notification *NotificationRepository
-	DeviceToken  *DeviceTokenRepository
+	DeviceToken    *DeviceTokenRepository
+	UserSession    *UserSessionRepository
 	LostFound      *LostFoundRepository
 	LostFoundClaim *LostFoundClaimRepository
 	RBAC           *RBACRepository
@@ -21,17 +22,18 @@ type Repositories struct {
 
 func NewRepositories(db *gorm.DB) *Repositories {
 	return &Repositories{
-		User:         NewUserRepository(db),
-		Ticket:       NewTicketRepository(db),
-		Event:        NewEventSettingsRepository(db),
-		Dealer:       NewDealerRepository(db),
-		Conbook:      NewConbookRepository(db),
-		Panel:        NewPanelRepository(db),
-		Venue:        NewVenueRepository(db),
-		Schedule:     NewScheduleRepository(db),
-		Talent:       NewTalentRepository(db),
-		Notification: NewNotificationRepository(db),
-		DeviceToken:  NewDeviceTokenRepository(db),
+		User:           NewUserRepository(db),
+		Ticket:         NewTicketRepository(db),
+		Event:          NewEventSettingsRepository(db),
+		Dealer:         NewDealerRepository(db),
+		Conbook:        NewConbookRepository(db),
+		Panel:          NewPanelRepository(db),
+		Venue:          NewVenueRepository(db),
+		Schedule:       NewScheduleRepository(db),
+		Talent:         NewTalentRepository(db),
+		Notification:   NewNotificationRepository(db),
+		DeviceToken:    NewDeviceTokenRepository(db),
+		UserSession:    NewUserSessionRepository(db),
 		LostFound:      NewLostFoundRepository(db),
 		LostFoundClaim: NewLostFoundClaimRepository(db),
 		RBAC:           NewRBACRepository(db),

@@ -19,6 +19,8 @@ sealed class TicketPurchaseState with _$TicketPurchaseState {
     @Default(false) bool queued,
     @Default(false) bool isConfirming,
     @Default(false) bool isSavingIdCard,
+    @Default(false) bool isUpgrade,
+    double? payableAmount,
   }) = TicketPurchaseLoaded;
   const factory TicketPurchaseState.notFound({@Default(false) bool queued}) =
       TicketPurchaseNotFound;

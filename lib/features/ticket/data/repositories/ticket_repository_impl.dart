@@ -5,6 +5,7 @@ import 'package:fuvekonmobile/features/ticket/domain/entities/confirm_payment_re
 import 'package:fuvekonmobile/features/ticket/domain/entities/purchase_ticket_result.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/update_badge_details_input.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/upgrade_ticket_result.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 import 'package:fuvekonmobile/features/ticket/domain/repositories/ticket_repository.dart';
 
@@ -89,10 +90,10 @@ class TicketRepositoryImpl implements TicketRepository {
   }
 
   @override
-  Future<Result<UserTicket>> upgradeTicket(String newTierId) async {
+  Future<Result<UpgradeTicketResult>> upgradeTicket(String newTierId) async {
     try {
-      final ticket = await _remoteDataSource.upgradeTicket(newTierId);
-      return Success(ticket);
+      final result = await _remoteDataSource.upgradeTicket(newTierId);
+      return Success(result);
     } on AppException catch (error) {
       return Error(mapExceptionToFailure(error));
     } catch (error) {

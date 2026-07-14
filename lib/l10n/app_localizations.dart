@@ -140,6 +140,66 @@ abstract class AppLocalizations {
   /// **'English'**
   String get languageEnglish;
 
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @signedInDevicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed-in devices'**
+  String get signedInDevicesTitle;
+
+  /// No description provided for @signedInDevicesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Devices currently signed into your account. You can sign out any device you don’t recognize.'**
+  String get signedInDevicesSubtitle;
+
+  /// No description provided for @signedInDevicesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No active sessions found. Sign in again on each device to see them here.'**
+  String get signedInDevicesEmpty;
+
+  /// No description provided for @signedInDevicesThisDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'This device'**
+  String get signedInDevicesThisDevice;
+
+  /// No description provided for @signedInDevicesSignOutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out device?'**
+  String get signedInDevicesSignOutTitle;
+
+  /// No description provided for @signedInDevicesSignOutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out “{deviceName}”? That device will need to sign in again.'**
+  String signedInDevicesSignOutConfirm(String deviceName);
+
+  /// No description provided for @signedInDevicesSignOutAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signedInDevicesSignOutAction;
+
+  /// No description provided for @signedInDevicesSignedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Device signed out'**
+  String get signedInDevicesSignedOut;
+
+  /// No description provided for @signedInDevicesCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get signedInDevicesCancel;
+
   /// No description provided for @splashTagline.
   ///
   /// In en, this message translates to:
@@ -1289,7 +1349,7 @@ abstract class AppLocalizations {
   /// No description provided for @landingHeroBody.
   ///
   /// In en, this message translates to:
-  /// **'Experience a unique cultural space with smart ticket management and scheduling. Join now so you don\'t miss the most wonderful moments.'**
+  /// **'An anime cultural space — tickets and schedule, all in one place.'**
   String get landingHeroBody;
 
   /// No description provided for @landingRegister.
@@ -3134,6 +3194,30 @@ abstract class AppLocalizations {
   /// **'Tier code'**
   String get adminFieldTierCode;
 
+  /// No description provided for @adminTicketUpgradeBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get adminTicketUpgradeBadge;
+
+  /// No description provided for @adminFieldTicketType.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket type'**
+  String get adminFieldTicketType;
+
+  /// No description provided for @adminFieldPreviousTicketCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous ticket code'**
+  String get adminFieldPreviousTicketCode;
+
+  /// No description provided for @adminFieldUpgradeDenialReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade denial reason'**
+  String get adminFieldUpgradeDenialReason;
+
   /// No description provided for @adminFieldBadgeName.
   ///
   /// In en, this message translates to:
@@ -3968,6 +4052,18 @@ abstract class AppLocalizations {
   /// **'Sales status'**
   String get adminTierSalesStatus;
 
+  /// No description provided for @adminTierVisibilityStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Visibility'**
+  String get adminTierVisibilityStatus;
+
+  /// No description provided for @adminTierVisibilitySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show this tier in the public listing'**
+  String get adminTierVisibilitySubtitle;
+
   /// No description provided for @adminTierPreview.
   ///
   /// In en, this message translates to:
@@ -4520,6 +4616,12 @@ abstract class AppLocalizations {
   /// **'Approve ticket'**
   String get adminUserTicketsApprove;
 
+  /// No description provided for @adminUserTicketsApproveUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve upgrade'**
+  String get adminUserTicketsApproveUpgrade;
+
   /// No description provided for @adminUserTicketsApproveSuccess.
   ///
   /// In en, this message translates to:
@@ -4532,11 +4634,23 @@ abstract class AppLocalizations {
   /// **'Deny ticket'**
   String get adminUserTicketsDeny;
 
+  /// No description provided for @adminUserTicketsDenyUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny upgrade'**
+  String get adminUserTicketsDenyUpgrade;
+
   /// No description provided for @adminUserTicketsDenySuccess.
   ///
   /// In en, this message translates to:
   /// **'Ticket denied.'**
   String get adminUserTicketsDenySuccess;
+
+  /// No description provided for @adminUserTicketsDenyUpgradeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade denied. Original ticket restored.'**
+  String get adminUserTicketsDenyUpgradeSuccess;
 
   /// No description provided for @adminUserTicketsResendQr.
   ///

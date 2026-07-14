@@ -1,9 +1,9 @@
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/auth/auth_session_controller.dart';
 import 'package:fuvekonmobile/core/config/app_config.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/locale/fallback_country_localizations_delegate.dart';
 import 'package:fuvekonmobile/core/locale/locale_notifier.dart';
 import 'package:fuvekonmobile/core/router/app_router.dart';
 import 'package:fuvekonmobile/core/router/auth_session_notifier.dart';
@@ -37,7 +37,7 @@ class FuvekonApp extends StatelessWidget {
                   supportedLocales: AppLocalizations.supportedLocales,
                   localizationsDelegates: [
                     ...AppLocalizations.localizationsDelegates,
-                    CountryLocalizations.delegate,
+                    FallbackCountryLocalizationsDelegate.delegate,
                   ],
                   routerConfig: sl<AppRouter>().router,
                   builder: (context, child) => child ?? const SizedBox.shrink(),

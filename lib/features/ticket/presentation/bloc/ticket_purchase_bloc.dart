@@ -5,9 +5,11 @@ import 'package:fuvekonmobile/features/profile/domain/entities/update_profile_in
 import 'package:fuvekonmobile/features/profile/domain/usecases/get_me_usecase.dart';
 import 'package:fuvekonmobile/features/profile/domain/usecases/update_me_usecase.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_status.dart';
+import 'package:fuvekonmobile/features/ticket/domain/entities/ticket_tier.dart';
 import 'package:fuvekonmobile/features/ticket/domain/entities/user_ticket.dart';
 import 'package:fuvekonmobile/features/ticket/domain/usecases/confirm_ticket_payment_usecase.dart';
 import 'package:fuvekonmobile/features/ticket/domain/usecases/get_my_ticket_usecase.dart';
+import 'package:fuvekonmobile/features/ticket/domain/usecases/get_ticket_tiers_usecase.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_purchase_event.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/bloc/ticket_purchase_state.dart';
 
@@ -16,17 +18,24 @@ class TicketPurchaseBloc
   TicketPurchaseBloc({
     required ConfirmTicketPaymentUseCase confirmTicketPaymentUseCase,
     required GetMyTicketUseCase getMyTicketUseCase,
+    required GetTicketTiersUseCase getTicketTiersUseCase,
     required GetMeUseCase getMeUseCase,
     required UpdateMeUseCase updateMeUseCase,
   }) : _confirmTicketPaymentUseCase = confirmTicketPaymentUseCase,
        _getMyTicketUseCase = getMyTicketUseCase,
+       _getTicketTiersUseCase = getTicketTiersUseCase,
        _getMeUseCase = getMeUseCase,
        _updateMeUseCase = updateMeUseCase,
        super(const TicketPurchaseState.initial()) {
     on<TicketPurchaseStarted>(_onStarted);
     on<TicketPurchaseRefreshRequested>(
       (event, emit) => _onStarted(
-        TicketPurchaseStarted(tierId: _tierId ?? '', queued: _queued),
+        TicketPurchaseStarted(
+          tierId: _tierId ?? '',
+          queued: _queued,
+          isUpgrade: _isUpgrade,
+          payableAmount: _payableAmount,
+        ),
         emit,
       ),
     );
@@ -39,11 +48,14 @@ class TicketPurchaseBloc
 
   final ConfirmTicketPaymentUseCase _confirmTicketPaymentUseCase;
   final GetMyTicketUseCase _getMyTicketUseCase;
+  final GetTicketTiersUseCase _getTicketTiersUseCase;
   final GetMeUseCase _getMeUseCase;
   final UpdateMeUseCase _updateMeUseCase;
 
   String? _tierId;
   bool _queued = false;
+  bool _isUpgrade = false;
+  double? _payableAmount;
   String? lastActionError;
 
   Future<void> _onStarted(
@@ -53,6 +65,8 @@ class TicketPurchaseBloc
     if (event is TicketPurchaseStarted) {
       _tierId = event.tierId;
       _queued = event.queued;
+      _isUpgrade = event.isUpgrade;
+      _payableAmount = event.payableAmount;
     }
 
     emit(const TicketPurchaseState.loading());
@@ -79,7 +93,7 @@ class TicketPurchaseBloc
         }
 
         final ticketResult = await _getMyTicketUseCase();
-        final resolved = _resolveTicketState(
+        final resolved = await _resolveTicketState(
           ticketResult,
           account,
           allowRetry: true,
@@ -96,7 +110,7 @@ class TicketPurchaseBloc
     }
 
     final ticketResult = await _getMyTicketUseCase();
-    final resolved = _resolveTicketState(
+    final resolved = await _resolveTicketState(
       ticketResult,
       account,
       allowRetry: false,
@@ -104,11 +118,11 @@ class TicketPurchaseBloc
     emit(resolved ?? TicketPurchaseState.notFound(queued: _queued));
   }
 
-  TicketPurchaseState? _resolveTicketState(
+  Future<TicketPurchaseState?> _resolveTicketState(
     Result<UserTicket?> ticketResult,
     Account account, {
     required bool allowRetry,
-  }) {
+  }) async {
     switch (ticketResult) {
       case Error(:final failure):
         return TicketPurchaseState.failure(failure.message);
@@ -130,13 +144,48 @@ class TicketPurchaseBloc
             data.status == TicketStatus.pending) {
           return allowRetry ? null : TicketPurchaseState.notFound(queued: true);
         }
+
+        final isUpgrade = _isUpgrade || data.isUpgradeInProgress;
+        final payableAmount = await _resolvePayableAmount(data, isUpgrade);
+
         return TicketPurchaseState.loaded(
           ticket: data,
           account: account,
           tierId: _tierId ?? data.tier?.id ?? '',
           queued: _queued,
+          isUpgrade: isUpgrade,
+          payableAmount: payableAmount,
         );
     }
+  }
+
+  Future<double?> _resolvePayableAmount(UserTicket ticket, bool isUpgrade) async {
+    if (_payableAmount != null && _payableAmount! > 0) {
+      return _payableAmount;
+    }
+    if (!isUpgrade) return null;
+
+    final oldTierId = ticket.upgradedFromTierId;
+    final newPrice = ticket.tier?.price;
+    if (oldTierId == null || oldTierId.isEmpty || newPrice == null) {
+      return _payableAmount;
+    }
+
+    final tiersResult = await _getTicketTiersUseCase();
+    if (tiersResult case Success<List<TicketTier>>(:final data)) {
+      TicketTier? oldTier;
+      for (final tier in data) {
+        if (tier.id == oldTierId) {
+          oldTier = tier;
+          break;
+        }
+      }
+      if (oldTier != null) {
+        final diff = newPrice - oldTier.price;
+        if (diff > 0) return diff;
+      }
+    }
+    return _payableAmount;
   }
 
   Future<void> _onIdCardSaved(
@@ -204,6 +253,8 @@ class TicketPurchaseBloc
       denialReason: ticket.denialReason,
       createdAt: ticket.createdAt,
       previousReferenceCode: ticket.previousReferenceCode,
+      upgradedFromTierId: ticket.upgradedFromTierId,
+      upgradeDenialReason: ticket.upgradeDenialReason,
       tier: ticket.tier,
     );
   }

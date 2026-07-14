@@ -126,10 +126,10 @@ return confirmPaymentRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String tierId,  bool queued)?  started,TResult Function()?  refreshRequested,TResult Function( String idCard)?  idCardSaved,TResult Function()?  confirmPaymentRequested,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String tierId,  bool queued,  bool isUpgrade,  double? payableAmount)?  started,TResult Function()?  refreshRequested,TResult Function( String idCard)?  idCardSaved,TResult Function()?  confirmPaymentRequested,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case TicketPurchaseStarted() when started != null:
-return started(_that.tierId,_that.queued);case TicketPurchaseRefreshRequested() when refreshRequested != null:
+return started(_that.tierId,_that.queued,_that.isUpgrade,_that.payableAmount);case TicketPurchaseRefreshRequested() when refreshRequested != null:
 return refreshRequested();case TicketPurchaseIdCardSaved() when idCardSaved != null:
 return idCardSaved(_that.idCard);case TicketPurchaseConfirmPaymentRequested() when confirmPaymentRequested != null:
 return confirmPaymentRequested();case _:
@@ -150,10 +150,10 @@ return confirmPaymentRequested();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String tierId,  bool queued)  started,required TResult Function()  refreshRequested,required TResult Function( String idCard)  idCardSaved,required TResult Function()  confirmPaymentRequested,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String tierId,  bool queued,  bool isUpgrade,  double? payableAmount)  started,required TResult Function()  refreshRequested,required TResult Function( String idCard)  idCardSaved,required TResult Function()  confirmPaymentRequested,}) {final _that = this;
 switch (_that) {
 case TicketPurchaseStarted():
-return started(_that.tierId,_that.queued);case TicketPurchaseRefreshRequested():
+return started(_that.tierId,_that.queued,_that.isUpgrade,_that.payableAmount);case TicketPurchaseRefreshRequested():
 return refreshRequested();case TicketPurchaseIdCardSaved():
 return idCardSaved(_that.idCard);case TicketPurchaseConfirmPaymentRequested():
 return confirmPaymentRequested();}
@@ -170,10 +170,10 @@ return confirmPaymentRequested();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String tierId,  bool queued)?  started,TResult? Function()?  refreshRequested,TResult? Function( String idCard)?  idCardSaved,TResult? Function()?  confirmPaymentRequested,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String tierId,  bool queued,  bool isUpgrade,  double? payableAmount)?  started,TResult? Function()?  refreshRequested,TResult? Function( String idCard)?  idCardSaved,TResult? Function()?  confirmPaymentRequested,}) {final _that = this;
 switch (_that) {
 case TicketPurchaseStarted() when started != null:
-return started(_that.tierId,_that.queued);case TicketPurchaseRefreshRequested() when refreshRequested != null:
+return started(_that.tierId,_that.queued,_that.isUpgrade,_that.payableAmount);case TicketPurchaseRefreshRequested() when refreshRequested != null:
 return refreshRequested();case TicketPurchaseIdCardSaved() when idCardSaved != null:
 return idCardSaved(_that.idCard);case TicketPurchaseConfirmPaymentRequested() when confirmPaymentRequested != null:
 return confirmPaymentRequested();case _:
@@ -188,11 +188,13 @@ return confirmPaymentRequested();case _:
 
 
 class TicketPurchaseStarted implements TicketPurchaseEvent {
-  const TicketPurchaseStarted({required this.tierId, this.queued = false});
+  const TicketPurchaseStarted({required this.tierId, this.queued = false, this.isUpgrade = false, this.payableAmount});
   
 
  final  String tierId;
 @JsonKey() final  bool queued;
+@JsonKey() final  bool isUpgrade;
+ final  double? payableAmount;
 
 /// Create a copy of TicketPurchaseEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -204,16 +206,16 @@ $TicketPurchaseStartedCopyWith<TicketPurchaseStarted> get copyWith => _$TicketPu
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketPurchaseStarted&&(identical(other.tierId, tierId) || other.tierId == tierId)&&(identical(other.queued, queued) || other.queued == queued));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketPurchaseStarted&&(identical(other.tierId, tierId) || other.tierId == tierId)&&(identical(other.queued, queued) || other.queued == queued)&&(identical(other.isUpgrade, isUpgrade) || other.isUpgrade == isUpgrade)&&(identical(other.payableAmount, payableAmount) || other.payableAmount == payableAmount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tierId,queued);
+int get hashCode => Object.hash(runtimeType,tierId,queued,isUpgrade,payableAmount);
 
 @override
 String toString() {
-  return 'TicketPurchaseEvent.started(tierId: $tierId, queued: $queued)';
+  return 'TicketPurchaseEvent.started(tierId: $tierId, queued: $queued, isUpgrade: $isUpgrade, payableAmount: $payableAmount)';
 }
 
 
@@ -224,7 +226,7 @@ abstract mixin class $TicketPurchaseStartedCopyWith<$Res> implements $TicketPurc
   factory $TicketPurchaseStartedCopyWith(TicketPurchaseStarted value, $Res Function(TicketPurchaseStarted) _then) = _$TicketPurchaseStartedCopyWithImpl;
 @useResult
 $Res call({
- String tierId, bool queued
+ String tierId, bool queued, bool isUpgrade, double? payableAmount
 });
 
 
@@ -241,11 +243,13 @@ class _$TicketPurchaseStartedCopyWithImpl<$Res>
 
 /// Create a copy of TicketPurchaseEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? tierId = null,Object? queued = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? tierId = null,Object? queued = null,Object? isUpgrade = null,Object? payableAmount = freezed,}) {
   return _then(TicketPurchaseStarted(
 tierId: null == tierId ? _self.tierId : tierId // ignore: cast_nullable_to_non_nullable
 as String,queued: null == queued ? _self.queued : queued // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,isUpgrade: null == isUpgrade ? _self.isUpgrade : isUpgrade // ignore: cast_nullable_to_non_nullable
+as bool,payableAmount: freezed == payableAmount ? _self.payableAmount : payableAmount // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 

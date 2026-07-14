@@ -183,7 +183,7 @@ class _ProfileBody extends StatelessWidget {
               AdminActionTile(
                 icon: Icons.folder_shared_outlined,
                 title: 'Hồ sơ đã gửi',
-                subtitle: 'Panel, talent, conbook',
+                subtitle: 'Panel và talent',
                 onTap: () => context.push(Routes.accountSubmissions),
               ),
               const SizedBox(height: 8),
@@ -221,6 +221,12 @@ class _ProfileBody extends StatelessWidget {
                 icon: Icons.lock_outline,
                 title: 'Đổi mật khẩu',
                 onTap: () => context.push(Routes.accountChangePassword),
+              ),
+              const SizedBox(height: 8),
+              AdminActionTile(
+                icon: Icons.devices,
+                title: context.l10n.signedInDevicesTitle,
+                onTap: () => context.push(Routes.accountSignedInDevices),
               ),
               const SizedBox(height: 8),
               AdminActionTile(

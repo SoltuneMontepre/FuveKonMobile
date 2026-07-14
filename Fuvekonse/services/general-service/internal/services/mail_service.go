@@ -482,6 +482,42 @@ func (s *MailService) SendTicketDeniedEmail(ctx context.Context, fromEmail, toEm
 	return s.SendEmail(ctx, fromEmail, toEmail, subject, body, nil, nil)
 }
 
+// SendUpgradeDeniedEmail sends an email when an upgrade is denied and rolled back.
+// The user keeps their original approved ticket. lang: "vi" for Vietnamese, else English.
+func (s *MailService) SendUpgradeDeniedEmail(ctx context.Context, fromEmail, toEmail, referenceCode, tierName, reason, lang string) error {
+	var subject, tpl string
+	tierBlock := htemplate.HTML("")
+	if tierName != "" {
+		if lang == "vi" {
+			tierBlock = htemplate.HTML(fmt.Sprintf(`<p style="margin:0 0 16px 0;font-size:14px;color:#4a4238;"><span style="display:inline-block;background:#fff;padding:8px 14px;border-radius:10px;border:1px solid #dfd5c4;"><strong style="color:#1a1410;">Hạng vé hiện tại:</strong> %s</span></p>`, htemplate.HTMLEscapeString(tierName)))
+		} else {
+			tierBlock = htemplate.HTML(fmt.Sprintf(`<p style="margin:0 0 16px 0;font-size:14px;color:#4a4238;"><span style="display:inline-block;background:#fff;padding:8px 14px;border-radius:10px;border:1px solid #dfd5c4;"><strong style="color:#1a1410;">Current ticket tier:</strong> %s</span></p>`, htemplate.HTMLEscapeString(tierName)))
+		}
+	}
+
+	if lang == "vi" {
+		subject = "Yêu cầu nâng hạng vé FUVE bị từ chối"
+		tpl = "ticket_upgrade_denied_vi.html"
+	} else {
+		subject = "Your FUVE ticket upgrade was denied"
+		tpl = "ticket_upgrade_denied_en.html"
+	}
+
+	body, err := renderMailTemplate(tpl, struct {
+		ReferenceCode string
+		TierBlock     htemplate.HTML
+		Reason        string
+	}{
+		ReferenceCode: referenceCode,
+		TierBlock:     tierBlock,
+		Reason:        strings.TrimSpace(reason),
+	})
+	if err != nil {
+		return fmt.Errorf("render upgrade denied email: %w", err)
+	}
+	return s.SendEmail(ctx, fromEmail, toEmail, subject, body, nil, nil)
+}
+
 // SendNotificationEmail sends an admin-authored notification to the user's inbox (HTML). lang: "vi" or else English.
 func (s *MailService) SendNotificationEmail(ctx context.Context, fromEmail, toEmail, title, body, lang string) error {
 	title = strings.TrimSpace(title)

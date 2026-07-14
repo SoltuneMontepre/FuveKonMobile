@@ -11,6 +11,8 @@ abstract final class ApiConstants {
   static const String resetPassword = '/auth/reset-password';
   static const String changePassword = '/auth/change-password';
   static const String resetPasswordConfirm = '/auth/reset-password/confirm';
+  static const String authSessions = '/auth/sessions';
+  static String authSession(String id) => '/auth/sessions/$id';
 
   // —— Users (account) ——
   static const String usersMe = '/users/me';

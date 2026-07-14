@@ -12,10 +12,15 @@ class AuthApi extends BaseApi {
   Future<String> loginAndExtractToken({
     required String email,
     required String password,
+    Map<String, String>? device,
   }) async {
     final response = await apiClient.postWithResponse(
       ApiConstants.login,
-      data: {'email': email.trim().toLowerCase(), 'password': password},
+      data: {
+        'email': email.trim().toLowerCase(),
+        'password': password,
+        ...?device,
+      },
     );
 
     final body = response.data;
@@ -59,6 +64,25 @@ class AuthApi extends BaseApi {
 
   Future<ApiResponse<void>> logout() {
     return post<void>(ApiConstants.logout, throwOnFailure: false);
+  }
+
+  Future<ApiResponse<List<AuthSessionJson>>> listSessions() {
+    return get(
+      ApiConstants.authSessions,
+      mapData: (value) {
+        final map = mapJsonObject(value);
+        final raw = map?['sessions'];
+        if (raw is! List) return const <AuthSessionJson>[];
+        return raw
+            .whereType<Map>()
+            .map((e) => AuthSessionJson.fromJson(Map<String, dynamic>.from(e)))
+            .toList();
+      },
+    );
+  }
+
+  Future<ApiResponse<void>> revokeSession(String sessionId) {
+    return delete<void>(ApiConstants.authSession(sessionId));
   }
 
   Future<ApiResponse<Map<String, dynamic>?>> register(
@@ -210,5 +234,42 @@ class AccountJson {
     ].whereType<String>().where((s) => s.isNotEmpty);
     final joined = parts.join(' ').trim();
     return joined.isEmpty ? null : joined;
+  }
+}
+
+/// One active login session from `GET /auth/sessions`.
+class AuthSessionJson {
+  const AuthSessionJson({
+    required this.id,
+    required this.deviceName,
+    required this.platform,
+    required this.lastSeenAt,
+    required this.createdAt,
+    required this.isCurrent,
+    this.deviceId,
+  });
+
+  final String id;
+  final String deviceName;
+  final String platform;
+  final String? deviceId;
+  final DateTime lastSeenAt;
+  final DateTime createdAt;
+  final bool isCurrent;
+
+  factory AuthSessionJson.fromJson(Map<String, dynamic> json) {
+    return AuthSessionJson(
+      id: json['id'] as String,
+      deviceName: (json['device_name'] as String?)?.trim().isNotEmpty == true
+          ? json['device_name'] as String
+          : 'Unknown device',
+      platform: (json['platform'] as String?) ?? '',
+      deviceId: json['device_id'] as String?,
+      lastSeenAt: DateTime.tryParse(json['last_seen_at'] as String? ?? '') ??
+          DateTime.fromMillisecondsSinceEpoch(0),
+      createdAt: DateTime.tryParse(json['created_at'] as String? ?? '') ??
+          DateTime.fromMillisecondsSinceEpoch(0),
+      isCurrent: json['is_current'] as bool? ?? false,
+    );
   }
 }

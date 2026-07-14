@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/errors/exceptions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/screens/info/lost_found_models.dart';
@@ -80,7 +81,7 @@ class _LostFoundPageState extends State<LostFoundPage> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = e.toString().replaceFirst('ServerException: ', '');
+        _error = e is AppException ? e.message : e.toString();
         _loading = false;
         _loadingMore = false;
       });
@@ -165,7 +166,7 @@ class _LostFoundPageState extends State<LostFoundPage> {
               children: [
                 Text(
                   needsTicket
-                      ? 'Bạn cần đăng nhập và có vé đã duyệt để xem danh sách đồ thất lạc.'
+                      ? 'Bạn cần có vé đã được duyệt để xem danh sách đồ thất lạc.'
                       : _error!,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -175,8 +176,8 @@ class _LostFoundPageState extends State<LostFoundPage> {
                 const SizedBox(height: 16),
                 if (needsTicket)
                   FilledButton(
-                    onPressed: () => context.go(Routes.login),
-                    child: const Text('Đăng nhập'),
+                    onPressed: () => context.go(Routes.accountTicket),
+                    child: const Text('Xem vé của tôi'),
                   )
                 else
                   FilledButton(

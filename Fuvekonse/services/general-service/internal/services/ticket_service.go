@@ -121,6 +121,10 @@ func (s *TicketService) CreateTierForAdmin(ctx context.Context, req *requests.Cr
 	if req.Stock != nil {
 		stock = *req.Stock
 	}
+	isVisible := true
+	if req.IsVisible != nil {
+		isVisible = *req.IsVisible
+	}
 
 	tier := &models.TicketTier{
 		TicketName:  req.TicketName,
@@ -130,7 +134,7 @@ func (s *TicketService) CreateTierForAdmin(ctx context.Context, req *requests.Cr
 		PriceUsd:    decimal.NewFromFloat(priceUsd),
 		Stock:       stock,
 		IsActive:    req.IsActive,
-		IsVisible:   true,
+		IsVisible:   isVisible,
 	}
 
 	created, err := s.repos.Ticket.CreateTier(ctx, tier)
@@ -175,6 +179,9 @@ func (s *TicketService) UpdateTierForAdmin(ctx context.Context, tierID string, r
 	}
 	if req.IsActive != nil {
 		updates["is_active"] = *req.IsActive
+	}
+	if req.IsVisible != nil {
+		updates["is_visible"] = *req.IsVisible
 	}
 	if len(updates) == 0 {
 		// No updates, just return current tier
@@ -603,7 +610,9 @@ func (s *TicketService) ResendTicketQREmail(ctx context.Context, ticketID string
 	)
 }
 
-// DenyTicket denies a ticket (admin action)
+// DenyTicket denies a ticket (admin action).
+// For upgrades, DenyTicket rolls back to the previous tier (status stays approved)
+// and notifies the user with the denial reason instead of fully denying the ticket.
 func (s *TicketService) DenyTicket(ctx context.Context, ticketID string, staffID string, req *requests.DenyTicketRequest) (*responses.UserTicketResponse, error) {
 	tid, err := uuid.Parse(ticketID)
 	if err != nil {
@@ -620,34 +629,64 @@ func (s *TicketService) DenyTicket(ctx context.Context, ticketID string, staffID
 		return nil, err
 	}
 
-	// Send ticket denied email to the user (best-effort)
-	if s.mail != nil && ticket.User.Email != "" && ticket.Status == models.TicketStatusDenied {
+	isUpgradeRollback := ticket.Status == models.TicketStatusApproved &&
+		strings.TrimSpace(ticket.UpgradeDenialReason) != ""
+
+	// Send denial email to the user (best-effort)
+	if s.mail != nil && ticket.User.Email != "" {
 		fromEmail := os.Getenv("SES_EMAIL_IDENTITY")
 		if fromEmail != "" {
 			tierName := ""
 			if ticket.Ticket.TicketName != "" {
 				tierName = ticket.Ticket.TicketName
 			}
-			if err := s.mail.SendTicketDeniedEmail(
-				ctx,
-				fromEmail,
-				ticket.User.Email,
-				ticket.ReferenceCode,
-				tierName,
-				req.Reason,
-				LangFromCountry(ticket.User.Country),
-			); err != nil {
-				log.Printf("Failed to send ticket denied email to %s: %v", ticket.User.Email, err)
+			lang := LangFromCountry(ticket.User.Country)
+			reason := req.Reason
+			if isUpgradeRollback {
+				if err := s.mail.SendUpgradeDeniedEmail(
+					ctx,
+					fromEmail,
+					ticket.User.Email,
+					ticket.ReferenceCode,
+					tierName,
+					reason,
+					lang,
+				); err != nil {
+					log.Printf("Failed to send upgrade denied email to %s: %v", ticket.User.Email, err)
+				}
+			} else if ticket.Status == models.TicketStatusDenied {
+				if err := s.mail.SendTicketDeniedEmail(
+					ctx,
+					fromEmail,
+					ticket.User.Email,
+					ticket.ReferenceCode,
+					tierName,
+					reason,
+					lang,
+				); err != nil {
+					log.Printf("Failed to send ticket denied email to %s: %v", ticket.User.Email, err)
+				}
 			}
 		}
 	}
 
 	if s.notify != nil {
-		body := fmt.Sprintf("Vé %s đã bị từ chối.", ticket.ReferenceCode)
-		if reason := strings.TrimSpace(req.Reason); reason != "" {
-			body += " Lý do: " + reason
+		if isUpgradeRollback {
+			body := fmt.Sprintf(
+				"Yêu cầu nâng hạng vé bị từ chối. Vé gốc %s vẫn còn hiệu lực.",
+				ticket.ReferenceCode,
+			)
+			if reason := strings.TrimSpace(req.Reason); reason != "" {
+				body += " Lý do: " + reason
+			}
+			s.notify.NotifyUser(ctx, ticket.UserId, "Nâng hạng bị từ chối", body, constants.NotificationKindTicket)
+		} else {
+			body := fmt.Sprintf("Vé %s đã bị từ chối.", ticket.ReferenceCode)
+			if reason := strings.TrimSpace(req.Reason); reason != "" {
+				body += " Lý do: " + reason
+			}
+			s.notify.NotifyUser(ctx, ticket.UserId, "Vé bị từ chối", body, constants.NotificationKindTicket)
 		}
-		s.notify.NotifyUser(ctx, ticket.UserId, "Vé bị từ chối", body, constants.NotificationKindTicket)
 	}
 
 	return mappers.MapUserTicketToResponse(ticket, true), nil

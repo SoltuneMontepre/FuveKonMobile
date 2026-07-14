@@ -7,6 +7,8 @@ sealed class TicketPurchaseEvent with _$TicketPurchaseEvent {
   const factory TicketPurchaseEvent.started({
     required String tierId,
     @Default(false) bool queued,
+    @Default(false) bool isUpgrade,
+    double? payableAmount,
   }) = TicketPurchaseStarted;
   const factory TicketPurchaseEvent.refreshRequested() =
       TicketPurchaseRefreshRequested;

@@ -6,6 +6,7 @@ import (
 	"general-service/internal/common/constants"
 	"general-service/internal/common/utils"
 	"general-service/internal/dto/auth/requests"
+	"general-service/internal/repositories"
 	"general-service/internal/services"
 	"os"
 	"strings"
@@ -119,6 +120,9 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		utils.RespondErrorWithErrorMessage(c, 400, constants.ErrCodeValidationFailed, err.Error(), "validationFailed")
 		return
 	}
+
+	req.UserAgent = c.Request.UserAgent()
+	req.IPAddress = c.ClientIP()
 
 	// Guard: ensure services are initialized
 	if h.services == nil || h.services.Auth == nil {
@@ -300,6 +304,8 @@ func (h *AuthHandler) GoogleLogin(c *gin.Context) {
 		utils.RespondErrorWithErrorMessage(c, 400, constants.ErrCodeValidationFailed, err.Error(), "validationFailed")
 		return
 	}
+	req.UserAgent = c.Request.UserAgent()
+	req.IPAddress = c.ClientIP()
 	googleClientID := getEnvOr("GOOGLE_CLIENT_ID", "")
 	if googleClientID == "" {
 		utils.RespondErrorWithErrorMessage(c, 503, "SERVICE_UNAVAILABLE", "Google sign-in is not configured", "googleNotConfigured")
@@ -344,7 +350,7 @@ func (h *AuthHandler) GoogleLogin(c *gin.Context) {
 
 // Logout godoc
 // @Summary Logout from the system
-// @Description Remove access token cookie to logout user
+// @Description Revoke the current session and clear the access token cookie
 // @Tags auth
 // @Accept json
 // @Produce json
@@ -352,9 +358,85 @@ func (h *AuthHandler) GoogleLogin(c *gin.Context) {
 // @Success 200 "Successfully logged out"
 // @Router /auth/logout [post]
 func (h *AuthHandler) Logout(c *gin.Context) {
+	if jti, ok := c.Get("jti"); ok {
+		if jtiStr, ok := jti.(string); ok {
+			_ = h.services.Auth.LogoutSession(c.Request.Context(), jtiStr)
+		}
+	}
 	// Clear the access token cookie using helper
 	utils.ClearAuthCookie(c, h.cookieConfig)
 	utils.RespondSuccess[any](c, nil, "Logout successful")
+}
+
+// ListSessions godoc
+// @Summary List signed-in devices
+// @Description Returns active sessions for the authenticated user
+// @Tags auth
+// @Produce json
+// @Security BearerAuth
+// @Success 200 "List of active sessions"
+// @Failure 401 "Unauthorized"
+// @Router /auth/sessions [get]
+func (h *AuthHandler) ListSessions(c *gin.Context) {
+	userIDRaw, exists := c.Get("user_id")
+	if !exists {
+		utils.RespondErrorWithErrorMessage(c, 401, constants.ErrCodeUnauthorized, "User ID not found in token", "unauthorized")
+		return
+	}
+	userID, ok := userIDRaw.(string)
+	if !ok {
+		utils.RespondErrorWithErrorMessage(c, 401, constants.ErrCodeUnauthorized, "Invalid user ID in token", "unauthorized")
+		return
+	}
+	jti, _ := c.Get("jti")
+	jtiStr, _ := jti.(string)
+
+	response, err := h.services.Auth.ListSessions(c.Request.Context(), userID, jtiStr)
+	if err != nil {
+		utils.RespondErrorWithErrorMessage(c, 500, constants.ErrCodeInternalServerError, "Failed to list sessions", "listSessionsFailed")
+		return
+	}
+	utils.RespondSuccess(c, response, "Sessions retrieved successfully")
+}
+
+// RevokeSession godoc
+// @Summary Sign out a device
+// @Description Revoke another (or current) session by id
+// @Tags auth
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "Session ID"
+// @Success 200 "Session revoked"
+// @Failure 401 "Unauthorized"
+// @Failure 404 "Session not found"
+// @Router /auth/sessions/{id} [delete]
+func (h *AuthHandler) RevokeSession(c *gin.Context) {
+	userIDRaw, exists := c.Get("user_id")
+	if !exists {
+		utils.RespondErrorWithErrorMessage(c, 401, constants.ErrCodeUnauthorized, "User ID not found in token", "unauthorized")
+		return
+	}
+	userID, ok := userIDRaw.(string)
+	if !ok {
+		utils.RespondErrorWithErrorMessage(c, 401, constants.ErrCodeUnauthorized, "Invalid user ID in token", "unauthorized")
+		return
+	}
+	sessionID := c.Param("id")
+	if sessionID == "" {
+		utils.RespondErrorWithErrorMessage(c, 400, constants.ErrCodeValidationFailed, "Session ID is required", "validationFailed")
+		return
+	}
+
+	err := h.services.Auth.RevokeSession(c.Request.Context(), userID, sessionID)
+	if err != nil {
+		if errors.Is(err, repositories.ErrUserSessionNotFound) {
+			utils.RespondErrorWithErrorMessage(c, 404, constants.ErrCodeNotFound, "Session not found", "sessionNotFound")
+			return
+		}
+		utils.RespondErrorWithErrorMessage(c, 500, constants.ErrCodeInternalServerError, "Failed to revoke session", "revokeSessionFailed")
+		return
+	}
+	utils.RespondSuccess[any](c, nil, "Session revoked successfully")
 }
 
 // VerifyOtp godoc

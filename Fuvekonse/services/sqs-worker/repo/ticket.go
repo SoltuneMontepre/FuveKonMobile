@@ -354,6 +354,15 @@ func (r *TicketRepo) DenyTicket(ctx context.Context, ticketID, staffID uuid.UUID
 func (r *TicketRepo) UpgradeTicketTier(ctx context.Context, userID, newTierID uuid.UUID, adminBypass bool) (*models.UserTicket, error) {
 	var ticket models.UserTicket
 	err := r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if !adminBypass {
+			var user models.User
+			if err := tx.Where("id = ? AND is_deleted = ?", userID, false).First(&user).Error; err != nil {
+				return err
+			}
+			if user.IsBlacklisted {
+				return ErrUserBlacklisted
+			}
+		}
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
 			Where("user_id = ? AND is_deleted = ?", userID, false).
 			First(&ticket).Error; err != nil {

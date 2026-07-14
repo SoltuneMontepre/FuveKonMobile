@@ -13,6 +13,7 @@ import 'package:fuvekonmobile/features/notification/di/notification_injection.da
 import 'package:fuvekonmobile/features/schedule/di/schedule_injection.dart';
 import 'package:fuvekonmobile/features/ticket/di/ticket_injection.dart';
 import 'package:fuvekonmobile/shared/services/app_preferences.dart';
+import 'package:fuvekonmobile/shared/services/device_info_service.dart';
 import 'package:fuvekonmobile/shared/services/scan_session_store.dart';
 import 'package:fuvekonmobile/shared/services/token_refresh_service.dart';
 import 'package:fuvekonmobile/shared/services/token_storage.dart';
@@ -37,6 +38,7 @@ Future<void> configureDependencies() async {
             : const Locale('vi'),
       ),
     )
+    ..registerLazySingleton(DeviceInfoService.new)
     ..registerLazySingleton<TokenStorage>(SecureTokenStorage.new)
     ..registerLazySingleton(AuthSessionController.new)
     ..registerLazySingleton(() => TokenRefreshService(tokenStorage: sl()))

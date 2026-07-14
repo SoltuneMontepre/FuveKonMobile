@@ -121,8 +121,11 @@ class _SubmissionsHubPageState extends State<SubmissionsHubPage> {
   }
 
   void _showNewSubmissionSheet(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     showModalBottomSheet<void>(
       context: context,
+      backgroundColor: colorScheme.surface,
       builder: (context) => SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(FuvekonSpacing.page),
@@ -130,12 +133,18 @@ class _SubmissionsHubPageState extends State<SubmissionsHubPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text(
+              Text(
                 'Chọn loại hồ sơ',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                style: TextStyle(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
               ),
               const SizedBox(height: 16),
               ListTile(
+                iconColor: colorScheme.onSurface,
+                textColor: colorScheme.onSurface,
                 leading: const Icon(Icons.groups_outlined),
                 title: const Text('Panel'),
                 onTap: () {
@@ -144,6 +153,8 @@ class _SubmissionsHubPageState extends State<SubmissionsHubPage> {
                 },
               ),
               ListTile(
+                iconColor: colorScheme.onSurface,
+                textColor: colorScheme.onSurface,
                 leading: const Icon(Icons.mic_external_on_outlined),
                 title: const Text('Talent'),
                 onTap: () {
@@ -152,6 +163,8 @@ class _SubmissionsHubPageState extends State<SubmissionsHubPage> {
                 },
               ),
               ListTile(
+                iconColor: colorScheme.onSurface,
+                textColor: colorScheme.onSurface,
                 leading: const Icon(Icons.collections_bookmark_outlined),
                 title: const Text('Conbook'),
                 onTap: () {

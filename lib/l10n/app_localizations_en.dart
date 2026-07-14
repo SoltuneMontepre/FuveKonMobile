@@ -32,6 +32,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageEnglish => 'English';
 
   @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get signedInDevicesTitle => 'Signed-in devices';
+
+  @override
+  String get signedInDevicesSubtitle =>
+      'Devices currently signed into your account. You can sign out any device you don’t recognize.';
+
+  @override
+  String get signedInDevicesEmpty =>
+      'No active sessions found. Sign in again on each device to see them here.';
+
+  @override
+  String get signedInDevicesThisDevice => 'This device';
+
+  @override
+  String get signedInDevicesSignOutTitle => 'Sign out device?';
+
+  @override
+  String signedInDevicesSignOutConfirm(String deviceName) {
+    return 'Sign out “$deviceName”? That device will need to sign in again.';
+  }
+
+  @override
+  String get signedInDevicesSignOutAction => 'Sign out';
+
+  @override
+  String get signedInDevicesSignedOut => 'Device signed out';
+
+  @override
+  String get signedInDevicesCancel => 'Cancel';
+
+  @override
   String get splashTagline => 'Where event communities and art connect';
 
   @override
@@ -634,7 +668,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get landingHeroBody =>
-      'Experience a unique cultural space with smart ticket management and scheduling. Join now so you don\'t miss the most wonderful moments.';
+      'An anime cultural space — tickets and schedule, all in one place.';
 
   @override
   String get landingRegister => 'Register';
@@ -1671,6 +1705,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminFieldTierCode => 'Tier code';
 
   @override
+  String get adminTicketUpgradeBadge => 'Upgrade';
+
+  @override
+  String get adminFieldTicketType => 'Ticket type';
+
+  @override
+  String get adminFieldPreviousTicketCode => 'Previous ticket code';
+
+  @override
+  String get adminFieldUpgradeDenialReason => 'Upgrade denial reason';
+
+  @override
   String get adminFieldBadgeName => 'Badge name';
 
   @override
@@ -2098,6 +2144,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminTierSalesStatus => 'Sales status';
 
   @override
+  String get adminTierVisibilityStatus => 'Visibility';
+
+  @override
+  String get adminTierVisibilitySubtitle =>
+      'Show this tier in the public listing';
+
+  @override
   String get adminTierPreview => 'Display preview';
 
   @override
@@ -2387,13 +2440,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminUserTicketsApprove => 'Approve ticket';
 
   @override
+  String get adminUserTicketsApproveUpgrade => 'Approve upgrade';
+
+  @override
   String get adminUserTicketsApproveSuccess => 'Ticket approved.';
 
   @override
   String get adminUserTicketsDeny => 'Deny ticket';
 
   @override
+  String get adminUserTicketsDenyUpgrade => 'Deny upgrade';
+
+  @override
   String get adminUserTicketsDenySuccess => 'Ticket denied.';
+
+  @override
+  String get adminUserTicketsDenyUpgradeSuccess =>
+      'Upgrade denied. Original ticket restored.';
 
   @override
   String get adminUserTicketsResendQr => 'Resend QR email';

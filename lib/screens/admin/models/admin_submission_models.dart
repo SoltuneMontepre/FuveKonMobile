@@ -534,6 +534,9 @@ class AdminTicketItem implements AdminListItem {
     this.tierName,
     this.tierCode,
     this.tierId,
+    this.upgradedFromTierId,
+    this.previousReferenceCode,
+    this.upgradeDenialReason,
     this.userId,
     this.userEmail,
     this.userFursonaName,
@@ -575,6 +578,9 @@ class AdminTicketItem implements AdminListItem {
       tierName: tierMap['ticket_name'] as String?,
       tierCode: tierMap['tier_code'] as String?,
       tierId: tierMap['id']?.toString(),
+      upgradedFromTierId: json['upgraded_from_tier_id']?.toString(),
+      previousReferenceCode: json['previous_reference_code'] as String?,
+      upgradeDenialReason: json['upgrade_denial_reason'] as String?,
       userId: userMap['id']?.toString(),
       userEmail: userMap['email'] as String?,
       userFursonaName: userMap['fursona_name'] as String?,
@@ -605,6 +611,9 @@ class AdminTicketItem implements AdminListItem {
   final String? tierName;
   final String? tierCode;
   final String? tierId;
+  final String? upgradedFromTierId;
+  final String? previousReferenceCode;
+  final String? upgradeDenialReason;
   final String? userId;
   final String? userEmail;
   final String? userFursonaName;
@@ -616,6 +625,10 @@ class AdminTicketItem implements AdminListItem {
   final DateTime? createdAt;
   final DateTime? approvedAt;
   final DateTime? deniedAt;
+
+  bool get isUpgrade =>
+      (upgradedFromTierId != null && upgradedFromTierId!.isNotEmpty) ||
+      (previousReferenceCode != null && previousReferenceCode!.isNotEmpty);
 
   String get userLegalName {
     final parts = [

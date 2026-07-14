@@ -1337,7 +1337,18 @@ func (r *TicketRepository) UpgradeTicketTier(ctx context.Context, userID, newTie
 	var result *UpgradeResult
 
 	err := r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		// 1. Find and lock the user's current active (non-deleted, non-denied) ticket.
+		// 1. Check blacklist (unless admin bypass)
+		if !adminBypass {
+			var user models.User
+			if err := tx.Where("id = ? AND is_deleted = ?", userID, false).First(&user).Error; err != nil {
+				return err
+			}
+			if user.IsBlacklisted {
+				return ErrUserBlacklisted
+			}
+		}
+
+		// 2. Find and lock the user's current active (non-deleted, non-denied) ticket.
 		// Explicitly exclude denied tickets: a denied ticket is not deleted but is no longer active.
 		var ticket models.UserTicket
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
@@ -1349,12 +1360,12 @@ func (r *TicketRepository) UpgradeTicketTier(ctx context.Context, userID, newTie
 			return err
 		}
 
-		// 2. Only approved or admin_granted tickets can be upgraded (unless admin bypass)
+		// 3. Only approved or admin_granted tickets can be upgraded (unless admin bypass)
 		if !adminBypass && ticket.Status != models.TicketStatusApproved && ticket.Status != models.TicketStatusAdminGranted {
 			return ErrTicketNotApproved
 		}
 
-		// 3. Lock the OLD tier row to get price and increment stock
+		// 4. Lock the OLD tier row to get price and increment stock
 		var oldTier models.TicketTier
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
 			Where("id = ?", ticket.TicketId).
@@ -1362,12 +1373,12 @@ func (r *TicketRepository) UpgradeTicketTier(ctx context.Context, userID, newTie
 			return err
 		}
 
-		// 4. Cannot upgrade to the same tier
+		// 5. Cannot upgrade to the same tier
 		if oldTier.Id == newTierID {
 			return ErrCannotDowngrade
 		}
 
-		// 5. Lock the NEW tier row, validate active + visible + stock (unless admin bypass)
+		// 6. Lock the NEW tier row, validate active + visible + stock (unless admin bypass)
 		var newTier models.TicketTier
 		q := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ? AND is_deleted = ?", newTierID, false)
 		if !adminBypass {
@@ -1384,12 +1395,12 @@ func (r *TicketRepository) UpgradeTicketTier(ctx context.Context, userID, newTie
 			return ErrOutOfStock
 		}
 
-		// 6. Validate: new tier price must be strictly higher (upgrade only, unless admin bypass)
+		// 7. Validate: new tier price must be strictly higher (upgrade only, unless admin bypass)
 		if !adminBypass && newTier.Price.LessThanOrEqual(oldTier.Price) {
 			return ErrCannotDowngrade
 		}
 
-		// 7. Decrement new tier stock (-1 consumed, reserves the seat).
+		// 8. Decrement new tier stock (-1 consumed, reserves the seat).
 		// Old tier stock is NOT incremented here — it stays reserved until
 		// an admin approves the upgrade, at which point ApproveTicket frees it.
 		// For admin bypass, allow upgrades even when stock is 0 (only decrement if > 0).

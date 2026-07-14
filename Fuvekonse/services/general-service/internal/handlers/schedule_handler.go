@@ -81,6 +81,10 @@ func (h *ScheduleHandler) GetScheduleByID(c *gin.Context) {
 			utils.RespondNotFound(c, "Schedule not found")
 			return
 		}
+		if err.Error() == "invalid schedule id" {
+			utils.RespondValidationError(c, "Invalid schedule ID")
+			return
+		}
 		utils.RespondInternalServerError(c, "Failed to retrieve schedule")
 		return
 	}
