@@ -114,8 +114,9 @@ class _AdminScheduleDetailPageState extends State<AdminScheduleDetailPage> {
         final a = entries[i];
         final b = entries[j];
         if (!_itemsOverlap(a.item, b.item)) continue;
-        if (a.item.location.isEmpty || a.item.location != b.item.location)
+        if (a.item.location.isEmpty || a.item.location != b.item.location) {
           continue;
+        }
         a.hasLocationConflict = true;
         b.hasLocationConflict = true;
       }

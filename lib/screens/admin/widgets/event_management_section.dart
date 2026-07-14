@@ -147,8 +147,9 @@ class _EventScheduleCard extends StatelessWidget {
     if (start != null && end != null) {
       return '${fmt.format(start)} – ${fmt.format(end)}';
     }
-    if (start != null)
+    if (start != null) {
       return '${l10n.adminEventSchedulesFrom} ${fmt.format(start)}';
+    }
     return '${l10n.adminEventSchedulesTo} ${fmt.format(end!)}';
   }
 
