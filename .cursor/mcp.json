@@ -1,27 +1,32 @@
 {
   "mcpServers": {
-    "dart": {
-      "command": "dart mcp-server",
-      "env": {},
-      "args": []
-    },
     "filesystem": {
-      "command": "bunx",
       "args": [
         "@modelcontextprotocol/server-filesystem",
         "."
-      ]
+      ],
+      "command": "bunx",
+      "type": "stdio"
+    },
+    "git": {
+      "args": [
+        "mcp-server-git"
+      ],
+      "command": "uvx",
+      "type": "stdio"
     },
     "sequential-thinking": {
-      "type": "stdio",
-      "command": "bunx",
       "args": [
         "@modelcontextprotocol/server-sequential-thinking"
       ],
-      "env": {}
+      "command": "bunx",
+      "env": {},
+      "type": "stdio"
     },
-    // "Figma Desktop": {
-    //   "url": "http://127.0.0.1:3845/mcp"
-    // }
+    "dart": {
+      "command": "dart",
+      "args": ["mcp-server"]
+    }
+    
   }
 }
