@@ -68,6 +68,8 @@ abstract final class Routes {
       '/account/profile/talent/$id/edit';
   static const accountPanel = '/account/profile/panel';
   static String accountPanelDetail(String id) => '/account/profile/panel/$id';
+  static String accountPanelEdit(String id) =>
+      '/account/profile/panel/$id/edit';
   static const accountDealer = '/account/profile/dealer';
   static const accountDealerRegister = '/account/profile/dealer/register';
   static const accountDealerStaff = '/account/profile/dealer/staff';

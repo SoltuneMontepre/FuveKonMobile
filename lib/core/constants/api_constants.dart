@@ -113,8 +113,12 @@ abstract final class ApiConstants {
   static String talent(String id) => '/talents/$id';
   static const String adminTalentsPending = '/admin/talents/pending';
   static const String adminTalentsApproved = '/admin/talents/approved';
+  static const String adminTalentsRequireChanges =
+      '/admin/talents/require-changes';
   static const String adminTalentsDenied = '/admin/talents/denied';
   static String adminTalentApprove(String id) => '/admin/talents/$id/approve';
+  static String adminTalentRequireChanges(String id) =>
+      '/admin/talents/$id/require-changes';
   static String adminTalentDeny(String id) => '/admin/talents/$id/deny';
   static String adminTalentPending(String id) => '/admin/talents/$id/pending';
   static String adminTalentSchedule(String id) => '/admin/talents/$id/schedule';

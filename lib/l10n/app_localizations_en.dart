@@ -457,7 +457,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scheduleKindPanel => 'Panel';
 
   @override
-  String get scheduleKindTalent => 'Talent';
+  String get scheduleKindTalent => 'Talent Show';
 
   @override
   String get scheduleKindWorkshop => 'Workshop';
@@ -467,6 +467,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scheduleKindOther => 'Other';
+
+  @override
+  String get scheduleFilterAll => 'All';
+
+  @override
+  String scheduleDayLabel(int number) {
+    return 'Day $number';
+  }
 
   @override
   String get navNotifications => 'Notifications';
@@ -1911,6 +1919,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminErrorLoadPanels => 'Could not load panels.';
 
   @override
+  String get adminErrorLoadTalents => 'Could not load talents.';
+
+  @override
   String get adminErrorLoadConbook => 'Could not load conbook submissions.';
 
   @override
@@ -2289,6 +2300,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminPanelsDeny => 'Deny panel';
 
   @override
+  String get adminTalentsTitle => 'Talent management';
+
+  @override
+  String get adminTalentsApprove => 'Approve talent';
+
+  @override
+  String get adminTalentsDeny => 'Deny talent';
+
+  @override
+  String get adminApplicationInfo => 'Application information';
+
+  @override
   String get adminDealersTitle => 'Dealer management';
 
   @override
@@ -2534,6 +2557,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminMenuConbook => 'Review Conbook';
+
+  @override
+  String get adminMenuTalents => 'Review Talent';
 
   @override
   String get adminMenuPanels => 'Panel management';

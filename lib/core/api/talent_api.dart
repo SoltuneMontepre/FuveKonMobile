@@ -32,7 +32,7 @@ class TalentApi extends BaseApi {
   }
 }
 
-enum AdminTalentListFilter { pending, approved, denied }
+enum AdminTalentListFilter { pending, approved, requireChanges, denied }
 
 /// Admin talent endpoints from `useAdminTalent.ts`.
 class AdminTalentApi extends BaseApi {
@@ -41,6 +41,8 @@ class AdminTalentApi extends BaseApi {
   static String _listPath(AdminTalentListFilter filter) => switch (filter) {
     AdminTalentListFilter.pending => ApiConstants.adminTalentsPending,
     AdminTalentListFilter.approved => ApiConstants.adminTalentsApproved,
+    AdminTalentListFilter.requireChanges =>
+      ApiConstants.adminTalentsRequireChanges,
     AdminTalentListFilter.denied => ApiConstants.adminTalentsDenied,
   };
 
@@ -51,6 +53,13 @@ class AdminTalentApi extends BaseApi {
   Future<ApiResponse<Map<String, dynamic>>> approve(String talentId) {
     return patch(
       ApiConstants.adminTalentApprove(talentId),
+      mapData: mapJsonObject,
+    );
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> requireChanges(String talentId) {
+    return patch(
+      ApiConstants.adminTalentRequireChanges(talentId),
       mapData: mapJsonObject,
     );
   }

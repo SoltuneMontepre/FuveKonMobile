@@ -159,6 +159,50 @@ extension AdminPanelItemL10n on AdminPanelItem {
   ];
 }
 
+extension AdminTalentItemL10n on AdminTalentItem {
+  String localizedSubtitle(AppLocalizations l10n) => [
+    if (nickname.isNotEmpty) nickname,
+    if (performanceGenre.isNotEmpty) performanceGenre,
+    l10n.adminDurationMinutes(durationMinutes),
+  ].join(' • ');
+
+  List<AdminDetailField> localizedDetails(AppLocalizations l10n) => [
+    AdminDetailField(label: l10n.adminFieldTitle, value: title),
+    if (nickname.isNotEmpty)
+      AdminDetailField(label: l10n.adminFieldNickname, value: nickname),
+    if (representativeUrl?.isNotEmpty == true)
+      AdminDetailField(
+        label: l10n.adminFieldAvatar,
+        imageUrl: representativeUrl,
+      ),
+    if (performanceGenre.isNotEmpty)
+      AdminDetailField(label: l10n.adminFieldGenre, value: performanceGenre),
+    AdminDetailField(
+      label: l10n.adminFieldParticipantCount,
+      value: participantCount.toString(),
+    ),
+    AdminDetailField(
+      label: l10n.adminFieldDuration,
+      value: l10n.adminDurationMinutes(durationMinutes),
+    ),
+    if (slotLabel?.isNotEmpty == true)
+      AdminDetailField(label: l10n.adminFieldTimeSlot, value: slotLabel!),
+    AdminDetailField(
+      label: l10n.adminFieldStatus,
+      value: approvalStatusLabel(l10n, status),
+    ),
+    if (introduction?.isNotEmpty == true)
+      AdminDetailField(
+        label: l10n.adminFieldIntroduction,
+        value: introduction!,
+      ),
+    AdminDetailField(
+      label: l10n.adminFieldSubmittedAt,
+      value: formatAdminDate(createdAt),
+    ),
+  ];
+}
+
 extension AdminUserItemL10n on AdminUserItem {
   String localizedSubtitle(AppLocalizations l10n) {
     final parts = <String>[

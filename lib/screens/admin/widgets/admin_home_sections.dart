@@ -103,6 +103,12 @@ class AdminHomeSections extends StatelessWidget {
           ),
           _item(
             context,
+            label: l10n.adminMenuTalents,
+            icon: Icons.badge_outlined,
+            onTap: () => context.push(Routes.adminTalents),
+          ),
+          _item(
+            context,
             label: l10n.adminMenuPanels,
             icon: Icons.groups_outlined,
             onTap: () => context.push(Routes.adminPanels),

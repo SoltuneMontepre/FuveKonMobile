@@ -305,22 +305,6 @@ class _PaymentBody extends StatelessWidget {
                       recommended: true,
                       onChanged: onMethodChanged,
                     ),
-                    const SizedBox(height: 8),
-                    _PaymentMethodTile(
-                      method: _PaymentMethod.momo,
-                      selectedMethod: selectedMethod,
-                      title: 'Ví MoMo',
-                      icon: Icons.account_balance_wallet_outlined,
-                      onChanged: onMethodChanged,
-                    ),
-                    const SizedBox(height: 8),
-                    _PaymentMethodTile(
-                      method: _PaymentMethod.card,
-                      selectedMethod: selectedMethod,
-                      title: 'Thẻ ATM/Visa',
-                      icon: Icons.credit_card_rounded,
-                      onChanged: onMethodChanged,
-                    ),
                     const SizedBox(height: 22),
                     _OrderTotalCard(
                       subtotal: amount,
@@ -402,7 +386,7 @@ class _PaymentBody extends StatelessWidget {
 
 enum _CheckoutStep { payment, confirmation }
 
-enum _PaymentMethod { bankQr, momo, card }
+enum _PaymentMethod { bankQr }
 
 class _PaymentHeader extends StatelessWidget {
   const _PaymentHeader();
@@ -1505,16 +1489,12 @@ String _maskedContact(String value) {
 String _methodTitle(_PaymentMethod method) {
   return switch (method) {
     _PaymentMethod.bankQr => 'Chuyển khoản QR',
-    _PaymentMethod.momo => 'Ví MoMo',
-    _PaymentMethod.card => 'Thẻ ATM/Visa',
   };
 }
 
 IconData _methodIcon(_PaymentMethod method) {
   return switch (method) {
     _PaymentMethod.bankQr => Icons.qr_code_2_rounded,
-    _PaymentMethod.momo => Icons.account_balance_wallet_outlined,
-    _PaymentMethod.card => Icons.credit_card_rounded,
   };
 }
 

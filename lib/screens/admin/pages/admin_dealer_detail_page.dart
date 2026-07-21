@@ -295,6 +295,9 @@ class _ApprovalActions extends StatelessWidget {
           style: FilledButton.styleFrom(
             backgroundColor: FuvekonColors.available,
             foregroundColor: FuvekonColors.darkCardText,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(FuvekonRadii.input),
+            ),
           ),
           child: loading
               ? const SizedBox(
@@ -310,6 +313,9 @@ class _ApprovalActions extends StatelessWidget {
           style: FilledButton.styleFrom(
             backgroundColor: const Color(0xFFF0A0A8),
             foregroundColor: FuvekonColors.darkCardText,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(FuvekonRadii.input),
+            ),
           ),
           child: Text(l10n.adminDealersDeny),
         ),

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fuvekonmobile/core/di/injection.dart';
+import 'package:fuvekonmobile/core/errors/result.dart';
 import 'package:fuvekonmobile/core/l10n/l10n_extensions.dart';
 import 'package:fuvekonmobile/core/router/routes.dart';
+import 'package:fuvekonmobile/core/services/s3_upload_service.dart';
 import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/core/utils/country_helpers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fuvekonmobile/features/auth/presentation/bloc/auth_event.dart';
 import 'package:fuvekonmobile/features/profile/domain/entities/account.dart';
+import 'package:fuvekonmobile/features/profile/domain/usecases/update_avatar_usecase.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_event.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_state.dart';
@@ -17,6 +20,8 @@ import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_status_badge.dart';
 import 'package:fuvekonmobile/shared/widgets/s3_avatar.dart';
+import 'package:fuvekonmobile/shared/widgets/s3_image_upload_field.dart';
+import 'package:image_picker/image_picker.dart';
 
 /// Profile tab — admin-style dark surface layout.
 class ProfilePage extends StatelessWidget {
@@ -92,11 +97,7 @@ class _ProfileBody extends StatelessWidget {
         AdminSurfaceCard(
           child: Column(
             children: [
-              S3Avatar(
-                imageUrl: account.avatar,
-                initials: account.initials,
-                radius: 44,
-              ),
+              _AvatarEditor(account: account),
               const SizedBox(height: 14),
               Text(
                 account.displayName ?? account.email,
@@ -248,6 +249,124 @@ class _ProfileBody extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+/// Profile avatar with a tap-to-change camera badge.
+///
+/// Picks an image from the gallery, uploads it to S3, then persists the
+/// resulting URL via [UpdateAvatarUseCase] before refreshing [ProfileBloc].
+class _AvatarEditor extends StatefulWidget {
+  const _AvatarEditor({required this.account});
+
+  final Account account;
+
+  @override
+  State<_AvatarEditor> createState() => _AvatarEditorState();
+}
+
+class _AvatarEditorState extends State<_AvatarEditor> {
+  final _picker = ImagePicker();
+  bool _uploading = false;
+
+  Future<void> _pickAndUpload() async {
+    if (_uploading) return;
+
+    final picked = await _picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageQuality: 85,
+    );
+    if (picked == null || !mounted) return;
+
+    setState(() => _uploading = true);
+
+    try {
+      final bytes = await picked.readAsBytes();
+      final fileName = picked.name.isNotEmpty ? picked.name : 'avatar.jpg';
+      final contentType =
+          picked.mimeType ?? imageContentTypeFromName(fileName);
+
+      final uploaded = await sl<S3UploadService>().uploadBytes(
+        bytes: bytes,
+        fileName: fileName,
+        contentType: contentType,
+        folder: 'avatars',
+      );
+
+      final result = await sl<UpdateAvatarUseCase>()(uploaded.fileUrl);
+      if (!mounted) return;
+
+      switch (result) {
+        case Success():
+          context.read<ProfileBloc>().add(
+            const ProfileEvent.refreshRequested(),
+          );
+        case Error(:final failure):
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(failure.message)));
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(s3UploadErrorMessage(e))));
+    } finally {
+      if (mounted) setState(() => _uploading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final account = widget.account;
+    return GestureDetector(
+      onTap: _uploading ? null : _pickAndUpload,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Opacity(
+            opacity: _uploading ? 0.5 : 1,
+            child: S3Avatar(
+              imageUrl: account.avatar,
+              initials: account.initials,
+              radius: 44,
+            ),
+          ),
+          if (_uploading)
+            const Positioned.fill(
+              child: Center(
+                child: SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: CircularProgressIndicator(strokeWidth: 2.5),
+                ),
+              ),
+            ),
+          Positioned(
+            bottom: -2,
+            right: -2,
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: FuvekonColors.sageGreen,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: FuvekonColors.darkSurfaceElevated,
+                  width: 2,
+                ),
+              ),
+              child: const Icon(
+                Icons.camera_alt_outlined,
+                size: 16,
+                color: FuvekonColors.onSageGreen,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

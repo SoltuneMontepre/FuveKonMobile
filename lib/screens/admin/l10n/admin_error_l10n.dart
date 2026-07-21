@@ -22,6 +22,8 @@ String _mapMessage(AppLocalizations l10n, String message) {
       return l10n.adminErrorLoadDealer;
     case 'admin.error.loadPanels':
       return l10n.adminErrorLoadPanels;
+    case 'admin.error.loadTalents':
+      return l10n.adminErrorLoadTalents;
     case 'admin.error.loadConbook':
       return l10n.adminErrorLoadConbook;
     case 'admin.error.loadSchedules':
@@ -60,6 +62,8 @@ String _mapMessage(AppLocalizations l10n, String message) {
       return l10n.adminErrorLoadDealer;
     case 'Không thể tải danh sách panel.':
       return l10n.adminErrorLoadPanels;
+    case 'Không thể tải danh sách talent.':
+      return l10n.adminErrorLoadTalents;
     case 'Không thể tải danh sách conbook.':
       return l10n.adminErrorLoadConbook;
     case 'Không thể tải danh sách lịch trình.':

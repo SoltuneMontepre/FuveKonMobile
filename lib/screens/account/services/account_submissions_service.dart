@@ -120,6 +120,17 @@ class AccountSubmissionsService {
     return response.data!;
   }
 
+  Future<Map<String, dynamic>> updatePanel(
+    String id,
+    Map<String, dynamic> payload,
+  ) async {
+    final response = await _panelApi.updatePanel(id, payload);
+    if (!response.isSuccess || response.data == null) {
+      throw ServerException(response.errorMessage ?? response.message);
+    }
+    return response.data!;
+  }
+
   Future<List<SubmissionSummary>> _loadPanels() async {
     final response = await _panelApi.getMyPanels();
     if (!response.isSuccess || response.data == null) {

@@ -326,6 +326,20 @@ abstract final class AccountRoutes {
 
                         return AccountPanelDetailPage(panelId: id);
                       },
+
+                      routes: [
+                        GoRoute(
+                          path: 'edit',
+
+                          parentNavigatorKey: rootNavigatorKey,
+
+                          builder: (context, state) {
+                            final id = state.pathParameters['id']!;
+
+                            return AccountPanelEditPage(panelId: id);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

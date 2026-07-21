@@ -298,7 +298,7 @@
   "@scheduleLocations": {},
   "scheduleKindPanel": "Panel",
   "@scheduleKindPanel": {},
-  "scheduleKindTalent": "Talent",
+  "scheduleKindTalent": "Talent Show",
   "@scheduleKindTalent": {},
   "scheduleKindWorkshop": "Workshop",
   "@scheduleKindWorkshop": {},
@@ -306,6 +306,16 @@
   "@scheduleKindCeremony": {},
   "scheduleKindOther": "Other",
   "@scheduleKindOther": {},
+  "scheduleFilterAll": "All",
+  "@scheduleFilterAll": {},
+  "scheduleDayLabel": "Day {number}",
+  "@scheduleDayLabel": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "navNotifications": "Notifications",
   "@navNotifications": {},
   "navAccount": "Account",
@@ -1200,6 +1210,8 @@
   "@adminErrorLoadDealer": {},
   "adminErrorLoadPanels": "Could not load panels.",
   "@adminErrorLoadPanels": {},
+  "adminErrorLoadTalents": "Could not load talents.",
+  "@adminErrorLoadTalents": {},
   "adminErrorLoadConbook": "Could not load conbook submissions.",
   "@adminErrorLoadConbook": {},
   "adminErrorLoadSchedules": "Could not load schedules.",
@@ -1469,6 +1481,14 @@
   "@adminPanelsApprove": {},
   "adminPanelsDeny": "Deny panel",
   "@adminPanelsDeny": {},
+  "adminTalentsTitle": "Talent management",
+  "@adminTalentsTitle": {},
+  "adminTalentsApprove": "Approve talent",
+  "@adminTalentsApprove": {},
+  "adminTalentsDeny": "Deny talent",
+  "@adminTalentsDeny": {},
+  "adminApplicationInfo": "Application information",
+  "@adminApplicationInfo": {},
   "adminDealersTitle": "Dealer management",
   "@adminDealersTitle": {},
   "adminDealersApprove": "Approve booth",
@@ -1633,6 +1653,8 @@
   "@adminMenuTickets": {},
   "adminMenuConbook": "Review Conbook",
   "@adminMenuConbook": {},
+  "adminMenuTalents": "Review Talent",
+  "@adminMenuTalents": {},
   "adminMenuPanels": "Panel management",
   "@adminMenuPanels": {},
   "adminMenuDealers": "Dealer management",

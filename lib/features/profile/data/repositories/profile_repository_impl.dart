@@ -34,4 +34,16 @@ class ProfileRepositoryImpl implements ProfileRepository {
       return Error(mapExceptionToFailure(error));
     }
   }
+
+  @override
+  Future<Result<Account>> updateAvatar(String? avatarUrl) async {
+    try {
+      final account = await _remoteDataSource.updateAvatar(avatarUrl);
+      return Success(account);
+    } on AppException catch (error) {
+      return Error(mapExceptionToFailure(error));
+    } catch (error) {
+      return Error(mapExceptionToFailure(error));
+    }
+  }
 }

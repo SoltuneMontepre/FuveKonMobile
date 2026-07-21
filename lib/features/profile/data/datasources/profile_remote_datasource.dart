@@ -7,6 +7,9 @@ abstract interface class ProfileRemoteDataSource {
   Future<Account> getMe();
 
   Future<Account> updateMe(UpdateProfileInput input);
+
+  /// Updates the avatar URL. Pass `null` or an empty string to clear it.
+  Future<Account> updateAvatar(String? avatarUrl);
 }
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
@@ -31,6 +34,16 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     final data = response.data;
     if (data == null) {
       throw const ServerException('Failed to update profile.');
+    }
+    return _toEntity(data);
+  }
+
+  @override
+  Future<Account> updateAvatar(String? avatarUrl) async {
+    final response = await _accountApi.updateAvatar({'avatar': avatarUrl ?? ''});
+    final data = response.data;
+    if (data == null) {
+      throw const ServerException('Failed to update avatar.');
     }
     return _toEntity(data);
   }
