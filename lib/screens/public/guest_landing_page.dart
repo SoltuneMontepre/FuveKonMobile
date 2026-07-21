@@ -87,26 +87,9 @@ class GuestLandingPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         Center(
-                          child: TextButton(
-                            onPressed: () => context.go(Routes.ticket),
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.white.withValues(
-                                alpha: 0.85,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                            ),
-                            child: Text(
-                              l10n.landingViewTickets,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.white54,
-                              ),
-                            ),
+                          child: _ViewTicketsLink(
+                            label: l10n.landingViewTickets,
+                            onTap: () => context.go(Routes.ticket),
                           ),
                         ),
                         const Spacer(flex: 1),
@@ -197,6 +180,64 @@ class _OutlinePillButton extends StatelessWidget {
               color: Colors.white,
               fontWeight: FontWeight.w600,
               fontSize: 15,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Tertiary CTA for browsing tickets without signing in.
+class _ViewTicketsLink extends StatelessWidget {
+  const _ViewTicketsLink({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(999),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            color: Colors.black.withValues(alpha: 0.38),
+            border: Border.all(
+              color: FuvekonColors.darkPrimary.withValues(alpha: 0.55),
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.confirmation_number_outlined,
+                  size: 18,
+                  color: FuvekonColors.darkPrimary.withValues(alpha: 0.95),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.95),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 16,
+                  color: FuvekonColors.darkPrimary.withValues(alpha: 0.95),
+                ),
+              ],
             ),
           ),
         ),
