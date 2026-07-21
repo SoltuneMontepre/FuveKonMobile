@@ -7,14 +7,10 @@ import 'package:fuvekonmobile/core/theme/app_colors.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_event.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_state.dart';
-import 'package:fuvekonmobile/features/schedule/domain/entities/featured_event_summary.dart';
 import 'package:fuvekonmobile/features/ticket/presentation/widgets/explore_ticket_tier_card.dart';
 import 'package:fuvekonmobile/l10n/app_localizations.dart';
-import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
-import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_section_header.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class AuthenticatedHomePage extends StatelessWidget {
   const AuthenticatedHomePage({super.key});
@@ -38,12 +34,7 @@ class _AuthenticatedHomeView extends StatelessWidget {
     final l10n = context.l10n;
 
     return BlocBuilder<ProfileBloc, ProfileState>(
-      builder: (context, profileState) {
-        final hasTicket = switch (profileState) {
-          ProfileLoaded(:final account) => account.isHasTicket == true,
-          _ => false,
-        };
-
+      builder: (context, _) {
         return ColoredBox(
           color: FuvekonColors.darkBg,
           child: CustomScrollView(
@@ -80,35 +71,13 @@ class _AuthenticatedHomeView extends StatelessWidget {
                     children: [
                       FuveSectionHeader(title: l10n.authHomeShortcutsTitle),
                       const SizedBox(height: 12),
-                      _ShortcutSection(l10n: l10n, hasTicket: hasTicket),
+                      _ShortcutSection(l10n: l10n),
                     ],
                   ),
                 ),
               ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(
-              FuvekonSpacing.page,
-              8,
-              FuvekonSpacing.page,
-              32,
-            ),
-            sliver: SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  FuveSectionHeader(
-                    title: l10n.authHomeFeaturedTitle,
-                    actionLabel: l10n.authHomeSeeAll,
-                    onActionTap: () => context.go(Routes.ticket),
-                  ),
-                  const SizedBox(height: 16),
-                  _FeaturedEventCard(l10n: l10n, event: kHomeFeaturedEvent),
-                ],
-              ),
-            ),
+            ],
           ),
-        ],
-      ),
         );
       },
     );
@@ -312,13 +281,9 @@ class _HomeShortcut {
 }
 
 class _ShortcutSection extends StatelessWidget {
-  const _ShortcutSection({
-    required this.l10n,
-    required this.hasTicket,
-  });
+  const _ShortcutSection({required this.l10n});
 
   final AppLocalizations l10n;
-  final bool hasTicket;
 
   @override
   Widget build(BuildContext context) {
@@ -345,29 +310,30 @@ class _ShortcutSection extends StatelessWidget {
         label: l10n.authHomeShortcutLostFound,
         route: Routes.lostFound,
       ),
-      if (hasTicket) ...[
-        _HomeShortcut(
-          icon: Icons.mic_external_on_outlined,
-          label: l10n.authHomeShortcutTalent,
-          route: Routes.talent,
-        ),
-        _HomeShortcut(
-          icon: Icons.groups_outlined,
-          label: l10n.authHomeShortcutPanel,
-          route: Routes.panel,
-        ),
-        _HomeShortcut(
-          icon: Icons.storefront_outlined,
-          label: l10n.authHomeShortcutDealer,
-          route: Routes.accountDealer,
-        ),
-      ],
+      _HomeShortcut(
+        icon: Icons.mic_external_on_outlined,
+        label: l10n.authHomeShortcutTalent,
+        route: Routes.talent,
+      ),
+      _HomeShortcut(
+        icon: Icons.groups_outlined,
+        label: l10n.authHomeShortcutPanel,
+        route: Routes.panel,
+      ),
+      _HomeShortcut(
+        icon: Icons.storefront_outlined,
+        label: l10n.authHomeShortcutDealer,
+        route: Routes.accountDealer,
+      ),
     ];
 
     final rows = <List<_HomeShortcut>>[];
     for (var i = 0; i < shortcuts.length; i += 4) {
       rows.add(
-        shortcuts.sublist(i, i + 4 > shortcuts.length ? shortcuts.length : i + 4),
+        shortcuts.sublist(
+          i,
+          i + 4 > shortcuts.length ? shortcuts.length : i + 4,
+        ),
       );
     }
 
@@ -540,179 +506,3 @@ class _StatusBadge extends StatelessWidget {
   }
 }
 
-class _FeaturedEventCard extends StatelessWidget {
-  const _FeaturedEventCard({required this.l10n, required this.event});
-
-  final AppLocalizations l10n;
-  final FeaturedEventSummary event;
-
-  void _openEventDetail(BuildContext context) {
-    context.push(Routes.accountScheduleEvent(event.id));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isPast = event.isPast;
-    final dateLabel = _formatFeaturedDateRange(context, event);
-
-    return FuveMintCard(
-      padding: EdgeInsets.zero,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          InkWell(
-            onTap: () => _openEventDetail(context),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(FuvekonRadii.card),
-              ),
-              child: Stack(
-                children: [
-                  AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: Image.asset(
-                      event.imageAsset,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => ColoredBox(
-                        color: FuvekonColors.surfaceContainer,
-                        child: Icon(
-                          Icons.image_outlined,
-                          color: Colors.white.withValues(alpha: 0.3),
-                          size: 48,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 12,
-                    left: 12,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: FuvekonColors.sageGreen,
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            size: 12,
-                            color: FuvekonColors.onSageGreen,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            l10n.authHomeHotBadge,
-                            style: const TextStyle(
-                              color: FuvekonColors.onSageGreen,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                InkWell(
-                  onTap: () => _openEventDetail(context),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        event.title,
-                        style: const TextStyle(
-                          color: FuvekonColors.onSageGreen,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      _MetaRow(
-                        icon: Icons.calendar_today_outlined,
-                        label: dateLabel,
-                      ),
-                      const SizedBox(height: 6),
-                      _MetaRow(
-                        icon: Icons.location_on_outlined,
-                        label: event.locationLabel,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                FuvePillButton(
-                  label: isPast
-                      ? l10n.authHomeViewDetails
-                      : l10n.authHomeBuyTicket,
-                  onPressed: () {
-                    if (isPast) {
-                      _openEventDetail(context);
-                    } else {
-                      context.push(Routes.ticket);
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-String _formatFeaturedDateRange(
-  BuildContext context,
-  FeaturedEventSummary event,
-) {
-  final locale = Localizations.localeOf(context).toString();
-  final monthYear = DateFormat('MMMM y', locale).format(event.startAt);
-  if (event.startAt.year == event.endAt.year &&
-      event.startAt.month == event.endAt.month &&
-      event.startAt.day != event.endAt.day) {
-    return '${event.startAt.day} - ${event.endAt.day} $monthYear';
-  }
-  final format = DateFormat('d MMMM y', locale);
-  if (event.startAt == event.endAt) {
-    return format.format(event.startAt);
-  }
-  return '${format.format(event.startAt)} – ${format.format(event.endAt)}';
-}
-
-class _MetaRow extends StatelessWidget {
-  const _MetaRow({required this.icon, required this.label});
-
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, size: 15, color: FuvekonColors.premiumOnMintCardMuted),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            label,
-            style: const TextStyle(
-              color: FuvekonColors.premiumOnMintCardMuted,
-              fontSize: 13,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}

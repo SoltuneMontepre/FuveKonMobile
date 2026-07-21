@@ -6,4 +6,7 @@ abstract interface class ProfileRepository {
   Future<Result<Account>> getMe();
 
   Future<Result<Account>> updateMe(UpdateProfileInput input);
+
+  /// Updates the avatar URL. Pass `null` or an empty string to clear it.
+  Future<Result<Account>> updateAvatar(String? avatarUrl);
 }

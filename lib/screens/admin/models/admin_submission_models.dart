@@ -30,6 +30,15 @@ String formatAdminDate(DateTime? date) {
       '${date.year}';
 }
 
+/// Shared status label for panel/talent performance applications, which use
+/// the same `pending`/`approved`/`require_changes`/`denied` workflow.
+String performanceApplicationStatusLabel(String status) => switch (status) {
+  'approved' => 'Đã duyệt',
+  'require_changes' => 'Cần chỉnh sửa',
+  'denied' => 'Từ chối',
+  _ => 'Chờ duyệt',
+};
+
 class AdminDealerStaffMember {
   const AdminDealerStaffMember({
     required this.id,
@@ -214,18 +223,95 @@ class AdminPanelItem implements AdminListItem {
     AdminDetailField(label: 'Thời lượng', value: '$durationMinutes phút'),
     if (slotLabel?.isNotEmpty == true)
       AdminDetailField(label: 'Khung giờ', value: slotLabel!),
-    AdminDetailField(label: 'Trạng thái', value: _statusLabel(status)),
+    AdminDetailField(
+      label: 'Trạng thái',
+      value: performanceApplicationStatusLabel(status),
+    ),
     if (introduction?.isNotEmpty == true)
       AdminDetailField(label: 'Giới thiệu', value: introduction!),
     AdminDetailField(label: 'Ngày gửi', value: formatAdminDate(createdAt)),
   ];
+}
 
-  static String _statusLabel(String status) => switch (status) {
-    'approved' => 'Đã duyệt',
-    'require_changes' => 'Cần chỉnh sửa',
-    'denied' => 'Từ chối',
-    _ => 'Chờ duyệt',
-  };
+class AdminTalentItem implements AdminListItem {
+  const AdminTalentItem({
+    required this.id,
+    required this.title,
+    required this.nickname,
+    required this.performanceGenre,
+    required this.durationMinutes,
+    required this.participantCount,
+    required this.status,
+    this.representativeUrl,
+    this.introduction,
+    this.slotLabel,
+    this.createdAt,
+  });
+
+  factory AdminTalentItem.fromJson(Map<String, dynamic> json) {
+    return AdminTalentItem(
+      id: json['id']?.toString() ?? '',
+      title: json['title'] as String? ?? 'Talent',
+      nickname: json['nickname'] as String? ?? '',
+      performanceGenre: json['performance_genre'] as String? ?? '',
+      durationMinutes: json['duration_minutes'] as int? ?? 0,
+      participantCount: json['participant_count'] as int? ?? 0,
+      status: json['status'] as String? ?? 'pending',
+      representativeUrl: json['representative_url'] as String?,
+      introduction: json['introduction'] as String?,
+      slotLabel: json['slot_label'] as String?,
+      createdAt: parseAdminDate(json['created_at']),
+    );
+  }
+
+  @override
+  final String title;
+  @override
+  final String id;
+  final String nickname;
+  final String performanceGenre;
+  final int durationMinutes;
+  final int participantCount;
+  final String status;
+  final String? representativeUrl;
+  final String? introduction;
+  final String? slotLabel;
+  final DateTime? createdAt;
+
+  @override
+  String? get previewImageUrl => representativeUrl;
+
+  @override
+  String? get subtitle => [
+    if (nickname.isNotEmpty) nickname,
+    if (performanceGenre.isNotEmpty) performanceGenre,
+    '$durationMinutes phút',
+  ].join(' • ');
+
+  @override
+  List<AdminDetailField> get details => [
+    AdminDetailField(label: 'Tiêu đề', value: title),
+    if (nickname.isNotEmpty)
+      AdminDetailField(label: 'Nickname', value: nickname),
+    if (representativeUrl?.isNotEmpty == true)
+      AdminDetailField(label: 'Ảnh đại diện', imageUrl: representativeUrl),
+    if (performanceGenre.isNotEmpty)
+      AdminDetailField(label: 'Thể loại', value: performanceGenre),
+    AdminDetailField(
+      label: 'Số người tham gia',
+      value: participantCount.toString(),
+    ),
+    AdminDetailField(label: 'Thời lượng', value: '$durationMinutes phút'),
+    if (slotLabel?.isNotEmpty == true)
+      AdminDetailField(label: 'Khung giờ', value: slotLabel!),
+    AdminDetailField(
+      label: 'Trạng thái',
+      value: performanceApplicationStatusLabel(status),
+    ),
+    if (introduction?.isNotEmpty == true)
+      AdminDetailField(label: 'Giới thiệu', value: introduction!),
+    AdminDetailField(label: 'Ngày gửi', value: formatAdminDate(createdAt)),
+  ];
 }
 
 String parseAdminRole(dynamic value) {
@@ -499,7 +585,7 @@ class AdminConbookItem implements AdminListItem {
     if (handle.isNotEmpty) AdminDetailField(label: 'Handle', value: '@$handle'),
     AdminDetailField(
       label: 'Trạng thái',
-      value: AdminPanelItem._statusLabel(status),
+      value: performanceApplicationStatusLabel(status),
     ),
     if (description.isNotEmpty)
       AdminDetailField(label: 'Mô tả', value: description),

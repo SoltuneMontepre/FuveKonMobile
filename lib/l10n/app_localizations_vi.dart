@@ -458,7 +458,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get scheduleKindPanel => 'Panel';
 
   @override
-  String get scheduleKindTalent => 'Talent';
+  String get scheduleKindTalent => 'Talent Show';
 
   @override
   String get scheduleKindWorkshop => 'Workshop';
@@ -468,6 +468,14 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get scheduleKindOther => 'Khác';
+
+  @override
+  String get scheduleFilterAll => 'Tất cả';
+
+  @override
+  String scheduleDayLabel(int number) {
+    return 'Ngày $number';
+  }
 
   @override
   String get navNotifications => 'Thông báo';
@@ -1909,6 +1917,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get adminErrorLoadPanels => 'Không thể tải danh sách panel.';
 
   @override
+  String get adminErrorLoadTalents => 'Không thể tải danh sách talent.';
+
+  @override
   String get adminErrorLoadConbook => 'Không thể tải danh sách conbook.';
 
   @override
@@ -2287,6 +2298,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get adminPanelsDeny => 'Từ chối panel';
 
   @override
+  String get adminTalentsTitle => 'Quản lý Talent';
+
+  @override
+  String get adminTalentsApprove => 'Duyệt talent';
+
+  @override
+  String get adminTalentsDeny => 'Từ chối talent';
+
+  @override
+  String get adminApplicationInfo => 'Thông tin đăng ký';
+
+  @override
   String get adminDealersTitle => 'Quản lý Dealer';
 
   @override
@@ -2529,6 +2552,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get adminMenuConbook => 'Duyệt Conbook';
+
+  @override
+  String get adminMenuTalents => 'Duyệt Talent';
 
   @override
   String get adminMenuPanels => 'Quản lý Panel';

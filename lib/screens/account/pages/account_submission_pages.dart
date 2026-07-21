@@ -18,10 +18,11 @@ class AccountPanelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _SubmissionListPage(
+    return _SubmissionListPage(
       title: 'Panel của tôi',
       load: _loadPanels,
       emptyMessage: 'Bạn chưa gửi hồ sơ panel nào.',
+      detailRoute: Routes.accountPanelDetail,
     );
   }
 
@@ -43,7 +44,9 @@ class AccountPanelDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SubmissionDetailPage(
       title: 'Chi tiết panel',
+      submissionId: panelId,
       load: () => sl<AccountSubmissionsService>().getPanelDetail(panelId),
+      editRoute: Routes.accountPanelEdit,
       mock: {
         'title': 'Fursuit Dance Panel',
         'nickname': 'DancerFur',
@@ -62,10 +65,11 @@ class AccountTalentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _SubmissionListPage(
+    return _SubmissionListPage(
       title: 'Talent của tôi',
       load: _loadTalents,
       emptyMessage: 'Bạn chưa gửi hồ sơ talent nào.',
+      detailRoute: Routes.accountTalentDetail,
     );
   }
 
@@ -132,11 +136,13 @@ class _SubmissionListPage extends StatefulWidget {
     required this.title,
     required this.load,
     required this.emptyMessage,
+    this.detailRoute,
   });
 
   final String title;
   final _SubmissionListLoader load;
   final String emptyMessage;
+  final String Function(String id)? detailRoute;
 
   @override
   State<_SubmissionListPage> createState() => _SubmissionListPageState();
@@ -173,7 +179,12 @@ class _SubmissionListPageState extends State<_SubmissionListPage> {
             itemBuilder: (context, index) {
               final item = items[index];
               final status = item['status'] as String? ?? 'pending';
+              final id = item['id']?.toString();
+              final onTap = widget.detailRoute != null && id != null
+                  ? () => context.push(widget.detailRoute!(id))
+                  : null;
               return FuveMintCard(
+                onTap: onTap,
                 child: Row(
                   children: [
                     Expanded(
@@ -189,6 +200,13 @@ class _SubmissionListPageState extends State<_SubmissionListPage> {
                       label: statusLabelVi(status),
                       variant: statusBadgeVariant(status),
                     ),
+                    if (onTap != null) ...[
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.chevron_right,
+                        color: context.fuvekonTheme.contentOnCardMuted,
+                      ),
+                    ],
                   ],
                 ),
               );
@@ -334,17 +352,68 @@ class _SubmissionDetailPage extends StatelessWidget {
   }
 }
 
-class AccountTalentEditPage extends StatefulWidget {
+class AccountTalentEditPage extends StatelessWidget {
   const AccountTalentEditPage({super.key, required this.talentId});
 
   final String talentId;
 
   @override
-  State<AccountTalentEditPage> createState() => _AccountTalentEditPageState();
+  Widget build(BuildContext context) {
+    final service = sl<AccountSubmissionsService>();
+    return _PerformanceEditPage(
+      title: 'Chỉnh sửa talent',
+      defaultDurationMinutes: 15,
+      load: () => service.getTalentDetail(talentId),
+      onSubmit: (payload) => service.updateTalent(talentId, payload),
+      successMessage: 'Đã cập nhật và gửi lại hồ sơ talent',
+      detailRoute: Routes.accountTalentDetail(talentId),
+    );
+  }
 }
 
-class _AccountTalentEditPageState extends State<AccountTalentEditPage> {
-  final _service = sl<AccountSubmissionsService>();
+class AccountPanelEditPage extends StatelessWidget {
+  const AccountPanelEditPage({super.key, required this.panelId});
+
+  final String panelId;
+
+  @override
+  Widget build(BuildContext context) {
+    final service = sl<AccountSubmissionsService>();
+    return _PerformanceEditPage(
+      title: 'Chỉnh sửa panel',
+      defaultDurationMinutes: 30,
+      load: () => service.getPanelDetail(panelId),
+      onSubmit: (payload) => service.updatePanel(panelId, payload),
+      successMessage: 'Đã cập nhật và gửi lại hồ sơ panel',
+      detailRoute: Routes.accountPanelDetail(panelId),
+    );
+  }
+}
+
+/// Shared edit form for a panel or talent submission that the organizers sent
+/// back with `require_changes`, letting the submitter fix and resend it.
+class _PerformanceEditPage extends StatefulWidget {
+  const _PerformanceEditPage({
+    required this.title,
+    required this.load,
+    required this.onSubmit,
+    required this.successMessage,
+    required this.detailRoute,
+    required this.defaultDurationMinutes,
+  });
+
+  final String title;
+  final Future<Map<String, dynamic>> Function() load;
+  final Future<void> Function(Map<String, dynamic> payload) onSubmit;
+  final String successMessage;
+  final String detailRoute;
+  final int defaultDurationMinutes;
+
+  @override
+  State<_PerformanceEditPage> createState() => _PerformanceEditPageState();
+}
+
+class _PerformanceEditPageState extends State<_PerformanceEditPage> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _nicknameController = TextEditingController();
@@ -354,12 +423,10 @@ class _AccountTalentEditPageState extends State<AccountTalentEditPage> {
   final _repUrlController = TextEditingController();
   final _memberNameController = TextEditingController();
 
-  late final Future<Map<String, dynamic>> _future = _service.getTalentDetail(
-    widget.talentId,
-  );
+  late final Future<Map<String, dynamic>> _future = widget.load();
   bool _initialized = false;
   bool _submitting = false;
-  int _durationMinutes = 15;
+  late int _durationMinutes = widget.defaultDurationMinutes;
 
   @override
   void dispose() {
@@ -382,7 +449,8 @@ class _AccountTalentEditPageState extends State<AccountTalentEditPage> {
     _introController.text = data['introduction'] as String? ?? '';
     _driveController.text = data['materials_drive_url'] as String? ?? '';
     _repUrlController.text = data['representative_url'] as String? ?? '';
-    _durationMinutes = data['duration_minutes'] as int? ?? 15;
+    _durationMinutes =
+        data['duration_minutes'] as int? ?? widget.defaultDurationMinutes;
 
     final members = data['members'];
     if (members is List && members.isNotEmpty) {
@@ -398,7 +466,7 @@ class _AccountTalentEditPageState extends State<AccountTalentEditPage> {
 
     setState(() => _submitting = true);
     try {
-      await _service.updateTalent(widget.talentId, {
+      await widget.onSubmit({
         'title': _titleController.text.trim(),
         'nickname': _nicknameController.text.trim(),
         'representative_url': _repUrlController.text.trim(),
@@ -413,10 +481,10 @@ class _AccountTalentEditPageState extends State<AccountTalentEditPage> {
         ],
       });
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Đã cập nhật và gửi lại hồ sơ talent')),
-      );
-      context.go(Routes.accountTalentDetail(widget.talentId));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(widget.successMessage)));
+      context.go(widget.detailRoute);
     } catch (e) {
       if (!mounted) return;
       final message = e is ServerException ? e.message : 'Không thể cập nhật';
@@ -434,15 +502,15 @@ class _AccountTalentEditPageState extends State<AccountTalentEditPage> {
       future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const AppPageScaffold(
-            title: 'Chỉnh sửa talent',
-            body: Center(child: CircularProgressIndicator()),
+          return AppPageScaffold(
+            title: widget.title,
+            body: const Center(child: CircularProgressIndicator()),
           );
         }
 
         if (snapshot.hasError) {
           return AppPageScaffold(
-            title: 'Chỉnh sửa talent',
+            title: widget.title,
             body: Center(child: Text('Không thể tải hồ sơ: ${snapshot.error}')),
           );
         }
@@ -451,7 +519,7 @@ class _AccountTalentEditPageState extends State<AccountTalentEditPage> {
         _populate(data);
 
         return AppScrollPage(
-          title: 'Chỉnh sửa talent',
+          title: widget.title,
           footer: FuvePillButton(
             label: _submitting ? 'Đang gửi...' : 'Gửi lại hồ sơ',
             icon: Icons.send_outlined,

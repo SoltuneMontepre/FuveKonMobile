@@ -2,6 +2,7 @@ import 'package:fuvekonmobile/features/profile/data/datasources/profile_remote_d
 import 'package:fuvekonmobile/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:fuvekonmobile/features/profile/domain/repositories/profile_repository.dart';
 import 'package:fuvekonmobile/features/profile/domain/usecases/get_me_usecase.dart';
+import 'package:fuvekonmobile/features/profile/domain/usecases/update_avatar_usecase.dart';
 import 'package:fuvekonmobile/features/profile/domain/usecases/update_me_usecase.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/edit_profile_bloc.dart';
 import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_bloc.dart';
@@ -17,6 +18,7 @@ void registerProfileModule(GetIt sl) {
     )
     ..registerLazySingleton(() => GetMeUseCase(sl()))
     ..registerLazySingleton(() => UpdateMeUseCase(sl()))
+    ..registerLazySingleton(() => UpdateAvatarUseCase(sl()))
     ..registerFactory(() => ProfileBloc(getMeUseCase: sl()))
     ..registerFactory(() => EditProfileBloc(updateMeUseCase: sl()));
 }

@@ -10,6 +10,7 @@ import 'package:fuvekonmobile/features/profile/presentation/bloc/profile_state.d
 import 'package:fuvekonmobile/screens/account/services/account_dealer_service.dart';
 import 'package:fuvekonmobile/screens/account/widgets/dealer_registration_form_fields.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
+import 'package:fuvekonmobile/shared/widgets/booth_logo_avatar.dart';
 import 'package:fuvekonmobile/shared/widgets/empty_state.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_mint_card.dart';
 import 'package:fuvekonmobile/shared/widgets/fuve_pill_button.dart';
@@ -32,8 +33,9 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
   late Future<DealerBoothInfo?> _future = _service.getMyDealer(useMockFallback: false);
 
   Future<void> _refresh() async {
-    setState(() => _future = _service.getMyDealer(useMockFallback: false));
-    await _future;
+    final future = _service.getMyDealer(useMockFallback: false);
+    setState(() => _future = future);
+    await future;
   }
 
   @override
@@ -43,6 +45,24 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
       child: AppPageScaffold(
         title: 'Gian hàng dealer',
         padding: EdgeInsets.zero,
+        actions: [
+          FutureBuilder<DealerBoothInfo?>(
+            future: _future,
+            builder: (context, snapshot) {
+              final booth = snapshot.data;
+              if (booth == null) return const SizedBox.shrink();
+              return Padding(
+                padding: const EdgeInsets.only(right: FuvekonSpacing.page),
+                child: FuveStatusBadge(
+                  label: booth.isVerified ? 'Đã được duyệt' : 'Chờ duyệt',
+                  variant: booth.isVerified
+                      ? FuveStatusBadgeVariant.success
+                      : FuveStatusBadgeVariant.pending,
+                ),
+              );
+            },
+          ),
+        ],
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, profileState) {
             final userId = switch (profileState) {
@@ -116,42 +136,46 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
                       FuveMintCard(
                         showGoldAccent: booth.isVerified,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    booth.boothName,
-                                    style: TextStyle(
-                                      color: context.fuvekonTheme.contentOnCard,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                FuveStatusBadge(
-                                  label: booth.isVerified
-                                      ? 'Đã duyệt'
-                                      : 'Chờ duyệt',
-                                  variant: booth.isVerified
-                                      ? FuveStatusBadgeVariant.success
-                                      : FuveStatusBadgeVariant.pending,
-                                ),
-                              ],
+                            BoothLogoAvatar(
+                              background: FuvekonColors.premiumPrimary
+                                  .withValues(alpha: 0.25),
+                              foreground: context.fuvekonTheme.contentOnCard,
                             ),
-                            if (booth.boothNumber.isNotEmpty) ...[
-                              const SizedBox(height: 12),
-                              _BoothNumberBadge(number: booth.boothNumber),
-                            ],
+                            const SizedBox(height: 14),
+                            Text(
+                              booth.boothName,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: context.fuvekonTheme.contentOnCard,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 20,
+                              ),
+                            ),
                             if (booth.description.isNotEmpty) ...[
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
                               Text(
                                 booth.description,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: context.fuvekonTheme.contentOnCardMuted,
                                   height: 1.45,
                                 ),
+                              ),
+                            ],
+                            if (booth.boothNumber.isNotEmpty) ...[
+                              const SizedBox(height: 12),
+                              _BoothNumberBadge(number: booth.boothNumber),
+                            ],
+                            if (isOwner) ...[
+                              const SizedBox(height: 16),
+                              FuvePillButton(
+                                label: 'Chỉnh sửa thông tin',
+                                variant: FuvePillButtonVariant.outline,
+                                icon: Icons.edit_outlined,
+                                onPressed: () =>
+                                    _showEditBoothInfo(context, booth),
                               ),
                             ],
                           ],
@@ -174,12 +198,15 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
                             padding: const EdgeInsets.only(
                               bottom: FuvekonSpacing.stackGapMd,
                             ),
-                            child: S3Image(
-                              imageUrl: url,
-                              width: double.infinity,
-                              fit: BoxFit.contain,
-                              borderRadius: BorderRadius.circular(12),
-                              onTap: () => showS3ImagePreview(context, url),
+                            child: AspectRatio(
+                              aspectRatio: 3 / 4,
+                              child: S3Image(
+                                imageUrl: url,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                borderRadius: BorderRadius.circular(12),
+                                onTap: () => showS3ImagePreview(context, url),
+                              ),
                             ),
                           ),
                         ),
@@ -213,33 +240,32 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
                       const FuveSectionHeader(title: 'Quản lý'),
                       const SizedBox(height: FuvekonSpacing.stackGapMd),
                       FuveMintCard(
-                        child: Column(
-                          children: [
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: Icon(
-                                Icons.people_outline,
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: Icon(
+                              Icons.people_outline,
+                              color: context.fuvekonTheme.contentOnCard,
+                            ),
+                            title: Text(
+                              'Nhân viên gian hàng',
+                              style: TextStyle(
                                 color: context.fuvekonTheme.contentOnCard,
                               ),
-                              title: Text(
-                                'Nhân viên gian hàng',
-                                style: TextStyle(
-                                  color: context.fuvekonTheme.contentOnCard,
-                                ),
-                              ),
-                              subtitle: Text(
-                                '${booth.staff.length} thành viên',
-                                style: TextStyle(
-                                  color: context.fuvekonTheme.contentOnCardMuted,
-                                ),
-                              ),
-                              trailing: const Icon(Icons.chevron_right),
-                              onTap: () => context.push(
-                                Routes.accountDealerStaff,
-                                extra: booth,
+                            ),
+                            subtitle: Text(
+                              '${booth.staff.length} thành viên',
+                              style: TextStyle(
+                                color: context.fuvekonTheme.contentOnCardMuted,
                               ),
                             ),
-                          ],
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () => context.push(
+                              Routes.accountDealerStaff,
+                              extra: booth,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -251,6 +277,19 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _showEditBoothInfo(
+    BuildContext context,
+    DealerBoothInfo booth,
+  ) async {
+    final updated = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => _EditBoothInfoSheet(booth: booth, service: _service),
+    );
+
+    if (updated == true) await _refresh();
   }
 
   Future<void> _showEditPriceSheets(
@@ -349,6 +388,103 @@ class _AccountDealerPageState extends State<AccountDealerPage> {
       ),
     );
     if (joined == true) await _refresh();
+  }
+}
+
+class _EditBoothInfoSheet extends StatefulWidget {
+  const _EditBoothInfoSheet({required this.booth, required this.service});
+
+  final DealerBoothInfo booth;
+  final AccountDealerService service;
+
+  @override
+  State<_EditBoothInfoSheet> createState() => _EditBoothInfoSheetState();
+}
+
+class _EditBoothInfoSheetState extends State<_EditBoothInfoSheet> {
+  late final _nameController = TextEditingController(
+    text: widget.booth.boothName,
+  );
+  late final _descController = TextEditingController(
+    text: widget.booth.description,
+  );
+  var _saving = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    final name = _nameController.text.trim();
+    if (name.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Vui lòng nhập tên gian hàng')),
+      );
+      return;
+    }
+
+    setState(() => _saving = true);
+    try {
+      await widget.service.editDealer(
+        boothId: widget.booth.id,
+        boothName: name,
+        description: _descController.text.trim(),
+      );
+      if (mounted) Navigator.pop(context, true);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('$e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: FuvekonSpacing.page,
+        right: FuvekonSpacing.page,
+        top: FuvekonSpacing.page,
+        bottom: MediaQuery.viewInsetsOf(context).bottom + FuvekonSpacing.page,
+      ),
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Chỉnh sửa thông tin gian hàng',
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _nameController,
+              enabled: !_saving,
+              decoration: const InputDecoration(labelText: 'Tên gian hàng'),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _descController,
+              enabled: !_saving,
+              maxLines: 3,
+              decoration: const InputDecoration(labelText: 'Mô tả'),
+            ),
+            const SizedBox(height: 16),
+            FuvePillButton(
+              label: _saving ? 'Đang lưu...' : 'Lưu thông tin',
+              onPressed: _saving ? null : _save,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

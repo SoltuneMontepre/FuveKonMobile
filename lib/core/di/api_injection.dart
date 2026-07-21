@@ -12,6 +12,7 @@ import 'package:fuvekonmobile/screens/info/lost_found_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_notification_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_panel_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_schedule_service.dart';
+import 'package:fuvekonmobile/screens/admin/services/admin_talent_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_event_settings_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/admin_system_status_service.dart';
 import 'package:fuvekonmobile/screens/admin/services/scan_ticket_service.dart';
@@ -52,6 +53,7 @@ void registerApiModule(GetIt sl) {
     )
     ..registerLazySingleton(() => AdminDealerService(adminDealerApi: sl()))
     ..registerLazySingleton(() => AdminPanelService(adminPanelApi: sl()))
+    ..registerLazySingleton(() => AdminTalentService(adminTalentApi: sl()))
     ..registerLazySingleton(() => AdminConbookService(conbookApi: sl()))
     ..registerLazySingleton(() => AdminTicketService(adminTicketApi: sl()))
     ..registerLazySingleton(() => AdminUserService(adminUserApi: sl()))

@@ -549,6 +549,9 @@ class _TicketActionButton extends StatelessWidget {
           style: FilledButton.styleFrom(
             backgroundColor: color,
             foregroundColor: FuvekonColors.darkCardText,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(FuvekonRadii.input),
+            ),
           ),
           child: loading
               ? const SizedBox(

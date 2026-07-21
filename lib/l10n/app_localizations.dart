@@ -941,7 +941,7 @@ abstract class AppLocalizations {
   /// No description provided for @scheduleKindTalent.
   ///
   /// In en, this message translates to:
-  /// **'Talent'**
+  /// **'Talent Show'**
   String get scheduleKindTalent;
 
   /// No description provided for @scheduleKindWorkshop.
@@ -961,6 +961,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get scheduleKindOther;
+
+  /// No description provided for @scheduleFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get scheduleFilterAll;
+
+  /// No description provided for @scheduleDayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {number}'**
+  String scheduleDayLabel(int number);
 
   /// No description provided for @navNotifications.
   ///
@@ -3596,6 +3608,12 @@ abstract class AppLocalizations {
   /// **'Could not load panels.'**
   String get adminErrorLoadPanels;
 
+  /// No description provided for @adminErrorLoadTalents.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load talents.'**
+  String get adminErrorLoadTalents;
+
   /// No description provided for @adminErrorLoadConbook.
   ///
   /// In en, this message translates to:
@@ -4322,6 +4340,30 @@ abstract class AppLocalizations {
   /// **'Deny panel'**
   String get adminPanelsDeny;
 
+  /// No description provided for @adminTalentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Talent management'**
+  String get adminTalentsTitle;
+
+  /// No description provided for @adminTalentsApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve talent'**
+  String get adminTalentsApprove;
+
+  /// No description provided for @adminTalentsDeny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny talent'**
+  String get adminTalentsDeny;
+
+  /// No description provided for @adminApplicationInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Application information'**
+  String get adminApplicationInfo;
+
   /// No description provided for @adminDealersTitle.
   ///
   /// In en, this message translates to:
@@ -4795,6 +4837,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Review Conbook'**
   String get adminMenuConbook;
+
+  /// No description provided for @adminMenuTalents.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Talent'**
+  String get adminMenuTalents;
 
   /// No description provided for @adminMenuPanels.
   ///

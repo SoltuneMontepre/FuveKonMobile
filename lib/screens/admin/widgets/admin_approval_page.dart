@@ -316,6 +316,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
   ) => switch (item) {
     AdminDealerItem i => i.localizedDetails(l10n),
     AdminPanelItem i => i.localizedDetails(l10n),
+    AdminTalentItem i => i.localizedDetails(l10n),
     AdminUserItem i => i.localizedDetails(l10n),
     AdminConbookItem i => i.localizedDetails(l10n),
     AdminTicketItem i => i.localizedDetails(l10n),
@@ -327,6 +328,7 @@ class _AdminApprovalPageState extends State<AdminApprovalPage>
       switch (item) {
         AdminDealerItem i => i.localizedSubtitle(l10n),
         AdminPanelItem i => i.localizedSubtitle(l10n),
+        AdminTalentItem i => i.localizedSubtitle(l10n),
         AdminUserItem i => i.localizedSubtitle(l10n),
         AdminTicketItem i => i.localizedSubtitle(l10n),
         AdminLostFoundItem i => i.localizedSubtitle(l10n),
