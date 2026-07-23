@@ -86,6 +86,30 @@ class _ProfileBody extends StatelessWidget {
 
   final Account account;
 
+  void _showVerifyEmailRequired(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Vui lòng xác minh email trước khi dùng tính năng này.',
+        ),
+      ),
+    );
+  }
+
+  VoidCallback _verifiedAction(
+    BuildContext context, {
+    required bool isVerified,
+    required VoidCallback action,
+  }) {
+    return () {
+      if (!isVerified) {
+        _showVerifyEmailRequired(context);
+        return;
+      }
+      action();
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -97,7 +121,7 @@ class _ProfileBody extends StatelessWidget {
         AdminSurfaceCard(
           child: Column(
             children: [
-              _AvatarEditor(account: account),
+              _AvatarEditor(account: account, isVerified: isVerified),
               const SizedBox(height: 14),
               Text(
                 account.displayName ?? account.email,
@@ -161,7 +185,11 @@ class _ProfileBody extends StatelessWidget {
                     icon: Icons.storefront_outlined,
                     title: 'Gian hàng dealer',
                     subtitle: 'Quản lý booth và nhân viên',
-                    onTap: () => context.push(Routes.accountDealer),
+                    onTap: _verifiedAction(
+                      context,
+                      isVerified: isVerified,
+                      action: () => context.push(Routes.accountDealer),
+                    ),
                   ),
                 if (account.isDealer == true && account.isHasTicket == true)
                   const SizedBox(height: 8),
@@ -185,14 +213,22 @@ class _ProfileBody extends StatelessWidget {
                 icon: Icons.folder_shared_outlined,
                 title: 'Hồ sơ đã gửi',
                 subtitle: 'Panel và talent',
-                onTap: () => context.push(Routes.accountSubmissions),
+                onTap: _verifiedAction(
+                  context,
+                  isVerified: isVerified,
+                  action: () => context.push(Routes.accountSubmissions),
+                ),
               ),
               const SizedBox(height: 8),
               AdminActionTile(
                 icon: Icons.menu_book_outlined,
                 title: 'Thông tin conbook',
                 subtitle: 'Quy định và gửi bài',
-                onTap: () => context.push(Routes.accountConbook),
+                onTap: _verifiedAction(
+                  context,
+                  isVerified: isVerified,
+                  action: () => context.push(Routes.accountConbook),
+                ),
               ),
             ],
           ),
@@ -258,9 +294,10 @@ class _ProfileBody extends StatelessWidget {
 /// Picks an image from the gallery, uploads it to S3, then persists the
 /// resulting URL via [UpdateAvatarUseCase] before refreshing [ProfileBloc].
 class _AvatarEditor extends StatefulWidget {
-  const _AvatarEditor({required this.account});
+  const _AvatarEditor({required this.account, required this.isVerified});
 
   final Account account;
+  final bool isVerified;
 
   @override
   State<_AvatarEditor> createState() => _AvatarEditorState();
@@ -272,6 +309,17 @@ class _AvatarEditorState extends State<_AvatarEditor> {
 
   Future<void> _pickAndUpload() async {
     if (_uploading) return;
+
+    if (!widget.isVerified) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Vui lòng xác minh email trước khi đổi ảnh đại diện.',
+          ),
+        ),
+      );
+      return;
+    }
 
     final picked = await _picker.pickImage(
       source: ImageSource.gallery,

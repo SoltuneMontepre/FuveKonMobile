@@ -98,7 +98,7 @@ class AppRouter {
 
     if (Routes.isAccountRoute(location) &&
         _authSessionNotifier.isVerified == false &&
-        !Routes.isUnverifiedAccountRoute(location)) {
+        Routes.requiresVerifiedAccount(location)) {
       return Routes.accountProfile;
     }
 
