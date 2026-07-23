@@ -399,6 +399,9 @@ func (s *AuthService) issueAccessTokenWithSession(ctx context.Context, user *mod
 		LastSeenAt: time.Now(),
 	}
 	if err := s.repos.UserSession.CreateLoginSession(ctx, session); err != nil {
+		// Log the real DB error so ops can diagnose 500s from the login endpoint;
+		// the handler only ever surfaces a generic "loginFailed" message to the client.
+		fmt.Printf("[ERROR] Failed to create user session for user %s: %v\n", user.Id, err)
 		return "", fmt.Errorf("failed to create user session: %w", err)
 	}
 	return accessToken, nil

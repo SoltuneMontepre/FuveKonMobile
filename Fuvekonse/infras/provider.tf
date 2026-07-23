@@ -13,7 +13,7 @@ terraform {
   }
 
   cloud {
-    organization = "fuvekon"
+    organization = "Soltune-Montepre"
 
     workspaces {
       name = "fuvekon"

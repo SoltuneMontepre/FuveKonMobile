@@ -26,6 +26,15 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <!-- Impeller's OpenGLES backend renders a solid black screen on some
+                 emulator images (e.g. "sdk gphone16k x86 64" / API 36), because the
+                 emulator's GPU driver doesn't composite the surface correctly. Fall
+                 back to Skia until upstream fixes this for affected emulators:
+                 https://github.com/flutter/flutter/issues/155973 -->
+            <meta-data
+              android:name="io.flutter.embedding.android.EnableImpeller"
+              android:value="false"
+              />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

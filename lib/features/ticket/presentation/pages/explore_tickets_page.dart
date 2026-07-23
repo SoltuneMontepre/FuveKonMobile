@@ -54,9 +54,13 @@ class _ExploreTicketsView extends StatelessWidget {
                           icon: Icons.confirmation_number_outlined,
                           title: l10n.exploreTicketsEmpty,
                         ),
-                      TicketTiersLoaded(:final tiers) => _LoadedBody(
-                        tiers: tiers,
-                      ),
+                      TicketTiersLoaded(:final tiers) =>
+                        BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, authState) => _LoadedBody(
+                            tiers: tiers,
+                            showGuestFooter: !_isAuthenticated(authState),
+                          ),
+                        ),
                       TicketTiersFailure(:final message) => _ErrorBody(
                         message: message,
                         onRetry: () => context.read<TicketTiersBloc>().add(
@@ -66,14 +70,6 @@ class _ExploreTicketsView extends StatelessWidget {
                     };
                   },
                 ),
-              ),
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, authState) {
-                  if (_isAuthenticated(authState)) {
-                    return const SizedBox.shrink();
-                  }
-                  return const _ExploreTicketsGuestFooter();
-                },
               ),
             ],
           ),
@@ -131,9 +127,10 @@ class _ExploreTicketsHeader extends StatelessWidget {
 }
 
 class _LoadedBody extends StatelessWidget {
-  const _LoadedBody({required this.tiers});
+  const _LoadedBody({required this.tiers, required this.showGuestFooter});
 
   final List<TicketTier> tiers;
+  final bool showGuestFooter;
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +166,10 @@ class _LoadedBody extends StatelessWidget {
           ),
           if (i < tiers.length - 1) const SizedBox(height: 16),
         ],
+        if (showGuestFooter) ...[
+          const SizedBox(height: 24),
+          const _ExploreTicketsGuestFooter(),
+        ],
       ],
     );
   }
@@ -181,80 +182,77 @@ class _ExploreTicketsGuestFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-      child: FuvekonIllustratedContentPanel(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              l10n.exploreTicketsFooterInfo,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: FuvekonColors.darkTextSecondary,
-                fontSize: 13,
-                height: 1.45,
+    return FuvekonIllustratedContentPanel(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            l10n.exploreTicketsFooterInfo,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: FuvekonColors.darkTextSecondary,
+              fontSize: 13,
+              height: 1.45,
+            ),
+          ),
+          const SizedBox(height: 16),
+          FilledButton(
+            onPressed: () => context.go(Routes.register),
+            style: FilledButton.styleFrom(
+              backgroundColor: FuvekonColors.darkButton,
+              foregroundColor: FuvekonColors.darkButtonText,
+              minimumSize: const Size.fromHeight(52),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(FuvekonRadii.button),
               ),
             ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => context.go(Routes.register),
-              style: FilledButton.styleFrom(
-                backgroundColor: FuvekonColors.darkButton,
-                foregroundColor: FuvekonColors.darkButtonText,
-                minimumSize: const Size.fromHeight(52),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(FuvekonRadii.button),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    l10n.exploreTicketsRegisterCta,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.arrow_forward_rounded, size: 20),
-                ],
-              ),
-            ),
-            const SizedBox(height: 14),
-            Wrap(
-              alignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  l10n.exploreTicketsLoginPrompt,
+                  l10n.exploreTicketsRegisterCta,
                   style: const TextStyle(
-                    color: FuvekonColors.darkTextSecondary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_rounded, size: 20),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+          Wrap(
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(
+                l10n.exploreTicketsLoginPrompt,
+                style: const TextStyle(
+                  color: FuvekonColors.darkTextSecondary,
+                  fontSize: 13,
+                ),
+              ),
+              TextButton(
+                onPressed: () => context.go(Routes.login),
+                style: TextButton.styleFrom(
+                  foregroundColor: FuvekonColors.darkPrimary,
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  l10n.exploreTicketsLoginLink,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
                     fontSize: 13,
                   ),
                 ),
-                TextButton(
-                  onPressed: () => context.go(Routes.login),
-                  style: TextButton.styleFrom(
-                    foregroundColor: FuvekonColors.darkPrimary,
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: Text(
-                    l10n.exploreTicketsLoginLink,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

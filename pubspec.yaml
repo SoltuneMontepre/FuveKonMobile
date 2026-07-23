@@ -23,6 +23,10 @@ dependencies:
   intl: ^0.20.2
   flutter_dotenv: ^6.0.1
   google_sign_in: ^7.2.0
+  # Pinned: google_sign_in_android >=7.2.11 has a regression where the
+  # Credential Manager's HiddenActivity blocks all touch/keyboard input
+  # after a Google sign-in attempt. See flutter/flutter#187229/#187395.
+  google_sign_in_android: 7.2.10
   shared_preferences: ^2.5.3
   package_info_plus: ^10.1.0
   flutter_localizations:

@@ -55,6 +55,42 @@ tasks:
     cmds:
       - docker compose -f {{.COMPOSE_BASE}} -f {{.COMPOSE_OVERRIDE}} down
 
+  backend:build-lambda:
+    desc: Build Lambda deployment packages (bootstrap.zip) for both services.
+    cmds:
+      - task: backend:build-lambda:general
+      - task: backend:build-lambda:worker
+
+  backend:build-lambda:general:
+    desc: Build general-service Lambda package (services/general-service/bootstrap.zip).
+    dir: "{{.BACKEND_DIR}}/services/general-service"
+    env:
+      GOOS: linux
+      GOARCH: amd64
+      CGO_ENABLED: 0
+    cmds:
+      - go mod download
+      - go build -tags lambda.norpc -ldflags="-s -w" -o bootstrap cmd/main.go
+      - cmd: powershell -NoProfile -Command "Compress-Archive -Path bootstrap -DestinationPath bootstrap.zip -Force"
+        platforms: [windows]
+      - cmd: zip -j bootstrap.zip bootstrap
+        platforms: [linux, darwin]
+
+  backend:build-lambda:worker:
+    desc: Build sqs-worker Lambda package (services/sqs-worker/bootstrap.zip).
+    dir: "{{.BACKEND_DIR}}/services/sqs-worker"
+    env:
+      GOOS: linux
+      GOARCH: amd64
+      CGO_ENABLED: 0
+    cmds:
+      - go mod download
+      - go build -tags lambda.norpc -ldflags="-s -w" -o bootstrap main.go handler.go local.go
+      - cmd: powershell -NoProfile -Command "Compress-Archive -Path bootstrap -DestinationPath bootstrap.zip -Force"
+        platforms: [windows]
+      - cmd: zip -j bootstrap.zip bootstrap
+        platforms: [linux, darwin]
+
   android:google-signin-info:
     desc: Print Android package + debug SHA-1 for Google Cloud Console OAuth setup.
     cmds:
@@ -64,7 +100,7 @@ tasks:
       - echo "Web client ID  from .env GOOGLE_CLIENT_ID (Web application type)"
       - echo ""
       - echo "Debug SHA-1 (add this to Android OAuth client in Google Cloud Console):"
-      - cmd: powershell -Command "cd android; .\gradlew.bat :app:signingReport 2>&1 | Select-String 'SHA1:' | Select-Object -First 1; exit 0"
+      - cmd: powershell -NoProfile -Command "cd android; .\gradlew.bat :app:signingReport 2>&1 | Select-String 'SHA1:' | Select-Object -First 1; exit 0"
         platforms: [windows]
       - cmd: cd android && ./gradlew :app:signingReport 2>&1 | grep SHA1 | head -1
         platforms: [linux, darwin]
@@ -93,7 +129,7 @@ tasks:
   backend:_flutter-env:
     internal: true
     cmds:
-      - cmd: powershell -Command "if (!(Test-Path .env)) { Copy-Item .env.example .env; Write-Host 'Created .env from .env.example' }"
+      - cmd: powershell -NoProfile -Command "if (!(Test-Path .env)) { Copy-Item .env.example .env; Write-Host 'Created .env from .env.example' }"
         platforms: [windows]
       - cmd: test -f .env || cp .env.example .env && echo "Created .env from .env.example"
         platforms: [linux, darwin]

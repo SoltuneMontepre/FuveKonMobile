@@ -69,7 +69,6 @@ class _TicketPurchaseView extends StatefulWidget {
 class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
   final _idCardController = TextEditingController();
   _PaymentMethod _selectedMethod = _PaymentMethod.bankQr;
-  _CheckoutStep _step = _CheckoutStep.payment;
   bool _acceptedTerms = true;
   double? _payableAmount;
   bool _isUpgrade = false;
@@ -116,8 +115,6 @@ class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
           context.go(Routes.account);
           return;
         }
-
-        if (state is TicketPurchaseConfirmed) _step = _CheckoutStep.payment;
       },
       builder: (context, state) {
         return Scaffold(
@@ -151,40 +148,28 @@ class _TicketPurchaseViewState extends State<_TicketPurchaseView> {
                       : ticket.denialReason,
                   onBack: () => Navigator.of(context).pop(),
                 ),
-              TicketPurchaseLoaded() =>
-                _step == _CheckoutStep.payment
-                    ? _PaymentBody(
-                        state: state,
-                        idCardController: _idCardController,
-                        selectedMethod: _selectedMethod,
-                        onMethodChanged: (method) =>
-                            setState(() => _selectedMethod = method),
-                        onSaveIdCard: () {
-                          context.read<TicketPurchaseBloc>().add(
-                            TicketPurchaseEvent.idCardSaved(
-                              _idCardController.text,
-                            ),
-                          );
-                        },
-                        onConfirm: () =>
-                            setState(() => _step = _CheckoutStep.confirmation),
-                      )
-                    : _ConfirmOrderBody(
-                        state: state,
-                        selectedMethod: _selectedMethod,
-                        acceptedTerms: _acceptedTerms,
-                        onAcceptedChanged: (value) =>
-                            setState(() => _acceptedTerms = value ?? false),
-                        onBack: () =>
-                            setState(() => _step = _CheckoutStep.payment),
-                        onConfirm: _acceptedTerms
-                            ? () {
-                                context.read<TicketPurchaseBloc>().add(
-                                  const TicketPurchaseEvent.confirmPaymentRequested(),
-                                );
-                              }
-                            : null,
-                      ),
+              TicketPurchaseLoaded() => _PaymentBody(
+                state: state,
+                idCardController: _idCardController,
+                selectedMethod: _selectedMethod,
+                onMethodChanged: (method) =>
+                    setState(() => _selectedMethod = method),
+                onSaveIdCard: () {
+                  context.read<TicketPurchaseBloc>().add(
+                    TicketPurchaseEvent.idCardSaved(_idCardController.text),
+                  );
+                },
+                acceptedTerms: _acceptedTerms,
+                onAcceptedChanged: (value) =>
+                    setState(() => _acceptedTerms = value ?? false),
+                onConfirm: _acceptedTerms
+                    ? () {
+                        context.read<TicketPurchaseBloc>().add(
+                          const TicketPurchaseEvent.confirmPaymentRequested(),
+                        );
+                      }
+                    : null,
+              ),
               TicketPurchaseFailure(:final message) => _ErrorBody(
                 message: message,
                 onRetry: () => context.read<TicketPurchaseBloc>().add(
@@ -216,6 +201,8 @@ class _PaymentBody extends StatelessWidget {
     required this.selectedMethod,
     required this.onMethodChanged,
     required this.onSaveIdCard,
+    required this.acceptedTerms,
+    required this.onAcceptedChanged,
     required this.onConfirm,
   });
 
@@ -224,7 +211,9 @@ class _PaymentBody extends StatelessWidget {
   final _PaymentMethod selectedMethod;
   final ValueChanged<_PaymentMethod> onMethodChanged;
   final VoidCallback onSaveIdCard;
-  final VoidCallback onConfirm;
+  final bool acceptedTerms;
+  final ValueChanged<bool?> onAcceptedChanged;
+  final VoidCallback? onConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -311,11 +300,36 @@ class _PaymentBody extends StatelessWidget {
                       fee: formatTicketPriceVnd(fee),
                       total: total,
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 18),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          value: acceptedTerms,
+                          onChanged: onAcceptedChanged,
+                          visualDensity: VisualDensity.compact,
+                        ),
+                        const SizedBox(width: 8),
+                        const Expanded(
+                          child: Text(
+                            'Tôi xác nhận thông tin đơn hàng là chính xác và đồng ý với điều khoản vé.',
+                            style: TextStyle(
+                              color: FuvekonColors.darkTextSecondary,
+                              fontSize: 12,
+                              height: 1.45,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 14),
                     FuvekonIllustratedContentPanel(
                       padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
                       child: FilledButton(
-                        onPressed: state.isConfirming || needsIdCard
+                        onPressed:
+                            state.isConfirming ||
+                                needsIdCard ||
+                                !acceptedTerms
                             ? null
                             : onConfirm,
                         style: FilledButton.styleFrom(
@@ -334,7 +348,7 @@ class _PaymentBody extends StatelessWidget {
                             Text(
                               state.isConfirming
                                   ? 'Đang xử lý...'
-                                  : 'Tiếp tục thanh toán',
+                                  : 'Xác nhận và thanh toán',
                               style: const TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w900,
@@ -384,8 +398,6 @@ class _PaymentBody extends StatelessWidget {
   }
 }
 
-enum _CheckoutStep { payment, confirmation }
-
 enum _PaymentMethod { bankQr }
 
 class _PaymentHeader extends StatelessWidget {
@@ -421,387 +433,6 @@ class _PaymentHeader extends StatelessWidget {
             visualDensity: VisualDensity.compact,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ConfirmOrderBody extends StatelessWidget {
-  const _ConfirmOrderBody({
-    required this.state,
-    required this.selectedMethod,
-    required this.acceptedTerms,
-    required this.onAcceptedChanged,
-    required this.onBack,
-    required this.onConfirm,
-  });
-
-  final TicketPurchaseLoaded state;
-  final _PaymentMethod selectedMethod;
-  final bool acceptedTerms;
-  final ValueChanged<bool?> onAcceptedChanged;
-  final VoidCallback onBack;
-  final VoidCallback? onConfirm;
-
-  @override
-  Widget build(BuildContext context) {
-    final tier = state.ticket.tier;
-    final rawPrice = state.payableAmount ?? tier?.price ?? 0;
-    final amount = formatTicketPriceVnd(rawPrice);
-    final buyerName = state.account.ticketHolderName;
-
-    return Stack(
-      children: [
-        SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _ConfirmHeader(onBack: onBack),
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.fromLTRB(20, 22, 20, 28),
-                  children: [
-                    const _StepIndicator(),
-                    const SizedBox(height: 22),
-                    _ConfirmOrderCard(
-                      ticketName: tier?.ticketName ?? '—',
-                      buyerName: buyerName,
-                      total: amount,
-                    ),
-                    const SizedBox(height: 16),
-                    _ConfirmPaymentMethodCard(method: selectedMethod),
-                    const SizedBox(height: 18),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Checkbox(
-                          value: acceptedTerms,
-                          onChanged: onAcceptedChanged,
-                          visualDensity: VisualDensity.compact,
-                        ),
-                        const SizedBox(width: 8),
-                        const Expanded(
-                          child: Text(
-                            'Tôi xác nhận thông tin đơn hàng là chính xác và đồng ý với điều khoản vé.',
-                            style: TextStyle(
-                              color: FuvekonColors.darkTextSecondary,
-                              fontSize: 12,
-                              height: 1.45,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 70),
-                    FuvekonIllustratedContentPanel(
-                      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          FilledButton(
-                            onPressed: state.isConfirming ? null : onConfirm,
-                            style: FilledButton.styleFrom(
-                              backgroundColor: FuvekonColors.darkButton,
-                              foregroundColor: FuvekonColors.darkButtonText,
-                              minimumSize: const Size.fromHeight(52),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  state.isConfirming
-                                      ? 'Đang xác nhận...'
-                                      : 'Xác nhận và thanh toán',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                const Icon(
-                                  Icons.arrow_forward_rounded,
-                                  size: 18,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          OutlinedButton(
-                            onPressed: state.isConfirming ? null : onBack,
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: FuvekonColors.dustyRose,
-                              side: const BorderSide(
-                                color: FuvekonColors.dustyRose,
-                              ),
-                              minimumSize: const Size.fromHeight(48),
-                              shape: const StadiumBorder(),
-                            ),
-                            child: const Text('Quay lại chỉnh sửa'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        if (state.isConfirming)
-          ColoredBox(
-            color: FuvekonColors.darkDeep.withValues(alpha: 0.55),
-            child: const Center(child: CircularProgressIndicator()),
-          ),
-      ],
-    );
-  }
-}
-
-class _ConfirmHeader extends StatelessWidget {
-  const _ConfirmHeader({required this.onBack});
-
-  final VoidCallback onBack;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 4, 20, 8),
-      child: Row(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back, color: FuvekonColors.darkText),
-            onPressed: onBack,
-            visualDensity: VisualDensity.compact,
-          ),
-          const Expanded(
-            child: Text(
-              'Xác nhận đơn hàng',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: FuvekonColors.darkPrimary,
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-          const SizedBox(width: 40),
-        ],
-      ),
-    );
-  }
-}
-
-class _StepIndicator extends StatelessWidget {
-  const _StepIndicator();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        _stepLine(active: true),
-        const SizedBox(width: 7),
-        _stepLine(active: true),
-        const SizedBox(width: 7),
-        Expanded(child: _stepLine(active: false)),
-      ],
-    );
-  }
-
-  Widget _stepLine({required bool active}) {
-    return Container(
-      width: 38,
-      height: 3,
-      decoration: BoxDecoration(
-        color: active
-            ? FuvekonColors.darkPrimary
-            : FuvekonColors.darkTextSecondary.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(99),
-      ),
-    );
-  }
-}
-
-class _ConfirmOrderCard extends StatelessWidget {
-  const _ConfirmOrderCard({
-    required this.ticketName,
-    required this.buyerName,
-    required this.total,
-  });
-
-  final String ticketName;
-  final String buyerName;
-  final String total;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = exploreTicketTextColors(ExploreTierStyle.standard);
-
-    return TicketExploreSurface(
-      style: ExploreTierStyle.standard,
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Chi tiết đơn hàng',
-            style: TextStyle(
-              color: colors.title,
-              fontSize: 16,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 18),
-          _ConfirmRow(label: 'Loại vé:', value: '✦ Vé $ticketName'),
-          const SizedBox(height: 10),
-          const _ConfirmRow(label: 'Số lượng:', value: '1 vé'),
-          const SizedBox(height: 10),
-          _ConfirmRow(label: 'Người mua:', value: buyerName),
-          const SizedBox(height: 12),
-          Divider(color: Colors.black.withValues(alpha: 0.12)),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              const Text(
-                'Tổng tiền:',
-                style: TextStyle(
-                  color: FuvekonColors.textSecondary,
-                  fontSize: 13,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                total,
-                style: const TextStyle(
-                  color: FuvekonColors.sageGreenContainer,
-                  fontSize: 19,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ConfirmRow extends StatelessWidget {
-  const _ConfirmRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            color: FuvekonColors.textSecondary,
-            fontSize: 13,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            value,
-            textAlign: TextAlign.end,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: const TextStyle(
-              color: FuvekonColors.darkCardText,
-              fontSize: 13,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ConfirmPaymentMethodCard extends StatelessWidget {
-  const _ConfirmPaymentMethodCard({required this.method});
-
-  final _PaymentMethod method;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: FuvekonColors.surfaceContainer,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: FuvekonColors.darkBorder),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
-              children: [
-                Icon(
-                  Icons.payment_rounded,
-                  size: 16,
-                  color: FuvekonColors.darkPrimary,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  'Phương thức thanh toán',
-                  style: TextStyle(
-                    color: FuvekonColors.darkText,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: FuvekonColors.surfaceContainerLow,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: FuvekonColors.darkBorder),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 34,
-                      height: 34,
-                      decoration: const BoxDecoration(
-                        color: FuvekonColors.sageGreenContainer,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        _methodIcon(method),
-                        color: FuvekonColors.darkPrimary,
-                        size: 18,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        _methodTitle(method),
-                        style: const TextStyle(
-                          color: FuvekonColors.darkText,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.check_circle_outline_rounded,
-                      size: 18,
-                      color: FuvekonColors.darkPrimary,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -1484,18 +1115,6 @@ String _maskedContact(String value) {
 
   if (value.length <= 4) return value;
   return '${value.substring(0, 3)}xxxx${value.substring(value.length - 2)}';
-}
-
-String _methodTitle(_PaymentMethod method) {
-  return switch (method) {
-    _PaymentMethod.bankQr => 'Chuyển khoản QR',
-  };
-}
-
-IconData _methodIcon(_PaymentMethod method) {
-  return switch (method) {
-    _PaymentMethod.bankQr => Icons.qr_code_2_rounded,
-  };
 }
 
 class _QueueProcessingBody extends StatelessWidget {

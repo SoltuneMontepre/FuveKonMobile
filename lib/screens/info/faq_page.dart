@@ -65,131 +65,117 @@ class _FaqPageState extends State<FaqPage> {
     final categories = _filteredCategories(allCategories);
 
     return FuvekonNavScaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.faqPageTitle,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 26,
-                    height: 1.2,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  l10n.faqPageSubtitle,
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.65),
-                    fontSize: 14.5,
-                    height: 1.45,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                FuvekonIllustratedContentPanel(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (_) => setState(() {}),
-                    style: const TextStyle(color: Colors.white, fontSize: 15),
-                    decoration: InputDecoration(
-                      hintText: l10n.faqSearchHint,
-                      hintStyle: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.4),
-                      ),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.white.withValues(alpha: 0.5),
-                      ),
-                      filled: true,
-                      fillColor: const Color(0xFF1A1A1A),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide(
-                          color: Colors.white.withValues(alpha: 0.2),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide(
-                          color: _FaqColors.categoryBg.withValues(alpha: 0.6),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+          Text(
+            l10n.faqPageTitle,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w800,
+              fontSize: 26,
+              height: 1.2,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            l10n.faqPageSubtitle,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.65),
+              fontSize: 14.5,
+              height: 1.45,
             ),
           ),
           const SizedBox(height: 20),
-          Expanded(
-            child: categories.isEmpty
-                ? Center(
-                    child: Text(
-                      l10n.faqNoResults,
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.55),
-                      ),
-                    ),
-                  )
-                : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-                    itemCount: categories.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10),
-                    itemBuilder: (context, index) {
-                      final category = categories[index];
-                      final originalIndex = allCategories.indexOf(category);
-                      final expanded = _expandedIndex == originalIndex;
-
-                      return _FaqCategoryTile(
-                        category: category,
-                        expanded: expanded,
-                        onTap: () {
-                          setState(() {
-                            _expandedIndex = expanded ? null : originalIndex;
-                          });
-                        },
-                      );
-                    },
-                  ),
-          ),
-          Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
-            child: FuvekonIllustratedContentPanel(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: GestureDetector(
-                onTap: () {},
-                child: Text.rich(
-                  TextSpan(
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.75),
-                      fontSize: 14,
-                    ),
-                    children: [
-                      TextSpan(text: l10n.faqNeedHelp),
-                      TextSpan(
-                        text: l10n.faqContactUs,
-                        style: TextStyle(
-                          color: _FaqColors.titleAccent,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  textAlign: TextAlign.center,
+          FuvekonIllustratedContentPanel(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (_) => setState(() {}),
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+              decoration: InputDecoration(
+                hintText: l10n.faqSearchHint,
+                hintStyle: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.4),
                 ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.white.withValues(alpha: 0.5),
+                ),
+                filled: true,
+                fillColor: const Color(0xFF1A1A1A),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.2),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(
+                    color: _FaqColors.categoryBg.withValues(alpha: 0.6),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          if (categories.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: Center(
+                child: Text(
+                  l10n.faqNoResults,
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.55)),
+                ),
+              ),
+            )
+          else
+            for (final category in categories) ...[
+              _FaqCategoryTile(
+                category: category,
+                expanded:
+                    _expandedIndex == allCategories.indexOf(category),
+                onTap: () {
+                  final originalIndex = allCategories.indexOf(category);
+                  setState(() {
+                    _expandedIndex = _expandedIndex == originalIndex
+                        ? null
+                        : originalIndex;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
+            ],
+          const SizedBox(height: 10),
+          Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
+          const SizedBox(height: 20),
+          FuvekonIllustratedContentPanel(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: GestureDetector(
+              onTap: () {},
+              child: Text.rich(
+                TextSpan(
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.75),
+                    fontSize: 14,
+                  ),
+                  children: [
+                    TextSpan(text: l10n.faqNeedHelp),
+                    TextSpan(
+                      text: l10n.faqContactUs,
+                      style: TextStyle(
+                        color: _FaqColors.titleAccent,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
@@ -256,7 +242,8 @@ class _FaqCategoryTile extends StatelessWidget {
                   ),
                   AnimatedRotation(
                     turns: expanded ? 0.5 : 0,
-                    duration: const Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 320),
+                    curve: Curves.easeOutCubic,
                     child: Icon(
                       Icons.keyboard_arrow_down,
                       color: _FaqColors.textDark.withValues(alpha: 0.7),
@@ -314,7 +301,10 @@ class _FaqCategoryTile extends StatelessWidget {
           crossFadeState: expanded
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 320),
+          firstCurve: Curves.easeOutCubic,
+          secondCurve: Curves.easeOutCubic,
+          sizeCurve: Curves.easeInOutCubic,
         ),
       ],
     );

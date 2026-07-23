@@ -28,8 +28,9 @@ class MyTicketListCard extends StatelessWidget {
     final ctaLabel = _ctaLabel(l10n, ticket);
     final canOpen =
         ticket == null ||
-        ticket.status != TicketStatus.denied ||
-        ticket.needsPayment;
+        ticket.needsPayment ||
+        ticket.status == TicketStatus.approved ||
+        ticket.status == TicketStatus.adminGranted;
 
     return TicketExploreSurface(
       style: ExploreTierStyle.standard,

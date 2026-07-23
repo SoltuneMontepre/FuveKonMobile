@@ -1,7 +1,9 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fuvekonmobile/core/theme/fuvekon_theme_extension.dart';
 import 'package:fuvekonmobile/core/utils/validators.dart';
 import 'package:fuvekonmobile/shared/widgets/app_page_layout.dart';
+import 'package:fuvekonmobile/shared/widgets/country_picker_field.dart';
 import 'package:intl/intl.dart';
 
 class GoogleRegisterForm extends StatefulWidget {
@@ -28,7 +30,7 @@ class _GoogleRegisterFormState extends State<GoogleRegisterForm> {
   final _formKey = GlobalKey<FormState>();
   final _fullNameController = TextEditingController();
   final _nicknameController = TextEditingController();
-  final _countryController = TextEditingController();
+  final _countryFieldKey = GlobalKey<FormFieldState<Country>>();
 
   DateTime? _dateOfBirth;
   String? _dateOfBirthError;
@@ -37,7 +39,6 @@ class _GoogleRegisterFormState extends State<GoogleRegisterForm> {
   void dispose() {
     _fullNameController.dispose();
     _nicknameController.dispose();
-    _countryController.dispose();
     super.dispose();
   }
 
@@ -70,7 +71,7 @@ class _GoogleRegisterFormState extends State<GoogleRegisterForm> {
       fullName: _fullNameController.text.trim(),
       nickname: _nicknameController.text.trim(),
       dateOfBirth: DateFormat('yyyy-MM-dd').format(_dateOfBirth!),
-      country: _countryController.text.trim(),
+      country: _countryFieldKey.currentState!.value!.countryCode,
     );
   }
 
@@ -136,12 +137,24 @@ class _GoogleRegisterFormState extends State<GoogleRegisterForm> {
           AppLabeledField(
             label: 'Country',
             required: true,
-            field: TextFormField(
-              controller: _countryController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(hintText: 'Your country'),
-              validator: Validators.country,
+            field: CountryPickerField(
+              key: _countryFieldKey,
               enabled: !widget.isLoading,
+              hintText: 'Select your country',
+              textStyle: TextStyle(color: ext.contentOnCard),
+              hintStyle: TextStyle(
+                color: ext.contentOnCardMuted.withValues(alpha: 0.65),
+              ),
+              iconColor: ext.contentOnCardMuted,
+              decoration: const InputDecoration(
+                hintText: 'Select your country',
+              ),
+              validator: (country) {
+                if (country == null) {
+                  return 'Country is required';
+                }
+                return null;
+              },
             ),
           ),
           const SizedBox(height: 24),
