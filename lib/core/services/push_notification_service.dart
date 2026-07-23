@@ -242,7 +242,15 @@ class PushNotificationService {
 
     if (accessToken == null || accessToken.isEmpty) return;
 
-    await _registerToken(token);
+    try {
+      await _registerToken(token);
+    } on Object catch (error, stackTrace) {
+      _logger.w(
+        'FCM token refresh registration failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   Future<void> _registerToken(String token) async {

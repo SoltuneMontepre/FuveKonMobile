@@ -75,11 +75,23 @@ abstract final class Routes {
   static const accountDealerStaff = '/account/profile/dealer/staff';
   static const accountEdit = '/account/profile/edit';
 
-  static const unverifiedAccountRoutes = {
-    accountProfile,
-    accountChangePassword,
-    accountSettings,
-    accountSignedInDevices,
+  /// Account routes that require a verified email.
+  ///
+  /// Mirrors the backend's `RequireVerifiedOrWhitelist` middleware, which
+  /// whitelists only `GET/PUT /users/me` and `PATCH /users/me/avatar` for
+  /// unverified users — every other protected endpoint (tickets, dealer,
+  /// conbooks, panels, talents, notifications, ...) returns 403. Everything
+  /// else under `/account` stays available so shell tabs (home, schedule)
+  /// keep working, since `/schedules` is a public backend route.
+  static const verifiedOnlyAccountRoutePrefixes = {
+    accountSubmissions,
+    accountConbook,
+    accountDealer,
+    accountTalent,
+    accountPanel,
+    accountVerifyIdentity,
+    accountTicket,
+    accountNotifications,
   };
 
   // —— Contribute / registration (public) ——
@@ -188,8 +200,15 @@ abstract final class Routes {
   static bool isAccountRoute(String location) =>
       location == account || location.startsWith('$account/');
 
-  static bool isUnverifiedAccountRoute(String location) =>
-      unverifiedAccountRoutes.contains(location);
+  /// Whether [location] is restricted to verified accounts.
+  static bool requiresVerifiedAccount(String location) {
+    for (final prefix in verifiedOnlyAccountRoutePrefixes) {
+      if (location == prefix || location.startsWith('$prefix/')) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   static bool isAdminRoute(String location) =>
       location == admin || location.startsWith('$admin/');

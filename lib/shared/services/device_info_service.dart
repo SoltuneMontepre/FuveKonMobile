@@ -19,7 +19,7 @@ class DeviceInfoService {
     return {
       if (id != null && id.isNotEmpty) 'device_id': id,
       if (name != null && name.isNotEmpty) 'device_name': name,
-      if (platform != null) 'platform': platform,
+      'platform': ?platform,
     };
   }
 
